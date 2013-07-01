@@ -1,0 +1,27 @@
+-- sample device i/o error logger
+IF %ERROR%=0 RETURN          -- return if no error
+IF %SERVICE%!=11 GOTO RDY    -- errors below are for R/W File WinAPI
+IF %ERROR%=2 GOTO NOTRDY     -- device not ready errors (WinNT+ only)
+IF %ERROR%=3 GOTO NOTRDY
+IF %ERROR%=5 GOTO NOTRDY
+IF %ERROR%=6 GOTO NOTRDY
+IF %ERROR%=15 GOTO NOTRDY
+IF %ERROR%=21 GOTO NOTRDY
+IF %ERROR%=31 GOTO NOTRDY
+IF %ERROR%=55 GOTO NOTRDY
+IF %ERROR%=107 GOTO NOTRDY
+IF %ERROR%=108 GOTO NOTRDY
+IF %ERROR%=1006 GOTO NOTRDY
+IF %ERROR%=1111 GOTO NOTRDY
+IF %ERROR%=1118 GOTO NOTRDY
+IF %ERROR%=1119 GOTO NOTRDY
+IF %ERROR%=1167 GOTO NOTRDY
+IF %ERROR%=1617 GOTO NOTRDY
+IF %ERROR%=4319 GOTO NOTRDY
+:RDY
+IF %TRYNUM%<2 RETRETRY       -- retry again after first (0) and second (1) try
+ADDLOG "C:\IOERROR.LOG" error %ERROR% at LBA: %LBA:10%
+RETIGNORE                    -- Ignore eventually
+:NOTRDY
+ADDLOG "C:\IOERROR.LOG" error %ERROR% at LBA: %LBA:10%
+WAIT                         -- Wait for user choice

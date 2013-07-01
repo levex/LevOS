@@ -1,0 +1,207 @@
+#include "VGAdriver.h"
+#include "HComm.h"
+#include "pMemory.h"
+#include "DebugDisplay.h"
+
+#define VRAM 0xA0000
+
+void writeTo(short port, char index, char data)
+{
+	if(port == 0x3C0) {
+		inport(0x3DA); // reset 0x3c0 to index mode
+		outport(0x3C0, index); // send index
+		outport(0x3C0, data); // send data
+	} else {
+		outport(port, index);
+		outport(port+1, data);
+	}
+}
+
+char readFrom3C0(char index)
+{
+	inport(0x3DA); // reset 0x3c0 to index mode
+	outport(0x3C0, index); // send index
+	return inport(0x3C1); // 3c0+1 = 3c1 data port
+}
+
+inline void bochs_debug(char i)
+{
+	_asm push dx
+	_asm push al
+	_asm mov dx, 0xE9
+	_asm mov al, i
+	_asm out dx, al
+	_asm pop al
+	_asm pop dx
+}
+
+void disableCRTCprotect()
+{
+}
+void enableCRTCprotect()
+{
+}
+void enableDisplay()
+{
+}
+void disableDisplay()
+{
+}
+
+void writeStructure(VGA_REGS* regs)
+{
+	char i = 48;
+	writeTo(0x3C0,0x10, regs->ModeControl3C0);
+	bochs_debug(i++);
+	writeTo(0x3C0,0x11, regs->overScanRegister);
+	bochs_debug(i++);
+	writeTo(0x3C0,0x12, regs->ColorPlaneEnable);
+	bochs_debug(i++);
+	writeTo(0x3C0,0x13, regs->HorizontalPanning);
+	bochs_debug(i++);
+	writeTo(0x3C0,0x14, regs->ColorSelect);
+	bochs_debug(i++);
+	outport(0x3C2, regs->MiscOutputRegister);
+	bochs_debug(i++);
+	writeTo(0x3C4, 0x01, regs->ClockModeRegister);
+	bochs_debug(i++);
+	writeTo(0x3C4, 0x03, regs->CharacterSelect);
+	bochs_debug(i++);
+	writeTo(0x3C4, 0x04, regs->MemoryModeRegister);
+	bochs_debug(i++);
+	writeTo(0x3CE, 0x05, regs->ModeRegister);
+	bochs_debug(i++);
+	writeTo(0x3CE, 0x06, regs->MiscRegister);
+	bochs_debug(i++);
+	writeTo(0x3D4, 0x00, regs->HorizontalTotal);
+	bochs_debug(i++);
+	writeTo(0x3D4, 0x01, regs->HorizontalDisplayEnableEnd);
+	bochs_debug(i++);
+	writeTo(0x3D4, 0x02, regs->HorizontalBlankStart);
+	bochs_debug(i++);
+	writeTo(0x3D4, 0x03, regs->HorizontalBlankEnd);
+	bochs_debug(i++);
+	writeTo(0x3D4, 0x04, regs->HorizontalRetraceStart);
+	bochs_debug(i++);
+	writeTo(0x3D4, 0x05, regs->HorizontalRetraceEnd);
+	bochs_debug(i++);
+	writeTo(0x3D4, 0x06, regs->VerticalTotal);
+	bochs_debug(i++);
+	writeTo(0x3D4, 0x07, regs->OverflowRegister);
+	bochs_debug(i++);
+	writeTo(0x3D4, 0x08, regs->PresetRowScan);
+	bochs_debug(i++);
+	writeTo(0x3D4, 0x09, regs->MaximumScanLine);
+	bochs_debug(i++);
+	writeTo(0x3D4, 0x10, regs->VerticalRetraceStart);
+	bochs_debug(i++);
+	writeTo(0x3D4, 0x11, regs->VerticalRetraceEnd);
+	bochs_debug(i++);
+	writeTo(0x3D4, 0x12, regs->VerticalDisplayEnableEnd);
+	bochs_debug(i++);
+	writeTo(0x3D4, 0x13, regs->LogicalWidth);
+	bochs_debug(i++);
+	writeTo(0x3D4, 0x14, regs->UnderlineLocation);
+	bochs_debug(i++);
+	writeTo(0x3D4, 0x15, regs->VerticalBlankStart);
+	bochs_debug(i++);
+	writeTo(0x3D4, 0x16, regs->VerticalBlankEnd);
+	bochs_debug(i++);
+	writeTo(0x3D4, 0x17, regs->ModeControl3D4);
+	bochs_debug(i++);
+}
+
+bool switchToVGA()
+{
+	DebugPrintf("VGA bootup! Press to continue!");
+	_asm mov eax, 0x04
+	_asm int 0x2F
+	memset((char*)0xA8000, 0x3d, 256*1024);
+	_asm mov eax, 0x04
+	_asm int 0x2F
+	VGA_REGS regs640x480x16; // 640x480 16bit planar
+	regs640x480x16.CharacterSelect = 0;
+	regs640x480x16.ClockModeRegister = 1;
+	regs640x480x16.ColorPlaneEnable = 0x0f;
+	regs640x480x16.ColorSelect = 0;
+	regs640x480x16.MiscOutputRegister = 0xE3;
+	regs640x480x16.HorizontalBlankEnd = 0x82;
+	regs640x480x16.HorizontalBlankStart = 0x50;
+	regs640x480x16.HorizontalRetraceStart = 0x54;
+	regs640x480x16.HorizontalDisplayEnableEnd = 0x4F;
+	regs640x480x16.HorizontalPanning = 0;
+	regs640x480x16.HorizontalRetraceEnd = 0x80;
+	regs640x480x16.HorizontalTotal = 0x5f;
+	regs640x480x16.LogicalWidth = 0x28;
+	regs640x480x16.MaximumScanLine = 0x40;
+	regs640x480x16.MemoryModeRegister = 0x02;
+	regs640x480x16.MiscRegister = 0x05;
+	regs640x480x16.ModeControl3C0 = 0x01;
+	regs640x480x16.ModeControl3D4 = 0xE3;
+	regs640x480x16.ModeRegister = 0;
+	regs640x480x16.OverflowRegister = 0x3E;
+	regs640x480x16.overScanRegister = 0;
+	regs640x480x16.PresetRowScan = 0;
+	regs640x480x16.UnderlineLocation = 0;
+	regs640x480x16.VerticalBlankStart = 0xE7;
+	regs640x480x16.VerticalBlankEnd = 0x04;
+	regs640x480x16.VerticalDisplayEnableEnd = 0xDF;
+	regs640x480x16.VerticalRetraceStart = 0xEA;
+	regs640x480x16.VerticalRetraceEnd = 0x8C;
+	regs640x480x16.VerticalTotal = 0x0B;
+
+	VGA_REGS regs320x200x256; // 320x200 linear 256color 1 byte
+	regs320x200x256.CharacterSelect = 0;
+	regs320x200x256.ClockModeRegister = 1;
+	regs320x200x256.ColorPlaneEnable = 0x0f;
+	regs320x200x256.ColorSelect = 0;
+	regs320x200x256.MiscOutputRegister = 0x63;
+	regs320x200x256.HorizontalBlankEnd = 0x82;
+	regs320x200x256.HorizontalBlankStart = 0x50;
+	regs320x200x256.HorizontalRetraceStart = 0x54;
+	regs320x200x256.HorizontalDisplayEnableEnd = 0x4F;
+	regs320x200x256.HorizontalPanning = 0;
+	regs320x200x256.HorizontalRetraceEnd = 0x80;
+	regs320x200x256.HorizontalTotal = 0x5f;
+	regs320x200x256.LogicalWidth = 0x28;
+	regs320x200x256.MaximumScanLine = 0x41;
+	regs320x200x256.MemoryModeRegister = 0x0E;
+	regs320x200x256.MiscRegister = 0x05;
+	regs320x200x256.ModeControl3C0 = 0x41;
+	regs320x200x256.ModeControl3D4 = 0xA3;
+	regs320x200x256.ModeRegister = 0x40;
+	regs320x200x256.OverflowRegister = 0x1F;
+	regs320x200x256.overScanRegister = 0;
+	regs320x200x256.PresetRowScan = 0;
+	regs320x200x256.UnderlineLocation = 0x40;
+	regs320x200x256.VerticalBlankStart = 0x96;
+	regs320x200x256.VerticalBlankEnd = 0xB9;
+	regs320x200x256.VerticalDisplayEnableEnd = 0x8F;
+	regs320x200x256.VerticalRetraceStart = 0x9C;
+	regs320x200x256.VerticalRetraceEnd = 0x8E;
+	regs320x200x256.VerticalTotal = 0xBF;
+	//disable display
+	//unlock CRTC registers
+	//write registers
+	writeStructure(&regs320x200x256);
+	//lock CRTC registers
+	//enable display
+
+	//putPixelAt(0, 00, 0xFF0000);
+	memset((char*)0xA8000, 0x3d, 256*1024);
+	//memcpy((char*)0x1000, (char*)(VRAM ), 0x1000);
+	//for(;;);
+	/*for(int k = 0;k<256;k++)*/
+		//memcpy((char*)0x1000, (char*)(VRAM ), 0x1000); // fill screen with crap
+	return true;
+}
+bool switchBack()
+{
+	return false;
+}
+
+void putPixelAt(int x, int y, int color)
+{
+	char* point = (char*)(VRAM + x + y*320);
+	*point = 0x3D;
+}

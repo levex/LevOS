@@ -1,0 +1,293 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Display">
+      <UniqueIdentifier>{f65b5757-6b63-48e3-a23e-bfe23a5e2581}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Memory">
+      <UniqueIdentifier>{c5a62bae-365f-4343-9824-287ea512b65c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Memory\Physical">
+      <UniqueIdentifier>{843b4767-9de8-4d7e-a0c1-6d1d4ce3699b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Memory\Virtual">
+      <UniqueIdentifier>{b5ec72bc-890d-4b30-b443-2de5f8d816ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interrupt">
+      <UniqueIdentifier>{95ffe42f-51cd-42a1-8b6a-8b471f954094}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CPU">
+      <UniqueIdentifier>{a3e8cb67-7c1a-4b9d-9981-d6a1952a8708}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System">
+      <UniqueIdentifier>{bd9ae16d-a973-44ce-aa45-922b5a2b2f3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hardware">
+      <UniqueIdentifier>{f312ca00-716a-49ff-a9f7-3ccbdd1831ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hardware\Keyboard">
+      <UniqueIdentifier>{7b5d8060-f1b0-40dd-8c73-d7735c648f2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CPU\PIT">
+      <UniqueIdentifier>{f516669e-aab1-4026-8e32-584b6cc0f82a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hardware\Data">
+      <UniqueIdentifier>{b8ffb062-96db-495e-a0f5-00c7e84ade21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hardware\Data\FloppyDriveController">
+      <UniqueIdentifier>{5a2f361d-0f53-461b-8f7a-6f5a9927b6d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hardware\Data\Filesystems">
+      <UniqueIdentifier>{e8032423-5b10-4ffb-83be-8c31c199aeb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hardware\Data\Filesystems\FAT12">
+      <UniqueIdentifier>{1c9ff3ec-1d93-4935-b656-e3a45a650d6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Multitask">
+      <UniqueIdentifier>{0a386140-9f63-44e3-9a11-3360a70c68df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Loaders">
+      <UniqueIdentifier>{b6cefe94-f982-4290-940c-fc8fdcbe2da9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Loaders\PE">
+      <UniqueIdentifier>{9bd4ad83-e322-4688-b768-42c8374f9766}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hardware\Data\HDD">
+      <UniqueIdentifier>{0996bd1b-2774-443d-854c-a704fb30f866}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hardware\RealTimeClock">
+      <UniqueIdentifier>{29c707ad-da43-4985-ba8e-3885eca119b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Display\VGA">
+      <UniqueIdentifier>{61a67bf3-1dc2-4ac4-8905-c471b94179ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CPU\V86 Mode">
+      <UniqueIdentifier>{120a678f-726d-4cc6-9953-7c8970254fd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hardware\Data\FileTypes">
+      <UniqueIdentifier>{2c1a9e22-8472-44d5-81ca-855c722a67d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hardware\Data\FileTypes\.BMP">
+      <UniqueIdentifier>{c8063f6d-0b0e-439f-99c7-2feaea1537f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hardware\Data\FileTypes\.EXE">
+      <UniqueIdentifier>{8a5ce678-f079-486d-8ec6-e11088b87a05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hardware\Data\FileTypes\.EXE\PE">
+      <UniqueIdentifier>{a6c095ba-2acf-49ec-a951-d16437aa5dfa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="stdlib">
+      <UniqueIdentifier>{94860508-c3cb-4893-b784-20d86eadf0c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hardware\Mouse">
+      <UniqueIdentifier>{4711719e-71bd-4901-b495-105d7864cf4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CPU\Real Mode">
+      <UniqueIdentifier>{8b378a18-c17c-4e44-bd61-68dc0a701a9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System\Test">
+      <UniqueIdentifier>{588d2da2-e8df-42d1-a0e4-c7b2be13b361}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Loaders\Grand Unified File Loader">
+      <UniqueIdentifier>{b930cbba-757e-47b8-b550-d84b4ceddd10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hardware\PCI">
+      <UniqueIdentifier>{d652a870-2919-4702-a1a2-cb779deaac48}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="DebugDisplay.cpp">
+      <Filter>Display</Filter>
+    </ClCompile>
+    <ClCompile Include="entry.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="pMemory.cpp">
+      <Filter>Memory\Physical</Filter>
+    </ClCompile>
+    <ClCompile Include="vMemory.cpp">
+      <Filter>Memory\Virtual</Filter>
+    </ClCompile>
+    <ClCompile Include="IDT.cpp">
+      <Filter>Interrupt</Filter>
+    </ClCompile>
+    <ClCompile Include="GDT.cpp">
+      <Filter>CPU</Filter>
+    </ClCompile>
+    <ClCompile Include="SystemCalls.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="HComm.cpp">
+      <Filter>Hardware</Filter>
+    </ClCompile>
+    <ClCompile Include="hw_keyboard.cpp">
+      <Filter>Hardware\Keyboard</Filter>
+    </ClCompile>
+    <ClCompile Include="PIC.cpp">
+      <Filter>Interrupt</Filter>
+    </ClCompile>
+    <ClCompile Include="Exception.cpp">
+      <Filter>Interrupt</Filter>
+    </ClCompile>
+    <ClCompile Include="PIT.cpp">
+      <Filter>CPU\PIT</Filter>
+    </ClCompile>
+    <ClCompile Include="FloppyDrive.cpp">
+      <Filter>Hardware\Data\FloppyDriveController</Filter>
+    </ClCompile>
+    <ClCompile Include="VirtualDevice.cpp">
+      <Filter>Hardware\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="FAT12.cpp">
+      <Filter>Hardware\Data\Filesystems\FAT12</Filter>
+    </ClCompile>
+    <ClCompile Include="FileSystem.cpp">
+      <Filter>Hardware\Data\Filesystems</Filter>
+    </ClCompile>
+    <ClCompile Include="DMA.cpp">
+      <Filter>Hardware\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="ProcessManager.cpp">
+      <Filter>Multitask</Filter>
+    </ClCompile>
+    <ClCompile Include="PELoader.cpp">
+      <Filter>Loaders\PE</Filter>
+    </ClCompile>
+    <ClCompile Include="HardDrive.cpp">
+      <Filter>Hardware\Data\HDD</Filter>
+    </ClCompile>
+    <ClCompile Include="RTC.cpp">
+      <Filter>Hardware\RealTimeClock</Filter>
+    </ClCompile>
+    <ClCompile Include="V8086.cpp">
+      <Filter>CPU\V86 Mode</Filter>
+    </ClCompile>
+    <ClCompile Include="VGAdriver.cpp">
+      <Filter>Display\VGA</Filter>
+    </ClCompile>
+    <ClCompile Include="Math.cpp">
+      <Filter>stdlib</Filter>
+    </ClCompile>
+    <ClCompile Include="hw_mouse.cpp">
+      <Filter>Hardware\Mouse</Filter>
+    </ClCompile>
+    <ClCompile Include="realmodewrapper.cpp">
+      <Filter>CPU\Real Mode</Filter>
+    </ClCompile>
+    <ClCompile Include="buf_fifo.cpp">
+      <Filter>stdlib</Filter>
+    </ClCompile>
+    <ClCompile Include="currentTest.cpp">
+      <Filter>System\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="GUFL.cpp">
+      <Filter>Loaders\Grand Unified File Loader</Filter>
+    </ClCompile>
+    <ClCompile Include="PCI.cpp">
+      <Filter>Hardware\PCI</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DebugDisplay.h">
+      <Filter>Display</Filter>
+    </ClInclude>
+    <ClInclude Include="pMemory.h">
+      <Filter>Memory\Physical</Filter>
+    </ClInclude>
+    <ClInclude Include="vMemory.h">
+      <Filter>Memory\Virtual</Filter>
+    </ClInclude>
+    <ClInclude Include="IDT.h">
+      <Filter>Interrupt</Filter>
+    </ClInclude>
+    <ClInclude Include="GDT.h">
+      <Filter>CPU</Filter>
+    </ClInclude>
+    <ClInclude Include="SystemCalls.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="hw_keyboard.h">
+      <Filter>Hardware\Keyboard</Filter>
+    </ClInclude>
+    <ClInclude Include="HComm.h">
+      <Filter>Hardware</Filter>
+    </ClInclude>
+    <ClInclude Include="PIC.h">
+      <Filter>Interrupt</Filter>
+    </ClInclude>
+    <ClInclude Include="Exception.h">
+      <Filter>Interrupt</Filter>
+    </ClInclude>
+    <ClInclude Include="PIT.h">
+      <Filter>CPU\PIT</Filter>
+    </ClInclude>
+    <ClInclude Include="VirtualDevice.h">
+      <Filter>Hardware\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="FloppyDrive.h">
+      <Filter>Hardware\Data\FloppyDriveController</Filter>
+    </ClInclude>
+    <ClInclude Include="BiosBootBlock.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="FAT12.h">
+      <Filter>Hardware\Data\Filesystems\FAT12</Filter>
+    </ClInclude>
+    <ClInclude Include="FileSystem.h">
+      <Filter>Hardware\Data\Filesystems</Filter>
+    </ClInclude>
+    <ClInclude Include="DMA.h">
+      <Filter>Hardware\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="ProcessManager.h">
+      <Filter>Multitask</Filter>
+    </ClInclude>
+    <ClInclude Include="PELoader.h">
+      <Filter>Loaders\PE</Filter>
+    </ClInclude>
+    <ClInclude Include="HardDrive.h">
+      <Filter>Hardware\Data\HDD</Filter>
+    </ClInclude>
+    <ClInclude Include="RTC.h">
+      <Filter>Hardware\RealTimeClock</Filter>
+    </ClInclude>
+    <ClInclude Include="V8086.h">
+      <Filter>CPU\V86 Mode</Filter>
+    </ClInclude>
+    <ClInclude Include="VGAdriver.h">
+      <Filter>Display\VGA</Filter>
+    </ClInclude>
+    <ClInclude Include="BitMapImage.h">
+      <Filter>Hardware\Data\FileTypes\.BMP</Filter>
+    </ClInclude>
+    <ClInclude Include="PE.h">
+      <Filter>Hardware\Data\FileTypes\.EXE\PE</Filter>
+    </ClInclude>
+    <ClInclude Include="Math.h">
+      <Filter>stdlib</Filter>
+    </ClInclude>
+    <ClInclude Include="hw_mouse.h">
+      <Filter>Hardware\Mouse</Filter>
+    </ClInclude>
+    <ClInclude Include="realmodewrapper.h">
+      <Filter>CPU\Real Mode</Filter>
+    </ClInclude>
+    <ClInclude Include="buf_fifo.h">
+      <Filter>stdlib</Filter>
+    </ClInclude>
+    <ClInclude Include="currentTest.h">
+      <Filter>System\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="GUFL.h">
+      <Filter>Loaders\Grand Unified File Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="PCI.h">
+      <Filter>Hardware\PCI</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
+  </ItemGroup>
+</Project>

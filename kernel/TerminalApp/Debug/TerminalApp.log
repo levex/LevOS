@@ -1,0 +1,19 @@
+﻿Build started 7/1/2013 12:43:08 PM.
+     1>Project "C:\Dev\LevOS\kernel\TerminalApp\TerminalApp.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Debug\TerminalApp.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         All outputs are up-to-date.
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(990,5): warning MSB8012: TargetPath(C:\Dev\LevOS\kernel\Debug\TerminalApp.exe) does not match the Linker's OutputFile property value (A:\cmd.exe). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(992,5): warning MSB8012: TargetName(TerminalApp) does not match the Linker's OutputFile property value (cmd). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+       Link:
+         All outputs are up-to-date.
+         TerminalApp.vcxproj -> C:\Dev\LevOS\kernel\Debug\TerminalApp.exe
+       FinalizeBuildStatus:
+         Deleting file "Debug\TerminalApp.unsuccessfulbuild".
+         Touching "Debug\TerminalApp.lastbuildstate".
+     1>Done Building Project "C:\Dev\LevOS\kernel\TerminalApp\TerminalApp.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.09

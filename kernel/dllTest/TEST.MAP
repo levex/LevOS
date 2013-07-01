@@ -1,0 +1,32 @@
+ TEST
+
+ Timestamp is 51d15d38 (Mon Jul 01 12:43:04 2013)
+
+ Preferred load address is 01000000
+
+ Start         Length     Name                   Class
+ 0001:00000000 0000002cH .text                   CODE
+ 0002:00000000 00000010H .idata$5                DATA
+ 0002:00000010 00000018H .rdata                  DATA
+ 0003:00000000 00000014H .idata$2                CODE
+ 0003:00000014 00000014H .idata$3                CODE
+ 0003:00000028 00000010H .idata$4                CODE
+ 0003:00000038 0000002eH .idata$6                CODE
+
+  Address         Publics by Value              Rva+Base       Lib:Object
+
+ 0000:00000000       ___safe_se_handler_table   00000000     <absolute>
+ 0000:00000000       ___safe_se_handler_count   00000000     <absolute>
+ 0001:00000000       _main                      01001000 f   main.obj
+ 0002:00000000       __imp__halt                01002000     LevAPI DLL:LEVAPI.DLL
+ 0002:00000004       __imp__print               01002004     LevAPI DLL:LEVAPI.DLL
+ 0002:00000008       __imp__waitForKeyPress     01002008     LevAPI DLL:LEVAPI.DLL
+ 0002:0000000c       \177LEVAPI_NULL_THUNK_DATA 0100200c     LevAPI DLL:LEVAPI.DLL
+ 0002:00000010       ??_C@_0BI@HENPMEJC@?6API?5is?5now?5in?5the?5DLL?$CB?$AA@ 01002010     main.obj
+ 0003:00000000       __IMPORT_DESCRIPTOR_LEVAPI 01003000     LevAPI DLL:LEVAPI.DLL
+ 0003:00000014       __NULL_IMPORT_DESCRIPTOR   01003014     LevAPI DLL:LEVAPI.DLL
+
+ entry point at        0001:00000000
+
+ Static symbols
+

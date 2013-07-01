@@ -1,0 +1,22 @@
+ hello
+
+ Timestamp is 51a217f0 (Sun May 26 16:10:56 2013)
+
+ Preferred load address is 01000000
+
+ Start         Length     Name                   Class
+ 0001:00000000 0000003fH .text                   CODE
+ 0002:00000000 00000008H .rdata                  DATA
+
+  Address         Publics by Value              Rva+Base       Lib:Object
+
+ 0000:00000000       ___safe_se_handler_table   00000000     <absolute>
+ 0000:00000000       ___safe_se_handler_count   00000000     <absolute>
+ 0001:00000000       ?print@@YAXPAD@Z           01001000 f   LevAPI.obj
+ 0001:00000020       _main                      01001020 f   main.obj
+ 0002:00000000       ??_C@_07OBIEFNAF@?6Heyho?$CB?$AA@ 01002000     main.obj
+
+ entry point at        0001:00000020
+
+ Static symbols
+

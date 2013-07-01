@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="headers">
+      <UniqueIdentifier>{cce86fcc-e4ec-49a6-9d0a-09af8e3482fc}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="lev_futils.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="lev_input.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="lev_misc.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="lev_text.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="lev_time.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="lev_vga.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,2 @@
+select vdisk file="C:\Users\Levex\Desktop\LevOS\rewrite2\HDD\hdd0.vhd"
+detach vdisk

@@ -1,0 +1,6 @@
+#ifndef __HW_MOUSE_H_
+#define __HW_MOUSE_H_
+
+extern bool mice_install();
+
+#endif

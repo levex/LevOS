@@ -1,0 +1,41 @@
+#ifndef __VGADRIVER_H_
+#define __VGADRIVER_H_
+
+typedef struct __VGAREGS_R
+{
+	char ModeControl3C0;
+	char overScanRegister;
+	char ColorPlaneEnable;
+	char HorizontalPanning;
+	char ColorSelect;
+	char MiscOutputRegister; // misc output reg
+	char ClockModeRegister;
+	char CharacterSelect;
+	char MemoryModeRegister;
+	char ModeRegister;
+	char MiscRegister;
+	char HorizontalTotal;
+	char HorizontalDisplayEnableEnd;
+	char HorizontalBlankStart;
+	char HorizontalBlankEnd;
+	char HorizontalRetraceStart;
+	char HorizontalRetraceEnd;
+	char VerticalTotal;
+	char OverflowRegister;
+	char PresetRowScan;
+	char MaximumScanLine;
+	char VerticalRetraceStart;
+	char VerticalRetraceEnd;
+	char VerticalDisplayEnableEnd;
+	char LogicalWidth;
+	char UnderlineLocation;
+	char VerticalBlankStart;
+	char VerticalBlankEnd;
+	char ModeControl3D4;
+} VGA_REGS;
+
+extern bool switchToVGA();
+extern bool switchBack();
+extern void putPixelAt(int x, int y, int color);
+
+#endif

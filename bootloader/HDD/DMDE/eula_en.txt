@@ -1,0 +1,73 @@
+
+  DMDE 2.4 Free Edition
+  DM Disk Editor and Data Recovery Software
+  file group and directory recovery is not supported
+
+  Copyright (c) 2005-2012 Dmitry Sidorov
+
+  http://softdm.com/
+  http://dmde.ru/
+
+  END-USER LICENSE AGREEMENT
+
+  This End-User License Agreement ("EULA") is a legal agreement 
+  between you (either natural person or a juridical entity) and 
+  Dmitry Sidorov - the author of the SOFTWARE. By installing, 
+  copying, or otherwise using the SOFTWARE, you agree to be bound 
+  by the terms of this EULA. If you do not agree to the terms of 
+  this EULA or it conflicts with your national or local law, you 
+  must stop using the SOFTWARE and remove all files of the SOFTWARE 
+  from your data medium.
+
+  1. GRANT OF LICENSE
+
+  You may use the software for both non-commercial and commercial 
+  purposes.
+
+  You may reproduce and distribute copies of the SOFTWARE, 
+  provided that the following conditions are satisfied:
+  the SOFTWARE is obtained from the SOFTWARE copyright holder
+  directly (for example, from the official SOFTWARE sites);
+  all components of the SOFTWARE package are kept together, 
+  they are not modified, and available to end-user; this EULA 
+  is displayed and accepted by any end-user on first use as
+  this is originally designed; the origin of the SOFTWARE is 
+  not misrepresented.
+
+  The SOFTWARE may be distributed as a standalone product or 
+  included in any freeware or paid package or product, provided 
+  that freeware origin of the SOFTWARE is not hidden.
+
+  2. DESCRIPTION OF OTHER RIGHTS AND LIMITATIONS
+
+  You may not modify, reverse engineer, decompile, disassemble or 
+  create other derivative works based on the SOFTWARE.
+
+  You may not use, copy, emulate, clone, rent, lease, sell or 
+  transfer the SOFTWARE or any subset of the SOFTWARE, except as 
+  provided for in this agreement. Any such unauthorized use shall 
+  result in immediate and automatic termination of this license and 
+  may result in criminal and/or civil prosecution.
+
+  The SOFTWARE is licensed as a single product. Its component parts 
+  may not be separated for use on more than one computer.
+
+  All rights not expressly granted here are reserved by the author 
+  of the SOFTWARE.
+
+  3. LIMITED WARRANTY
+
+  THE AUTHOR OF THE SOFTWARE EXPRESSLY DISCLAIMS ANY WARRANTY FOR 
+  THE SOFTWARE. THE SOFTWARE AND ANY RELATED DOCUMENTATION IS 
+  PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED 
+  OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES 
+  OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR 
+  NON-INFRINGEMENT. THE ENTIRE RISK ARISING OUT OF USE OR 
+  PERFORMANCE OF THE SOFTWARE REMAINS WITH YOU. IN NO EVENT SHALL 
+  THE AUTHOR OF THE SOFTWARE BE LIABLE FOR ANY DAMAGES WHATSOEVER 
+  ARISING OUT OF USE OR INABILITY TO USE THE SOFTWARE (INCLUDING 
+  BUT NOT LIMITED TO ANY DATA LOSS OR DISTORTION, LOSS OF BUSINESS 
+  PROFITS, BUSINESS INTERRUPTION, LOSS OF BUSINESS INFORMATION, 
+  PERSONAL INJURY, LOSS OF PRIVACY OR OTHER PECUNIARY OR OTHER 
+  LOSS WHATSOEVER), EVEN IF THE AUTHOR HAS BEEN ADVISED OF THE 
+  POSSIBILITY OF SUCH DAMAGES. 

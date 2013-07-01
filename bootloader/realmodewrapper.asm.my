@@ -1,0 +1,76 @@
+bits 32
+org 0x500
+
+	cmp edx, 0x1337
+	jne err
+	; we are from protected mode
+	; turn off interrupts
+	cli
+	; transfer control to 1:1 page
+	; remove PG from CR0
+	mov eax, cr0
+	not eax
+	or eax, 0x80000000
+	not eax
+	mov cr0, eax
+	; far jump to 16bit segment
+	jmp 0x18:here
+	
+err:
+	cli
+	mov eax, 0x1337
+	hlt
+	
+bits 16
+here:
+	; load data segment selectors with 16bit segment index
+	mov ax, 0x20
+	mov ds, ax
+	mov es, ax
+	mov fs, ax
+	mov gs, ax
+	mov ss, ax
+	; load real mode IDT
+	lidt [idt_real]
+	; disable protected mode
+	mov eax, cr0
+	not eax
+	or eax, 1
+	not eax
+	mov cr0, eax
+	; jump to real mode
+	jmp realmode
+	
+	mov eax, 0xBAD
+	cli
+	hlt
+	
+idt_real:
+	dw 0x3ff		; 256 entries, 4b each = 1K
+	dd 0			; Real Mode IVT @ 0x0000
+	
+	
+realmode:
+	; reset segment registers
+	mov ax, 0x0
+	mov ds, ax
+	mov es, ax
+	mov fs, ax
+	mov gs, ax
+	mov ss, ax
+	; setup stack
+	mov sp, 0xFFF
+	; enable interrupts
+	; do the interrupt!
+	xor eax, eax
+	mov ah, bh
+	mov al, bl
+	xchg bx, bx
+	sti
+	mov [genint + 1], cl
+	genint: int 0 
+	
+	mov eax, 0xB00B
+	cli
+	hlt
+	

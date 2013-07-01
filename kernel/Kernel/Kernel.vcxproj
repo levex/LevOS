@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{1127FDC6-EBC7-4888-A5B4-DC12222D280A}</ProjectGuid>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration)\</IntDir>
+    <ExtensionsToDeleteOnClean Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">*.exp%3b*.obj%3b*.ilk%3b*.tlb%3b*.tli%3b*.tlh%3b*.tmp%3b*.rsp%3b*.pgc%3b*.pgd%3b$(TargetPath)</ExtensionsToDeleteOnClean>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</GenerateManifest>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalOptions>/Oy %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>MaxSpeed</Optimization>
+      <OmitFramePointers>false</OmitFramePointers>
+      <AdditionalIncludeDirectories>..\Include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>ARCH_X86;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <StructMemberAlignment>1Byte</StructMemberAlignment>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
+      <WarningLevel>Level4</WarningLevel>
+      <CallingConvention>Cdecl</CallingConvention>
+    </ClCompile>
+    <ProjectReference>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+    </ProjectReference>
+    <Link>
+      <AdditionalOptions>/ALIGN:512 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+      <OutputFile>A:\KRNL32.EXE</OutputFile>
+      <AdditionalLibraryDirectories>..\Lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+      <GenerateMapFile>true</GenerateMapFile>
+      <MapFileName>Kernel.map</MapFileName>
+      <SubSystem>Native</SubSystem>
+      <Driver>Driver</Driver>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <EntryPointSymbol>kernel_entry</EntryPointSymbol>
+      <BaseAddress>0xC0000000</BaseAddress>
+      <FixedBaseAddress>false</FixedBaseAddress>
+      <RandomizedBaseAddress>
+      </RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+    </Link>
+    <PreBuildEvent>
+      <Command>nasm "C:\Users\Levex\Desktop\newLevOS\Kernel\_asm\inc.asm" -o inc.obj</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Compiling include assembly</Message>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="buf_fifo.cpp" />
+    <ClCompile Include="currentTest.cpp" />
+    <ClCompile Include="DebugDisplay.cpp" />
+    <ClCompile Include="DMA.cpp" />
+    <ClCompile Include="entry.cpp" />
+    <ClCompile Include="Exception.cpp" />
+    <ClCompile Include="FAT12.cpp" />
+    <ClCompile Include="FileSystem.cpp" />
+    <ClCompile Include="FloppyDrive.cpp" />
+    <ClCompile Include="GDT.cpp" />
+    <ClCompile Include="GUFL.cpp" />
+    <ClCompile Include="HardDrive.cpp" />
+    <ClCompile Include="HComm.cpp" />
+    <ClCompile Include="hw_keyboard.cpp" />
+    <ClCompile Include="hw_mouse.cpp" />
+    <ClCompile Include="IDT.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Math.cpp" />
+    <ClCompile Include="PCI.cpp" />
+    <ClCompile Include="PELoader.cpp" />
+    <ClCompile Include="PIC.cpp" />
+    <ClCompile Include="PIT.cpp" />
+    <ClCompile Include="pMemory.cpp" />
+    <ClCompile Include="ProcessManager.cpp" />
+    <ClCompile Include="realmodewrapper.cpp" />
+    <ClCompile Include="RTC.cpp" />
+    <ClCompile Include="SystemCalls.cpp" />
+    <ClCompile Include="V8086.cpp" />
+    <ClCompile Include="VGAdriver.cpp" />
+    <ClCompile Include="VirtualDevice.cpp" />
+    <ClCompile Include="vMemory.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BiosBootBlock.h" />
+    <ClInclude Include="BitMapImage.h" />
+    <ClInclude Include="buf_fifo.h" />
+    <ClInclude Include="currentTest.h" />
+    <ClInclude Include="DebugDisplay.h" />
+    <ClInclude Include="DMA.h" />
+    <ClInclude Include="Exception.h" />
+    <ClInclude Include="FAT12.h" />
+    <ClInclude Include="FileSystem.h" />
+    <ClInclude Include="FloppyDrive.h" />
+    <ClInclude Include="GDT.h" />
+    <ClInclude Include="GUFL.h" />
+    <ClInclude Include="HardDrive.h" />
+    <ClInclude Include="HComm.h" />
+    <ClInclude Include="hw_keyboard.h" />
+    <ClInclude Include="hw_mouse.h" />
+    <ClInclude Include="IDT.h" />
+    <ClInclude Include="Math.h" />
+    <ClInclude Include="PCI.h" />
+    <ClInclude Include="PE.h" />
+    <ClInclude Include="PELoader.h" />
+    <ClInclude Include="PIC.h" />
+    <ClInclude Include="PIT.h" />
+    <ClInclude Include="pMemory.h" />
+    <ClInclude Include="ProcessManager.h" />
+    <ClInclude Include="realmodewrapper.h" />
+    <ClInclude Include="RTC.h" />
+    <ClInclude Include="SystemCalls.h" />
+    <ClInclude Include="V8086.h" />
+    <ClInclude Include="VGAdriver.h" />
+    <ClInclude Include="VirtualDevice.h" />
+    <ClInclude Include="vMemory.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Lib\Lib.vcxproj">
+      <Project>{c744d359-444d-4778-81a3-7c8346a39d96}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

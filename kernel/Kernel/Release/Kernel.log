@@ -1,0 +1,44 @@
+﻿Build started 2013.05.24. 18:40:47.
+     1>Project "C:\Users\Levex\Desktop\newLevOS\Kernel\Kernel.vcxproj" on node 3 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Release\Kernel.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         d:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Zi /nologo /W1 /WX- /O2 /Oy- /Gm- /EHsc /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt DebugDisplay.cpp DMA.cpp entry.cpp Exception.cpp FAT12.cpp FileSystem.cpp FloppyDrive.cpp GDT.cpp HardDrive.cpp HComm.cpp hw_keyboard.cpp IDT.cpp main.cpp PELoader.cpp PIC.cpp PIT.cpp pMemory.cpp ProcessManager.cpp RTC.cpp SystemCalls.cpp VirtualDevice.cpp vMemory.cpp
+         DebugDisplay.cpp
+         DMA.cpp
+         entry.cpp
+         Exception.cpp
+         FAT12.cpp
+     1>FAT12.cpp(46): error C3861: 'toupper': identifier not found
+     1>FAT12.cpp(63): error C3861: 'toupper': identifier not found
+         FileSystem.cpp
+         FloppyDrive.cpp
+         GDT.cpp
+         HardDrive.cpp
+         HComm.cpp
+         hw_keyboard.cpp
+     1>hw_keyboard.cpp(447): warning C4806: '|' : unsafe operation: no value of type 'bool' promoted to type 'int' can equal the given constant
+     1>hw_keyboard.cpp(447): warning C4806: '&' : unsafe operation: no value of type 'bool' promoted to type 'int' can equal the given constant
+     1>hw_keyboard.cpp(448): warning C4806: '|' : unsafe operation: no value of type 'bool' promoted to type 'int' can equal the given constant
+     1>hw_keyboard.cpp(448): warning C4806: '&' : unsafe operation: no value of type 'bool' promoted to type 'int' can equal the given constant
+         IDT.cpp
+         main.cpp
+         PELoader.cpp
+         PIC.cpp
+         PIT.cpp
+         pMemory.cpp
+         ProcessManager.cpp
+         RTC.cpp
+         SystemCalls.cpp
+         Generating Code...
+     1>c:\users\levex\desktop\newlevos\kernel\exception.cpp(138): warning C4731: 'page_fault' : frame pointer register 'ebp' modified by inline assembly code
+     1>c:\users\levex\desktop\newlevos\kernel\debugdisplay.cpp(255): warning C4715: 'DebugPrintf' : not all control paths return a value
+         Compiling...
+         VirtualDevice.cpp
+         vMemory.cpp
+         Generating Code...
+     1>Done Building Project "C:\Users\Levex\Desktop\newLevOS\Kernel\Kernel.vcxproj" (build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:00.85

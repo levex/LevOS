@@ -1,0 +1,21 @@
+﻿Build started 7/1/2013 12:42:01 PM.
+     1>Project "C:\Dev\LevOS\kernel\LevAPI\LevAPI.vcxproj" on node 3 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Debug\LevAPI.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         d:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm- /Zp1 /GS- /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt LevAPI.cpp
+         LevAPI.cpp
+     1>c:\dev\levos\kernel\levapi\levapi.cpp(130): warning C4405: 'ret' : identifier is reserved word
+     1>c:\dev\levos\kernel\levapi\levapi.cpp(142): warning C4405: 'ret' : identifier is reserved word
+     1>c:\dev\levos\kernel\levapi\levapi.cpp(197): warning C4405: 'str' : identifier is reserved word
+       Lib:
+         d:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\Lib.exe /OUT:"C:\Dev\LevOS\kernel\Debug\LevAPI.lib" /NOLOGO Debug\LevAPI.obj
+         LevAPI.vcxproj -> C:\Dev\LevOS\kernel\Debug\LevAPI.lib
+       FinalizeBuildStatus:
+         Deleting file "Debug\LevAPI.unsuccessfulbuild".
+         Touching "Debug\LevAPI.lastbuildstate".
+     1>Done Building Project "C:\Dev\LevOS\kernel\LevAPI\LevAPI.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.20

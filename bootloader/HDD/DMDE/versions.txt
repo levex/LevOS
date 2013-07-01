@@ -1,0 +1,167 @@
+Version 2.4.4.442 (2012-09-06)
+	fixed: RAID redundant data parity use when disk is absent
+	fixed: read backward issues
+	fixed: NTFS Search 64-bit cluster support
+	minor improvements and fixes
+
+Version 2.4.2 (2012-04-05)
+	fixed: disk size detection
+	fixed: NTFS sparse file support
+	fixed: GPT copy test
+	fixed: Chinese Big5 Code issue
+	other bugs fixed
+
+Version 2.4.0 (2011-12-18):
+	improved: partition search (flash disks, Vista/Win7 partitioning)
+	improved: handling directory recovery with the same names
+	improved: FAT volume scan uses FAT Search results
+	added: recovery reports
+	added: exFAT boot sector, Ext2/3/4 superblock detection
+	added: RAID delayed parity support, RAID-4 support
+	added: NTFS alternate data stream support
+	fixed: Large sector support
+	fixed: NTFS search critical bug on MFT gaps
+	fixed: special sector search critical bug
+	fixed: device I/O error handling bug
+	fixed: pci scan for ATA devices over non-default ports (DOS)
+	fixed: DMA transfer completing detection (DOS)
+	other improvements
+	other bugs fixed
+
+Version 2.2.2 (2010-12-10):
+	imporved: fat search speed up
+	imporved: ntfs search speed up
+	fixed, improved: volume locking
+	added: customizable device I/O error handler (Professional Edition only)
+	added: DMA I/O under DOS (Professional Edition only)
+	added: recover NTFS multirecord files w/o attribute list
+	added: support compressed files when cluster size is less than 4Kb
+	improved: partition manager
+	some bugs fixed
+
+Version 2.0.1 (2009-09-20):
+	added: devices larger than 1 Tb support
+	added: device I/O retries dialog
+	added: RAID's partial support
+	added: GPT partial support
+	added: Unicode names support
+	added: large NTFS compressed files support
+	added: interface languages, code tables support
+	added: marks to recover file groups
+	ported to Linux terminal
+	disk access improved
+	interface improved
+	other improvements
+	some bugs fixed
+
+Version 01.39 (2008-05-01):
+	added: Windows XP+ themes support
+	added: Windows Vista write to volumes support
+
+Version 01.38 (2007-09-03):
+	first GUI version
+	NTFS search improved
+	FAT lost folders handling improved
+	some bugs fixed
+
+Version 01.37 (2007-07-23):
+	improved: faster input/output operations
+	added: recovery NTFS folders structure (in full version)
+	added: work with disk images
+	added: DOS version: IDE ATA drives
+	added: DOS version: DOS logical drives (RAM, CD drives included)
+	interface improved
+	some bugs fixed
+
+Version 01.36 (2006-10-22):
+	added: russian/english interface
+	added: work with FAT volumes with damaged directories structure
+	added: recovery folders (in full version)
+	some bugs fixed
+
+Version 01.35 (2006-09-10):
+	added: link clusters
+	added: support fat files sizes > 2Gb, ntfs files sizes > 4 Gb
+	fixed: detecting NTFS volumes
+	fixed: creating NTFS files, folders (writing to MFT reserved area)
+	fixed: recovery NTFS directory (allow 64bit sizes, use correct file attributes)
+
+Version 01.34 (2006-07-27):
+	added: more NT File Systems 
+	improved: NTFS directories reading
+	fixed: NTFS volumes without MFT record 0
+
+Version 01.33 (2006-07-19):
+	bug fixed: error MFTMirr updating
+	bug fixed: NTFS extended attributes processing
+
+Version 01.32 (2006-07-13):
+	added: NTFS files writing
+	added: NTFS folders creating
+	added: repair NTFS folders
+	some small bugs fixed
+
+Version 01.30 (2006-06-26):
+	critical bug fixed: detecting XBIOS in 32bit dos version (dmde32.exe)
+	bug fixed: NTFS FILE record fragmentation 
+	added: FAT volumes auto detection
+	added: FAT files panel
+	added: write file to sectors, save sectors to file
+	added: work whithout FAT tables, with bad FAT tables
+	improved: partitions dialog
+	improved: getting NT files list 
+	improved: FAT deleted files recovery
+	improved: interface
+	changed: Windows events handler
+	some other logical bugs fixed
+	some other modifications
+
+Version 01.23 (2006-03-27):
+	clusters chains for deleted FAT files corrected
+	windows mouse handler corrected
+	windows keyboard handler corrected
+
+Version 01.22 (2006-03-23):
+	version for Windows NT/2000/XP
+	some modifications for startup dialog
+
+Version 01.21 (2006-03-17):
+	32-bit version of program
+	more flexible NT files panel
+	some interface improvements
+	some bugs fixed
+
+Version 01.20 (2006-01-09):
+	added: partitions dialog, search lost partitions
+	added: files recovery
+	some bugs fixed
+
+Version 01.11 (2005-12-23):
+	some search improvements (more information used, some bugs fixed)
+
+Version 01.10 (2005-11-18):
+	auto search/detect deleted, damaged NTFS volumes on physical drive
+	some bugs fixed: memory losses, errors handling
+	added more check-ups for not correct compressed files 
+	some interface modifications
+
+Version 01.04 (2005-09-17):
+	bug fixed: incorrect partition start sector for DOS extended partitions
+	added: support NTFS volumes without MFT
+
+Version 01.03 (2005-09-09):
+	bugs fixed: reading NTFS compressed files:
+		uncompressed blocks
+		empty blocks
+		cluster sizes other than 4096 
+		some CRITICAL and other bugs
+	bugs fixed: NTFS extended attributes:
+		search file in directory entries in extended records
+		compile file data from different extended records
+		some other bugs
+	bug fixed: 
+		sector number at which string fas found
+	added: view MFT record details
+
+Version 00.00:
+	Test versions

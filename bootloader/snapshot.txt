@@ -1,0 +1,25 @@
+Welcome to LevOS1.7!
+
+[LevOS]$
+[LevOS]$
+[LevOS]$
+[LevOS]$
+[LevOS]$ time
+Unknown command, execute 'help'
+[LevOS]$
+[LevOS]$ hlelp
+Unknown command, execute 'help'
+[LevOS]$ levex
+Levex is epic
+[LevOS]$
+[LevOS]$
+[LevOS]$
+
+
+
+
+
+
+
+                       ß
+

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="System Core">
+</Property><Property Name="Solution File" Value="C:\Users\Levex\Desktop\newLevOS\System Core.sln">
+</Property><Property Name="User Options File" Value="C:\Users\Levex\Desktop\newLevOS\System Core.suo">
+</Property><Property Name="Date" Value="2013. április 12.">
+</Property><Property Name="Time" Value="19:36">
+</Property></Properties><Event ErrorLevel="0" Project="" Source="System Core.sln" Description="File successfully backed up as C:\Users\Levex\Desktop\newLevOS\System Core.sln.old">
+</Event><Event ErrorLevel="2" Project="" Source="System Core.suo" Description="Error creating backup file: C:\Users\Levex\Desktop\newLevOS\System Core.suo.old">
+</Event><Event ErrorLevel="0" Project="Kernel" Source="Kernel\Kernel.vcproj" Description="Converting project file 'C:\Users\Levex\Desktop\newLevOS\Kernel\Kernel.vcproj'.">
+</Event><Event ErrorLevel="1" Project="Kernel" Source="Kernel\Kernel.vcproj" Description="This application has been updated to include settings related to the User Account Control (UAC) feature of Windows Vista. By default, when run on Windows Vista with UAC enabled, this application is marked to run with the same privileges as the process that launched it. This marking also disables the application from running with virtualization. You can change UAC related settings from the Property Pages of the project.">
+</Event><Event ErrorLevel="1" Project="Kernel" Source="Kernel\Kernel.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="0" Project="Kernel" Source="Kernel\Kernel.vcproj" Description="Web deployment to the local IIS server is no longer supported. The Web Deployment build tool has been removed from your project settings.">
+</Event><Event ErrorLevel="1" Project="Kernel" Source="Kernel\Kernel.vcproj" Description="All user macros reported below for configuration 'Debug|Win32' are used before their definition, which can cause undesirable build results; this is not supported in this release. You can resolve this by changing the inclusion order of the consuming property sheets and making sure they come after the property sheets defining the user macros.">
+</Event><Event ErrorLevel="1" Project="Kernel" Source="Kernel\Kernel.vcproj" Description="MSB4211: C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppCommon.targets (36,5); The property &quot;TargetPath&quot; is being set to a value for the first time, but it was already consumed at &quot;C:\Users\Levex\Desktop\newLevOS\Kernel\Kernel.vcxproj&quot;.">
+</Event><Event ErrorLevel="1" Project="Kernel" Source="Kernel\Kernel.vcproj" Description="MSB8012: $(TargetName) ('Kernel') does not match the Linker's OutputFile property value 'A:\KRNL32.EXE' ('KRNL32') in project configuration 'Debug|Win32'. This may cause your project to build incorrectly. To correct this, please make sure that $(TargetName) property value matches the value specified in %(Link.OutputFile).">
+</Event><Event ErrorLevel="1" Project="Kernel" Source="Kernel\Kernel.vcproj" Description="MSB8012: $(TargetPath) ('C:\Users\Levex\Desktop\newLevOS\Debug\Kernel.exe') does not match the Linker's OutputFile property value 'A:\KRNL32.EXE' ('A:\KRNL32.EXE') in project configuration 'Debug|Win32'. This may cause your project to build incorrectly. To correct this, please make sure that $(TargetPath) property value matches the value specified in %(Link.OutputFile).">
+</Event><Event ErrorLevel="0" Project="Kernel" Source="Kernel\Kernel.vcproj" Description="Done converting to new project file 'C:\Users\Levex\Desktop\newLevOS\Kernel\Kernel.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="Kernel" Source="Kernel\Kernel.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="Lib" Source="Lib\Lib.vcproj" Description="Converting project file 'C:\Users\Levex\Desktop\newLevOS\Lib\Lib.vcproj'.">
+</Event><Event ErrorLevel="1" Project="Lib" Source="Lib\Lib.vcproj" Description="This application has been updated to include settings related to the User Account Control (UAC) feature of Windows Vista. By default, when run on Windows Vista with UAC enabled, this application is marked to run with the same privileges as the process that launched it. This marking also disables the application from running with virtualization. You can change UAC related settings from the Property Pages of the project.">
+</Event><Event ErrorLevel="1" Project="Lib" Source="Lib\Lib.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="0" Project="Lib" Source="Lib\Lib.vcproj" Description="Web deployment to the local IIS server is no longer supported. The Web Deployment build tool has been removed from your project settings.">
+</Event><Event ErrorLevel="0" Project="Lib" Source="Lib\Lib.vcproj" Description="Done converting to new project file 'C:\Users\Levex\Desktop\newLevOS\Lib\Lib.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="Lib" Source="Lib\Lib.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="System Core.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="System Core.sln" Description="Converted">
+</Event></UpgradeLog>

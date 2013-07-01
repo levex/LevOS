@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="WindowManager.cpp">
+      <Filter>WindowManager</Filter>
+    </ClCompile>
+    <ClCompile Include="TextPopup.cpp">
+      <Filter>Windows\TextPopup</Filter>
+    </ClCompile>
+    <ClCompile Include="string.cpp">
+      <Filter>stdlib</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="WindowManager">
+      <UniqueIdentifier>{714d1cbc-6ea7-4271-aac8-6a3f3fea5191}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Windows">
+      <UniqueIdentifier>{3d81f2e5-cd73-4ed9-aa29-9dc081a9e312}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Windows\TextPopup">
+      <UniqueIdentifier>{1234a328-e3b0-4b55-a62b-51995421ac98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="stdlib">
+      <UniqueIdentifier>{a140de05-a646-49b5-92f0-021157a20197}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Window.h">
+      <Filter>WindowManager</Filter>
+    </ClInclude>
+    <ClInclude Include="TextPopup.h">
+      <Filter>Windows\TextPopup</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowManager.h">
+      <Filter>WindowManager</Filter>
+    </ClInclude>
+    <ClInclude Include="string.h">
+      <Filter>stdlib</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

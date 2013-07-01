@@ -1,0 +1,565 @@
+<html>
+
+<head>
+    <title>'pe_view' Personal 'non-commercial use' End User License Agreement and Readme</title>
+</head>
+
+<body bgcolor="white"">
+
+<h2 align="center"><a name="index">Windows Portable Executable Viewer - pe_view</a></h2>
+<h3 align="center">(version 0.86)<br /><br />
+<font color="red">WARNING:<br />
+Do NOT modify this file in any way OR rename the file. <br /> 
+Doing so will invalidate the binary authentication.</font></h3>
+<hr />
+
+<ul>
+    <li> <a href="#eula"> End User's License Agreement (EULA) </a></li>
+    <li> <a href="#about"> About the 'pe_view' Tool </a></li>
+    <li> <a href="#usage">Usage</a></li>
+    <li> <a href="#package">PE Packaging</a></li>
+    <li> <a href="#peid">PEiD Signatures</a></li>
+    <li> <a href="#analysis">PE Analysis</a></li>
+    <li> <a href="#config">PE Collection Configuration File Format</a></li>
+    <li> <a href="#extracting">Extracting PE Resources</a></li>
+    <li> <a href="#issues">Issues</a></li>
+    <li> <a href="#version_history"> Version history </a></li>
+    <li> <a href="#references"> References </a></li>
+</ul>
+
+
+<hr/><!---------------------EULA---------------------->
+<h2><a name="eula">END USER LICENSE AGREEMENT (EULA)</a><br />
+<font size="3">for software on TZWorks, LLC Website <a href="http://www.tzworks.net">www.tzworks.net</a></font></h2>
+
+<h3>1. USER AGREEMENT</h3>
+<p>Permission to use the TZWorks, LLC website (&quot;Website&quot;) and downloadable software 
+that is made available on the Website (&quot;Software&quot;) is for <b>non-commercial personal 
+use ONLY</b>. The User Agreement, Disclaimer, Website and/or Software may change from time to 
+time.  By continuing to use the Website or Software after those changes become effective, you 
+agree to be bound by all such changes.  Permission to use the Website and Software is granted 
+provided that (1) use of such Website and Software is for <b>non-commercial, personal use 
+only</b> and (2) the Website and Software is not resold, transferred or distributed to any 
+other person or entity.  <i><font color="red">To use the Software for commercial purposes, a 
+separate license is required.</font></i> Contact TZWorks, LLC 
+(<a href="mailto:jon@tzworks.net">jon&#64;tzworks.net</a>) 
+for more information regarding licensing. To redistribute the Software, approval in writing 
+is required from TZWorks, LLC.  These terms do not give the user any rights in intellectual 
+property or technology, but only a limited right to use the Software for <b>non-commercial, 
+personal use</b>.  TZWorks, LLC retains all rights to ownership of all software and content 
+ever made available on its Website.</p>
+
+
+<h3>DISCLAIMER</h3>    
+<p>The user agrees that all Software made available on the Website is experimental in nature 
+and use of Website and Software is at user's sole risk.  The Software could include technical 
+inaccuracies or errors.  Changes are periodically added to the information herein, and TZWorks, 
+LLC may make improvements and/or changes to Software at any time.  TZWorks, LLC makes no 
+representations about the accuracy or usability of the Software and/or Website for any purpose.</p>
+
+<p>ALL SOFTWARE ARE PROVIDED &quot;AS IS&quot; AND &quot;WHERE IS&quot; WITHOUT WARRANTY 
+OF ANY KIND INCLUDING ALL IMPLIED WARRANTIES AND CONDITIONS OF MERCHANTABILITY, FITNESS 
+FOR ANY PARTICULAR PURPOSE, TITLE AND NON-INFRINGEMENT.  IN NO EVENT SHALL TZWORKS, LLC 
+BE LIABLE FOR ANY KIND OF DAMAGE RESULTING FROM ANY CAUSE OR REASON, ARISING OUT OF IT 
+IN CONNECTION WITH THE USE OR PERFORMANCE OF INFORMATION AVAILABLE FROM THIS WEBSITE. </p>
+
+<h3>PRIVACY POLICY</h3> 
+<p>When you use the Website or download the Software, we automatically record information regarding 
+your activity using the Website.  This may include the Internet Protocol (&quot;IP&quot;) address and date 
+and time stamps associated with transactions.  Personal information and identifiable data is only 
+collected if you supply it to TZWorks, LLC by posting a comment on the Website or submitting an 
+email.  We do not disclose any personally identifiable information without your permission unless 
+we are legally entitled or required to do so or if we believe that such action is necessary to 
+protect and/or defend our rights, property or personal safety and those of our users/customers etc.</p>
+
+<h3>SECURITY</h3>
+<p>The Website has security measures in place to protect the loss, misuse, and/or alteration of 
+information under our control. The data resides behind a firewall, with access restricted to 
+authorized TZWorks, LLC personnel.  If you believe the Website and or its software has been misused 
+or has had a security breach please email <a href="mailto:jon@tzworks.net">jon&#64;tzworks.net</a>.  
+We will not be responsible for such misuse and not guarantee that we will rectify any such security breach. </p>
+
+<h3>REMOVAL</h3>
+<p>The Website and Software are the original works of TZWorks, LLC.  However, to be in compliance with 
+the Digital Millennium Copyright Act of 1998 (&quot;DMCA&quot;) we agree to investigate and disable any 
+material for infringement of copyright. Contact TZWorks, LLC at email address: 
+<a href="mailto:jon@tzworks.net">jon&#64;tzworks.net</a>, regarding any DMCA concerns. </p>
+
+<!-- 
+This is section is commented out, since it is only used by the tool binary
+
+USER_AGREEMENT_START
+-------------------------------- User Agreement -----------------------------
+
+Permission to use the TZWorks, LLC website ("Website") and downloadable 
+software that is made available on the Website ("Software") is for non-
+commercial personal use ONLY. The User Agreement, Disclaimer, Website 
+and/or Software may change from time to time.  By continuing to use the 
+Website or Software after those changes become effective, you agree to be 
+bound by all such changes.  Permission to use the Website and Software is 
+granted provided that (1) use of such Website and Software is for non-
+commercial, personal use only and (2) the Website and Software is not 
+resold, transferred or distributed to any other person or entity.  To 
+use the Software for commercial purposes, a separate license is required. 
+Contact TZWorks, LLC (jon@tzworks.net) for more information regarding 
+licensing. To redistribute the Software, approval in writing is required 
+from TZWorks, LLC.  These terms do not give the user any rights in 
+intellectual property or technology, but only a limited right to use the 
+Software for non-commercial, personal use.  TZWorks, LLC retains all 
+rights to ownership of all software and content ever made available on 
+its Website.
+USER_AGREEMENT_END
+
+DISCLAIMER_START
+---------------------------------- DISCLAIMER -------------------------------
+
+The user agrees that all Software made available on the Website is
+experimental in nature and use of Website and Software is at user's sole
+risk.  The Software could include technical inaccuracies or errors.  Changes
+are periodically added to the information herein, and TZWorks, LLC may make
+improvements and/or changes to Software at any time.  TZWorks, LLC makes no
+representations about the accuracy or usability of the Software and/or
+Website for any purpose.  All software are provided "AS IS" and "WHERE IS"
+without warranty of any kind including all implied warranties and conditions
+of merchantability, fitness for any particular purpose, title and non-
+infringement.  In no event shall TZWorks, LLC be liable for any kind of 
+damage resulting from any cause or reason, arising out of it in connection
+with the use or performance of information available from this Website.
+DISCLAIMER_END
+-->
+
+<hr/><!---------------------About the 'pe_view' Tool---------------------->
+<h2><a name="about">About the 'pe_view' Tool
+<font size="2"><a href="#index"> (top) </a></font></h2>
+
+<p>'pe_view' combines a collection of PE manipulation code that was written 
+over the years.  Following the theme of many of my tools, this tool does not 
+rely on the use of the windows API to parse the PE structure, so it can be 
+compiled and run on other platforms.   Currently there are compiled versions
+for Windows and Linux.</p>
+
+<p>While there are a number of freely available pe tools online (many of which 
+are more capable then pe_view and offer editing features), I ended up writing 
+my own version of a pe viewer some years ago primarily to understand the 
+PE format in more depth and to have something that was Windows agnostic. </p> 
+
+<p>'pe_view' can extract executable components from all versions of Windows 
+executables (not just the ones with a PE format). This includes the old DOS 
+and NE formats that would run in some in the older versions of Windows.  
+Unfortunately, 'pe_view' has not been updated to handle the .NET internals. </p> 
+
+<p>Prior versions included a disassembler with the viewer, but ended up removing 
+it from the 'free' version, since it only handled the Intel x86 instruction 
+set and not the amd64 instruction set. This is something that I want to 
+update in the future.  There are most likely other boundary conditions that 
+may not parse properly... especially for those PE files that use some sort 
+of obfuscation technique for anti-reverse engineering. As those are found, 
+the tool is updated with a fix to handle the boundary condition. </p>
+
+<p>'pe_view' makes use of the <a href="http://www.fox-toolkit.org/">FOX-toolkit</a>.    
+FOX is a C++ based Toolkit for developing GUI applications that can
+easily port across various platforms by compiling the source for the 
+appropriate OS.  FOX is distributed under the GNU Lesser General Public 
+License (LGPL), with a FOX Library License addendum.</p>
+
+<p>Starting with version 0.82, an authentication package was added to the binary.
+<b>For the binary authentication to work properly, this file needs to be in the 
+same directory as the tool when run.</b>   The commercial version has a separate 
+EULA which can be licensed separately. Contact 
+<a href="mailto:jon@tzworks.net">jon&#64;tzworks.net</a> for more information 
+about the commercial EULA.</p>
+
+<hr/><!---------------------Usage---------------------->
+<h2><a name="usage">Usage
+<font size="2"><a href="#index"> (top) </a></font></h2>
+
+<p>Since pe_view was designed to be a GUI based tool, one can just double click
+on pe_view and select [File -&gt; Open] menu combination to operate on a target 
+portable executable (PE) file. Once a PE file is loaded, besides reviewing 
+all the internal components via the tree view that is displayed, one can:</p>
+
+<pre>
+    (a) dump the strings associated with the PE file.  Strings are
+        consider to be at least 5 consecutive printable characters.
+        [View -&gt; Ascii chars]
+        [View -&gt; Unicode chars]
+
+    (b) search for a hex pattern or a string within the PE file
+        [View -&gt; Find]
+
+    (c) dump the binary data from any location within the PE file as
+        a hexadecimal view to the user.
+        [View -&gt; Dump Hex]
+
+    (d) dump summary stats about a PE file as compared to other
+        PE files on the system. 
+        [View -&gt; Collection Compare].
+        
+        One can modify which files on the system to use as a 
+        comparison by loading a custom configuration file.
+        [Option -&gt; Load Config file]
+
+    (e) dump some summary stats about the PE file:
+        [View -&gt; Packaging]
+
+        If one wishes to use a PEiD signature file to aid in PE
+        identification, one can load a PEiD signature file and
+        the results will be appended to the summary stats 
+        above. This is discussed in more detail in the sections below.
+</pre>
+
+<p>The second option to use pe_view is much more limited, but allows one
+to dump summary stats information via the command line.  This is useful if
+processing many PE files triaging them into categories.  To aid in this,
+pe_view can handle std input in file processing. </p>
+
+<p>All command line options that don't use the GUI need the option -nogui as 
+one of the arguments.   Second, all output needs to be redirected to a 
+file (windows version only), since the windows version does not output to 
+the command prompt. </p>
+
+<pre>
+    (a) option w/o std input processing
+        pe_view  -file &lt;pefile&gt; [-peid &lt;peid file&gt;] -out &lt;results file&gt;
+
+    (b) option w std input processing
+        // windows specific
+        dir *.exe /b /s | pe_view -pipe [-peid &lt;peid file&gt;] -out &lt;results file&gt;
+
+        // linux specific
+        find /home -name *.exe -type f | pe_view -pipe [-peid &lt;peid file&gt;] -out &lt;results file&gt;
+        ls /home/win32_samples/*.dll | pe_view -pipe [-peid &lt;peid file&gt;] -out &lt;results file&gt;
+</pre>
+
+<p>The help for which command line options are available can be seen via
+the following options:</p>
+
+<pre>
+    pe_view --help 
+    pe_view /?
+    pe_view -?
+</pre>
+
+
+
+<hr/><!---------------------PE Packaging---------------------->
+<h2><a name="package">PE Packaging
+<font size="2"><a href="#index"> (top) </a></font></h2>
+
+Summary info about how the PE file was packaged.
+
+<p>Staring with version 0.71, there is additional functionality that gives a
+summary of some of the PE statistics on how the PE file was compiled and/or
+packaged.  Included with this analysis is the ability to used any PEiD 
+signature file that is available online (see reference 5 below). </p> 
+
+<p>To load a PEiD signature file, one can do this by selecting the menu option</p>
+<pre>
+    [Option -&gt; Load PE Signature]
+</pre>
+
+<p>To view the summary information about how the PE file was packaged, select</p>
+<pre>
+    [View -&gt; Packaging]
+</pre>
+
+<p>There is also a command line option to load a PEiD signature file on
+pe_view startup, using the switch -peid &lt;path/file&gt;.</p>
+
+
+<hr/><!---------------------PEiD Signatures---------------------->
+<h2><a name="peid">PEiD Signatures
+<font size="2"><a href="#index"> (top) </a></font></h2>
+
+<p><a href="#peid_refs">PEiD reference 5 below</a>, has some links to locations where one can obtain a PEiD
+signature file or get more information about its format.  Below are the rules
+for how pe_view parses PEiD signature files.</p>
+
+<pre>
+  1. Signature file is a text document
+
+  2. Each line is parsed using the following rules.
+    a. The following are keywords:
+        ';'
+        '[' ']'
+        'signature ='
+        'ep_only ='
+        '??'
+
+    b. General Rules.
+        i.   each line is parsed separately
+        ii.  a line that starts w/ a semi-colon ';', then the entire line is ignore
+              and used for comments
+        iii. a blank line is ignored
+
+    c. The name of the signature in encompassed in square brackets []. The opening
+        square bracket should start at the beginning of the line.
+
+    d. The signature is preceded by the keyword 'signature ='.  The signature is 
+        represented by hexadecimal bytes where each byte is separated by spaces.  
+        Wildcard bytes are represented by '??'
+
+    e. If the signature is meant to be scanned at the PE entrypoint, it will be
+        designated as 'ep_only = true'; otherwise if the signature is to be search
+        throughout the file contents, it will be designated as 'ep_only = false;
+
+    f. For version this version of pe_view, only the signatures that are specified
+        as 'ep_only = true' are used.  Later versions of pe_view may incorporate 
+        entire PE scanning.
+
+  3. Below is an example of a signature:
+
+        [Microsoft Visual C++ 8]
+        signature = E8 ?? ?? 00 00 E9 ?? ?? FF FF
+        ep_only = true
+</pre>
+
+
+<hr/><!---------------------PE Analysis---------------------->
+<h2><a name="analysis">PE Analysis
+<font size="2"><a href="#index"> (top) </a></font></h2>
+
+<p>pe_view incorporates the standard extraction of both ASCII and Unicode strings.
+(ref. View menu). Strings are consider to be at least 5 consecutive printable 
+characters.</p>
+
+<p>One may also desire to look at how one PE file compares to a collection of PE files.  
+For the simple case, 'pe_view' takes some predefined PE files that are part of the 
+running operating system and uses these to compare the PE file you are analyzing. 
+To use this comparison option, select the 'File Compare' in the 'View' menu.</p>
+
+<p>If one desires to customize which collection of PE files to compare against, one can
+specify an alternative list of PE files to be used as the collection. This can be 
+done by first generating a text file containing the path\filename of each PE file 
+on a separate line and reading that file into 'pe_view' by using the 
+"Option"-&gt;"Load Config".</p>
+
+<p>See config file format in the section below for details on using this option.</p>
+
+<p>The output during this type of compare will be one line per PE file, with the target
+PE file on the top.</p>
+
+<p>The following syntax is used when displaying the results:</p>
+
+<pre>
+            date Ln ln Af As Os os Su su wv ss f  d  c  e  x  i  m  b  s  6  v  R  k  k#  co file [rsrc's by #]
+Compile date -+  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |   |   |      +-- rsrc's flagged
+MajorLinkerVer --+  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |   |   +-- filename
+MinorLinkerVer -----+  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |   +--- company &lt;truncated&gt;
+FileAlignment ---------+  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  +- num of kernel32 imports
+  SectionAlignment -------+  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  +-- has only kernel32 as import
+   MajorOSVersion -----------+  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  +-- rich signature present (normal)
+      MinorOSVersion -----------+  |  |  |  |  |  |  |  |  |  |  |  |  |  |  +---- version info present (normal)
+        MajorSubsysVersion --------+  |  |  |  |  |  |  |  |  |  |  |  |  +-- 64 bit binary [pe32+]
+           MinorSubsysVersion --------+  |  |  |  |  |  |  |  |  |  |  +-- is digitally signed
+             Win32VersionValue ----------+  |  |  |  |  |  |  |  |  +--- random blob in rsrc
+                 Subsystem -----------------+  |  |  |  |  |  |  +-- PE file embedded in rsrc
+         Dll Characteristics flags present ----+  |  |  |  |  +-- IAT present
+                      debug directory present ----+  |  |  +-- execute and write combined w/i section
+                      checksum present [+, -, x] ----+  +-- exported funcs [+, n, e, *]
+                         + = present and ok                 + = looks ok
+                         - = not present                    n = name mismatch
+                         x = mismatch                       e = no exports
+                                                            * = no exports w/ name mismatch (or no name)
+</pre>
+
+<p>pe_view also allows one to generate a histogram of any of the sections in
+the PE file.  This can be accessed by highlighting the section or resource that 
+one wants to compute a histogram for and selecting from the context aware menu 
+(eg. right click) and select the 'Stats' item.</p>
+
+
+<hr/><!---------------------PE Collection Configuration File Format---------------------->
+<h2><a name="config">PE Collection Configuration File Format
+<font size="2"><a href="#index"> (top) </a></font></h2>
+
+<p>These files are text files that list the PE files to use as a collection
+to compare a target PE with.  Currently there are 3 types of collection
+types: (a) executable, (b) dynamic link library and (c) driver.  The 
+parsing rules for these config files are as follows:</p>
+<pre>
+    General Rules.
+        1. each line is parsed separately
+        2. a line that starts w/ a double forward slash (eg //) is ignored
+            and used for comments
+        3. a blank line is ignored
+        
+    Lines listing pe files
+        1. Each pe file is listed on a separate line (w/ associated path)
+        2. Each group of pe files (consecutive listing of pe files) 
+             should have a separate line defining the type of PE files
+             identified in the group.
+
+        3. The types of PE files collections include one of the following: 
+        executables, dlls, or driver files.  To help the parser tell which 
+        collection goes with what file, use the following declarations on a 
+        separate line:
+            [exe files]
+            [dll files]
+            [driver files]
+
+        The files listed (one file per line) after the above type declaration
+        will be categorized with that collection.  
+</pre>
+
+<h3>Example config file</h3>
+
+
+<pre>
+    // executables
+    [exe files]
+    systemroot\system32\cmd.exe
+    systemroot\system32\calc.exe
+    systemroot\system32\services.exe
+    ...
+
+    // dynamic link libraries
+    [dll files]
+    systemroot\system32\user32.dll
+    systemroot\system32\gdi32.dll
+    systemroot\system32\crypt32.dll
+    systemroot\system32\msvcrt.dll
+    ...
+
+    // drivers
+    [driver files]
+    systemroot\system32\drivers\ntfs.sys
+    systemroot\system32\drivers\ndis.sys
+    systemroot\system32\ntoskrnl.exe
+    systemroot\system32\hal.dll
+    ...
+</pre>
+
+<h3>Loading a user defined config file</h3>
+
+<p>To run a user defined config file, in file Options menu, select 
+'Load Configfile',  whereupon an open file dialog box will allow you to 
+navigate to the config file you wish to load.</p>
+
+<p>After the config file is loaded, it will be parsed and the files will
+specified will be analyzed and the PE internals extracted.  A summary
+of the extraction results will then be displayed.  Then any file that
+is loaded into the pe_view can be analyzed against this loaded configuration,
+via the View menu -&gt; 'Collection Compare'.</p>
+
+<p>If a config file is not loaded by the user, pe_view will try to examine
+the target file against a predefined list of pe files.</p>
+
+
+
+
+<hr/><!---------------------Extracting PE Resources---------------------->
+<h2><a name="extracting">Extracting PE Resources
+<font size="2"><a href="#index"> (top) </a></font></h2>
+
+<p>Sometimes it is useful to extract fragments from the PE file and examine the
+fragments w/ another tool.  Resources in the PE file, for example, can contain
+other files, like: png, jpeg, zipped, or even another PE file.  pe_view allows
+one to extract any portion of the PE file that the viewer displays.</p>  
+
+<p>For example, if one wants to extract a resource, one can select any resource
+in the resource table displayed and using the context aware menu (eg. right 
+clicking on a highlighted resource) and select the 'Save' menu item. </p>
+
+<p>After saving the desired fragment, one can use the appropriate viewer to view
+the extracted data.</p>
+
+
+<hr/><!---------------------Issues---------------------->
+<h2><a name="issues">Issues
+<font size="2"><a href="#index"> (top) </a></font></h2>
+
+<pre>
+   a. Parsing .NET internal structures
+   b. Parsing resource entries
+</pre>
+
+
+<hr/><!---------------------Version history---------------------->
+<h2><a name="version_history">Version history
+<font size="2"><a href="#index"> (top) </a></font></h2>
+
+<ul type="square">
+    <li>03/15/2013 - v0.86 - updated fox library to latest stable version (1.6.47)</li>
+    <li>02/25/2013 - v0.85 - fixed bugs in GUI hotkeys for menu </li>
+    <li>11/03/2012 - v0.84 - maintenance update of core libraries w/ bug fixes </li>
+    <li>10/13/2012 - v0.83 - fixed overflow condition in resource parsing. 
+        added hash check to ensure binary integrity</li>
+    <li>04/05/2012 - v0.82 - added license authentication. There are 2 possible 
+    EULA's. (1) free/personal (non-commercial) use and (2) commercial 
+    use.  </li>
+    <li>03/17/2012 - v0.81 - maintenance updates</li>
+    <li>10/20/2011 - v0.80 - additional resource [wevt_template] parsing incorporated. -
+        added context menu (rtclk) on output pane to allow saving of formatted output to
+        file.</li>
+    <li>09/17/2011 - v0.79 - additional resource [messagetable and mui types] parsing incorporated.</li>
+    <li>08/03/2011 - v0.78 - bug fix and added another resource test.</li>
+    <li>07/25/2011 - v0.77 - fixed bug introduced in v0.76 in parsing version info.</li>
+    <li>07/24/2011 - v0.76 - fix bug in parsing if corrupted file with MZ header. incorporated
+        additional static PE file heuristics.</li>
+    <li>06/21/2011 - v0.75 - added other packing heuristics to the PE analysis and incorporated
+        bug fixes</li>
+    <li>06/10/2011 - v0.74 - added ability to pipe in files from the command line and output
+        summary stats.</li>
+    <li>06/04/2011 - v0.73 - added persistence to the last directory that was opened within
+        a run. removed mac os-x from the mix, since linux and windows were the primary platforms.</li>
+    <li>05/29/2011 - v0.72 - updated to the Fox v1.6.43 library. Created a 64 bit version
+        to the mix.</li>
+    <li>05/22/2011 - v0.71 - incorporated capability to include a PEiD signature file to help
+        in PE identification. Also changed the platform toolset to allow pe_view to run
+        in legacy NT Windows OS's</li>
+    <li>02/26/2011 - v0.7a - maintenance release</li>
+    <li>02/04/2011 - v0.7 - fixed bug in parsing Dialog resources</li>
+    <li>12/10/2010 - v0.6a - [v0.6] inadvertently introduce a bug on the timestamp output...
+        fixed this. Also took out the disassembler option until a more robust one can be
+        developed</li>
+    <li>12/05/2010 - v0.6 - bug fix on handling exports that were used as forwarders.</li>
+    <li>10/17/2010 - v0.5 - ported fixes over to linux and os-x versions.</li>
+    <li>10/05/2010 - v0.4c - bug fixes [16 bit dos legacy files].</li>
+    <li>09/11/2010 - v0.4b - bug fixes. plus added some addition logic for 16 bit legacy dos
+        files.</li>
+    <li>08/10/2010 - v0.4 - added port to MAC OS-X 10.6, 64 bit</li>
+    <li>07/31/2010 - v0.3c - ported code to handle 32 or 64 bit OSes</li>
+    <li>07/25/2010 - v0.3b - added parsing for 16 bit DOS apps and NE apps. included bug fixes
+        as well.</li>
+    <li>07/18/2010 - v0.3a - fixed notation flags between native and win32 executables. added
+        'bound imports' chunk to linear map view.</li>
+    <li>07/16/2010 - v0.3 - added linear mapping of file and bug fixes</li>
+    <li>07/11/2010 - v0.2c - added hex dump option to menu</li>
+    <li>07/06/2010 - v0.2b - fixed memory leak and some other boundary conditions</li>
+    <li>07/05/2010 - v0.2a - fixed bug in pe categorization as well and threaded the progress
+        bar</li>
+    <li>06/27/2010 - v0.2 - initial version available for download</li>
+</ul>
+
+<hr/><!---------------------References---------------------->
+<h2><a name="references">References
+<font size="2"><a href="#index"> (top) </a></font></h2>
+
+<pre>
+    [1] Microsoft Portable Executable and Common Object File Format <a href="http://www.microsoft.com/whdc/system/platform/firmware/pecoff.mspx.">Specification</a>.    
+    [2] An In-Depth Look into the Win32 Portable Executable File Format.
+            by Matt Pietrik, MSDN Magazine.
+    [3] Wikipedia, the free encyclopedia. <a href="http://en.wikipedia.org/wiki/Portable_Executable">PE format</a>  
+    [4] <a href="http://www.fox-toolkit.org/ ">FOX-toolkit</a> version 1.6.43
+    <a name="peid_refs">[5]</a> PEiD references: <a href="http://www.peid.info">PEiD</a>, <a href="http://www.peid.info/forum">PEiD Forum</a>, Example <a href="http://handlers.sans.org/jclausing/userdb.txt">userdb.txt</a> 
+</pre>
+
+<hr/><!---------------------Copyright---------------------->
+<h5 align="right">Copyright &copy; TZWorks, LLC, All Rights Reserved <br />
+Contact Info: <a href="mailto:jon@tzworks.net">jon&#64;tzworks.net</a></h5>
+
+<p></p>
+<hr />
+<p></p>
+</body>
+
+</html>
+
+LICENSE_AUTHENTICATION
+YTJEc3MHMEqBnICbu5cL8ANjU887N0FtcgLvw+6C172bqhuutncFJEF1K4YwY6ndE2/MwfY9+0s4
+O5OAnalnllCs6blaqsRMyx+i2VC6NR8A2L/7XrTq6kduym9AjECQS6leAjAhbXEGXeWOCjo2DYEB
+VCY9oCs65l6Fx+vkZgGVt/iB6Y8HwM+SYbydStppNL3fR9St7KeMlYB425zQUaTF50mVvz3KdoD1
+qQAKknVIER3nnL88wdWALERyUQdknoffh9OsgtKRtUkpzUVKbsFo3shGsGwBVBFHDBd7d1QicER9
+Bmq+vbEEQ7IAAlwNufVh55Bo6IAmDkCsMxaJzA==
+ 

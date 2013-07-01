@@ -1,0 +1,1255 @@
+; DMDE language file version 2.4.2 (sample)
+;
+; Translated by dmde dmdeinfo@gmail.com
+;
+; If you find any mistake please contact dmde at dmdeinfo@gmail.com
+;
+;
+
+098=0     ;=1:load language file in debug mode =0:silent mode
+099=02040200
+100=02040200
+101=en
+102=Windows-1252    ;the file charset
+103=English: sample
+104=9     ;LANGID;  =\0:user default  =0:NEUTRAL  =1:DEFAULT
+105=0     ;FONT CHARSET: 0=ANSI_CHARSET 238=EASTEUROPE_CHARSET ? 1=DEFAULT_CHARSET
+106=\0    ;
+107=1252  ;ANSI Code Page; =\0:system default
+108=850   ;OEM  Code page; =\0:system default
+
+128=\0    ;VGA font file (DOS only)
+129=\0    ;dmde_en.chm
+130=\0
+131=\0    ;man_en
+
+203=\0
+204=\0
+
+
+205=\x90\x0F\x45\x3B
+
+256=Translated into English by:\n\
+	Translator Name, Info
+
+0998=&Continue
+0999=&Halt
+1000=Exception %s at 0x%08p.\n\
+	%s\n\n\
+	Please, inform the developer of this error, provide\n\
+	full screenshot, and describe steps to reproduce the bug.\n\
+	Save necessary data and exit.
+
+1001=^The function is not supported yet.\n\
+	Check if there are updates on the software site.
+
+1002=Open drive image
+
+1003=^No devices found.\n\n\
+	Inappropriate software version is probably used. \
+	Please, study the documentation to learn the system \
+	requirements and installation and run issues.
+
+1004=Initial disk size: %~I~LBA x %l Bpb (%IV)\n\
+	Available disk size: %~I~LBA x %l Bpb (%IV)\n\
+	Selected disk size: %~I~LBA x %l Bpb (%IV)\n\n%s%s\
+	^Continue anyway?
+
+3001=Probably not entire volume is accessible.\n
+3002=Addressing problems are possible.\n
+
+1005=^Attention!\n\
+	Direct access via ATA Interface may conflict \
+	with disk cache programs, operating system.\n\
+	^Continue anyway?
+
+1006=To get access reload computer in MS-DOS mode.\n\
+	^Continue under Windows anyway?
+1007=^Attention!\n\
+	Access to logical disks under Windows 9x/ME \
+	causes halt.\n\
+	^Reload computer in MS-DOS mode and run the program.\n\
+	^Continue under Windows anyway?
+
+1008=Wait... Accessing device %s
+
+;******************* diskdlg **************************
+1010=Select device/disk
+1011=Capacity:~
+
+1012=&ATA Interface\0\
+	&BIOS Services\0\
+	&DOS Services\0\
+	Open &Image...
+1016=Physical &Devices\0\
+	&Logical Disks/Volumes\0\
+	Open &Image...
+1019=Devices\0\
+	Open &Image...
+1021=Bro&wse..
+1022=Disk pa&rameters
+1023=ATA interface\0\
+	ATA&PI interface
+1025=O&ld BIOS Service\0\
+	E&xt BIOS Service
+1027=DOS &Int 25/26\0\
+	&Win9x-FAT32 Calls\0\
+	&MSCDEX Services
+1030=&use DMA\0\
+	use LBA&48\0\
+	&raw CD access
+
+1033=Modify:
+1034=&Show partitions
+
+1035=Disk\0\
+	Offset\0\
+	Size
+1038=Construct RAID
+1039=Stripe size:
+1040=Add at least 2 disks.
+1041=Add disk\0\
+	Add NULL disk\0\
+	Remove disk\0\
+	Move Up\0\
+	Move Down\0\
+	Set Offset, Size
+1047=Invalid stripe size for this sector size.
+1048=For RAID-5 add at least three disks.
+1049=Add at least two disks.
+1050=Are you sure you have RAID-0 or RAID-1 with more than two disks?
+1051=Total size: %~I~LBA (%IV)
+1052=Can not add devices with different sector sizes.
+1053=Set offset
+1054=LBA offset for disk #%l:~
+
+1055=Invalid parameters
+1056=Invalid Bytes per Sector value.
+
+1057=^LBA Size must be not less than the product\n\
+	^(Cylinders~number * Heads~Number * Sectors~per~Trask).\n\
+	^Increase LBA Size?
+1058=^Cylinders number should be equal to \
+	LBA~Size / (Heads~Number * Sectors~per~Trask).\n\
+	^Increase Cylinders number value?
+
+1059=Disk access...
+
+1061=^There are partitions in MBR table which require the disk size \
+	to be not less than %~I~LBA (%IV).\n\
+	^Current disk size is %~I~LBA (%IV).\n\
+	^There may be errors in MBR table or driver can't access \
+	entire disk (LBA48 not supp., HPA applied, jumpers misplaced, RAID disconnect...).
+
+1062=Logical CHS geometry from MBR: %ldx%ldx%l.\n\
+	Current geometry: %ldx%ldx%l.\n\
+	Logical geometry is usually used for partition alignment \
+	and does not affect disk access.\n
+
+1063=use current geometry\0\
+	use geometry detected from MBR (recommended)
+
+1065=Do you wish to finish working with the current device?
+
+1066=You need Administrator/Superuser priveleges to access devices.\n\
+	Log in as an Administrator and run the program as an Administrator \
+	(read the software documentation).
+
+1067=Bytes per sector (Bps) value is not valid.\n\
+	^Continue anyway?
+
+;********************** DiskI/O ************************
+;********************** diskdrv ************************
+1068=&Retry
+1069=&Ignore
+1070=Ignore all
+1071=&Abort
+1072=&Modify
+1073=A&pply
+
+1074=Skip I/O errors
+1075=Do not wait if device is not ready
+1076=always
+1077=now   ;presently
+
+1078=Auto retries number on CRC Error
+1079=Auto retries number on Seek Error
+
+1080=Disk#%l Sector %~I (try %l): %s
+1081=Disk#%l Sectors %~I - %~I (try %l): %s
+1082=Waiting for a device response
+1083=Success
+
+1084=Device I/O parameters
+1085=Number of sectors to jump over on error
+1086=Read back
+1087=I/O buffer size in sectors
+1088=Timeout, msec
+1089=SCSI Timeout, s
+1090=Script...
+1091=Confirm
+
+1092=&Parameters
+1093=Save Device I/O Handler Script
+1094=Load Device I/O Handler Script
+1095=Device I/O Handler
+1096=Filler:
+1097=Reset
+1098=Script:
+
+1100=LBA Size
+1101=Cylinders
+1102=Heads
+1103=Sec.
+1104=Bps
+
+;****************** mainmenu ************************
+1110=Dri&ve
+1111=Select &Drive...
+1112=Open &Image...
+1113=Construct &RAID...
+1114=&Partitions...
+1115=&Lock Volumes for Write...
+1116=E&xit
+1117=Device I/O parameters...
+1118=&NTFS Search...
+1119=&FAT Search...
+
+1120=Wi&ndows
+1121=Directory &Tree
+1122=&File Panel
+1123=&Search Panel
+1124=Editor
+1125=Window Placement
+1126=Not Fixed
+1127=All Maximized
+1128=All Vertically
+1129=All Horizontally
+1130=Tree in Full Height
+1131=Editor in Full Width
+1132=Editor in Full Height
+
+1133=Ed&it
+1134=&Mode
+1135=&Hexadecimal
+1136=&Text
+1137=FAT &Directory
+1138=FA&T12/FAT16/FAT32
+1139=P&artition table
+1140=FAT/FAT32/NTFS &Boot Record
+1141=&NTFS Directory
+1142=&MFT Record
+1143=NTFS File RAW Sectors
+1144=&Encoding...
+1145=View &Context
+1146=&Status String
+
+1147=Fill &Zero Block
+1148=&Copy
+1149=&Paste
+1150=Paste &File...
+1151=&Select Block
+1152=Select &All
+1153=&Write Changes...
+1154=&Discard/Read Again
+1155=&Edit Mode
+
+1156=&Editor  ;&Object
+1157=P&artitions Table
+1158=&Boot Sector
+1159=Boot Sector Copy
+1160=&Root Directory
+
+1161=FA&T/MFT
+1162=FAT Copy/MFT Mirror
+
+1163=M&FT Record...
+1164=Volume &Cluster...
+1165=Volume &Sector...
+1166=&Physical Sectors...
+
+1167=Cluster &Map
+
+1168=&Goto
+1169=&File Data
+1170=&Directory Entry
+1171=FA&T Cluster/MFT Record
+
+1172=Cluster Map
+1173=Goto &Offset...
+
+1174=&Tools
+1175=&Recover...
+1176=Search in found (by name)...
+1177=Scan Volume...
+1178=Update Cluster Map
+1179=Clear Directory Tree
+
+1180=&Tools
+1181=&Search for String in Object...
+1182=Search for Special Sector
+1183=Boot Signature
+1184=Boot Sector
+1185=Partition Table Sector
+1186=MFT Record
+1187=NTFS Dir Record
+1188=FAT Table Sector FAT16
+1189=FAT Table Sector FAT32
+1190=FAT Directory
+1191=Search A&gain
+;=&Edit/Read Only Mode
+1192=Fill Sectors...
+1193=&Copy sectors...
+
+1194=NTFS Tools
+1195=Copy File...
+1196=Create Directory...
+1197=Remove File/Empty Directory...
+1198=Repair Directory INDX-records...
+
+1199=&Language...
+1200=&Help
+1201=&About DMDE...
+1202=Activation...
+1203=Activated
+1204=Activation (demo)...
+
+;******************* driverex *************************
+1280=Completing current operation...
+1281=Do you wish to abort?
+1282=&Abort
+1283=&Continue
+
+;******************************************************
+1290=Line
+1291=Command
+1292=Comment
+1293=Load...
+1294=Save...
+1295=Ins.
+1296=Del.
+1297=Edit
+
+1298=&Close
+1299=&Help
+1300=Help
+
+1301=If help files are not supported or absent \
+	you may download them from the software sites.
+
+1302=DMDE cannot terminate until all dialog boxes are closed.
+1303=[Esc]: exit menu
+
+1304=&Ok\0\
+	&Cancel\0\
+	&Yes\0\
+	&No\0\
+	&Cancel
+1309=Goto link address\0\
+	Copy link to clipboard\0\
+	Copy address to clipboard
+1312=File name:\0\
+	File type:\0\
+	&Open\0\
+	&Save\0\
+	&Cancel\0\
+	"%s"\nFile not found.\0\
+	"%s"\n^File exists already.\n^Overwite?
+1319=Select the directory
+1320=To select press Ctrl+Enter or Ok
+
+1321=Please, wait...
+
+1322=Alt+D: select drive   Ctrl+O: open image   F10: menu
+1323=Ctrl+F1: open file panel   F10: menu
+1324=Ctrl+P: partitions   F10: menu
+1325=Alt+B: boot sector   F10: menu
+
+;*********************** NTLockVolumes *********************
+;*********************** VolDlgNT **************************
+1326=Lock Volumes for Write
+
+1327=Lock volumes to prevent file system access while writing to. \
+	Marked volumes are allowed for writing to in RAW mode.
+
+1328=Could not lock unmarked volumes.\n\
+	ATTENTION! Ignoring may cause unpredictable result \
+	or write access may be denied. Force dismounting \
+	will cause the loss of all used volume descriptors.
+
+1329=Could not lock. Volume may be used or access is denied.\n\
+	Force dismounting will cause the loss of all used volume descriptors.
+
+1330=Current volume can not be unlocked.
+1331=&Dismount the volume (Caution!)
+1332=&Retry\0\
+	&Cancel\0\
+	&Force\0\
+	&Ignore\0\
+	&Cancel\0
+
+;********************** PartView ***************************
+;********************** PartMan ****************************
+1338=File system is not supported so it cannot be verified.\n\
+	^Do you wish to continue anyway?
+1339=Insertion is not supported for GPT partitioning.'
+1340=Select sectors
+1341=Cylinder
+1342=Head
+1343=Sec
+1344=Focus Sector:
+1345=First Sector:
+1346=Last Sector:
+1347=Number of Sectors:
+1348=&Dec\0\
+	He&x
+1350=Sectors range:~
+
+1351=Partition searching...  #%l  LBA: %~I
+
+1352=Volume or boot sector copy is not found.
+1353=Sector is being used by another volume or table.
+1354=Invalid position of boot sector copy.
+1355=Boot sector is not aligned.
+1356=File system is not checked. \
+	It is recommended to open the volume and check it before. \n\
+	Continue without checking?
+1357=The file system is damaged.\n\
+	Continue anyway?
+1358=A valid boot sector already exists.\n\
+	Continue anyway?
+1359=Restore boot sector from copy?
+
+1360=Detect volume letters?\n\
+	It may cause the program to stop.
+1361=Disk
+1362=table
+1363=Extended
+1364=Extended     ;console 
+1365=found
+1366=found        ;console 
+1367=found table
+1368=found table  ;console 
+1369=unallocated
+1370=surplus sectors
+1371=Unknown
+1372=Primary
+1373=Pri.         ;console 
+1374=Logic. disk
+1375=Log.         ;console 
+1376=Partitions
+1377=~Volume              Part. FSystem    Size     Ind.      first - last 
+1378=Volume\0\
+	Partition\0\
+	F.System\0\
+	Size\0\
+	Indicators\0\
+	First sector\0\
+	Last sector
+1386=Current Partitioning\0\
+	Modified Partitioning\0\
+	Apply Changes
+1389=&tables
+1390=fo&und
+1391=&detailed
+1392=&Insert
+1393=&Remove
+1394=&FAT Search
+1395=&NTFS Search
+1396=Image/Clone
+1397=&Open Volume
+1398=&Menu
+1399=Show Volume Letters
+1400=Discard Partitioning Changes
+1401=&Load Partitioning from File...
+1402=&Save Current Partitioning to File...
+1403=&Apply Partitioning...
+1404=Select Entire Drive
+1405=&Insert the Partition (Undelete)...
+1406=&Remove the Partition...
+1407=&FAT Search within the Partition
+1408=&NTFS Search within the Partition
+1409=Create Image/Clone...
+
+1410=Attention! You should never modify partitioning of your system \
+	or bootable disk. \n\n\
+	Backup sectors to another device before modifying.
+1411=Backup current partitioning and modified sectors\0\
+	Backup modified sectors only\0\
+	Without backup
+
+1414=Save disk partitioning
+1415=Do not save to the same device!\n\
+	Save to file:
+1416=Open saved disk partitioning
+
+1417=^The following sectors will be overwritten:\n
+1418=.\n^Continue?
+1419=There can be up to 4~primary partitions on the disk, \
+	or up to 3~primary partitions and 1~extended partition \
+	which contains other logical disks.\n\n\
+	Add disk
+1420=as primary partition\0\
+	as logical disk in extended partition
+1422=Extended partition will be created.\n\
+	Only logical disks with greater value of the first \
+	sector may later be added to the extended partition.\n\
+	^Continue?
+1423=Boot sector of the selected disk was not found.\n\
+	Disk will be detected as not formatted.\n\
+	^Continue?
+1424=The file system is unknown.\n\
+	^Continue?
+1425=^There is already partition on the disk with the same \
+	first sector.\n\
+	^Replace partition?
+1426=^Removing extended partition will remove \
+	all logical disks within it.\n\
+	^Continue?
+1427=Remove primary partition?
+1428=Remove logical disk?
+1429=^Disk partitioning will be changed.\n\
+	^Continue?
+
+1430=Partition does not fit into physical drive.
+1431=Existing partition %s\n\
+  prevents insertion due to overlapping.\n\
+  You should remove overlapped partitions before.
+1432=The partition and extended partition overlap.
+1433=Error reading sector %~I.
+1434=No free entries in partition table.
+1435=Error writing sector %~I.
+1436=Could not fit extended partition.
+1437=No space for partition table.
+1438=Partitioning error found.
+
+1439=This partition cannot be added.
+1440=File system not supported.
+1441=Cannot remove this partition.
+1442=Attention! Non-standard partitioning table.
+1443=Create RAW Partition...
+1444=Restore Boot Sector From the Copy (Replace)...
+1445=Toggle Bootable (Active) Partition Status...
+1446=Toggle MBR/Boot Signature (On/Off)...
+1447=Help Instructions
+
+1448=Create
+1449=Replace
+1450=M&BR On/Off
+
+1451=Partitioning has been modified. \n\
+	You may apply changes in the dialog box "Partitions".\n\
+	Do you really want to cancel changes?
+1452=There are errors detected in partitioning to apply.\n\
+	^Do you wish to continue anyway?
+1453=There is too small a gap detected before partition. \n\
+	This may cause problems later if you change partitioning using other tools.\n\
+	^Do you wish to continue anyway?
+1454=Partition is too big.
+1455=Create primary partition\0\
+	Create logical partition\0\
+	Create extended partition
+1458=Create unformatted (RAW) partition
+1459=Unexpected partitioning.
+
+1507=Can not remove this table.
+1508=Remove extra table?
+1509=Remove GPTable with all partitions?
+1510=Only primary partition can be bootable (active).
+1511=Set bootable (active) partitition status?
+1512=Reset bootable (active) partitition status?
+1513=Set MBR/Boot signature (On)?
+1514=Reset MBR/Boot signature (Off)?
+
+1515=There were errors reading sectors. \
+	Backup sectors may be invalid. \n\
+	^Do you want to continue anyway?
+1516=Backup Modified Sectors
+1517=Backup Current Partitioning and Modified Sectors
+1518=Backup Current Partitioning
+1519=&Apply
+
+;********************* DevProcs **************************
+1460=Sector: %~I (%l%%)
+1461=^Are you sure you want to continue copying the source\n^%s\n\n\
+	^to the destination (will be overwritten)\n%s?
+1462=^Are you sure you want to continue writing the source\n^%s\n\n^to %s?
+1463=Write file to sectors
+1464=^%IV (LBA size: %~I) starting at sector %~I will be filled with pattern.\n\
+	^Continue?
+
+1465=Searching...
+1466=Sector not found.
+1467=Start Sector:
+1468=End Sector:
+1469=Number of Sectors:
+1470=Invalid input.
+1471=^Invalid input.\n\
+	^Valid disk sectors: %~I - %~I.
+1472=^The selected source does not fit completely into the selected range.\n\
+	^Do you wish to copy partial information?
+1473=Fill sectors
+
+1474=Pattern
+1475=&Hex:\0\
+	&File
+1477=Fill sectors:
+
+1478=sector &alignment
+1479=File is empty.
+1480=File is too big. Use function "copy sectors" for writing large files.
+1481=Could not complete. Write error.
+1482=Read file error.
+1483=Filled LBA: %~I (%IV) %l%%
+
+1484=Copy sectors
+1485=Source
+1486=Destination
+
+
+1487=Device...
+1488=File...
+1489=Editor
+1490=Selected
+1491=File
+1492=Object
+1493=%IV at offset %~I of the object:\n%s on disk %s
+1494=Reverse copy
+1495=Continue from:
+1496=Select destination.
+
+1497=Write to file
+1498=Sectors %~I~-~%~I on disk %s
+1499=Destination file size is greater then the source size.\n\
+	Are you sure you want to truncate the destination file?
+1500=^Are you sure you want to copy the source\n^%s\n\n\
+	^to the destination (will be overwritten)\n%s?
+1501=^Are you sure you want to write the source\n^%s\n\n^to %s?
+1502=Current LBA Offset: %~I (%IV) %l%%
+1503=Start Byte:
+1504=End Byte:
+1505=Size in Bytes:
+1506=%s: %s on disk %s
+
+;********************* EditorCommands *********************
+1520=Cluster: [0..%I]:
+1521=Goto Cluster
+1522=Volume Sector [0..%~I]:
+1523=Goto volume sector
+1524=Goto object offset
+1525=Sector [0..%s]:
+1526=Sector Offset [0..%s]:
+1527=Offset [0..%s]:
+
+1528=^File allocation information has not been loaded.\n\
+	^Load file allocation information?
+1529=Open FAT volume
+1530=Open NTFS volume
+
+1531=&Ok
+1532=&Cancel
+1533=&Close
+1534=&Open
+1535=&Browse..
+1536=Select
+1537=Open file
+1538=Search for String
+1539=String:
+1540=Case &sensitive
+1541=Sector o&ffset:
+1542=&Unicode
+1543=Forwar&d\0\
+	&Backward
+1545=&From cursor\0\
+	&Entire object
+
+;*********************** devobj **********************************
+1560=Sector %~I was modified. Write changes to disk?
+1561=Sectors %~I~-~%~I were modified. Write changes to disk?
+1562=Write to disk or discard previous changes.
+1563=Block goes beyond the end of the object edited.
+1564=Block is too big. Use "Copy sectors" or "Fill sectors" functions for large blocks.
+1565=Modifying more than one sector at a time is allowed only for object "sectors".
+
+;********************** MountFAT *********************************
+1570=\n^Continue anyway?
+1571=Auto detect FAT parameters\0\
+	Continue with these parameters
+1573=Volume does not fit into device.
+1574=use this virtual volume size\0\
+	use decreased volume size
+1576=Invalid Bps value won't be used.
+1577=Invalid FATs number value won't be used.
+1578=Root Cluster value not used in FAT12/FAT16.
+1579=Root Dir Entries not used in FAT32.
+1580=Root Dir Entries number must not be zero for FAT12/FAT16.
+1581=Unexpected Root Dir Entries Number value was increased.
+1582=Valid sectors per cluster values: 1,2,4,8,16,32,64,128.
+1583=Start sector must be in range 0..%~I.
+1584=(res.secs+fatsnum*fatsize+entriesnum*32/512) is too large.
+1585=Total sector value is too large or invalid parameters.
+1586=Total sector value is too small or invalid parameters.
+1587=Invalid root cluster number was replaced with default value.
+1588=There is only one Fat.
+1589=There are errors found while opening Root directory.
+1590=%-.64s
+
+1591=File System:
+1592=FAT tables:
+1593=use FAT1\0\
+	use FAT2\0\
+	do not use\0\
+	test tables
+1597=Search for Lost Directories
+
+1598=Testing FAT tables %l%%
+1599=FAT Tables Use Settings
+1600=FAT table size in bytes: %l
+1601=FAT%l: %l-%l are %l%% valid; %l good, %l bad, %l unknown
+1602=do not use FAT tables
+1603=check (do not use bad sectors)
+1604=%l%%  cluster %l;  found %l directory fragments
+
+;********************** MountNTFS ********************************
+1620=\n^Continue anyway?
+1621=Auto detect NTFS parameters\0\
+	Continue with this parameters
+1623=Invalid cluster size.
+1624=Invalid Bytes per MFT Record Value changed to default.
+1625=Invalid Bytes per Index Record Value changed to default.
+1626=Total Sectors Number was decreased to fit the device.
+1627=MFT Cluster Value is too large.
+1628=MFTMirr Cluster Value is too large.
+1629=There are no any valid MFT Start Cluster.
+1630=MFT Error. MFTMirr will be used.
+1631=MFT Error.
+
+;********************** comerrmsg ****************************
+1650=Out of memory
+1651=^Could not create \n^"%s"
+1652=^Could not write to \n^"%s"
+1653=^Error reading file\n^"%s"
+
+;********************** volserv ******************************
+1670=Search for Files
+1671=Search Panel
+1672=Directory Tree
+1673=Search...(%l) %s
+1674=Completed (%l)
+1675=Index record: %l (%l%%)
+1676=MFT record: %l (%l%%)
+
+;********************** Recovery *****************************
+;********************** volprocs *****************************
+1697=include altstreams
+1698=Choose the action.
+1699=Rename threshold
+1700=Recovery
+1701=Choose files
+1702=na&me:
+
+1703=all volume directories\0\
+	focused object\0\
+	all marked\0\
+	focused directory: marked\0\
+	current panel files only\0\
+	current panel: marked
+1709=include &found
+1710=&marked only
+1711=exclude deleted\0\
+	&deleted only\0\
+	include deleted
+1714=&Unicode names
+1715=Substitute names
+1716=Size
+1717=Recover to:
+1718=Scanning...  files: %l (%IV).\n%.64s
+1719=%l%% Reading %.60s
+1720=Nothing to recover
+1721=Recover
+
+1722=Volume
+1723=Directory
+1724=Marked 
+1725=Marked from
+1726=File Panel
+1727=File
+1728=size not calculated
+1729=%IV in %l files
+
+1730=Long names are not supported under DOS without special drivers. \
+	It is recommended to substitute long names under DOS (to restore \
+	names under Windows execute "lrename.bat" in the destination directory).\n\
+	^Are you sure you want to continue without name substitution?
+
+1731=%l%% Reading %.30s%-.30s %l%%\n\
+	Write to %.60s
+1732=%l%%\nCreating %.60s
+
+1733=Change destination\0\
+	Split the file\0\
+	Split all files\0\
+	Rename\0\
+	Auto rename all\0\
+	Skip\0\
+	Skip all
+1740=Retry\0\
+	Ignore the file errors\0\
+	Ignore all errors\0\
+	Ignore all, set attr. "hidden"\0\
+	Skip\0\
+	Skip all
+1746=Maximum allowed number of directory auto renames
+1747=Maximum allowed number of file auto renames
+
+1748=Could not create the directory "%-.12s%s".
+1749=Recover directory "%-.32s" as:
+1750=Recover file "%-.32s" as:
+1751=^Can't write more.\n\
+	^May be not enough space.
+1752=Continue recover to new location:
+1753=Can't write more. Continue write to the next file:
+1754=Cancelled
+1755=File "%-.12s%.32s%s"\nexists already.
+1756=Could not create\n"%-.12s%.32s%s".
+1757=Can't write more to\n"%-.12s%.32s%s".
+1758=Could not write to\n"%-.12s%.32s%s".
+1759=Error reading\n^"%s%s"
+
+1760=Directory "%-.12s%s" exists already.
+1761=Change destination\0\
+	Merge\0\
+	Merge all\0\
+	Rename\0\
+	Auto rename all\0\
+	Skip\0\
+	Skip all
+1768=Save file list
+1769=Recovery report parameters
+1770=Write recovery report to file:
+1771=Save recovery report to file
+1772=&I/O error positions
+1773=Calculate C&RC32
+1774=Create &report
+1775=List...
+1776=Abort recovery\0\
+	Abort the directory recovery\0\
+	Skip the file only\0\
+	Set device I/O parameters...
+
+;*************** NTFSWrite *************************
+;*************** NTProcs ***************************
+1780=^NTFS version may be incompatible.\n\
+	^Allow write operations anyway?
+1781=^Read dir error. Error 0x%04hx.
+1782=Operation not supported for this directory.
+1783=^NTFS dir version may be incompatible.\n\
+	^Continue anyway?
+1784=^Are you sure you want to create in the special system directory?
+1785=Open source file
+1786=Copy file
+1787=Read data from file:
+1788=^Could not open \n^"%s"
+
+1789=Copy "%.65s" to the directory "%.65s".\n\
+	Create/overwrite the following file name:
+
+1790=Read the documentation before continuing!
+1791=File path is too long.
+1792=Could not initialize.
+
+1793=Error initializing directory 0x%lx.
+1794=Could not scan the directory. Error 0x%04hx.
+1795=^File exists already.\n^Do you wish to overwrite it?
+1796=Append new data to the end of file?
+1797=^Could not open "%s".\n^Error 0x%04hx.
+1798=Could not allocate file. Error 0x%04hx.
+1799=Could not update runs. Error 0x%04hx.
+1800=Could not update INDX after file creation. Error 0x%04hx.
+1801=File data attribute not found. Error 0x%04hx.
+1802=Could not resize file. Error 0x%04hx.
+1803=Could not update file after resizing. Error 0x%04hx.
+1804=Could not update INDX. Error 0x%04hx.
+1805=Error reading file. Error 0x%04hx.
+1806=Error writing file. Error 0x%04hx.
+1807=^Could not update file after writing data. Error 0x%04hx.
+1808=Enter new directory name to create in '#13'"%.65s"
+1809=Create directory
+1810=Name exists.\n
+1811=Could not make directory. Error 0x%04hx.
+1812=^Do you wish to repair the directory'#13'^"%.48s"?'#13'^Read the documentation first!
+1813=Error 0x%hx
+1814=Could not flush.
+1815=Are you sure you want to delete from the special system directory?
+1816=^Are you sure you want to delete system file?\n\
+	^It may destroy the file system.\n\
+	^Continue?
+1817=Cannot delete $MFT.
+1818=^Delete "%.96s"?\n^Read the software documentation before!
+1819=^Warning: unexpected mft data.\n^Continue anyway?
+1820=Can not remove. The directory is not empty.
+1821=^Error %04hx. The directory may not be empty.\n^Continue anyway?
+1822=Error %04hx
+1823=^Could not insert the file name into the directory INDX\n\
+	^Continue operation anyway?
+1824=Mft record: %l %l%%
+
+;************* EditorStatuses *************************
+1840=[Esc]: back~~
+1841=[Enter]: open file data~~~
+1842=[Enter]: open directory~~~
+1843=[Enter]: goto MFT record~~
+1844=[Enter]: dir entry~~
+1845=[Enter]: open FAT vol    F7: boot sector type
+1846=F7:  view next boot type
+1847=[Enter]: open NTFS vol   F7: boot sector type
+1848=[Enter]: open partition  Ctrl+P: partitions
+1849=[Enter]: goto            Ctrl+P: partitions
+1850=ntfs volume was not selected
+1851=[Enter]: goto dir entry  [Space]: show/hide details
+1852=[Enter]: link to MFT     [Space]: show/hide details
+1853=~~~~
+1854=[Enter]: open attribute  [Space]: show/hide details
+1855=~~~~~~~~~~~~~~~~~~~~~~~~~[Space]: show/hide details
+1856=[Enter]: open directory  [Space]: show/hide details
+1857=[Enter]: upper directory~~
+
+1858=[Enter]: open file data
+1859=[Enter]: goto cluster
+
+;************** PanelStatuses *************************
+1870=No object selected
+1871=[Ctrl+U]: recover...~~~
+1872=[Enter]: open  [Ctrl+U]: recover...~~
+1873=[Enter]: open (Editor)  [Ctrl+U]: recover...~~
+1874=[Enter]: up  [Ctrl+U]: recover...~~
+1875=[Enter]: scan MFT~~
+
+;************** PanelCommands *************************
+
+1876=Open (Hex Editor)
+1877=One level up
+1878=Recover...
+1879=Open MFT File (Hex Editor)
+
+1880=%l%%  %l
+
+1890=Recover the Object...
+
+;******************* PanelNt **************************
+1881=Reading MFT... %l (%l%%) ;link clusters
+
+;******************* PanelFat *************************
+1882=Assemble found volume directories.
+1883=Assemble FAT Search directories only\0\
+	Rescan the entire volume for directories\0\
+	Continue the interrupted process
+1886=%s (%l)
+1887=FAT%l: %l-%l: %l%% OK; %l%% OK, %l%% bad, %l%% empty, %l%% unknown
+1888=Continuous scan\0\
+	Discrete scan (cluster boundaries)
+
+;******************* ScanRangeBox *********************
+1900=Select scan area
+1901=Block size:
+
+1902=&Partition...
+
+1903=Please, read the documentation for more efficient recovery.
+
+1904=^Opened volume will be closed.\n^Continue?
+1905=No volumes found yet.
+1906=Select volume in the list.
+
+;************************* NTFSSsearch **************************
+;************************* NTTools ******************************
+1921=&Search
+1922=NTFS Search
+1924=Volume\0\
+	Cluster\0\
+	FILE\0\
+	INDX\0\
+	Mod\0\
+	Start\0\
+	Check\0\
+	LBA Size
+1932=Volume min.size: %IV 
+1933=Start at: %IV
+1934=Files: %l (%l) of %l, MFT fragments: %l
+1935=  MFT Start:Len    LBA Start   CLUS FILE INDX   MOD   Vol.Start#1    Start#2
+1936=MFT fragment\0\
+	Cluster\0\
+	FILE\0\
+	INDX\0\
+	Mod\0\
+	Volume Start #1\0\
+	Volume Start #2\0\
+	MFT Run Start
+1944=&Open volume
+1945=Sa&ve...
+1946=&Load...
+1947=Save NTFS Search Log
+1948=Load NTFS Search Log
+
+1949=Start sectors:
+1950=Scan LBA: %~I - %~I (%IV) on %.42s
+1951=Sectors scanned: %~I (%l%%)
+1952=INDX: %l (%l)
+1953=&Start/Stop
+1954=&Range...
+1955=other     (%l)
+1956=Checking start sector value #%l:#%l  %l%%
+1957=Reading MFT fragment #%l: %l
+1958=MFT fragment not found %~l
+1959=Directory checking #%l %l%%
+1960=Wait... 
+
+1961=Stop scan to switch on/off mft fragments before open volume.
+1962=^Some parameters have not been detected yet.\n\
+	^It is recommended to continue scanning\n\
+	^otherwise allocated data will be unavailable.\n\n\
+	^Continue scan?
+1963=~~Vol.~\0\
+  ~CLUS~FILE~INDX~~~MOD~\0\
+  ~~~LBA Start\0\
+  Check\0\
+  ~LBA Size
+
+;************************* FATSearch ****************************
+;************************* FATTools *****************************
+1970=FAT Search
+1971=Volume: Clus Data start FS      Boot  Fat1 Fat2 Root Found
+1972=Volume\0\
+	Cluster\0\
+	Data start\0\
+	FS\0\
+	Boot\0\
+	FAT1\0\
+	FAT2\0\
+	Root\0\
+	Found
+1981=FAT table searching...  %l
+1982=Save FAT Search Log
+1983=Load FAT Search Log
+
+;************************* Editor ***************************
+2000=Sector: %~I (%l%%)
+2001=String not found.
+
+2002=Sectors %~I~-~%~I
+2003=Volume sectors %~I~-~%~I
+2004=File
+2005=Directory
+2006=Sectors  ;n/u
+2007=View:~
+2008=~LBA:-  record: %I
+2009=~LBA:%-10I
+2010=~[End of records]
+2011=~[PgDn: next record]
+2012=~Name     Ext       Size   Cluster  Attrs   Modified          Created
+2013=FAT directory
+2014=Cluster Map
+2015=FAT Boot
+2016=FAT32 Boot
+2017=NTFS Boot
+2018=~(Copy)
+2019=~System ID     Boot     First        Last       Relative   Number of\n\
+	~~~~~~~~~~~~~~~Flag Cyl/Head/Sec Cyl/Head/Sec   Sector     Sector
+2020=Partition Table
+
+2021=~MFTNum Name                      Size      Attributes   Modified
+2022=[End of entries list mark]
+2023=   [Folder]~
+2024=~~~~~~~~~[end of list]
+2025=~        allocated %10I cluster(s) starting from %10I
+2026=MFT record
+2027=~/%4l sectors/ MFT No: %l (%l)
+2028=~~~~~[End of attributes mark]
+2029=~~~~~[Invalid/Unsupported attribute]
+2030=size:%l
+2031=Size:%I Alloc:%I
+2032=~Comp:%I
+2033=record size: %l sectors   clusno: %l
+2034=   Directory MFT number: %l (%l)
+2035=NTFS directory
+
+2036=file ID ("FILE")
+2037=fixups offset
+2038=fixups number
+2039=$LogFile seq. num
+2040=sequence number
+2041=hard links number
+2042=attributes offset
+2043=flags
+2044=used size
+2045=record size
+2046=base MFT rec
+2047=next attr id
+2048=0x2A uint16
+2049=this MFT number
+2050=update seq. num
+2051=File creation time
+2052=File modification time
+2053=Last MFT modification
+2054=Last access
+2055=MSDOS file permissions
+2056=Max number of versions
+2057=Version number
+2058=Class Id
+2059=Owner Id
+2060=Security Id
+2061=Quota Charged
+2062=Update Sequence Number
+2063=FileName
+2064=Directory
+2065=Creation time
+2066=Last modified time
+2067=Last MFT modification
+2068=Last access
+2069=Allocated size
+2070=Size
+2071=Attributes
+2072=0x3C uint32
+2073=POSIX
+2074=0x00 uint32
+2075=0x04 uint32
+2076=Version
+2077=flags
+2078=0x00 uint32
+2079=first vcluster
+2080=last vcluster
+2081=compr. unit
+2082=allocated
+2083=data size
+2084=initialized
+2085=compressed size
+
+2087=[All found]
+2088=[Ext.attr]
+2089=[Folder]
+2090=Reading MFT... %l (%l%%) ;directory structure
+2091=^Break operation?\n^It will cause incomplete directory structure recovery.
+2092=~Name                          Size    Last modified  MFT number
+2093=Name\0\
+	Size\0\
+	Modified\0\
+	MFT number\0\
+	Path
+2098=~Name                          Size    Last modified    Cluster
+2099=Name\0\
+	Size\0\
+	Modified\0\
+	Cluster\0\
+	Path
+2104=%l%% processed %l found
+2105=%l found
+
+2106=vol.sec:%I~
+2107=BOOT sec:%l
+2108=FAT%l sec:%l
+2109=ROOT sec:%l
+2110=Clus:%I sec:%l
+2111=MFT record [0..%l]:~
+2112=Go to MFT record
+
+2190=Find all volume directory fragments?
+2191=~Disk#%l LBA:%-10I
+2192=block: %~I
+
+;**********************************************************
+2200=You should select a single file on the file panel to recover.\n\
+	Free Edition allows you to recover files one by one.
+
+2201=License agreement
+2202=I accept the license agree&ment
+2203=&Accept
+
+2204=\n~License agreement file (EULA)\n~%s\n\
+	~is not found or corrupted.\n\n\
+	~Get the full package on the software site.\n\
+	~Extract all files into one directory.
+
+2205=&About
+
+2206=About DMDE
+2207=&License
+
+2208=Update/upgrade/learn more:
+
+
+2209=License Volume:
+2210=Support ends
+2211=Licensed to:
+2212=Support ended
+2213=You are probably using an old software version.\n\
+	Please, check for updates on the software site.
+2214=Invalid license file %"s.
+2215=File group and directory recovery is not supported if not activated.
+
+2230=Activate Using Activation Key/File
+2231=Your Registration Code:
+2232=&Copy
+2233=Could not read clipboard data.
+2234=&Save...
+2235=Write out your Prod.ID and Inst.ID or save to "dmdeinst.dat"
+
+2236=Enter your Prod.ID, Inst.ID, and E-mail or upload "dmdeinst.dat" to \
+	the activation site to obtain your Activation Key or "dmdekey.txt".
+2237=Activation sites:
+2238=Activation Key:
+2239=&Open...
+
+2240=Activation (Demonstration)
+2241=Activation
+
+2242=Activate via Internet
+2243=Could not activate via direct connection to server.\n\
+	You may also activate using Activation Key.
+
+2244=Activate using Activation Key/File...
+
+
+
+
+
+
+2245=Device has no serial number or it is not applicable.
+
+2246=To activate enter Activation Key or open "dmdekey.txt" obtained.
+2247=Assign Key to device...
+2248=Assigned to: %s
+2249=E&xit
+2250=&About
+2251=^File group and directory recovery is not supported if not activated.\n\
+	^Continue anyway?
+2252=Clipboard data is not a valid Activation Key.
+2253=The File is not a valid Activation File.
+2254=DMDE Activation Key was saved to file %"s.
+2255=Load Activation Key from file
+2256=Save Registration Code to file
+2257=Save Activation Key
+2258=Getting host address...
+2259=Could not get IP address of host "%s".
+2260=Could not create socket.
+2261=Connecting...
+2262=Could not connect to IP [%lx:%lx:%lx:%lx:%lx:%lx:%lx:%lx]:%s.
+2263=Could not connect to IP %l.%l.%l.%l:%s.
+2264=Sending request to the server...
+2265=Could not send request.
+2266=Waiting for a server response...
+2267=Closing connection...
+2268=Activate via the Internet
+2269=Proxy settings
+2270=Use proxy
+2271=Address:
+2272=Port:
+2273=Could not load %s.
+2274=%s not found in %s.
+2275=WSA startup failed.
+2280=Activate using device...
+2281=&Reset
+2282=Wrong device selected for activation
+2283=Support ended %02h/%h.\n\
+	You may continue using on the same hardware.\n\
+	Be sure to make backup copy of the software including keys \n\
+	(all files in work directory).

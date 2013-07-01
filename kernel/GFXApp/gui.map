@@ -1,0 +1,44 @@
+ gui
+
+ Timestamp is 51d15d39 (Mon Jul 01 12:43:05 2013)
+
+ Preferred load address is 01000000
+
+ Start         Length     Name                   Class
+ 0001:00000000 00000646H .text                   CODE
+ 0002:00000000 00000041H .rdata                  DATA
+ 0003:00000000 00000220H .bss                    DATA
+
+  Address         Publics by Value              Rva+Base       Lib:Object
+
+ 0000:00000000       ___safe_se_handler_count   00000000     <absolute>
+ 0000:00000000       ___safe_se_handler_table   00000000     <absolute>
+ 0001:00000000       _main                      01001000 f   main.obj
+ 0001:00000170       ?strlen@@YAIPBD@Z          01001170 f   string.obj
+ 0001:000001b0       ?W_TEXTPOPUP_paint@@YAXPAUWINDOW@@@Z 010011b0 f   TextPopup.obj
+ 0001:00000280       ?W_TEXTPOPUP_move@@YAXPAUWINDOW@@HH@Z 01001280 f   TextPopup.obj
+ 0001:000002e0       ?W_TEXTPOPUP_init@@YAXPAUW_TEXTPOPUP@@PAUWINDOW@@PAD2@Z 010012e0 f   TextPopup.obj
+ 0001:00000370       ?findFirstFreeSlot@@YAHXZ  01001370 f   WindowManager.obj
+ 0001:000003c0       ?addWindow@@YAHUWINDOW@@@Z 010013c0 f   WindowManager.obj
+ 0001:00000410       ?repaintScreen@@YAXXZ      01001410 f   WindowManager.obj
+ 0001:00000470       ?getWindowById@@YAPAUWINDOW@@D@Z 01001470 f   WindowManager.obj
+ 0001:00000490       ?print@@YAXPAD@Z           01001490 f   LevAPI:LevAPI.obj
+ 0001:000004b0       ?getInputChar@@YADXZ       010014b0 f   LevAPI:LevAPI.obj
+ 0001:000004e0       ?VGA_init@@YAXXZ           010014e0 f   LevAPI:LevAPI.obj
+ 0001:00000500       ?VGA_clear@@YAXXZ          01001500 f   LevAPI:LevAPI.obj
+ 0001:00000520       ?VGA_putimage@@YAXHHPAD@Z  01001520 f   LevAPI:LevAPI.obj
+ 0001:00000550       ?VGA_deinit@@YAXXZ         01001550 f   LevAPI:LevAPI.obj
+ 0001:00000570       ?VGA_putstring@@YAXHHPAD@Z 01001570 f   LevAPI:LevAPI.obj
+ 0001:000005a0       ?VGA_putchar@@YAXHHD@Z     010015a0 f   LevAPI:LevAPI.obj
+ 0001:000005d0       ?VGA_putrect@@YAXHHHH@Z    010015d0 f   LevAPI:LevAPI.obj
+ 0001:00000600       ?VGA_setcolor@@YAXD@Z      01001600 f   LevAPI:LevAPI.obj
+ 0001:00000620       ?VGA_getcolor@@YADXZ       01001620 f   LevAPI:LevAPI.obj
+ 0002:00000000       ??_C@_09KKBHBBKF@LevOS?52?40?$AA@ 01002000     main.obj
+ 0002:0000000c       ??_C@_0BM@KGEMJOIP@Levex?5is?5an?5epic?5developer?$CB?$AA@ 0100200c     main.obj
+ 0002:00000028       ??_C@_08OBGPNNFO@test?4bmp?$AA@ 01002028     main.obj
+ 0002:00000034       ??_C@_0N@BPJMLEOO@?6Gfx?5init?4?4?4?$AA@ 01002034     main.obj
+
+ entry point at        0001:00000000
+
+ Static symbols
+

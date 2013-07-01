@@ -1,0 +1,85 @@
+#include "hw_mouse.h"
+#include "HComm.h"
+#include "DebugDisplay.h"
+
+#define DATA_PORT_RW 0x60
+#define STAT_REG_R 0x64
+#define CMD_REG_W 0x64
+
+typedef struct {
+	int x;
+	int y;
+} MOUSE_STATE;
+
+void _cdecl mice_irq ();
+
+void wcmd(unsigned char d)
+{
+	outport(CMD_REG_W, d);
+}
+void wdata(unsigned char d)
+{
+	outport(DATA_PORT_RW, d);
+}
+
+void waitforrdy()
+{
+	while(inport(STAT_REG_R) & 1 != 0);
+}
+
+char rresponse()
+{
+	waitforrdy();
+	return inport(DATA_PORT_RW);
+}
+
+bool mice_install()
+{
+	// flush off output register
+	inport(0x20);
+	// init PS2 second device (mouse as per se)
+
+	wcmd(0x20);
+	waitforrdy();
+	char cfg = inport(DATA_PORT_RW);// get config byte
+	cfg = cfg|2; // enable 2nd interrupt
+	cfg = cfg&~32; // enable 2nd clock
+	wcmd(0x60);
+	waitforrdy();
+	wdata(cfg); // write cfg back
+
+	wcmd(0xA8); // enable second ps2 port
+	waitforrdy();
+	wcmd(0xA9); // test second ps2 port
+	if(rresponse() == 0) outport(0xE9, 'W');
+
+	// enable reporting
+	wcmd(0xD4); // write to 2nd input
+	waitforrdy();
+	wcmd(0xFA); // write enable data reporting
+
+	// see if it has ACK'd it
+	char r = rresponse();
+	if(r!=0xFA) DebugPrintf("Mousereply=0x%x", r); return false;
+
+	// create handler for IRQ12 (second PS2 device) INT 44
+	setint(44, (I86_IRQ_HANDLER)mice_irq);
+
+	return true;
+}
+
+void _cdecl mice_irq () {
+
+	_asm add esp, 12
+	_asm pushad
+	_asm cli
+
+	DebugPrintf("lawl");
+	// tell hal we are done
+	interruptdone(12);
+
+	// return from interrupt handler
+	_asm sti
+	_asm popad
+	_asm iretd
+}

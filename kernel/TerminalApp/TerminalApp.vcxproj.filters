@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Commands">
+      <UniqueIdentifier>{564d613f-a73c-4813-a8d3-31dc475c6f9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="stdlib">
+      <UniqueIdentifier>{83698151-a0b6-4493-9e24-27d8739817cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="LevAPI">
+      <UniqueIdentifier>{5448e6ce-7a2f-4f20-aefb-1e02175ba2dc}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="string.cpp">
+      <Filter>stdlib</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Command.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="string.h">
+      <Filter>stdlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dllTest\LevAPI\lev_vga.h">
+      <Filter>LevAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dllTest\LevAPI\lev_futils.h">
+      <Filter>LevAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dllTest\LevAPI\lev_input.h">
+      <Filter>LevAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dllTest\LevAPI\lev_misc.h">
+      <Filter>LevAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dllTest\LevAPI\lev_text.h">
+      <Filter>LevAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dllTest\LevAPI\lev_time.h">
+      <Filter>LevAPI</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,35 @@
+ game
+
+ Timestamp is 51d15d39 (Mon Jul 01 12:43:05 2013)
+
+ Preferred load address is 01000000
+
+ Start         Length     Name                   Class
+ 0001:00000000 000002caH .text                   CODE
+ 0002:00000000 00000107H .rdata                  DATA
+ 0003:00000000 00000020H .bss                    DATA
+
+  Address         Publics by Value              Rva+Base       Lib:Object
+
+ 0000:00000000       ___safe_se_handler_table   00000000     <absolute>
+ 0000:00000000       ___safe_se_handler_count   00000000     <absolute>
+ 0001:00000000       ?random@@YAHHH@Z           01001000 f   main.obj
+ 0001:00000050       ?parseInt@@YAHPAD@Z        01001050 f   main.obj
+ 0001:000000a0       _main                      010010a0 f   main.obj
+ 0001:00000220       ?print@@YAXPAD@Z           01001220 f   LevAPI:LevAPI.obj
+ 0001:00000240       ?printchar@@YAXD@Z         01001240 f   LevAPI:LevAPI.obj
+ 0001:00000260       ?printNumber@@YAXH@Z       01001260 f   LevAPI:LevAPI.obj
+ 0001:00000280       ?getInputChar@@YADXZ       01001280 f   LevAPI:LevAPI.obj
+ 0001:000002b0       ?fillRTC@@YAXH@Z           010012b0 f   LevAPI:LevAPI.obj
+ 0002:00000000       ??_C@_0BK@ONAOAEKM@?6Your?5number?5is?5too?5much?$CB?$AA@ 01002000     main.obj
+ 0002:0000001c       ??_C@_0BJ@MCLOPNHF@?6Your?5number?5is?5too?5low?$CB?$AA@ 0100201c     main.obj
+ 0002:00000038       ??_C@_0CJ@CJILKOFE@?6Correct?$CB?5Thanks?5for?5playing?$CB?5?3?$CJ@ 01002038     main.obj
+ 0002:00000068       ??_C@_0GF@CNMIMHML@?6I?5have?5thought?5of?5a?5number?$CB?6Typ@ 01002068     main.obj
+ 0002:000000d0       ??_C@_0DH@PNIGGDEN@?6Guess?9the?9Number?5v1?40?5by?5Levex?$CB@ 010020d0     main.obj
+ 0003:00000000       ?rtc_data@@3U__RTC__DATA@@A 01003000     main.obj
+ 0003:0000001c       ?random_seed@@3HA          0100301c     main.obj
+
+ entry point at        0001:000000a0
+
+ Static symbols
+
