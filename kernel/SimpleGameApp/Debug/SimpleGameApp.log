@@ -1,5 +1,5 @@
-﻿Build started 7/1/2013 12:43:08 PM.
-     1>Project "C:\Dev\LevOS\kernel\SimpleGameApp\SimpleGameApp.vcxproj" on node 3 (build target(s)).
+﻿Build started 7/4/2013 6:19:59 PM.
+     1>Project "C:\Dev\LevOS\kernel\SimpleGameApp\SimpleGameApp.vcxproj" on node 4 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\SimpleGameApp.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
@@ -16,4 +16,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:00.55
+Time Elapsed 00:00:00.40

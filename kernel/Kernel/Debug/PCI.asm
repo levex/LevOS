@@ -22,14 +22,14 @@ _func$ = 16						; size = 2
 _offset$ = 20						; size = 2
 ?pciConfigReadWord@@YAIGGGG@Z PROC			; pciConfigReadWord, COMDAT
 
-; 32   :     unsigned long address;
-; 33   :     unsigned long lbus = (unsigned long)bus;
-; 34   :     unsigned long lslot = (unsigned long)slot;
-; 35   :     unsigned long lfunc = (unsigned long)func;
-; 36   :     unsigned short tmp = 0;
-; 37   :     address = (unsigned long)((lbus << 16) | (lslot << 11) |
-; 38   :               (lfunc << 8) | (offset & 0xfc) | ((int)0x80000000));
-; 39   :     outportW (0xCF8, address);
+; 34   :     unsigned long address;
+; 35   :     unsigned long lbus = (unsigned long)bus;
+; 36   :     unsigned long lslot = (unsigned long)slot;
+; 37   :     unsigned long lfunc = (unsigned long)func;
+; 38   :     unsigned short tmp = 0;
+; 39   :     address = (unsigned long)((lbus << 16) | (lslot << 11) |
+; 40   :               (lfunc << 8) | (offset & 0xfc) | ((int)0x80000000));
+; 41   :     outportW (0xCF8, address);
 
 	movzx	eax, WORD PTR _bus$[esp-4]
 	movzx	ecx, WORD PTR _slot$[esp-4]
@@ -51,7 +51,7 @@ _offset$ = 20						; size = 2
 	push	3320					; 00000cf8H
 	call	?outportW@@YAXGI@Z			; outportW
 
-; 40   :     tmp = (unsigned short)((inportW (0xCFC) >> ((offset & 2) * 8)) & 0xffff);
+; 42   :     tmp = (unsigned short)((inportW (0xCFC) >> ((offset & 2) * 8)) & 0xffff);
 
 	push	3324					; 00000cfcH
 	call	?inportW@@YAIG@Z			; inportW
@@ -64,11 +64,11 @@ _offset$ = 20						; size = 2
 	add	esp, 12					; 0000000cH
 	pop	esi
 
-; 41   :     return (tmp);
+; 43   :     return (tmp);
 
 	movzx	eax, ax
 
-; 42   :  }
+; 44   :  }
 
 	ret	0
 ?pciConfigReadWord@@YAIGGGG@Z ENDP			; pciConfigReadWord
@@ -81,9 +81,9 @@ _bus$ = 8						; size = 2
 _slot$ = 12						; size = 2
 ?pciCheckVendor@@YAGGG@Z PROC				; pciCheckVendor, COMDAT
 
-; 46   :     unsigned short vendor,device;
-; 47   : 	/* check if device is valid */
-; 48   :     if ((vendor = pciConfigReadWord(bus,slot,0,0)) != 0xFFFF) {
+; 48   :     unsigned short vendor,device;
+; 49   : 	/* check if device is valid */
+; 50   :     if ((vendor = pciConfigReadWord(bus,slot,0,0)) != 0xFFFF) {
 
 	movzx	eax, WORD PTR _slot$[esp-4]
 	push	esi
@@ -104,7 +104,7 @@ _slot$ = 12						; size = 2
 	cmp	di, cx
 	je	SHORT $LN8@pciCheckVe
 
-; 49   :        device = pciConfigReadWord(bus,slot,0,2);
+; 51   :        device = pciConfigReadWord(bus,slot,0,2);
 
 	push	esi
 	push	3320					; 00000cf8H
@@ -114,14 +114,14 @@ _slot$ = 12						; size = 2
 	add	esp, 12					; 0000000cH
 $LN8@pciCheckVe:
 
-; 50   :        /* valid device */
-; 51   :     } return (vendor);
+; 52   :        /* valid device */
+; 53   :     } return (vendor);
 
 	mov	ax, di
 	pop	edi
 	pop	esi
 
-; 52   :  }
+; 54   :  }
 
 	ret	0
 ?pciCheckVendor@@YAGGG@Z ENDP				; pciCheckVendor
@@ -135,7 +135,7 @@ _device$ = 12						; size = 2
 _function$ = 16						; size = 2
 ?getVendorID@@YAGGGG@Z PROC				; getVendorID, COMDAT
 
-; 56   : 	int r0 = pciConfigReadWord(bus,device,function,0);
+; 58   : 	int r0 = pciConfigReadWord(bus,device,function,0);
 
 	movzx	eax, WORD PTR _bus$[esp-4]
 	movzx	ecx, WORD PTR _device$[esp-4]
@@ -155,9 +155,9 @@ _function$ = 16						; size = 2
 	call	?inportW@@YAIG@Z			; inportW
 	add	esp, 12					; 0000000cH
 
-; 57   : 	// Register 00 => DeviceID(2b) VendorID(2b)
-; 58   : 	return r0;
-; 59   : }
+; 59   : 	// Register 00 => DeviceID(2b) VendorID(2b)
+; 60   : 	return r0;
+; 61   : }
 
 	ret	0
 ?getVendorID@@YAGGGG@Z ENDP				; getVendorID
@@ -171,7 +171,7 @@ _device$ = 12						; size = 2
 _function$ = 16						; size = 2
 ?getDeviceID@@YAGGGG@Z PROC				; getDeviceID, COMDAT
 
-; 63   : 	int r0 = pciConfigReadWord(bus,device,function,2);
+; 65   : 	int r0 = pciConfigReadWord(bus,device,function,2);
 
 	movzx	eax, WORD PTR _bus$[esp-4]
 	movzx	ecx, WORD PTR _device$[esp-4]
@@ -192,9 +192,9 @@ _function$ = 16						; size = 2
 	add	esp, 12					; 0000000cH
 	shr	eax, 16					; 00000010H
 
-; 64   : 	// Register 00 => DeviceID(2b) VendorID(2b)
-; 65   : 	return r0;
-; 66   : }
+; 66   : 	// Register 00 => DeviceID(2b) VendorID(2b)
+; 67   : 	return r0;
+; 68   : }
 
 	ret	0
 ?getDeviceID@@YAGGGG@Z ENDP				; getDeviceID
@@ -208,7 +208,7 @@ _device$ = 12						; size = 2
 _function$ = 16						; size = 2
 ?getClassId@@YAGGGG@Z PROC				; getClassId, COMDAT
 
-; 70   : 	int r0 = pciConfigReadWord(bus,device,function,0xA);
+; 72   : 	int r0 = pciConfigReadWord(bus,device,function,0xA);
 
 	movzx	eax, WORD PTR _bus$[esp-4]
 	movzx	ecx, WORD PTR _device$[esp-4]
@@ -229,11 +229,11 @@ _function$ = 16						; size = 2
 	shr	eax, 16					; 00000010H
 	add	esp, 12					; 0000000cH
 
-; 71   : 	return (r0 & ~0x00FF) >> 8;
+; 73   : 	return (r0 & ~0x00FF) >> 8;
 
 	shr	eax, 8
 
-; 72   : }
+; 74   : }
 
 	ret	0
 ?getClassId@@YAGGGG@Z ENDP				; getClassId
@@ -247,7 +247,7 @@ _device$ = 12						; size = 2
 _function$ = 16						; size = 2
 ?getSubClassId@@YAGGGG@Z PROC				; getSubClassId, COMDAT
 
-; 76   : 	int r0 = pciConfigReadWord(bus,device,function,0xA);
+; 78   : 	int r0 = pciConfigReadWord(bus,device,function,0xA);
 
 	movzx	eax, WORD PTR _bus$[esp-4]
 	movzx	ecx, WORD PTR _device$[esp-4]
@@ -268,20 +268,633 @@ _function$ = 16						; size = 2
 	shr	eax, 16					; 00000010H
 	add	esp, 12					; 0000000cH
 
-; 77   : 	return (r0 & ~0xFF00);
+; 79   : 	return (r0 & ~0xFF00);
 
 	and	eax, -65281				; ffff00ffH
 
-; 78   : }
+; 80   : }
 
 	ret	0
 ?getSubClassId@@YAGGGG@Z ENDP				; getSubClassId
 _TEXT	ENDS
+PUBLIC	??_C@_07NBCGADJA@Unknown?$AA@			; `string'
+PUBLIC	??_C@_06KEEMJMBN@No?9fit?$AA@			; `string'
+PUBLIC	??_C@_0DC@KGLECONI@Data?5Acquisition?5and?5Signal?5Proc@ ; `string'
+PUBLIC	??_C@_0CB@GFHLBNPL@Encryption?1Decryption?5Controller@ ; `string'
+PUBLIC	??_C@_0CD@PKDALBEP@Satellite?5Communication?5Controll@ ; `string'
+PUBLIC	??_C@_0BL@MELBNFBC@Intelligent?5I?1O?5Controller?$AA@ ; `string'
+PUBLIC	??_C@_0BE@HDDMCLPL@Wireless?5Controller?$AA@	; `string'
+PUBLIC	??_C@_0BG@JGLEPAOP@Serial?5Bus?5Controller?$AA@	; `string'
+PUBLIC	??_C@_09JOCICBA@Processor?$AA@			; `string'
+PUBLIC	??_C@_0BA@BCAHNJPL@Docking?5Station?$AA@	; `string'
+PUBLIC	??_C@_0N@DLFBPJHG@Input?5Device?$AA@		; `string'
+PUBLIC	??_C@_0BI@GBGGMPO@Base?5System?5Peripherial?$AA@ ; `string'
+PUBLIC	??_C@_0CA@LCDCDNCF@Simple?5Communication?5Controller?$AA@ ; `string'
+PUBLIC	??_C@_0O@FHKOPOMC@Bridge?5Device?$AA@		; `string'
+PUBLIC	??_C@_0BC@HBOKPOON@Memory?5Controller?$AA@	; `string'
+PUBLIC	??_C@_0BG@JELBIFKK@Multimedia?5Controller?$AA@	; `string'
+PUBLIC	??_C@_0BD@GKNBFHEP@Display?5Controller?$AA@	; `string'
+PUBLIC	??_C@_0BD@JKDNBFA@Network?5Controller?$AA@	; `string'
+PUBLIC	??_C@_0BI@KDCLLJEB@Mass?5Storage?5Controller?$AA@ ; `string'
+PUBLIC	?getStringOfClass@@YAPADE@Z			; getStringOfClass
+;	COMDAT ??_C@_07NBCGADJA@Unknown?$AA@
+CONST	SEGMENT
+??_C@_07NBCGADJA@Unknown?$AA@ DB 'Unknown', 00H		; `string'
+CONST	ENDS
+;	COMDAT ??_C@_06KEEMJMBN@No?9fit?$AA@
+CONST	SEGMENT
+??_C@_06KEEMJMBN@No?9fit?$AA@ DB 'No-fit', 00H		; `string'
+CONST	ENDS
+;	COMDAT ??_C@_0DC@KGLECONI@Data?5Acquisition?5and?5Signal?5Proc@
+CONST	SEGMENT
+??_C@_0DC@KGLECONI@Data?5Acquisition?5and?5Signal?5Proc@ DB 'Data Acquisi'
+	DB	'tion and Signal Processing Controller', 00H	; `string'
+CONST	ENDS
+;	COMDAT ??_C@_0CB@GFHLBNPL@Encryption?1Decryption?5Controller@
+CONST	SEGMENT
+??_C@_0CB@GFHLBNPL@Encryption?1Decryption?5Controller@ DB 'Encryption/Dec'
+	DB	'ryption Controller', 00H			; `string'
+CONST	ENDS
+;	COMDAT ??_C@_0CD@PKDALBEP@Satellite?5Communication?5Controll@
+CONST	SEGMENT
+??_C@_0CD@PKDALBEP@Satellite?5Communication?5Controll@ DB 'Satellite Comm'
+	DB	'unication Controller', 00H			; `string'
+CONST	ENDS
+;	COMDAT ??_C@_0BL@MELBNFBC@Intelligent?5I?1O?5Controller?$AA@
+CONST	SEGMENT
+??_C@_0BL@MELBNFBC@Intelligent?5I?1O?5Controller?$AA@ DB 'Intelligent I/O'
+	DB	' Controller', 00H				; `string'
+CONST	ENDS
+;	COMDAT ??_C@_0BE@HDDMCLPL@Wireless?5Controller?$AA@
+CONST	SEGMENT
+??_C@_0BE@HDDMCLPL@Wireless?5Controller?$AA@ DB 'Wireless Controller', 00H ; `string'
+CONST	ENDS
+;	COMDAT ??_C@_0BG@JGLEPAOP@Serial?5Bus?5Controller?$AA@
+CONST	SEGMENT
+??_C@_0BG@JGLEPAOP@Serial?5Bus?5Controller?$AA@ DB 'Serial Bus Controller'
+	DB	00H						; `string'
+CONST	ENDS
+;	COMDAT ??_C@_09JOCICBA@Processor?$AA@
+CONST	SEGMENT
+??_C@_09JOCICBA@Processor?$AA@ DB 'Processor', 00H	; `string'
+CONST	ENDS
+;	COMDAT ??_C@_0BA@BCAHNJPL@Docking?5Station?$AA@
+CONST	SEGMENT
+??_C@_0BA@BCAHNJPL@Docking?5Station?$AA@ DB 'Docking Station', 00H ; `string'
+CONST	ENDS
+;	COMDAT ??_C@_0N@DLFBPJHG@Input?5Device?$AA@
+CONST	SEGMENT
+??_C@_0N@DLFBPJHG@Input?5Device?$AA@ DB 'Input Device', 00H ; `string'
+CONST	ENDS
+;	COMDAT ??_C@_0BI@GBGGMPO@Base?5System?5Peripherial?$AA@
+CONST	SEGMENT
+??_C@_0BI@GBGGMPO@Base?5System?5Peripherial?$AA@ DB 'Base System Peripher'
+	DB	'ial', 00H					; `string'
+CONST	ENDS
+;	COMDAT ??_C@_0CA@LCDCDNCF@Simple?5Communication?5Controller?$AA@
+CONST	SEGMENT
+??_C@_0CA@LCDCDNCF@Simple?5Communication?5Controller?$AA@ DB 'Simple Comm'
+	DB	'unication Controller', 00H			; `string'
+CONST	ENDS
+;	COMDAT ??_C@_0O@FHKOPOMC@Bridge?5Device?$AA@
+CONST	SEGMENT
+??_C@_0O@FHKOPOMC@Bridge?5Device?$AA@ DB 'Bridge Device', 00H ; `string'
+CONST	ENDS
+;	COMDAT ??_C@_0BC@HBOKPOON@Memory?5Controller?$AA@
+CONST	SEGMENT
+??_C@_0BC@HBOKPOON@Memory?5Controller?$AA@ DB 'Memory Controller', 00H ; `string'
+CONST	ENDS
+;	COMDAT ??_C@_0BG@JELBIFKK@Multimedia?5Controller?$AA@
+CONST	SEGMENT
+??_C@_0BG@JELBIFKK@Multimedia?5Controller?$AA@ DB 'Multimedia Controller', 00H ; `string'
+CONST	ENDS
+;	COMDAT ??_C@_0BD@GKNBFHEP@Display?5Controller?$AA@
+CONST	SEGMENT
+??_C@_0BD@GKNBFHEP@Display?5Controller?$AA@ DB 'Display Controller', 00H ; `string'
+CONST	ENDS
+;	COMDAT ??_C@_0BD@JKDNBFA@Network?5Controller?$AA@
+CONST	SEGMENT
+??_C@_0BD@JKDNBFA@Network?5Controller?$AA@ DB 'Network Controller', 00H ; `string'
+CONST	ENDS
+;	COMDAT ??_C@_0BI@KDCLLJEB@Mass?5Storage?5Controller?$AA@
+CONST	SEGMENT
+??_C@_0BI@KDCLLJEB@Mass?5Storage?5Controller?$AA@ DB 'Mass Storage Contro'
+	DB	'ller', 00H					; `string'
+; Function compile flags: /Ogtpy
+CONST	ENDS
+;	COMDAT ?getStringOfClass@@YAPADE@Z
+_TEXT	SEGMENT
+_c$ = 8							; size = 1
+?getStringOfClass@@YAPADE@Z PROC			; getStringOfClass, COMDAT
+
+; 83   : 	switch(c)
+
+	movzx	eax, BYTE PTR _c$[esp-4]
+	dec	eax
+	cmp	eax, 254				; 000000feH
+	ja	SHORT $LN19@getStringO
+	movzx	eax, BYTE PTR $LN24@getStringO[eax]
+	jmp	DWORD PTR $LN25@getStringO[eax*4]
+$LN18@getStringO:
+
+; 87   : 		case 1:
+; 88   : 			return "Mass Storage Controller";
+
+	mov	eax, OFFSET ??_C@_0BI@KDCLLJEB@Mass?5Storage?5Controller?$AA@
+
+; 123  : 	}
+; 124  : }
+
+	ret	0
+$LN17@getStringO:
+
+; 89   : 		case 0x02:
+; 90   : 			return "Network Controller";
+
+	mov	eax, OFFSET ??_C@_0BD@JKDNBFA@Network?5Controller?$AA@
+
+; 123  : 	}
+; 124  : }
+
+	ret	0
+$LN16@getStringO:
+
+; 91   : 		case 0x03:
+; 92   : 			return "Display Controller";
+
+	mov	eax, OFFSET ??_C@_0BD@GKNBFHEP@Display?5Controller?$AA@
+
+; 123  : 	}
+; 124  : }
+
+	ret	0
+$LN15@getStringO:
+
+; 93   : 		case 0x04:
+; 94   : 			return "Multimedia Controller";
+
+	mov	eax, OFFSET ??_C@_0BG@JELBIFKK@Multimedia?5Controller?$AA@
+
+; 123  : 	}
+; 124  : }
+
+	ret	0
+$LN14@getStringO:
+
+; 95   : 		case 0x05:
+; 96   : 			return "Memory Controller";
+
+	mov	eax, OFFSET ??_C@_0BC@HBOKPOON@Memory?5Controller?$AA@
+
+; 123  : 	}
+; 124  : }
+
+	ret	0
+$LN13@getStringO:
+
+; 97   : 		case 0x06:
+; 98   : 			return "Bridge Device";
+
+	mov	eax, OFFSET ??_C@_0O@FHKOPOMC@Bridge?5Device?$AA@
+
+; 123  : 	}
+; 124  : }
+
+	ret	0
+$LN12@getStringO:
+
+; 99   : 		case 0x07:
+; 100  : 			return "Simple Communication Controller";
+
+	mov	eax, OFFSET ??_C@_0CA@LCDCDNCF@Simple?5Communication?5Controller?$AA@
+
+; 123  : 	}
+; 124  : }
+
+	ret	0
+$LN11@getStringO:
+
+; 101  : 		case 0x08:
+; 102  : 			return "Base System Peripherial";
+
+	mov	eax, OFFSET ??_C@_0BI@GBGGMPO@Base?5System?5Peripherial?$AA@
+
+; 123  : 	}
+; 124  : }
+
+	ret	0
+$LN10@getStringO:
+
+; 103  : 		case 0x09:
+; 104  : 			return "Input Device";
+
+	mov	eax, OFFSET ??_C@_0N@DLFBPJHG@Input?5Device?$AA@
+
+; 123  : 	}
+; 124  : }
+
+	ret	0
+$LN9@getStringO:
+
+; 105  : 		case 0x0A:
+; 106  : 			return "Docking Station";
+
+	mov	eax, OFFSET ??_C@_0BA@BCAHNJPL@Docking?5Station?$AA@
+
+; 123  : 	}
+; 124  : }
+
+	ret	0
+$LN8@getStringO:
+
+; 107  : 		case 0x0B:
+; 108  : 			return "Processor";
+
+	mov	eax, OFFSET ??_C@_09JOCICBA@Processor?$AA@
+
+; 123  : 	}
+; 124  : }
+
+	ret	0
+$LN7@getStringO:
+
+; 109  : 		case 0x0C:
+; 110  : 			return "Serial Bus Controller";
+
+	mov	eax, OFFSET ??_C@_0BG@JGLEPAOP@Serial?5Bus?5Controller?$AA@
+
+; 123  : 	}
+; 124  : }
+
+	ret	0
+$LN6@getStringO:
+
+; 111  : 		case 0x0D:
+; 112  : 			return "Wireless Controller";
+
+	mov	eax, OFFSET ??_C@_0BE@HDDMCLPL@Wireless?5Controller?$AA@
+
+; 123  : 	}
+; 124  : }
+
+	ret	0
+$LN5@getStringO:
+
+; 113  : 		case 0x0E:
+; 114  : 			return "Intelligent I/O Controller";
+
+	mov	eax, OFFSET ??_C@_0BL@MELBNFBC@Intelligent?5I?1O?5Controller?$AA@
+
+; 123  : 	}
+; 124  : }
+
+	ret	0
+$LN4@getStringO:
+
+; 115  : 		case 0x0F:
+; 116  : 			return "Satellite Communication Controller";
+
+	mov	eax, OFFSET ??_C@_0CD@PKDALBEP@Satellite?5Communication?5Controll@
+
+; 123  : 	}
+; 124  : }
+
+	ret	0
+$LN3@getStringO:
+
+; 117  : 		case 0x10:
+; 118  : 			return "Encryption/Decryption Controller";
+
+	mov	eax, OFFSET ??_C@_0CB@GFHLBNPL@Encryption?1Decryption?5Controller@
+
+; 123  : 	}
+; 124  : }
+
+	ret	0
+$LN2@getStringO:
+
+; 119  : 		case 0x11:
+; 120  : 			return "Data Acquisition and Signal Processing Controller";
+
+	mov	eax, OFFSET ??_C@_0DC@KGLECONI@Data?5Acquisition?5and?5Signal?5Proc@
+
+; 123  : 	}
+; 124  : }
+
+	ret	0
+$LN1@getStringO:
+
+; 121  : 		case 0xFF:
+; 122  : 			return "No-fit";
+
+	mov	eax, OFFSET ??_C@_06KEEMJMBN@No?9fit?$AA@
+
+; 123  : 	}
+; 124  : }
+
+	ret	0
+$LN19@getStringO:
+
+; 84   : 	{
+; 85   : 		default:
+; 86   : 			return "Unknown";
+
+	mov	eax, OFFSET ??_C@_07NBCGADJA@Unknown?$AA@
+
+; 123  : 	}
+; 124  : }
+
+	ret	0
+	npad	3
+$LN25@getStringO:
+	DD	$LN18@getStringO
+	DD	$LN17@getStringO
+	DD	$LN16@getStringO
+	DD	$LN15@getStringO
+	DD	$LN14@getStringO
+	DD	$LN13@getStringO
+	DD	$LN12@getStringO
+	DD	$LN11@getStringO
+	DD	$LN10@getStringO
+	DD	$LN9@getStringO
+	DD	$LN8@getStringO
+	DD	$LN7@getStringO
+	DD	$LN6@getStringO
+	DD	$LN5@getStringO
+	DD	$LN4@getStringO
+	DD	$LN3@getStringO
+	DD	$LN2@getStringO
+	DD	$LN1@getStringO
+	DD	$LN19@getStringO
+$LN24@getStringO:
+	DB	0
+	DB	1
+	DB	2
+	DB	3
+	DB	4
+	DB	5
+	DB	6
+	DB	7
+	DB	8
+	DB	9
+	DB	10					; 0000000aH
+	DB	11					; 0000000bH
+	DB	12					; 0000000cH
+	DB	13					; 0000000dH
+	DB	14					; 0000000eH
+	DB	15					; 0000000fH
+	DB	16					; 00000010H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	18					; 00000012H
+	DB	17					; 00000011H
+?getStringOfClass@@YAPADE@Z ENDP			; getStringOfClass
+_TEXT	ENDS
+PUBLIC	??_C@_0BC@MHIGDKLC@?6?5?5?5?5?5?5?5?5Ergo?0?5?$CFs?$AA@ ; `string'
 PUBLIC	??_C@_0CG@KJDCIMEK@?6?5?5?5?5?5?5?5?5ClassId?$DN0x?$CFx?5SubclassId@ ; `string'
 PUBLIC	??_C@_0ED@BAHLBCOH@?6PCI?3?5Bus?3?50x?$CFX?5Slot?3?50x?$CFx?5Funct@ ; `string'
 PUBLIC	??_C@_0P@GELAMMA@?6PCI?5testing?4?4?$AA@	; `string'
 PUBLIC	?PCI_test@@YAXXZ				; PCI_test
 EXTRN	?DebugPrintf@@YAHPBDZZ:PROC			; DebugPrintf
+;	COMDAT ??_C@_0BC@MHIGDKLC@?6?5?5?5?5?5?5?5?5Ergo?0?5?$CFs?$AA@
+CONST	SEGMENT
+??_C@_0BC@MHIGDKLC@?6?5?5?5?5?5?5?5?5Ergo?0?5?$CFs?$AA@ DB 0aH, '        '
+	DB	'Ergo, %s', 00H				; `string'
+CONST	ENDS
 ;	COMDAT ??_C@_0CG@KJDCIMEK@?6?5?5?5?5?5?5?5?5ClassId?$DN0x?$CFx?5SubclassId@
 CONST	SEGMENT
 ??_C@_0CG@KJDCIMEK@?6?5?5?5?5?5?5?5?5ClassId?$DN0x?$CFx?5SubclassId@ DB 0aH
@@ -300,13 +913,13 @@ CONST	SEGMENT
 CONST	ENDS
 ;	COMDAT ?PCI_test@@YAXXZ
 _TEXT	SEGMENT
-_slot$2662 = -16					; size = 4
-_bus$2658 = -12						; size = 4
-tv404 = -8						; size = 4
-tv408 = -4						; size = 4
+_slot$2664 = -16					; size = 4
+_bus$2660 = -12						; size = 4
+tv440 = -8						; size = 4
+tv444 = -4						; size = 4
 ?PCI_test@@YAXXZ PROC					; PCI_test, COMDAT
 
-; 11   : {
+; 12   : {
 
 	sub	esp, 16					; 00000010H
 	push	ebx
@@ -314,60 +927,60 @@ tv408 = -4						; size = 4
 	push	esi
 	push	edi
 
-; 12   : 	DebugPrintf("\nPCI testing..");
+; 13   : 	DebugPrintf("\nPCI testing..");
 
 	push	OFFSET ??_C@_0P@GELAMMA@?6PCI?5testing?4?4?$AA@
 	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
 	add	esp, 4
 
-; 13   : 	// Maximum PCI capacity: 256 bus each having at most 32 slots and each slots having at most 8 functions
-; 14   : 	for(int bus = 0; bus < 256; bus++)
+; 14   : 	// Maximum PCI capacity: 256 bus each having at most 32 slots and each slots having at most 8 functions
+; 15   : 	for(int bus = 0; bus < 256; bus++)
 
-	mov	DWORD PTR _bus$2658[esp+32], 0
+	mov	DWORD PTR _bus$2660[esp+32], 0
 	npad	4
-$LL35@PCI_test:
-	movzx	eax, WORD PTR _bus$2658[esp+32]
+$LL39@PCI_test:
+	movzx	eax, WORD PTR _bus$2660[esp+32]
 	or	eax, -32768				; ffff8000H
 	shl	eax, 5
 
-; 15   : 	{
-; 16   : 		for(int slot = 0; slot < 32; slot++)
+; 16   : 	{
+; 17   : 		for(int slot = 0; slot < 32; slot++)
 
-	mov	DWORD PTR _slot$2662[esp+32], 0
-	mov	DWORD PTR tv404[esp+32], eax
+	mov	DWORD PTR _slot$2664[esp+32], 0
+	mov	DWORD PTR tv440[esp+32], eax
 	jmp	SHORT $LN7@PCI_test
 	npad	5
-$LL36@PCI_test:
+$LL40@PCI_test:
 
-; 13   : 	// Maximum PCI capacity: 256 bus each having at most 32 slots and each slots having at most 8 functions
-; 14   : 	for(int bus = 0; bus < 256; bus++)
+; 14   : 	// Maximum PCI capacity: 256 bus each having at most 32 slots and each slots having at most 8 functions
+; 15   : 	for(int bus = 0; bus < 256; bus++)
 
-	mov	eax, DWORD PTR tv404[esp+32]
+	mov	eax, DWORD PTR tv440[esp+32]
 $LN7@PCI_test:
 
-; 15   : 	{
-; 16   : 		for(int slot = 0; slot < 32; slot++)
+; 16   : 	{
+; 17   : 		for(int slot = 0; slot < 32; slot++)
 
-	movzx	ecx, WORD PTR _slot$2662[esp+32]
+	movzx	ecx, WORD PTR _slot$2664[esp+32]
 	or	eax, ecx
 
-; 21   : 				if(vendor == 0xFFFF) continue;
+; 22   : 				if(vendor == 0xFFFF) continue;
 
 	add	eax, eax
 	add	eax, eax
 	xor	edi, edi
 	add	eax, eax
-	mov	DWORD PTR tv408[esp+32], eax
-$LL37@PCI_test:
+	mov	DWORD PTR tv444[esp+32], eax
+$LL41@PCI_test:
 
-; 15   : 	{
-; 16   : 		for(int slot = 0; slot < 32; slot++)
+; 16   : 	{
+; 17   : 		for(int slot = 0; slot < 32; slot++)
 
-	mov	esi, DWORD PTR tv408[esp+32]
+	mov	esi, DWORD PTR tv444[esp+32]
 	movzx	ebx, di
 
-; 19   : 			{
-; 20   : 				unsigned short vendor = getVendorID(bus, slot, function);
+; 20   : 			{
+; 21   : 				unsigned short vendor = getVendorID(bus, slot, function);
 
 	or	esi, ebx
 	shl	esi, 8
@@ -378,14 +991,14 @@ $LL37@PCI_test:
 	call	?inportW@@YAIG@Z			; inportW
 	movzx	ebp, ax
 
-; 21   : 				if(vendor == 0xFFFF) continue;
+; 22   : 				if(vendor == 0xFFFF) continue;
 
 	mov	ecx, 65535				; 0000ffffH
 	add	esp, 12					; 0000000cH
 	cmp	bp, cx
 	je	$LN3@PCI_test
 
-; 22   : 				unsigned short device = getDeviceID(bus, slot, function);
+; 23   : 				unsigned short device = getDeviceID(bus, slot, function);
 
 	push	esi
 	push	3320					; 00000cf8H
@@ -393,20 +1006,20 @@ $LL37@PCI_test:
 	push	3324					; 00000cfcH
 	call	?inportW@@YAIG@Z			; inportW
 
-; 23   : 				DebugPrintf("\nPCI: Bus: 0x%X Slot: 0x%x Function: 0x%x Vendor: 0x%X Device=0x%x", bus, slot,function, vendor, device);
+; 24   : 				DebugPrintf("\nPCI: Bus: 0x%X Slot: 0x%x Function: 0x%x Vendor: 0x%X Device=0x%x", bus, slot,function, vendor, device);
 
-	mov	esi, DWORD PTR _bus$2658[esp+44]
+	mov	esi, DWORD PTR _bus$2660[esp+44]
 	shr	eax, 16					; 00000010H
 	push	eax
 	push	ebp
-	mov	ebp, DWORD PTR _slot$2662[esp+52]
+	mov	ebp, DWORD PTR _slot$2664[esp+52]
 	push	edi
 	push	ebp
 	push	esi
 	push	OFFSET ??_C@_0ED@BAHLBCOH@?6PCI?3?5Bus?3?50x?$CFX?5Slot?3?50x?$CFx?5Funct@
 	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
 
-; 24   : 				DebugPrintf("\n        ClassId=0x%x SubclassId=0x%x", getClassId(bus, slot, function), getSubClassId(bus, slot, function));
+; 25   : 				DebugPrintf("\n        ClassId=0x%x SubclassId=0x%x", getClassId(bus, slot, function), getSubClassId(bus, slot, function));
 
 	movzx	esi, si
 	shl	esi, 5
@@ -439,41 +1052,57 @@ $LL37@PCI_test:
 	push	OFFSET ??_C@_0CG@KJDCIMEK@?6?5?5?5?5?5?5?5?5ClassId?$DN0x?$CFx?5SubclassId@
 	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
 	add	esp, 72					; 00000048H
+
+; 26   : 				DebugPrintf("\n        Ergo, %s", getStringOfClass(getClassId(bus, slot, function)));
+
+	push	esi
+	push	3320					; 00000cf8H
+	call	?outportW@@YAXGI@Z			; outportW
+	push	3324					; 00000cfcH
+	call	?inportW@@YAIG@Z			; inportW
+	shr	eax, 16					; 00000010H
+	shr	eax, 8
+	push	eax
+	call	?getStringOfClass@@YAPADE@Z		; getStringOfClass
+	push	eax
+	push	OFFSET ??_C@_0BC@MHIGDKLC@?6?5?5?5?5?5?5?5?5Ergo?0?5?$CFs?$AA@
+	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
+	add	esp, 24					; 00000018H
 $LN3@PCI_test:
 
-; 17   : 		{
-; 18   : 			for(int function = 0; function < 8; function++)
+; 18   : 		{
+; 19   : 			for(int function = 0; function < 8; function++)
 
 	inc	edi
 	cmp	edi, 8
-	jl	$LL37@PCI_test
+	jl	$LL41@PCI_test
 
-; 15   : 	{
-; 16   : 		for(int slot = 0; slot < 32; slot++)
+; 16   : 	{
+; 17   : 		for(int slot = 0; slot < 32; slot++)
 
-	mov	eax, DWORD PTR _slot$2662[esp+32]
+	mov	eax, DWORD PTR _slot$2664[esp+32]
 	inc	eax
-	mov	DWORD PTR _slot$2662[esp+32], eax
+	mov	DWORD PTR _slot$2664[esp+32], eax
 	cmp	eax, 32					; 00000020H
-	jl	$LL36@PCI_test
+	jl	$LL40@PCI_test
 
-; 13   : 	// Maximum PCI capacity: 256 bus each having at most 32 slots and each slots having at most 8 functions
-; 14   : 	for(int bus = 0; bus < 256; bus++)
+; 14   : 	// Maximum PCI capacity: 256 bus each having at most 32 slots and each slots having at most 8 functions
+; 15   : 	for(int bus = 0; bus < 256; bus++)
 
-	mov	eax, DWORD PTR _bus$2658[esp+32]
+	mov	eax, DWORD PTR _bus$2660[esp+32]
 	inc	eax
-	mov	DWORD PTR _bus$2658[esp+32], eax
+	mov	DWORD PTR _bus$2660[esp+32], eax
 	cmp	eax, 256				; 00000100H
-	jl	$LL35@PCI_test
+	jl	$LL39@PCI_test
 	pop	edi
 	pop	esi
 	pop	ebp
 	pop	ebx
 
-; 25   : 			}
-; 26   : 		}
-; 27   : 	}
-; 28   : }
+; 27   : 			}
+; 28   : 		}
+; 29   : 	}
+; 30   : }
 
 	add	esp, 16					; 00000010H
 	ret	0

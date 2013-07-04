@@ -29,6 +29,7 @@ void cmd_dir(char* b);
 void cmd_dobios(char* b);
 void cmd_dump(char* b);
 void cmd_pci(char* b);
+void cmd_reboot(char* b);
 
 
 void createCommand(char* text, char* helptext, COMMAND_HANDLER f)
@@ -57,6 +58,7 @@ void main(int baseaddr)
 	createCommand("bios", "\nJumps back to BIOS", cmd_dobios);
 	createCommand("dump", "\nDumps a PE32 application or DLL", cmd_dump);
 	createCommand("pci", "\nTests PCI", cmd_pci);
+	createCommand("reboot", "\nReboots the PC", cmd_reboot);
 
 	//moveCursorRelative(0, -1);
 	print("Welcome to LevOS 2.0\nThis is a basic CLI, use 'help' for more information.\nHave fun!\n");
@@ -205,6 +207,12 @@ void cmd_test(char* buf)
 	printchar('\n');
 	print((char*)0xC10000);
 	return;
+}
+void cmd_reboot(char* buf)
+{
+	_asm mov al, 0xFE
+	_asm mov dx, 0x64
+	_asm out dx, al
 }
 void cmd_about(char* buf)
 {

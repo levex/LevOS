@@ -25,7 +25,7 @@
 #include "currentTest.h"
 
 
-#define KERNEL_VERSION "010713"
+#define KERNEL_VERSION "040713"
 #define KERNEL_BASE "0xC0000000"
 #define KERNEL_SIZE 4096*5
 
@@ -376,7 +376,7 @@ lol:	movsd
 
 void loop()
 {
-	DebugPrintf("\n[LevOS]~#");
+	DebugPrintf("\n[LevOS-KRNL]~#");
 	KEYCODE key;
 	//geninterrupt(0x21);
 	while(true)

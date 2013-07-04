@@ -114,13 +114,14 @@ _base$ = 8						; size = 4
 	ret	0
 ?getEntryPoint@@YAHH@Z ENDP				; getEntryPoint
 _TEXT	ENDS
-PUBLIC	??_C@_0L@EACKDIBD@?6?$FLLevOS?$FN?$HO?$CD?$AA@	; `string'
+PUBLIC	??_C@_0BA@NBBNMPGM@?6?$FLLevOS?9KRNL?$FN?$HO?$CD?$AA@ ; `string'
 PUBLIC	?loop@@YAXXZ					; loop
 EXTRN	?DebugPutc@@YAXE@Z:PROC				; DebugPutc
 EXTRN	?kkybrd_key_to_ascii@@YADW4KEYCODE@@@Z:PROC	; kkybrd_key_to_ascii
-;	COMDAT ??_C@_0L@EACKDIBD@?6?$FLLevOS?$FN?$HO?$CD?$AA@
+;	COMDAT ??_C@_0BA@NBBNMPGM@?6?$FLLevOS?9KRNL?$FN?$HO?$CD?$AA@
 CONST	SEGMENT
-??_C@_0L@EACKDIBD@?6?$FLLevOS?$FN?$HO?$CD?$AA@ DB 0aH, '[LevOS]~#', 00H ; `string'
+??_C@_0BA@NBBNMPGM@?6?$FLLevOS?9KRNL?$FN?$HO?$CD?$AA@ DB 0aH, '[LevOS-KRN'
+	DB	'L]~#', 00H					; `string'
 ; Function compile flags: /Ogtpy
 CONST	ENDS
 ;	COMDAT ?loop@@YAXXZ
@@ -133,9 +134,9 @@ _c$3567 = -4						; size = 1
 	push	ecx
 	push	esi
 
-; 379  : 	DebugPrintf("\n[LevOS]~#");
+; 379  : 	DebugPrintf("\n[LevOS-KRNL]~#");
 
-	push	OFFSET ??_C@_0L@EACKDIBD@?6?$FLLevOS?$FN?$HO?$CD?$AA@
+	push	OFFSET ??_C@_0BA@NBBNMPGM@?6?$FLLevOS?9KRNL?$FN?$HO?$CD?$AA@
 	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
 $LN13@loop:
 	add	esp, 4
@@ -197,7 +198,7 @@ PUBLIC	??_C@_05MBDEGLCK@ERROR?$AA@			; `string'
 PUBLIC	??_C@_02GIPFHKNO@OK?$AA@			; `string'
 PUBLIC	??_C@_0L@DNGAJNGH@0xC0000000?$AA@		; `string'
 PUBLIC	??_C@_0CD@CHEEAOJK@LevOS2?5loading?5Kernel?5Version?3?5?$CF@ ; `string'
-PUBLIC	??_C@_06BIMJMDNC@010713?$AA@			; `string'
+PUBLIC	??_C@_06EIAEFCGB@040713?$AA@			; `string'
 PUBLIC	_main
 EXTRN	?PE_mapApp@@YA_NPADH@Z:PROC			; PE_mapApp
 EXTRN	?VGA_setfont@@YAXPAD@Z:PROC			; VGA_setfont
@@ -350,9 +351,9 @@ CONST	SEGMENT
 ??_C@_0CD@CHEEAOJK@LevOS2?5loading?5Kernel?5Version?3?5?$CF@ DB 'LevOS2 l'
 	DB	'oading Kernel Version: %s', 0aH, 00H	; `string'
 CONST	ENDS
-;	COMDAT ??_C@_06BIMJMDNC@010713?$AA@
+;	COMDAT ??_C@_06EIAEFCGB@040713?$AA@
 CONST	SEGMENT
-??_C@_06BIMJMDNC@010713?$AA@ DB '010713', 00H		; `string'
+??_C@_06EIAEFCGB@040713?$AA@ DB '040713', 00H		; `string'
 ; Function compile flags: /Ogtpy
 CONST	ENDS
 ;	COMDAT _main
@@ -408,7 +409,7 @@ $LN22@main:
 ; 127  : 
 ; 128  : 	DebugPrintf ("LevOS2 loading Kernel Version: %s\n", KERNEL_VERSION);
 
-	push	OFFSET ??_C@_06BIMJMDNC@010713?$AA@
+	push	OFFSET ??_C@_06EIAEFCGB@040713?$AA@
 	push	OFFSET ??_C@_0CD@CHEEAOJK@LevOS2?5loading?5Kernel?5Version?3?5?$CF@
 	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
 

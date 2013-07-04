@@ -6,6 +6,7 @@ unsigned short getVendorID(unsigned short bus, unsigned short device, unsigned s
 unsigned short getDeviceID(unsigned short bus, unsigned short device, unsigned short function);
 unsigned short getClassId(unsigned short bus, unsigned short device, unsigned short function);
 unsigned short getSubClassId(unsigned short bus, unsigned short device, unsigned short function);
+char* getStringOfClass(unsigned char c);
 
 void PCI_test()
 {
@@ -22,6 +23,7 @@ void PCI_test()
 				unsigned short device = getDeviceID(bus, slot, function);
 				DebugPrintf("\nPCI: Bus: 0x%X Slot: 0x%x Function: 0x%x Vendor: 0x%X Device=0x%x", bus, slot,function, vendor, device);
 				DebugPrintf("\n        ClassId=0x%x SubclassId=0x%x", getClassId(bus, slot, function), getSubClassId(bus, slot, function));
+				DebugPrintf("\n        Ergo, %s", getStringOfClass(getClassId(bus, slot, function)));
 			}
 		}
 	}
@@ -75,4 +77,48 @@ unsigned short getSubClassId(unsigned short bus, unsigned short device, unsigned
 {
 	int r0 = pciConfigReadWord(bus,device,function,0xA);
 	return (r0 & ~0xFF00);
+}
+char* getStringOfClass(unsigned char c)
+{
+	switch(c)
+	{
+		default:
+			return "Unknown";
+		case 1:
+			return "Mass Storage Controller";
+		case 0x02:
+			return "Network Controller";
+		case 0x03:
+			return "Display Controller";
+		case 0x04:
+			return "Multimedia Controller";
+		case 0x05:
+			return "Memory Controller";
+		case 0x06:
+			return "Bridge Device";
+		case 0x07:
+			return "Simple Communication Controller";
+		case 0x08:
+			return "Base System Peripherial";
+		case 0x09:
+			return "Input Device";
+		case 0x0A:
+			return "Docking Station";
+		case 0x0B:
+			return "Processor";
+		case 0x0C:
+			return "Serial Bus Controller";
+		case 0x0D:
+			return "Wireless Controller";
+		case 0x0E:
+			return "Intelligent I/O Controller";
+		case 0x0F:
+			return "Satellite Communication Controller";
+		case 0x10:
+			return "Encryption/Decryption Controller";
+		case 0x11:
+			return "Data Acquisition and Signal Processing Controller";
+		case 0xFF:
+			return "No-fit";
+	}
 }
