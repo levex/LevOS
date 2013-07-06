@@ -17,7 +17,7 @@ _TEXT	SEGMENT
 _a$ = 8							; size = 1
 ?OUT@@YAXD@Z PROC					; OUT, COMDAT
 
-; 12   : 	{
+; 11   : {
 
 	push	ebp
 	mov	ebp, esp
@@ -26,19 +26,19 @@ _a$ = 8							; size = 1
 	push	esi
 	push	edi
 
-; 13   : 			_asm mov dx, 0xE9
+; 12   : 		_asm mov dx, 0xE9
 
 	mov	dx, 233					; 000000e9H
 
-; 14   : 			_asm mov al, a
+; 13   : 		_asm mov al, a
 
 	mov	al, BYTE PTR _a$[ebp]
 
-; 15   : 			_asm out dx, al
+; 14   : 		_asm out dx, al
 
 	out	dx, al
 
-; 16   : 	}
+; 15   : }
 
 	pop	edi
 	pop	esi
@@ -53,17 +53,16 @@ PUBLIC	??_C@_0BM@KGEMJOIP@Levex?5is?5an?5epic?5developer?$CB?$AA@ ; `string'
 PUBLIC	??_C@_08OBGPNNFO@test?4bmp?$AA@			; `string'
 PUBLIC	??_C@_0N@BPJMLEOO@?6Gfx?5init?4?4?4?$AA@	; `string'
 PUBLIC	_main
-EXTRN	?VGA_deinit@@YAXXZ:PROC				; VGA_deinit
-EXTRN	?VGA_putchar@@YAXHHD@Z:PROC			; VGA_putchar
+EXTRN	__imp__VGA_deinit:PROC
 EXTRN	?repaintScreen@@YAXXZ:PROC			; repaintScreen
-EXTRN	?getWindowById@@YAPAUWINDOW@@D@Z:PROC		; getWindowById
-EXTRN	?addWindow@@YAHUWINDOW@@@Z:PROC			; addWindow
+EXTRN	?addWindow@@YAHPAUWINDOW@@@Z:PROC		; addWindow
 EXTRN	?W_TEXTPOPUP_init@@YAXPAUW_TEXTPOPUP@@PAUWINDOW@@PAD2@Z:PROC ; W_TEXTPOPUP_init
-EXTRN	?VGA_clear@@YAXXZ:PROC				; VGA_clear
-EXTRN	?VGA_putimage@@YAXHHPAD@Z:PROC			; VGA_putimage
-EXTRN	?VGA_init@@YAXXZ:PROC				; VGA_init
-EXTRN	?getInputChar@@YADXZ:PROC			; getInputChar
-EXTRN	?print@@YAXPAD@Z:PROC				; print
+EXTRN	?initWindowManager@@YAXXZ:PROC			; initWindowManager
+EXTRN	__imp__VGA_clear:PROC
+EXTRN	__imp__VGA_putimage:PROC
+EXTRN	__imp__VGA_init:PROC
+EXTRN	__imp__getInputChar:PROC
+EXTRN	__imp__print:PROC
 ;	COMDAT ??_C@_09KKBHBBKF@LevOS?52?40?$AA@
 CONST	SEGMENT
 ??_C@_09KKBHBBKF@LevOS?52?40?$AA@ DB 'LevOS 2.0', 00H	; `string'
@@ -94,81 +93,85 @@ _x$ = -8						; size = 4
 _c$ = -1						; size = 1
 _main	PROC						; COMDAT
 
-; 21   : {
+; 19   : {
 
 	push	ebp
 	mov	ebp, esp
-	sub	esp, 144				; 00000090H
+	sub	esp, 148				; 00000094H
 	push	ebx
 	push	esi
 	push	edi
 
-; 22   : 	print("\nGfx init...");
+; 20   : 	print("\nGfx init...");
 
 	push	OFFSET ??_C@_0N@BPJMLEOO@?6Gfx?5init?4?4?4?$AA@
-	call	?print@@YAXPAD@Z			; print
+	call	DWORD PTR __imp__print
 	add	esp, 4
 $LN11@main:
 
-; 23   : 	while(getInputChar() == 0);
+; 21   : 	while(getInputChar() == 0);
 
-	call	?getInputChar@@YADXZ			; getInputChar
+	call	DWORD PTR __imp__getInputChar
 	movsx	eax, al
 	test	eax, eax
 	jne	SHORT $LN10@main
 	jmp	SHORT $LN11@main
 $LN10@main:
 
-; 24   : 	VGA_init();
+; 22   : 	VGA_init();
 
-	call	?VGA_init@@YAXXZ			; VGA_init
+	call	DWORD PTR __imp__VGA_init
 
-; 25   : 	VGA_putimage(16, 16, "test.bmp");
+; 23   : 	VGA_putimage(16, 16, "test.bmp");
 
 	push	OFFSET ??_C@_08OBGPNNFO@test?4bmp?$AA@
 	push	16					; 00000010H
 	push	16					; 00000010H
-	call	?VGA_putimage@@YAXHHPAD@Z		; VGA_putimage
+	call	DWORD PTR __imp__VGA_putimage
 	add	esp, 12					; 0000000cH
 $LN9@main:
 
-; 26   : 	while(getInputChar() == 0);
+; 24   : 	while(getInputChar() == 0);
 
-	call	?getInputChar@@YADXZ			; getInputChar
+	call	DWORD PTR __imp__getInputChar
 	movsx	eax, al
 	test	eax, eax
 	jne	SHORT $LN8@main
 	jmp	SHORT $LN9@main
 $LN8@main:
 
-; 27   : 	VGA_clear();
+; 25   : 	VGA_clear();
 
-	call	?VGA_clear@@YAXXZ			; VGA_clear
+	call	DWORD PTR __imp__VGA_clear
 
-; 28   : 	//VGA_putstring(16, 160, "string printing WORKING");
-; 29   : 	char c = 0;
+; 26   : 	//VGA_putstring(16, 160, "string printing WORKING");
+; 27   : 	char c = 0;
 
 	mov	BYTE PTR _c$[ebp], 0
 
-; 30   : 	int x = 0, y = 0;
+; 28   : 	int x = 0, y = 0;
 
 	mov	DWORD PTR _x$[ebp], 0
 	mov	DWORD PTR _y$[ebp], 0
 
-; 31   : 	//VGA_putrect(16, 16, 250, 450);
-; 32   : 	MOUSE_STATE m;
-; 33   : 	int mx = 0; int my = 0;
+; 29   : 	//VGA_putrect(16, 16, 250, 450);
+; 30   : 	MOUSE_STATE m;
+; 31   : 	int mx = 0; int my = 0;
 
 	mov	DWORD PTR _mx$[ebp], 0
 	mov	DWORD PTR _my$[ebp], 0
 
-; 34   : 	int timeout = 100000;
+; 32   : 	int timeout = 100000;
 
 	mov	DWORD PTR _timeout$[ebp], 100000	; 000186a0H
 
-; 35   : 	W_TEXTPOPUP tp;
-; 36   : 	WINDOW w;
-; 37   : 	W_TEXTPOPUP_init(&tp, &w, "LevOS 2.0" ,"Levex is an epic developer!");
+; 33   : 	initWindowManager();
+
+	call	?initWindowManager@@YAXXZ		; initWindowManager
+
+; 34   : 	W_TEXTPOPUP tp;
+; 35   : 	WINDOW w;
+; 36   : 	W_TEXTPOPUP_init(&tp, &w, "LevOS 2.0" ,"Levex is an epic developer!");
 
 	push	OFFSET ??_C@_0BM@KGEMJOIP@Levex?5is?5an?5epic?5developer?$CB?$AA@
 	push	OFFSET ??_C@_09KKBHBBKF@LevOS?52?40?$AA@
@@ -179,60 +182,34 @@ $LN8@main:
 	call	?W_TEXTPOPUP_init@@YAXPAUW_TEXTPOPUP@@PAUWINDOW@@PAD2@Z ; W_TEXTPOPUP_init
 	add	esp, 16					; 00000010H
 
-; 38   : 	//w.title = "Levex Popup";
-; 39   : 	w.move(&w, 120, 120);
+; 37   : 	W_TEXTPOPUP tp2;
+; 38   : 
+; 39   : 	addWindow(&w);
 
-	push	120					; 00000078H
-	push	120					; 00000078H
 	lea	eax, DWORD PTR _w$[ebp]
 	push	eax
-	call	DWORD PTR _w$[ebp+4]
-	add	esp, 12					; 0000000cH
-
-; 40   : 
-; 41   : 	addWindow(w);
-
-	sub	esp, 36					; 00000024H
-	mov	ecx, 8
-	lea	esi, DWORD PTR _w$[ebp]
-	mov	edi, esp
-	rep movsd
-	movsw
-	call	?addWindow@@YAHUWINDOW@@@Z		; addWindow
-	add	esp, 36					; 00000024H
-
-; 42   : 	WINDOW* wp;
-; 43   : 	w = *getWindowById(w.windowId);
-
-	movzx	eax, BYTE PTR _w$[ebp+29]
-	push	eax
-	call	?getWindowById@@YAPAUWINDOW@@D@Z	; getWindowById
+	call	?addWindow@@YAHPAUWINDOW@@@Z		; addWindow
 	add	esp, 4
-	mov	ecx, 8
-	mov	esi, eax
-	lea	edi, DWORD PTR _w$[ebp]
-	rep movsd
-	movsw
 $LN7@main:
 
-; 44   : 
-; 45   : 	while(true)
+; 40   : 	/* paint is still good */
+; 41   : 	while(true)
 
 	mov	eax, 1
 	test	eax, eax
-	je	SHORT $LN6@main
+	je	$LN6@main
 
-; 46   : 	{
-; 47   : 		repaintScreen();
+; 42   : 	{
+; 43   : 		repaintScreen();
 
 	call	?repaintScreen@@YAXXZ			; repaintScreen
 
-; 48   : 		c = getInputChar();
+; 44   : 		c = getInputChar();
 
-	call	?getInputChar@@YADXZ			; getInputChar
+	call	DWORD PTR __imp__getInputChar
 	mov	BYTE PTR _c$[ebp], al
 
-; 49   : 		if(c == 0) continue;
+; 45   : 		if(c == 0) continue;
 
 	movsx	eax, BYTE PTR _c$[ebp]
 	test	eax, eax
@@ -240,23 +217,10 @@ $LN7@main:
 	jmp	SHORT $LN7@main
 $LN5@main:
 
-; 50   : 		VGA_putchar(x += 8, y, c);
-
-	mov	eax, DWORD PTR _x$[ebp]
-	add	eax, 8
-	mov	DWORD PTR _x$[ebp], eax
-	movzx	ecx, BYTE PTR _c$[ebp]
-	push	ecx
-	mov	edx, DWORD PTR _y$[ebp]
-	push	edx
-	mov	eax, DWORD PTR _x$[ebp]
-	push	eax
-	call	?VGA_putchar@@YAXHHD@Z			; VGA_putchar
-	add	esp, 12					; 0000000cH
-
-; 51   : 		//printHexa(c);
-; 52   : 		//if(c == 0xD){ y += 8; x = 0; continue; }
-; 53   : 		if(c == 0x64) {  w.move(&w, w.startX + 16, w.startY);  continue; } // d
+; 46   : 		//VGA_putchar(x += 8, y, c);
+; 47   : 		//printHexa(c);
+; 48   : 		//if(c == 0xD){ y += 8; x = 0; continue; }
+; 49   : 		if(c == 0x64) {  w.move(&w, w.startX + 16, w.startY);  continue; } // d
 
 	movsx	eax, BYTE PTR _c$[ebp]
 	cmp	eax, 100				; 00000064H
@@ -273,49 +237,76 @@ $LN5@main:
 	jmp	SHORT $LN7@main
 $LN4@main:
 
-; 54   : 		if(c == 0x61) { /*wp->move(wp, wp->startX - 16,  wp->startY);*/ continue; } // a
+; 50   : 		if(c == 0x61) { w.move(&w, w.startX - 16,  w.startY); continue; } // a
 
 	movsx	eax, BYTE PTR _c$[ebp]
 	cmp	eax, 97					; 00000061H
 	jne	SHORT $LN3@main
+	mov	eax, DWORD PTR _w$[ebp+17]
+	push	eax
+	mov	ecx, DWORD PTR _w$[ebp+13]
+	sub	ecx, 16					; 00000010H
+	push	ecx
+	lea	edx, DWORD PTR _w$[ebp]
+	push	edx
+	call	DWORD PTR _w$[ebp+4]
+	add	esp, 12					; 0000000cH
 	jmp	SHORT $LN7@main
 $LN3@main:
 
-; 55   : 		if(c == 0x77) { /*wp->move(wp, wp->startX,wp->startY - 16); */continue; } // w
+; 51   : 		if(c == 0x77) { w.move(&w, w.startX,w.startY - 16); continue; } // w
 
 	movsx	eax, BYTE PTR _c$[ebp]
 	cmp	eax, 119				; 00000077H
 	jne	SHORT $LN2@main
-	jmp	SHORT $LN7@main
+	mov	eax, DWORD PTR _w$[ebp+17]
+	sub	eax, 16					; 00000010H
+	push	eax
+	mov	ecx, DWORD PTR _w$[ebp+13]
+	push	ecx
+	lea	edx, DWORD PTR _w$[ebp]
+	push	edx
+	call	DWORD PTR _w$[ebp+4]
+	add	esp, 12					; 0000000cH
+	jmp	$LN7@main
 $LN2@main:
 
-; 56   : 		if(c == 0x73) {/* wp->move(wp, wp->startX,wp->startY + 16); */continue; } // s
+; 52   : 		if(c == 0x73) { w.move(&w, w.startX,w.startY + 16); continue; } // s
 
 	movsx	eax, BYTE PTR _c$[ebp]
 	cmp	eax, 115				; 00000073H
 	jne	SHORT $LN1@main
-	jmp	SHORT $LN7@main
+	mov	eax, DWORD PTR _w$[ebp+17]
+	add	eax, 16					; 00000010H
+	push	eax
+	mov	ecx, DWORD PTR _w$[ebp+13]
+	push	ecx
+	lea	edx, DWORD PTR _w$[ebp]
+	push	edx
+	call	DWORD PTR _w$[ebp+4]
+	add	esp, 12					; 0000000cH
+	jmp	$LN7@main
 $LN1@main:
 
-; 57   : 		/*if(c == 0x08) //bksp
-; 58   : 		{
-; 59   : 			x -= 8;
-; 60   : 			VGA_putchar(x, y, ' ');
-; 61   : 			continue;
-; 62   : 		}
-; 63   : 		VGA_putchar(x, y, c);
-; 64   : 		x += 8;*/
-; 65   : 	}
+; 53   : 		/*if(c == 0x08) //bksp
+; 54   : 		{
+; 55   : 			x -= 8;
+; 56   : 			VGA_putchar(x, y, ' ');
+; 57   : 			continue;
+; 58   : 		}
+; 59   : 		VGA_putchar(x, y, c);
+; 60   : 		x += 8;*/
+; 61   : 	}
 
 	jmp	$LN7@main
 $LN6@main:
 
-; 66   : 	//getInputChar();
-; 67   : 	VGA_deinit();
+; 62   : 	//getInputChar();
+; 63   : 	VGA_deinit();
 
-	call	?VGA_deinit@@YAXXZ			; VGA_deinit
+	call	DWORD PTR __imp__VGA_deinit
 
-; 68   : }
+; 64   : }
 
 	pop	edi
 	pop	esi

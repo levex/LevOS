@@ -78,6 +78,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <AdditionalDependencies>C:\Dev\LevOS\kernel\debug\levapi.lib</AdditionalDependencies>
+      <MinimumRequiredVersion>4919</MinimumRequiredVersion>
     </Link>
     <Manifest>
       <SuppressStartupBanner>false</SuppressStartupBanner>

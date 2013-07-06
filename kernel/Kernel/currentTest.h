@@ -3,5 +3,6 @@
 
 extern void taskone();
 extern void tasktwo();
+extern void taskthree();
 
 #endif

@@ -35,7 +35,7 @@ _helptext$ = 12						; size = 4
 _f$ = 16						; size = 4
 ?createCommand@@YAXPAD0P6AX0@Z@Z PROC			; createCommand, COMDAT
 
-; 36   : {
+; 37   : {
 
 	push	ebp
 	mov	ebp, esp
@@ -44,34 +44,34 @@ _f$ = 16						; size = 4
 	push	esi
 	push	edi
 
-; 37   : 	cmdlist[currentCmd].func = f;
+; 38   : 	cmdlist[currentCmd].func = f;
 
 	movsx	eax, BYTE PTR ?currentCmd@@3DA		; currentCmd
 	imul	eax, 12					; 0000000cH
 	mov	ecx, DWORD PTR _f$[ebp]
 	mov	DWORD PTR ?cmdlist@@3PAU__COMMAND@@A[eax+8], ecx
 
-; 38   : 	cmdlist[currentCmd].text = text;
+; 39   : 	cmdlist[currentCmd].text = text;
 
 	movsx	eax, BYTE PTR ?currentCmd@@3DA		; currentCmd
 	imul	eax, 12					; 0000000cH
 	mov	ecx, DWORD PTR _text$[ebp]
 	mov	DWORD PTR ?cmdlist@@3PAU__COMMAND@@A[eax], ecx
 
-; 39   : 	cmdlist[currentCmd].helptext = helptext;
+; 40   : 	cmdlist[currentCmd].helptext = helptext;
 
 	movsx	eax, BYTE PTR ?currentCmd@@3DA		; currentCmd
 	imul	eax, 12					; 0000000cH
 	mov	ecx, DWORD PTR _helptext$[ebp]
 	mov	DWORD PTR ?cmdlist@@3PAU__COMMAND@@A[eax+4], ecx
 
-; 40   : 	currentCmd++;
+; 41   : 	currentCmd++;
 
 	mov	al, BYTE PTR ?currentCmd@@3DA		; currentCmd
 	add	al, 1
 	mov	BYTE PTR ?currentCmd@@3DA, al		; currentCmd
 
-; 41   : }
+; 42   : }
 
 	pop	edi
 	pop	esi
@@ -83,6 +83,9 @@ _f$ = 16						; size = 4
 _TEXT	ENDS
 PUBLIC	??_C@_0L@GLAHGLNA@?6?$FLLevOS?$FN?$HO?5?$AA@	; `string'
 PUBLIC	??_C@_0FG@KODAIHEC@Welcome?5to?5LevOS?52?40?6This?5is?5a?5b@ ; `string'
+PUBLIC	??_C@_04FENCLGEM@acpi?$AA@			; `string'
+PUBLIC	??_C@_0BB@FEAGHJMJ@?6Shows?5ACPI?5info?$AA@	; `string'
+PUBLIC	?cmd_acpi@@YAXPAD@Z				; cmd_acpi
 PUBLIC	??_C@_06MJDCIMPN@reboot?$AA@			; `string'
 PUBLIC	??_C@_0BA@ELKBOACN@?6Reboots?5the?5PC?$AA@	; `string'
 PUBLIC	?cmd_reboot@@YAXPAD@Z				; cmd_reboot
@@ -136,6 +139,14 @@ CONST	SEGMENT
 ??_C@_0FG@KODAIHEC@Welcome?5to?5LevOS?52?40?6This?5is?5a?5b@ DB 'Welcome '
 	DB	'to LevOS 2.0', 0aH, 'This is a basic CLI, use ''help'' for mo'
 	DB	're information.', 0aH, 'Have fun!', 0aH, 00H ; `string'
+CONST	ENDS
+;	COMDAT ??_C@_04FENCLGEM@acpi?$AA@
+CONST	SEGMENT
+??_C@_04FENCLGEM@acpi?$AA@ DB 'acpi', 00H		; `string'
+CONST	ENDS
+;	COMDAT ??_C@_0BB@FEAGHJMJ@?6Shows?5ACPI?5info?$AA@
+CONST	SEGMENT
+??_C@_0BB@FEAGHJMJ@?6Shows?5ACPI?5info?$AA@ DB 0aH, 'Shows ACPI info', 00H ; `string'
 CONST	ENDS
 ;	COMDAT ??_C@_06MJDCIMPN@reboot?$AA@
 CONST	SEGMENT
@@ -254,13 +265,13 @@ CONST	SEGMENT
 CONST	ENDS
 ;	COMDAT _main
 _TEXT	SEGMENT
-_i$2702 = -12						; size = 4
-_match$2701 = -5					; size = 1
-_j$2697 = -4						; size = 4
+_i$2710 = -12						; size = 4
+_match$2709 = -5					; size = 1
+_j$2705 = -4						; size = 4
 _baseaddr$ = 8						; size = 4
 _main	PROC						; COMDAT
 
-; 44   : {
+; 45   : {
 
 	push	ebp
 	mov	ebp, esp
@@ -269,20 +280,20 @@ _main	PROC						; COMDAT
 	push	esi
 	push	edi
 
-; 45   : 	print("Terminal is executing..");
+; 46   : 	print("Terminal is executing..");
 
 	push	OFFSET ??_C@_0BI@PCFEALJK@Terminal?5is?5executing?4?4?$AA@
 	call	DWORD PTR __imp__print
 	add	esp, 4
 
-; 46   : 	//rtc_data = (RTC_DATA*)(baseaddr+0x8000);
-; 47   : 	//fillRTC(rtc_data);
-; 48   : 	clearScreen();
+; 47   : 	//rtc_data = (RTC_DATA*)(baseaddr+0x8000);
+; 48   : 	//fillRTC(rtc_data);
+; 49   : 	clearScreen();
 
 	call	DWORD PTR __imp__clearScreen
 
-; 49   : 
-; 50   : 	createCommand("help", "\nSyntax: help <command>\nOpens up a help text!\nIf <command> is provided, provides extra information about the command.", cmd_help);
+; 50   : 
+; 51   : 	createCommand("help", "\nSyntax: help <command>\nOpens up a help text!\nIf <command> is provided, provides extra information about the command.", cmd_help);
 
 	push	OFFSET ?cmd_help@@YAXPAD@Z		; cmd_help
 	push	OFFSET ??_C@_0HG@PPKLFMOH@?6Syntax?3?5help?5?$DMcommand?$DO?6Opens?5up@
@@ -290,7 +301,7 @@ _main	PROC						; COMDAT
 	call	?createCommand@@YAXPAD0P6AX0@Z@Z	; createCommand
 	add	esp, 12					; 0000000cH
 
-; 51   : 	createCommand("readtxt", "\nSyntax: readtxt <filename>\nReads a .txt file from the disk", cmd_test);
+; 52   : 	createCommand("readtxt", "\nSyntax: readtxt <filename>\nReads a .txt file from the disk", cmd_test);
 
 	push	OFFSET ?cmd_test@@YAXPAD@Z		; cmd_test
 	push	OFFSET ??_C@_0DM@EBHOHFFC@?6Syntax?3?5readtxt?5?$DMfilename?$DO?6Read@
@@ -298,7 +309,7 @@ _main	PROC						; COMDAT
 	call	?createCommand@@YAXPAD0P6AX0@Z@Z	; createCommand
 	add	esp, 12					; 0000000cH
 
-; 52   : 	createCommand("about", "\nOpens up an about text!", cmd_about);
+; 53   : 	createCommand("about", "\nOpens up an about text!", cmd_about);
 
 	push	OFFSET ?cmd_about@@YAXPAD@Z		; cmd_about
 	push	OFFSET ??_C@_0BJ@LBMBLBLG@?6Opens?5up?5an?5about?5text?$CB?$AA@
@@ -306,7 +317,7 @@ _main	PROC						; COMDAT
 	call	?createCommand@@YAXPAD0P6AX0@Z@Z	; createCommand
 	add	esp, 12					; 0000000cH
 
-; 53   : 	createCommand("start", "\nSyntax: start <filename>\nStarts a PE32 application of filename <filename>.", cmd_start);
+; 54   : 	createCommand("start", "\nSyntax: start <filename>\nStarts a PE32 application of filename <filename>.", cmd_start);
 
 	push	OFFSET ?cmd_start@@YAXPAD@Z		; cmd_start
 	push	OFFSET ??_C@_0EM@LIPFLACD@?6Syntax?3?5start?5?$DMfilename?$DO?6Starts@
@@ -314,7 +325,7 @@ _main	PROC						; COMDAT
 	call	?createCommand@@YAXPAD0P6AX0@Z@Z	; createCommand
 	add	esp, 12					; 0000000cH
 
-; 54   : 	createCommand("cls", "\nClears the screen (0x17)", cmd_cls);
+; 55   : 	createCommand("cls", "\nClears the screen (0x17)", cmd_cls);
 
 	push	OFFSET ?cmd_cls@@YAXPAD@Z		; cmd_cls
 	push	OFFSET ??_C@_0BK@KIOFNDBH@?6Clears?5the?5screen?5?$CI0x17?$CJ?$AA@
@@ -322,7 +333,7 @@ _main	PROC						; COMDAT
 	call	?createCommand@@YAXPAD0P6AX0@Z@Z	; createCommand
 	add	esp, 12					; 0000000cH
 
-; 55   : 	createCommand("echo", "\nSyntax: echo <string>\nEchoes the arguments.", cmd_echo);
+; 56   : 	createCommand("echo", "\nSyntax: echo <string>\nEchoes the arguments.", cmd_echo);
 
 	push	OFFSET ?cmd_echo@@YAXPAD@Z		; cmd_echo
 	push	OFFSET ??_C@_0CN@FFHNKIIF@?6Syntax?3?5echo?5?$DMstring?$DO?6Echoes?5th@
@@ -330,7 +341,7 @@ _main	PROC						; COMDAT
 	call	?createCommand@@YAXPAD0P6AX0@Z@Z	; createCommand
 	add	esp, 12					; 0000000cH
 
-; 56   : 	createCommand("time", "\nShows time!", cmd_time);
+; 57   : 	createCommand("time", "\nShows time!", cmd_time);
 
 	push	OFFSET ?cmd_time@@YAXPAD@Z		; cmd_time
 	push	OFFSET ??_C@_0N@DNDEBHMJ@?6Shows?5time?$CB?$AA@
@@ -338,7 +349,7 @@ _main	PROC						; COMDAT
 	call	?createCommand@@YAXPAD0P6AX0@Z@Z	; createCommand
 	add	esp, 12					; 0000000cH
 
-; 57   : 	createCommand("dir", "\nLists files in root directory", cmd_dir);
+; 58   : 	createCommand("dir", "\nLists files in root directory", cmd_dir);
 
 	push	OFFSET ?cmd_dir@@YAXPAD@Z		; cmd_dir
 	push	OFFSET ??_C@_0BP@OKJIHFLC@?6Lists?5files?5in?5root?5directory?$AA@
@@ -346,7 +357,7 @@ _main	PROC						; COMDAT
 	call	?createCommand@@YAXPAD0P6AX0@Z@Z	; createCommand
 	add	esp, 12					; 0000000cH
 
-; 58   : 	createCommand("bios", "\nJumps back to BIOS", cmd_dobios);
+; 59   : 	createCommand("bios", "\nJumps back to BIOS", cmd_dobios);
 
 	push	OFFSET ?cmd_dobios@@YAXPAD@Z		; cmd_dobios
 	push	OFFSET ??_C@_0BE@BNGHPFHM@?6Jumps?5back?5to?5BIOS?$AA@
@@ -354,7 +365,7 @@ _main	PROC						; COMDAT
 	call	?createCommand@@YAXPAD0P6AX0@Z@Z	; createCommand
 	add	esp, 12					; 0000000cH
 
-; 59   : 	createCommand("dump", "\nDumps a PE32 application or DLL", cmd_dump);
+; 60   : 	createCommand("dump", "\nDumps a PE32 application or DLL", cmd_dump);
 
 	push	OFFSET ?cmd_dump@@YAXPAD@Z		; cmd_dump
 	push	OFFSET ??_C@_0CB@HEGMHNBI@?6Dumps?5a?5PE32?5application?5or?5DLL@
@@ -362,7 +373,7 @@ _main	PROC						; COMDAT
 	call	?createCommand@@YAXPAD0P6AX0@Z@Z	; createCommand
 	add	esp, 12					; 0000000cH
 
-; 60   : 	createCommand("pci", "\nTests PCI", cmd_pci);
+; 61   : 	createCommand("pci", "\nTests PCI", cmd_pci);
 
 	push	OFFSET ?cmd_pci@@YAXPAD@Z		; cmd_pci
 	push	OFFSET ??_C@_0L@DODJAOBJ@?6Tests?5PCI?$AA@
@@ -370,7 +381,7 @@ _main	PROC						; COMDAT
 	call	?createCommand@@YAXPAD0P6AX0@Z@Z	; createCommand
 	add	esp, 12					; 0000000cH
 
-; 61   : 	createCommand("reboot", "\nReboots the PC", cmd_reboot);
+; 62   : 	createCommand("reboot", "\nReboots the PC", cmd_reboot);
 
 	push	OFFSET ?cmd_reboot@@YAXPAD@Z		; cmd_reboot
 	push	OFFSET ??_C@_0BA@ELKBOACN@?6Reboots?5the?5PC?$AA@
@@ -378,34 +389,42 @@ _main	PROC						; COMDAT
 	call	?createCommand@@YAXPAD0P6AX0@Z@Z	; createCommand
 	add	esp, 12					; 0000000cH
 
-; 62   : 
-; 63   : 	//moveCursorRelative(0, -1);
-; 64   : 	print("Welcome to LevOS 2.0\nThis is a basic CLI, use 'help' for more information.\nHave fun!\n");
+; 63   : 	createCommand("acpi", "\nShows ACPI info", cmd_acpi);
+
+	push	OFFSET ?cmd_acpi@@YAXPAD@Z		; cmd_acpi
+	push	OFFSET ??_C@_0BB@FEAGHJMJ@?6Shows?5ACPI?5info?$AA@
+	push	OFFSET ??_C@_04FENCLGEM@acpi?$AA@
+	call	?createCommand@@YAXPAD0P6AX0@Z@Z	; createCommand
+	add	esp, 12					; 0000000cH
+
+; 64   : 
+; 65   : 	//moveCursorRelative(0, -1);
+; 66   : 	print("Welcome to LevOS 2.0\nThis is a basic CLI, use 'help' for more information.\nHave fun!\n");
 
 	push	OFFSET ??_C@_0FG@KODAIHEC@Welcome?5to?5LevOS?52?40?6This?5is?5a?5b@
 	call	DWORD PTR __imp__print
 	add	esp, 4
 
-; 65   : 	print("\n[LevOS]~ ");
+; 67   : 	print("\n[LevOS]~ ");
 
 	push	OFFSET ??_C@_0L@GLAHGLNA@?6?$FLLevOS?$FN?$HO?5?$AA@
 	call	DWORD PTR __imp__print
 	add	esp, 4
 $LN17@main:
 
-; 66   : 	while(true)
+; 68   : 	while(true)
 
 	mov	eax, 1
 	test	eax, eax
 	je	$LN18@main
 
-; 67   : 	{
-; 68   : 		c = getInputChar();
+; 69   : 	{
+; 70   : 		c = getInputChar();
 
 	call	DWORD PTR __imp__getInputChar
 	mov	BYTE PTR ?c@@3DA, al			; c
 
-; 69   : 		if(c == 0) continue;
+; 71   : 		if(c == 0) continue;
 
 	movsx	eax, BYTE PTR ?c@@3DA			; c
 	test	eax, eax
@@ -413,186 +432,173 @@ $LN17@main:
 	jmp	SHORT $LN17@main
 $LN15@main:
 
-; 70   : 		if(c == 0xD)
+; 72   : 		if(c == 0xD)
 
 	movsx	eax, BYTE PTR ?c@@3DA			; c
 	cmp	eax, 13					; 0000000dH
 	jne	$LN14@main
 
-; 71   : 		{
-; 72   : 			buf[num] = '\0';
+; 73   : 		{
+; 74   : 			buf[num] = '\0';
 
 	movsx	eax, BYTE PTR ?num@@3DA			; num
 	mov	BYTE PTR ?buf@@3PADA[eax], 0
 
-; 73   : 			for(int j = 0; j < currentCmd; j++)
+; 75   : 			for(int j = 0; j < currentCmd; j++)
 
-	mov	DWORD PTR _j$2697[ebp], 0
+	mov	DWORD PTR _j$2705[ebp], 0
 	jmp	SHORT $LN13@main
 $LN12@main:
-	mov	eax, DWORD PTR _j$2697[ebp]
+	mov	eax, DWORD PTR _j$2705[ebp]
 	add	eax, 1
-	mov	DWORD PTR _j$2697[ebp], eax
+	mov	DWORD PTR _j$2705[ebp], eax
 $LN13@main:
 	movsx	eax, BYTE PTR ?currentCmd@@3DA		; currentCmd
-	cmp	DWORD PTR _j$2697[ebp], eax
+	cmp	DWORD PTR _j$2705[ebp], eax
 	jge	$LN11@main
 
-; 74   : 			{
-; 75   : 				/*if(strcmp(buf, cmdlist[i].text) == 0) { cmdlist[i].func(buf); break;}*/
-; 76   : 				bool match = true;
+; 76   : 			{
+; 77   : 				/*if(strcmp(buf, cmdlist[i].text) == 0) { cmdlist[i].func(buf); break;}*/
+; 78   : 				bool match = true;
 
-	mov	BYTE PTR _match$2701[ebp], 1
+	mov	BYTE PTR _match$2709[ebp], 1
 
-; 77   : 				for(int i = 0; i < strlen(buf); i++)
+; 79   : 				for(int i = 0; i < strlen(buf); i++)
 
-	mov	DWORD PTR _i$2702[ebp], 0
+	mov	DWORD PTR _i$2710[ebp], 0
 	jmp	SHORT $LN10@main
 $LN9@main:
-	mov	eax, DWORD PTR _i$2702[ebp]
+	mov	eax, DWORD PTR _i$2710[ebp]
 	add	eax, 1
-	mov	DWORD PTR _i$2702[ebp], eax
+	mov	DWORD PTR _i$2710[ebp], eax
 $LN10@main:
 	push	OFFSET ?buf@@3PADA			; buf
 	call	?strlen@@YAIPBD@Z			; strlen
 	add	esp, 4
-	cmp	DWORD PTR _i$2702[ebp], eax
+	cmp	DWORD PTR _i$2710[ebp], eax
 	jae	SHORT $LN8@main
 
-; 78   : 				{
-; 79   : 					if(cmdlist[j].text[i] == buf[i] || buf[i] == ' ')
+; 80   : 				{
+; 81   : 					if(cmdlist[j].text[i] == buf[i] || buf[i] == ' ')
 
-	mov	eax, DWORD PTR _j$2697[ebp]
+	mov	eax, DWORD PTR _j$2705[ebp]
 	imul	eax, 12					; 0000000cH
 	mov	ecx, DWORD PTR ?cmdlist@@3PAU__COMMAND@@A[eax]
-	mov	edx, DWORD PTR _i$2702[ebp]
+	mov	edx, DWORD PTR _i$2710[ebp]
 	movsx	eax, BYTE PTR [ecx+edx]
-	mov	ecx, DWORD PTR _i$2702[ebp]
+	mov	ecx, DWORD PTR _i$2710[ebp]
 	movsx	edx, BYTE PTR ?buf@@3PADA[ecx]
 	cmp	eax, edx
 	je	SHORT $LN6@main
-	mov	eax, DWORD PTR _i$2702[ebp]
+	mov	eax, DWORD PTR _i$2710[ebp]
 	movsx	ecx, BYTE PTR ?buf@@3PADA[eax]
 	cmp	ecx, 32					; 00000020H
 	jne	SHORT $LN7@main
 $LN6@main:
 
-; 80   : 					{
-; 81   : 						if(cmdlist[j].text[i] == '\0' || buf[i] == ' ')
+; 82   : 					{
+; 83   : 						if(cmdlist[j].text[i] == '\0' || buf[i] == ' ')
 
-	mov	eax, DWORD PTR _j$2697[ebp]
+	mov	eax, DWORD PTR _j$2705[ebp]
 	imul	eax, 12					; 0000000cH
 	mov	ecx, DWORD PTR ?cmdlist@@3PAU__COMMAND@@A[eax]
-	mov	edx, DWORD PTR _i$2702[ebp]
+	mov	edx, DWORD PTR _i$2710[ebp]
 	movsx	eax, BYTE PTR [ecx+edx]
 	test	eax, eax
 	je	SHORT $LN4@main
-	mov	eax, DWORD PTR _i$2702[ebp]
+	mov	eax, DWORD PTR _i$2710[ebp]
 	movsx	ecx, BYTE PTR ?buf@@3PADA[eax]
 	cmp	ecx, 32					; 00000020H
 	jne	SHORT $LN5@main
 $LN4@main:
 
-; 82   : 						{
-; 83   : 							match = true;
+; 84   : 						{
+; 85   : 							match = true;
 
-	mov	BYTE PTR _match$2701[ebp], 1
+	mov	BYTE PTR _match$2709[ebp], 1
 
-; 84   : 							break;
+; 86   : 							break;
 
 	jmp	SHORT $LN8@main
 $LN5@main:
 
-; 85   : 						}
-; 86   : 						continue;
+; 87   : 						}
+; 88   : 						continue;
 
 	jmp	SHORT $LN9@main
 
-; 87   : 					} else {
+; 89   : 					} else {
 
 	jmp	SHORT $LN3@main
 $LN7@main:
 
-; 88   : 						match = false;
+; 90   : 						match = false;
 
-	mov	BYTE PTR _match$2701[ebp], 0
+	mov	BYTE PTR _match$2709[ebp], 0
 
-; 89   : 						break;
+; 91   : 						break;
 
 	jmp	SHORT $LN8@main
 $LN3@main:
 
-; 90   : 					}
-; 91   : 				}
+; 92   : 					}
+; 93   : 				}
 
 	jmp	$LN9@main
 $LN8@main:
 
-; 92   : 				if(match) cmdlist[j].func(buf);
+; 94   : 				if(match) cmdlist[j].func(buf);
 
-	movzx	eax, BYTE PTR _match$2701[ebp]
+	movzx	eax, BYTE PTR _match$2709[ebp]
 	test	eax, eax
 	je	SHORT $LN2@main
 	push	OFFSET ?buf@@3PADA			; buf
-	mov	eax, DWORD PTR _j$2697[ebp]
+	mov	eax, DWORD PTR _j$2705[ebp]
 	imul	eax, 12					; 0000000cH
 	mov	ecx, DWORD PTR ?cmdlist@@3PAU__COMMAND@@A[eax+8]
 	call	ecx
 	add	esp, 4
 $LN2@main:
 
-; 93   : 			}
+; 95   : 			}
 
 	jmp	$LN12@main
 $LN11@main:
 
-; 94   : 			/*handle_cmd("help", cmd_help);
-; 95   : 			handle_cmd("readtxt", cmd_test);
-; 96   : 			handle_cmd("about", cmd_about);
-; 97   : 			handle_cmd("start", cmd_start);
-; 98   : 			handle_cmd("cls", cmd_cls);
-; 99   : 			handle_cmd("echo", cmd_echo);*/
-; 100  : 			num = 0;
+; 96   : 			/*handle_cmd("help", cmd_help);
+; 97   : 			handle_cmd("readtxt", cmd_test);
+; 98   : 			handle_cmd("about", cmd_about);
+; 99   : 			handle_cmd("start", cmd_start);
+; 100  : 			handle_cmd("cls", cmd_cls);
+; 101  : 			handle_cmd("echo", cmd_echo);*/
+; 102  : 			num = 0;
 
 	mov	BYTE PTR ?num@@3DA, 0			; num
 
-; 101  : 			print("\n[LevOS]~ ");
+; 103  : 			print("\n[LevOS]~ ");
 
 	push	OFFSET ??_C@_0L@GLAHGLNA@?6?$FLLevOS?$FN?$HO?5?$AA@
 	call	DWORD PTR __imp__print
 	add	esp, 4
 
-; 102  : 			continue;
+; 104  : 			continue;
 
 	jmp	$LN17@main
 $LN14@main:
 
-; 103  : 		}
-; 104  : 		if(c == 0x08)
+; 105  : 		}
+; 106  : 		if(c == 0x08)
 
 	movsx	eax, BYTE PTR ?c@@3DA			; c
 	cmp	eax, 8
 	jne	SHORT $LN1@main
 
-; 105  : 		{
-; 106  : 			num --;
+; 107  : 		{
+; 108  : 			num --;
 
 	mov	al, BYTE PTR ?num@@3DA			; num
 	sub	al, 1
 	mov	BYTE PTR ?num@@3DA, al			; num
-
-; 107  : 			moveCursorRelative(-1, 0);
-
-	push	0
-	push	-1
-	call	DWORD PTR __imp__moveCursorRelative
-	add	esp, 8
-
-; 108  : 			printchar(' ');
-
-	push	32					; 00000020H
-	call	DWORD PTR __imp__printchar
-	add	esp, 4
 
 ; 109  : 			moveCursorRelative(-1, 0);
 
@@ -601,37 +607,50 @@ $LN14@main:
 	call	DWORD PTR __imp__moveCursorRelative
 	add	esp, 8
 
-; 110  : 			continue;
+; 110  : 			printchar(' ');
+
+	push	32					; 00000020H
+	call	DWORD PTR __imp__printchar
+	add	esp, 4
+
+; 111  : 			moveCursorRelative(-1, 0);
+
+	push	0
+	push	-1
+	call	DWORD PTR __imp__moveCursorRelative
+	add	esp, 8
+
+; 112  : 			continue;
 
 	jmp	$LN17@main
 $LN1@main:
 
-; 111  : 		}
-; 112  : 		buf[num] = c;
+; 113  : 		}
+; 114  : 		buf[num] = c;
 
 	movsx	eax, BYTE PTR ?num@@3DA			; num
 	mov	cl, BYTE PTR ?c@@3DA			; c
 	mov	BYTE PTR ?buf@@3PADA[eax], cl
 
-; 113  : 		num++;
+; 115  : 		num++;
 
 	mov	al, BYTE PTR ?num@@3DA			; num
 	add	al, 1
 	mov	BYTE PTR ?num@@3DA, al			; num
 
-; 114  : 		printchar(c);
+; 116  : 		printchar(c);
 
 	movzx	eax, BYTE PTR ?c@@3DA			; c
 	push	eax
 	call	DWORD PTR __imp__printchar
 	add	esp, 4
 
-; 115  : 	}
+; 117  : 	}
 
 	jmp	$LN17@main
 $LN18@main:
 
-; 116  : }
+; 118  : }
 
 	pop	edi
 	pop	esi
@@ -645,13 +664,13 @@ PUBLIC	?handle_cmd@@YAXPADP6AX0@Z@Z			; handle_cmd
 ; Function compile flags: /Odtp /ZI
 ;	COMDAT ?handle_cmd@@YAXPADP6AX0@Z@Z
 _TEXT	SEGMENT
-_i$2718 = -8						; size = 4
+_i$2726 = -8						; size = 4
 _match$ = -1						; size = 1
 _text$ = 8						; size = 4
 _f$ = 12						; size = 4
 ?handle_cmd@@YAXPADP6AX0@Z@Z PROC			; handle_cmd, COMDAT
 
-; 119  : {
+; 121  : {
 
 	push	ebp
 	mov	ebp, esp
@@ -660,93 +679,93 @@ _f$ = 12						; size = 4
 	push	esi
 	push	edi
 
-; 120  : 	/*if(strlen(text) == strlen(buf)) 
-; 121  : 	{*/
-; 122  : 		bool match = true;
+; 122  : 	/*if(strlen(text) == strlen(buf)) 
+; 123  : 	{*/
+; 124  : 		bool match = true;
 
 	mov	BYTE PTR _match$[ebp], 1
 
-; 123  : 		for(int i = 0; i < strlen(buf); i++)
+; 125  : 		for(int i = 0; i < strlen(buf); i++)
 
-	mov	DWORD PTR _i$2718[ebp], 0
+	mov	DWORD PTR _i$2726[ebp], 0
 	jmp	SHORT $LN9@handle_cmd
 $LN8@handle_cmd:
-	mov	eax, DWORD PTR _i$2718[ebp]
+	mov	eax, DWORD PTR _i$2726[ebp]
 	add	eax, 1
-	mov	DWORD PTR _i$2718[ebp], eax
+	mov	DWORD PTR _i$2726[ebp], eax
 $LN9@handle_cmd:
 	push	OFFSET ?buf@@3PADA			; buf
 	call	?strlen@@YAIPBD@Z			; strlen
 	add	esp, 4
-	cmp	DWORD PTR _i$2718[ebp], eax
+	cmp	DWORD PTR _i$2726[ebp], eax
 	jae	SHORT $LN7@handle_cmd
 
-; 124  : 		{
-; 125  : 			if(text[i] == buf[i] || buf[i] == ' ')
+; 126  : 		{
+; 127  : 			if(text[i] == buf[i] || buf[i] == ' ')
 
 	mov	eax, DWORD PTR _text$[ebp]
-	add	eax, DWORD PTR _i$2718[ebp]
+	add	eax, DWORD PTR _i$2726[ebp]
 	movsx	ecx, BYTE PTR [eax]
-	mov	edx, DWORD PTR _i$2718[ebp]
+	mov	edx, DWORD PTR _i$2726[ebp]
 	movsx	eax, BYTE PTR ?buf@@3PADA[edx]
 	cmp	ecx, eax
 	je	SHORT $LN5@handle_cmd
-	mov	eax, DWORD PTR _i$2718[ebp]
+	mov	eax, DWORD PTR _i$2726[ebp]
 	movsx	ecx, BYTE PTR ?buf@@3PADA[eax]
 	cmp	ecx, 32					; 00000020H
 	jne	SHORT $LN6@handle_cmd
 $LN5@handle_cmd:
 
-; 126  : 			{
-; 127  : 				if(text[i] == '\0' || buf[i] == ' ')
+; 128  : 			{
+; 129  : 				if(text[i] == '\0' || buf[i] == ' ')
 
 	mov	eax, DWORD PTR _text$[ebp]
-	add	eax, DWORD PTR _i$2718[ebp]
+	add	eax, DWORD PTR _i$2726[ebp]
 	movsx	ecx, BYTE PTR [eax]
 	test	ecx, ecx
 	je	SHORT $LN3@handle_cmd
-	mov	eax, DWORD PTR _i$2718[ebp]
+	mov	eax, DWORD PTR _i$2726[ebp]
 	movsx	ecx, BYTE PTR ?buf@@3PADA[eax]
 	cmp	ecx, 32					; 00000020H
 	jne	SHORT $LN4@handle_cmd
 $LN3@handle_cmd:
 
-; 128  : 				{
-; 129  : 					match = true;
+; 130  : 				{
+; 131  : 					match = true;
 
 	mov	BYTE PTR _match$[ebp], 1
 
-; 130  : 					break;
+; 132  : 					break;
 
 	jmp	SHORT $LN7@handle_cmd
 $LN4@handle_cmd:
 
-; 131  : 				}
-; 132  : 				continue;
+; 133  : 				}
+; 134  : 				continue;
 
 	jmp	SHORT $LN8@handle_cmd
 
-; 133  : 			} else {
+; 135  : 			} else {
 
 	jmp	SHORT $LN2@handle_cmd
 $LN6@handle_cmd:
 
-; 134  : 				match = false;
+; 136  : 				match = false;
 
 	mov	BYTE PTR _match$[ebp], 0
 
-; 135  : 				break;
+; 137  : 				break;
 
 	jmp	SHORT $LN7@handle_cmd
 $LN2@handle_cmd:
 
-; 136  : 			}
-; 137  : 		}
+; 138  : 			}
+; 139  : 		}
 
 	jmp	SHORT $LN8@handle_cmd
 $LN7@handle_cmd:
 
-; 138  : 		if(match) f(buf);
+; 140  : 		if(match) f(buf);
 
 	movzx	eax, BYTE PTR _match$[ebp]
 	test	eax, eax
@@ -756,8 +775,8 @@ $LN7@handle_cmd:
 	add	esp, 4
 $LN10@handle_cmd:
 
-; 139  : 	//}
-; 140  : }
+; 141  : 	//}
+; 142  : }
 
 	pop	edi
 	pop	esi
@@ -795,13 +814,13 @@ CONST	SEGMENT
 CONST	ENDS
 ;	COMDAT ?cmd_help@@YAXPAD@Z
 _TEXT	SEGMENT
-_i$2739 = -12						; size = 4
-_i$2732 = -8						; size = 4
+_i$2747 = -12						; size = 4
+_i$2740 = -8						; size = 4
 _arg$ = -4						; size = 4
 _buf$ = 8						; size = 4
 ?cmd_help@@YAXPAD@Z PROC				; cmd_help, COMDAT
 
-; 143  : {
+; 145  : {
 
 	push	ebp
 	mov	ebp, esp
@@ -810,7 +829,7 @@ _buf$ = 8						; size = 4
 	push	esi
 	push	edi
 
-; 144  : 	char* arg = strchr(buf, ' ');
+; 146  : 	char* arg = strchr(buf, ' ');
 
 	push	32					; 00000020H
 	mov	eax, DWORD PTR _buf$[ebp]
@@ -819,31 +838,31 @@ _buf$ = 8						; size = 4
 	add	esp, 8
 	mov	DWORD PTR _arg$[ebp], eax
 
-; 145  : 	arg++;
+; 147  : 	arg++;
 
 	mov	eax, DWORD PTR _arg$[ebp]
 	add	eax, 1
 	mov	DWORD PTR _arg$[ebp], eax
 
-; 146  : 	//if(strlen(arg) != 0)
-; 147  : 	//if(*arg != '\0')
-; 148  : 		for(int i = 0; i < currentCmd; i++)
+; 148  : 	//if(strlen(arg) != 0)
+; 149  : 	//if(*arg != '\0')
+; 150  : 		for(int i = 0; i < currentCmd; i++)
 
-	mov	DWORD PTR _i$2732[ebp], 0
+	mov	DWORD PTR _i$2740[ebp], 0
 	jmp	SHORT $LN8@cmd_help
 $LN7@cmd_help:
-	mov	eax, DWORD PTR _i$2732[ebp]
+	mov	eax, DWORD PTR _i$2740[ebp]
 	add	eax, 1
-	mov	DWORD PTR _i$2732[ebp], eax
+	mov	DWORD PTR _i$2740[ebp], eax
 $LN8@cmd_help:
 	movsx	eax, BYTE PTR ?currentCmd@@3DA		; currentCmd
-	cmp	DWORD PTR _i$2732[ebp], eax
+	cmp	DWORD PTR _i$2740[ebp], eax
 	jge	SHORT $LN6@cmd_help
 
-; 149  : 		{
-; 150  : 			if(strcmp(arg, cmdlist[i].text) == 0) {print(cmdlist[i].helptext);return;}
+; 151  : 		{
+; 152  : 			if(strcmp(arg, cmdlist[i].text) == 0) {print(cmdlist[i].helptext);return;}
 
-	mov	eax, DWORD PTR _i$2732[ebp]
+	mov	eax, DWORD PTR _i$2740[ebp]
 	imul	eax, 12					; 0000000cH
 	mov	ecx, DWORD PTR ?cmdlist@@3PAU__COMMAND@@A[eax]
 	push	ecx
@@ -853,7 +872,7 @@ $LN8@cmd_help:
 	add	esp, 8
 	test	eax, eax
 	jne	SHORT $LN5@cmd_help
-	mov	eax, DWORD PTR _i$2732[ebp]
+	mov	eax, DWORD PTR _i$2740[ebp]
 	imul	eax, 12					; 0000000cH
 	mov	ecx, DWORD PTR ?cmdlist@@3PAU__COMMAND@@A[eax+4]
 	push	ecx
@@ -862,111 +881,111 @@ $LN8@cmd_help:
 	jmp	SHORT $LN9@cmd_help
 $LN5@cmd_help:
 
-; 151  : 		}
+; 153  : 		}
 
 	jmp	SHORT $LN7@cmd_help
 $LN6@cmd_help:
 
-; 152  : 	/*if(strcmp(arg, "readtxt") == 0)
-; 153  : 	{
-; 154  : 		print("\nreadtxt <filename>");
-; 155  : 		print("\nRead a .txt file from the disk");
-; 156  : 		return;
-; 157  : 	} else if(strcmp(arg, "help") == 0)
-; 158  : 	{
-; 159  : 		print("\nhelp");
-; 160  : 		print("\nOpens up a help text!");
-; 161  : 		return;
-; 162  : 	}
-; 163  : 	else if(strcmp(arg, "about") == 0)
-; 164  : 	{
-; 165  : 		print("\nabout");
-; 166  : 		print("\nOpens up an about text!");
-; 167  : 		return;
-; 168  : 	}
-; 169  : 	else if(strcmp(arg, "start") == 0)
-; 170  : 	{
-; 171  : 		print("\nstart <filename>");
-; 172  : 		print("\nLoads and parses a PE32 application");
-; 173  : 		return;
-; 174  : 	}
-; 175  : 	else if(strcmp(arg, "cls") == 0)
-; 176  : 	{
-; 177  : 		print("\ncls");
-; 178  : 		print("\nClears the screen. (0x17)");
-; 179  : 		return;
-; 180  : 	}
-; 181  : 	else if(strcmp(arg, "echo") == 0)
-; 182  : 	{
-; 183  : 		print("\necho <string>");
-; 184  : 		print("\nEchoes a string!");
-; 185  : 		return;
-; 186  : 	}*/
-; 187  : 	print("\nWelcome to LevOS2.0!");
+; 154  : 	/*if(strcmp(arg, "readtxt") == 0)
+; 155  : 	{
+; 156  : 		print("\nreadtxt <filename>");
+; 157  : 		print("\nRead a .txt file from the disk");
+; 158  : 		return;
+; 159  : 	} else if(strcmp(arg, "help") == 0)
+; 160  : 	{
+; 161  : 		print("\nhelp");
+; 162  : 		print("\nOpens up a help text!");
+; 163  : 		return;
+; 164  : 	}
+; 165  : 	else if(strcmp(arg, "about") == 0)
+; 166  : 	{
+; 167  : 		print("\nabout");
+; 168  : 		print("\nOpens up an about text!");
+; 169  : 		return;
+; 170  : 	}
+; 171  : 	else if(strcmp(arg, "start") == 0)
+; 172  : 	{
+; 173  : 		print("\nstart <filename>");
+; 174  : 		print("\nLoads and parses a PE32 application");
+; 175  : 		return;
+; 176  : 	}
+; 177  : 	else if(strcmp(arg, "cls") == 0)
+; 178  : 	{
+; 179  : 		print("\ncls");
+; 180  : 		print("\nClears the screen. (0x17)");
+; 181  : 		return;
+; 182  : 	}
+; 183  : 	else if(strcmp(arg, "echo") == 0)
+; 184  : 	{
+; 185  : 		print("\necho <string>");
+; 186  : 		print("\nEchoes a string!");
+; 187  : 		return;
+; 188  : 	}*/
+; 189  : 	print("\nWelcome to LevOS2.0!");
 
 	push	OFFSET ??_C@_0BG@PIOLICDL@?6Welcome?5to?5LevOS2?40?$CB?$AA@
 	call	DWORD PTR __imp__print
 	add	esp, 4
 
-; 188  : 	print("\nCommands available: ");//help; readtxt; about; start; cls; echo");
+; 190  : 	print("\nCommands available: ");//help; readtxt; about; start; cls; echo");
 
 	push	OFFSET ??_C@_0BG@DMKKJMII@?6Commands?5available?3?5?$AA@
 	call	DWORD PTR __imp__print
 	add	esp, 4
 
-; 189  : 	for(int i = 0; i < currentCmd; i++)
+; 191  : 	for(int i = 0; i < currentCmd; i++)
 
-	mov	DWORD PTR _i$2739[ebp], 0
+	mov	DWORD PTR _i$2747[ebp], 0
 	jmp	SHORT $LN4@cmd_help
 $LN3@cmd_help:
-	mov	eax, DWORD PTR _i$2739[ebp]
+	mov	eax, DWORD PTR _i$2747[ebp]
 	add	eax, 1
-	mov	DWORD PTR _i$2739[ebp], eax
+	mov	DWORD PTR _i$2747[ebp], eax
 $LN4@cmd_help:
 	movsx	eax, BYTE PTR ?currentCmd@@3DA		; currentCmd
-	cmp	DWORD PTR _i$2739[ebp], eax
+	cmp	DWORD PTR _i$2747[ebp], eax
 	jge	SHORT $LN2@cmd_help
 
-; 190  : 	{
-; 191  : 		print(cmdlist[i].text);
+; 192  : 	{
+; 193  : 		print(cmdlist[i].text);
 
-	mov	eax, DWORD PTR _i$2739[ebp]
+	mov	eax, DWORD PTR _i$2747[ebp]
 	imul	eax, 12					; 0000000cH
 	mov	ecx, DWORD PTR ?cmdlist@@3PAU__COMMAND@@A[eax]
 	push	ecx
 	call	DWORD PTR __imp__print
 	add	esp, 4
 
-; 192  : 		if(i != currentCmd - 1) {
+; 194  : 		if(i != currentCmd - 1) {
 
 	movsx	eax, BYTE PTR ?currentCmd@@3DA		; currentCmd
 	sub	eax, 1
-	cmp	DWORD PTR _i$2739[ebp], eax
+	cmp	DWORD PTR _i$2747[ebp], eax
 	je	SHORT $LN1@cmd_help
 
-; 193  : 			print("; ");
+; 195  : 			print("; ");
 
 	push	OFFSET ??_C@_02LNAEAIDO@?$DL?5?$AA@
 	call	DWORD PTR __imp__print
 	add	esp, 4
 $LN1@cmd_help:
 
-; 194  : 		}
-; 195  : 	}
+; 196  : 		}
+; 197  : 	}
 
 	jmp	SHORT $LN3@cmd_help
 $LN2@cmd_help:
 
-; 196  : 	//printchar('\n');
-; 197  : 	print("\nUse help <command> to get better help on the commands");
+; 198  : 	//printchar('\n');
+; 199  : 	print("\nUse help <command> to get better help on the commands");
 
 	push	OFFSET ??_C@_0DH@KHANMGIM@?6Use?5help?5?$DMcommand?$DO?5to?5get?5bette@
 	call	DWORD PTR __imp__print
 	add	esp, 4
 $LN9@cmd_help:
 
-; 198  : 	return;
-; 199  : }
+; 200  : 	return;
+; 201  : }
 
 	pop	edi
 	pop	esi
@@ -997,7 +1016,7 @@ _arg$ = -4						; size = 4
 _buf$ = 8						; size = 4
 ?cmd_test@@YAXPAD@Z PROC				; cmd_test, COMDAT
 
-; 201  : {
+; 203  : {
 
 	push	ebp
 	mov	ebp, esp
@@ -1006,7 +1025,7 @@ _buf$ = 8						; size = 4
 	push	esi
 	push	edi
 
-; 202  : 	char* arg = strchr(buf, ' ');
+; 204  : 	char* arg = strchr(buf, ' ');
 
 	push	32					; 00000020H
 	mov	eax, DWORD PTR _buf$[ebp]
@@ -1015,13 +1034,13 @@ _buf$ = 8						; size = 4
 	add	esp, 8
 	mov	DWORD PTR _arg$[ebp], eax
 
-; 203  : 	arg++;
+; 205  : 	arg++;
 
 	mov	eax, DWORD PTR _arg$[ebp]
 	add	eax, 1
 	mov	DWORD PTR _arg$[ebp], eax
 
-; 204  : 	if(*arg == '\0') {print("\nPlease give a filename!");return;}
+; 206  : 	if(*arg == '\0') {print("\nPlease give a filename!");return;}
 
 	mov	eax, DWORD PTR _arg$[ebp]
 	movsx	ecx, BYTE PTR [eax]
@@ -1033,7 +1052,7 @@ _buf$ = 8						; size = 4
 	jmp	SHORT $LN3@cmd_test
 $LN2@cmd_test:
 
-; 205  : 	bool c = loadFileToLoc(arg, (char*)0xC10000);
+; 207  : 	bool c = loadFileToLoc(arg, (char*)0xC10000);
 
 	push	12648448				; 00c10000H
 	mov	eax, DWORD PTR _arg$[ebp]
@@ -1042,7 +1061,7 @@ $LN2@cmd_test:
 	add	esp, 8
 	mov	BYTE PTR _c$[ebp], al
 
-; 206  : 	if(!c){print("\nERROR: File not found!");return;}
+; 208  : 	if(!c){print("\nERROR: File not found!");return;}
 
 	movzx	eax, BYTE PTR _c$[ebp]
 	test	eax, eax
@@ -1053,21 +1072,21 @@ $LN2@cmd_test:
 	jmp	SHORT $LN3@cmd_test
 $LN1@cmd_test:
 
-; 207  : 	printchar('\n');
+; 209  : 	printchar('\n');
 
 	push	10					; 0000000aH
 	call	DWORD PTR __imp__printchar
 	add	esp, 4
 
-; 208  : 	print((char*)0xC10000);
+; 210  : 	print((char*)0xC10000);
 
 	push	12648448				; 00c10000H
 	call	DWORD PTR __imp__print
 	add	esp, 4
 $LN3@cmd_test:
 
-; 209  : 	return;
-; 210  : }
+; 211  : 	return;
+; 212  : }
 
 	pop	edi
 	pop	esi
@@ -1083,7 +1102,7 @@ _TEXT	SEGMENT
 _buf$ = 8						; size = 4
 ?cmd_reboot@@YAXPAD@Z PROC				; cmd_reboot, COMDAT
 
-; 212  : {
+; 214  : {
 
 	push	ebp
 	mov	ebp, esp
@@ -1092,19 +1111,19 @@ _buf$ = 8						; size = 4
 	push	esi
 	push	edi
 
-; 213  : 	_asm mov al, 0xFE
+; 215  : 	_asm mov al, 0xFE
 
 	mov	al, -2					; fffffffeH
 
-; 214  : 	_asm mov dx, 0x64
+; 216  : 	_asm mov dx, 0x64
 
 	mov	dx, 100					; 00000064H
 
-; 215  : 	_asm out dx, al
+; 217  : 	_asm out dx, al
 
 	out	dx, al
 
-; 216  : }
+; 218  : }
 
 	pop	edi
 	pop	esi
@@ -1127,7 +1146,7 @@ _TEXT	SEGMENT
 _buf$ = 8						; size = 4
 ?cmd_about@@YAXPAD@Z PROC				; cmd_about, COMDAT
 
-; 218  : {
+; 220  : {
 
 	push	ebp
 	mov	ebp, esp
@@ -1136,14 +1155,14 @@ _buf$ = 8						; size = 4
 	push	esi
 	push	edi
 
-; 219  : 	print("\nLevOS2.0 is a rewrite of the not-so-famous LevOS1.0,\nwhich failed when paging was about to be implemented :/");
+; 221  : 	print("\nLevOS2.0 is a rewrite of the not-so-famous LevOS1.0,\nwhich failed when paging was about to be implemented :/");
 
 	push	OFFSET ??_C@_0GO@GBIKKDFG@?6LevOS2?40?5is?5a?5rewrite?5of?5the?5no@
 	call	DWORD PTR __imp__print
 	add	esp, 4
 
-; 220  : 	return;
-; 221  : }
+; 222  : 	return;
+; 223  : }
 
 	pop	edi
 	pop	esi
@@ -1159,7 +1178,7 @@ _TEXT	SEGMENT
 _buf$ = 8						; size = 4
 ?cmd_dobios@@YAXPAD@Z PROC				; cmd_dobios, COMDAT
 
-; 223  : {
+; 225  : {
 
 	push	ebp
 	mov	ebp, esp
@@ -1168,20 +1187,20 @@ _buf$ = 8						; size = 4
 	push	esi
 	push	edi
 
-; 224  : 	_asm mov eax, 0x01
+; 226  : 	_asm mov eax, 0x01
 
 	mov	eax, 1
 
-; 225  : 	_asm mov ebx, 0x01
+; 227  : 	_asm mov ebx, 0x01
 
 	mov	ebx, 1
 
-; 226  : 	_asm int 0x2F
+; 228  : 	_asm int 0x2F
 
 	int	47					; 0000002fH
 
-; 227  : 	return;
-; 228  : }
+; 229  : 	return;
+; 230  : }
 
 	pop	edi
 	pop	esi
@@ -1197,7 +1216,7 @@ _TEXT	SEGMENT
 _buf$ = 8						; size = 4
 ?cmd_pci@@YAXPAD@Z PROC					; cmd_pci, COMDAT
 
-; 230  : {
+; 232  : {
 
 	push	ebp
 	mov	ebp, esp
@@ -1206,20 +1225,20 @@ _buf$ = 8						; size = 4
 	push	esi
 	push	edi
 
-; 231  : 	_asm mov eax, 0x01
+; 233  : 	_asm mov eax, 0x01
 
 	mov	eax, 1
 
-; 232  : 	_asm mov ebx, 0x02
+; 234  : 	_asm mov ebx, 0x02
 
 	mov	ebx, 2
 
-; 233  : 	_asm int 0x2F
+; 235  : 	_asm int 0x2F
 
 	int	47					; 0000002fH
 
-; 234  : 	return;
-; 235  : }
+; 236  : 	return;
+; 237  : }
 
 	pop	edi
 	pop	esi
@@ -1228,6 +1247,44 @@ _buf$ = 8						; size = 4
 	pop	ebp
 	ret	0
 ?cmd_pci@@YAXPAD@Z ENDP					; cmd_pci
+; Function compile flags: /Odtp /ZI
+_TEXT	ENDS
+;	COMDAT ?cmd_acpi@@YAXPAD@Z
+_TEXT	SEGMENT
+_buf$ = 8						; size = 4
+?cmd_acpi@@YAXPAD@Z PROC				; cmd_acpi, COMDAT
+
+; 239  : {
+
+	push	ebp
+	mov	ebp, esp
+	sub	esp, 64					; 00000040H
+	push	ebx
+	push	esi
+	push	edi
+
+; 240  : 	_asm mov eax, 0x01
+
+	mov	eax, 1
+
+; 241  : 	_asm mov ebx, 0x03
+
+	mov	ebx, 3
+
+; 242  : 	_asm int 0x2F
+
+	int	47					; 0000002fH
+
+; 243  : 	return;
+; 244  : }
+
+	pop	edi
+	pop	esi
+	pop	ebx
+	mov	esp, ebp
+	pop	ebp
+	ret	0
+?cmd_acpi@@YAXPAD@Z ENDP				; cmd_acpi
 _TEXT	ENDS
 PUBLIC	??_C@_0BM@CLBJFCLJ@?6No?5extra?5terminals?5yet?$CB?5?3?$CI?$AA@ ; `string'
 PUBLIC	??_C@_07INNMNHPJ@cmd?4exe?$AA@			; `string'
@@ -1265,7 +1322,7 @@ _arg$ = -4						; size = 4
 _buf$ = 8						; size = 4
 ?cmd_start@@YAXPAD@Z PROC				; cmd_start, COMDAT
 
-; 237  : {
+; 246  : {
 
 	push	ebp
 	mov	ebp, esp
@@ -1274,7 +1331,7 @@ _buf$ = 8						; size = 4
 	push	esi
 	push	edi
 
-; 238  : 	char* arg = strchr(buf, ' ');
+; 247  : 	char* arg = strchr(buf, ' ');
 
 	push	32					; 00000020H
 	mov	eax, DWORD PTR _buf$[ebp]
@@ -1283,13 +1340,13 @@ _buf$ = 8						; size = 4
 	add	esp, 8
 	mov	DWORD PTR _arg$[ebp], eax
 
-; 239  : 	arg++;
+; 248  : 	arg++;
 
 	mov	eax, DWORD PTR _arg$[ebp]
 	add	eax, 1
 	mov	DWORD PTR _arg$[ebp], eax
 
-; 240  : 	if(*arg == '\0') {print("\nPlease give a software name!");return;}
+; 249  : 	if(*arg == '\0') {print("\nPlease give a software name!");return;}
 
 	mov	eax, DWORD PTR _arg$[ebp]
 	movsx	ecx, BYTE PTR [eax]
@@ -1301,7 +1358,7 @@ _buf$ = 8						; size = 4
 	jmp	SHORT $LN5@cmd_start
 $LN4@cmd_start:
 
-; 241  : 	if(strcmp(arg, "KRNL32.exe") == 0){print("\nKernel can't be loaded! :)");return;}
+; 250  : 	if(strcmp(arg, "KRNL32.exe") == 0){print("\nKernel can't be loaded! :)");return;}
 
 	push	OFFSET ??_C@_0L@FEMKKAMN@KRNL32?4exe?$AA@
 	mov	eax, DWORD PTR _arg$[ebp]
@@ -1316,7 +1373,7 @@ $LN4@cmd_start:
 	jmp	SHORT $LN5@cmd_start
 $LN3@cmd_start:
 
-; 242  : 	if(strcmp(arg, "cmd.exe") == 0){print("\nNo extra terminals yet! :(");return;}
+; 251  : 	if(strcmp(arg, "cmd.exe") == 0){print("\nNo extra terminals yet! :(");return;}
 
 	push	OFFSET ??_C@_07INNMNHPJ@cmd?4exe?$AA@
 	mov	eax, DWORD PTR _arg$[ebp]
@@ -1331,7 +1388,7 @@ $LN3@cmd_start:
 	jmp	SHORT $LN5@cmd_start
 $LN2@cmd_start:
 
-; 243  : 	if(!executePE32(arg)) print("\nERROR: File not found!");
+; 252  : 	if(!executePE32(arg)) print("\nERROR: File not found!");
 
 	mov	eax, DWORD PTR _arg$[ebp]
 	push	eax
@@ -1345,8 +1402,8 @@ $LN2@cmd_start:
 	add	esp, 4
 $LN5@cmd_start:
 
-; 244  : 	return;
-; 245  : }
+; 253  : 	return;
+; 254  : }
 
 	pop	edi
 	pop	esi
@@ -1364,7 +1421,7 @@ _arg$ = -4						; size = 4
 _buf$ = 8						; size = 4
 ?cmd_dump@@YAXPAD@Z PROC				; cmd_dump, COMDAT
 
-; 247  : {
+; 256  : {
 
 	push	ebp
 	mov	ebp, esp
@@ -1373,7 +1430,7 @@ _buf$ = 8						; size = 4
 	push	esi
 	push	edi
 
-; 248  : 	char* arg = strchr(buf, ' ');
+; 257  : 	char* arg = strchr(buf, ' ');
 
 	push	32					; 00000020H
 	mov	eax, DWORD PTR _buf$[ebp]
@@ -1382,13 +1439,13 @@ _buf$ = 8						; size = 4
 	add	esp, 8
 	mov	DWORD PTR _arg$[ebp], eax
 
-; 249  : 	arg++;
+; 258  : 	arg++;
 
 	mov	eax, DWORD PTR _arg$[ebp]
 	add	eax, 1
 	mov	DWORD PTR _arg$[ebp], eax
 
-; 250  : 	if(*arg == '\0') {print("\nPlease give a software name!");return;}
+; 259  : 	if(*arg == '\0') {print("\nPlease give a software name!");return;}
 
 	mov	eax, DWORD PTR _arg$[ebp]
 	movsx	ecx, BYTE PTR [eax]
@@ -1400,9 +1457,9 @@ _buf$ = 8						; size = 4
 	jmp	SHORT $LN3@cmd_dump
 $LN2@cmd_dump:
 
-; 251  : 	/*if(strcmp(arg, "KRNL32.exe") == 0){print("\nKernel can't be loaded! :)");return;}
-; 252  : 	if(strcmp(arg, "cmd.exe") == 0){print("\nNo extra terminals yet! :(");return;}*/
-; 253  : 	if(!dumpPE32(arg)) print("\nERROR: File not found!");
+; 260  : 	/*if(strcmp(arg, "KRNL32.exe") == 0){print("\nKernel can't be loaded! :)");return;}
+; 261  : 	if(strcmp(arg, "cmd.exe") == 0){print("\nNo extra terminals yet! :(");return;}*/
+; 262  : 	if(!dumpPE32(arg)) print("\nERROR: File not found!");
 
 	mov	eax, DWORD PTR _arg$[ebp]
 	push	eax
@@ -1416,8 +1473,8 @@ $LN2@cmd_dump:
 	add	esp, 4
 $LN3@cmd_dump:
 
-; 254  : 	return;
-; 255  : }
+; 263  : 	return;
+; 264  : }
 
 	pop	edi
 	pop	esi
@@ -1433,7 +1490,7 @@ _TEXT	SEGMENT
 _buf$ = 8						; size = 4
 ?cmd_cls@@YAXPAD@Z PROC					; cmd_cls, COMDAT
 
-; 257  : {
+; 266  : {
 
 	push	ebp
 	mov	ebp, esp
@@ -1442,12 +1499,12 @@ _buf$ = 8						; size = 4
 	push	esi
 	push	edi
 
-; 258  : 	clearScreen();
+; 267  : 	clearScreen();
 
 	call	DWORD PTR __imp__clearScreen
 
-; 259  : 	return;
-; 260  : }
+; 268  : 	return;
+; 269  : }
 
 	pop	edi
 	pop	esi
@@ -1467,14 +1524,14 @@ CONST	SEGMENT
 CONST	ENDS
 ;	COMDAT ?cmd_dir@@YAXPAD@Z
 _TEXT	SEGMENT
-_j$2803 = -28						; size = 4
-_i$2799 = -24						; size = 4
+_j$2814 = -28						; size = 4
+_i$2810 = -24						; size = 4
 _num$ = -5						; size = 1
 _files$ = -4						; size = 4
 _buf$ = 8						; size = 4
 ?cmd_dir@@YAXPAD@Z PROC					; cmd_dir, COMDAT
 
-; 262  : {
+; 271  : {
 
 	push	ebp
 	mov	ebp, esp
@@ -1483,94 +1540,94 @@ _buf$ = 8						; size = 4
 	push	esi
 	push	edi
 
-; 263  : 	print("Fails!");
+; 272  : 	print("Fails!");
 
 	push	OFFSET ??_C@_06LJBKCCFA@Fails?$CB?$AA@
 	call	DWORD PTR __imp__print
 	add	esp, 4
 
-; 264  : 	return;
+; 273  : 	return;
 
 	jmp	$LN8@cmd_dir
 
-; 265  : 	printchar('\n');
+; 274  : 	printchar('\n');
 
 	push	10					; 0000000aH
 	call	DWORD PTR __imp__printchar
 	add	esp, 4
 
-; 266  : 	char* files = getFilesInRoot();
+; 275  : 	char* files = getFilesInRoot();
 
 	call	DWORD PTR __imp__getFilesInRoot
 	mov	DWORD PTR _files$[ebp], eax
 
-; 267  : 	char num = getNumberOfFilesInRoot();
+; 276  : 	char num = getNumberOfFilesInRoot();
 
 	call	DWORD PTR __imp__getNumberOfFilesInRoot
 	mov	BYTE PTR _num$[ebp], al
 
-; 268  : 	char name[11];
-; 269  : 	for(int i = 0; i < num; i++)
+; 277  : 	char name[11];
+; 278  : 	for(int i = 0; i < num; i++)
 
-	mov	DWORD PTR _i$2799[ebp], 0
+	mov	DWORD PTR _i$2810[ebp], 0
 	jmp	SHORT $LN7@cmd_dir
 $LN6@cmd_dir:
-	mov	eax, DWORD PTR _i$2799[ebp]
+	mov	eax, DWORD PTR _i$2810[ebp]
 	add	eax, 1
-	mov	DWORD PTR _i$2799[ebp], eax
+	mov	DWORD PTR _i$2810[ebp], eax
 $LN7@cmd_dir:
 	movsx	eax, BYTE PTR _num$[ebp]
-	cmp	DWORD PTR _i$2799[ebp], eax
+	cmp	DWORD PTR _i$2810[ebp], eax
 	jge	SHORT $LN8@cmd_dir
 
-; 270  : 	{
-; 271  : 			for(int j = 0; j < 11; j++)
+; 279  : 	{
+; 280  : 			for(int j = 0; j < 11; j++)
 
-	mov	DWORD PTR _j$2803[ebp], 0
+	mov	DWORD PTR _j$2814[ebp], 0
 	jmp	SHORT $LN4@cmd_dir
 $LN3@cmd_dir:
-	mov	eax, DWORD PTR _j$2803[ebp]
+	mov	eax, DWORD PTR _j$2814[ebp]
 	add	eax, 1
-	mov	DWORD PTR _j$2803[ebp], eax
+	mov	DWORD PTR _j$2814[ebp], eax
 $LN4@cmd_dir:
-	cmp	DWORD PTR _j$2803[ebp], 11		; 0000000bH
+	cmp	DWORD PTR _j$2814[ebp], 11		; 0000000bH
 	jge	SHORT $LN2@cmd_dir
 
-; 272  : 			{
-; 273  : 				printchar(*(files + j + i *11));
+; 281  : 			{
+; 282  : 				printchar(*(files + j + i *11));
 
 	mov	eax, DWORD PTR _files$[ebp]
-	add	eax, DWORD PTR _j$2803[ebp]
-	mov	ecx, DWORD PTR _i$2799[ebp]
+	add	eax, DWORD PTR _j$2814[ebp]
+	mov	ecx, DWORD PTR _i$2810[ebp]
 	imul	ecx, 11					; 0000000bH
 	movzx	edx, BYTE PTR [eax+ecx]
 	push	edx
 	call	DWORD PTR __imp__printchar
 	add	esp, 4
 
-; 274  : 			}
+; 283  : 			}
 
 	jmp	SHORT $LN3@cmd_dir
 $LN2@cmd_dir:
 
-; 275  : 			if(i != num-1)printchar('\n');
+; 284  : 			if(i != num-1)printchar('\n');
 
 	movsx	eax, BYTE PTR _num$[ebp]
 	sub	eax, 1
-	cmp	DWORD PTR _i$2799[ebp], eax
+	cmp	DWORD PTR _i$2810[ebp], eax
 	je	SHORT $LN1@cmd_dir
 	push	10					; 0000000aH
 	call	DWORD PTR __imp__printchar
 	add	esp, 4
 $LN1@cmd_dir:
 
-; 276  : 	}
+; 285  : 	}
 
 	jmp	SHORT $LN6@cmd_dir
 $LN8@cmd_dir:
 
-; 277  : 	return;
-; 278  : }
+; 286  : 	return;
+; 287  : }
 
 	pop	edi
 	pop	esi
@@ -1603,7 +1660,7 @@ _TEXT	SEGMENT
 _buf$ = 8						; size = 4
 ?cmd_time@@YAXPAD@Z PROC				; cmd_time, COMDAT
 
-; 280  : {
+; 289  : {
 
 	push	ebp
 	mov	ebp, esp
@@ -1612,98 +1669,98 @@ _buf$ = 8						; size = 4
 	push	esi
 	push	edi
 
-; 281  : 	fillRTC((unsigned int)&rtc_data);
+; 290  : 	fillRTC((unsigned int)&rtc_data);
 
 	push	OFFSET _rtc_data
 	call	DWORD PTR __imp__fillRTC
 	add	esp, 4
 
-; 282  : 	printchar('\n');
+; 291  : 	printchar('\n');
 
 	push	10					; 0000000aH
 	call	DWORD PTR __imp__printchar
 	add	esp, 4
 
-; 283  : 	print("20");
+; 292  : 	print("20");
 
 	push	OFFSET ??_C@_02PIBHCBOA@20?$AA@
 	call	DWORD PTR __imp__print
 	add	esp, 4
 
-; 284  : 	printHexa((&rtc_data)->Year);
+; 293  : 	printHexa((&rtc_data)->Year);
 
 	mov	eax, DWORD PTR _rtc_data
 	push	eax
 	call	DWORD PTR __imp__printHexa
 	add	esp, 4
 
-; 285  : 	print(". ");
+; 294  : 	print(". ");
 
 	push	OFFSET ??_C@_02KHOJGJKF@?4?5?$AA@
 	call	DWORD PTR __imp__print
 	add	esp, 4
 
-; 286  : 	printHexa(rtc_data.Month);
+; 295  : 	printHexa(rtc_data.Month);
 
 	mov	eax, DWORD PTR _rtc_data+4
 	push	eax
 	call	DWORD PTR __imp__printHexa
 	add	esp, 4
 
-; 287  : 	print(". ");
+; 296  : 	print(". ");
 
 	push	OFFSET ??_C@_02KHOJGJKF@?4?5?$AA@
 	call	DWORD PTR __imp__print
 	add	esp, 4
 
-; 288  : 	printHexa(rtc_data.DayOfMonth);
+; 297  : 	printHexa(rtc_data.DayOfMonth);
 
 	mov	eax, DWORD PTR _rtc_data+8
 	push	eax
 	call	DWORD PTR __imp__printHexa
 	add	esp, 4
 
-; 289  : 	print(". ");
+; 298  : 	print(". ");
 
 	push	OFFSET ??_C@_02KHOJGJKF@?4?5?$AA@
 	call	DWORD PTR __imp__print
 	add	esp, 4
 
-; 290  : 	printHexa(rtc_data.Hour);
+; 299  : 	printHexa(rtc_data.Hour);
 
 	mov	eax, DWORD PTR _rtc_data+16
 	push	eax
 	call	DWORD PTR __imp__printHexa
 	add	esp, 4
 
-; 291  : 	printchar(':');
+; 300  : 	printchar(':');
 
 	push	58					; 0000003aH
 	call	DWORD PTR __imp__printchar
 	add	esp, 4
 
-; 292  : 	printHexa(rtc_data.Minute);
+; 301  : 	printHexa(rtc_data.Minute);
 
 	mov	eax, DWORD PTR _rtc_data+20
 	push	eax
 	call	DWORD PTR __imp__printHexa
 	add	esp, 4
 
-; 293  : 	printchar(':');
+; 302  : 	printchar(':');
 
 	push	58					; 0000003aH
 	call	DWORD PTR __imp__printchar
 	add	esp, 4
 
-; 294  : 	printHexa(rtc_data.Second);
+; 303  : 	printHexa(rtc_data.Second);
 
 	mov	eax, DWORD PTR _rtc_data+24
 	push	eax
 	call	DWORD PTR __imp__printHexa
 	add	esp, 4
 
-; 295  : 	return;
-; 296  : }
+; 304  : 	return;
+; 305  : }
 
 	pop	edi
 	pop	esi
@@ -1720,7 +1777,7 @@ _arg$ = -4						; size = 4
 _b$ = 8							; size = 4
 ?cmd_echo@@YAXPAD@Z PROC				; cmd_echo, COMDAT
 
-; 298  : {
+; 307  : {
 
 	push	ebp
 	mov	ebp, esp
@@ -1729,7 +1786,7 @@ _b$ = 8							; size = 4
 	push	esi
 	push	edi
 
-; 299  : 	char* arg = strchr(b, ' ');
+; 308  : 	char* arg = strchr(b, ' ');
 
 	push	32					; 00000020H
 	mov	eax, DWORD PTR _b$[ebp]
@@ -1738,13 +1795,13 @@ _b$ = 8							; size = 4
 	add	esp, 8
 	mov	DWORD PTR _arg$[ebp], eax
 
-; 300  : 	arg++;
+; 309  : 	arg++;
 
 	mov	eax, DWORD PTR _arg$[ebp]
 	add	eax, 1
 	mov	DWORD PTR _arg$[ebp], eax
 
-; 301  : 	if(*arg == '\0') return;
+; 310  : 	if(*arg == '\0') return;
 
 	mov	eax, DWORD PTR _arg$[ebp]
 	movsx	ecx, BYTE PTR [eax]
@@ -1753,13 +1810,13 @@ _b$ = 8							; size = 4
 	jmp	SHORT $LN2@cmd_echo
 $LN1@cmd_echo:
 
-; 302  : 	printchar('\n');
+; 311  : 	printchar('\n');
 
 	push	10					; 0000000aH
 	call	DWORD PTR __imp__printchar
 	add	esp, 4
 
-; 303  : 	print(arg);
+; 312  : 	print(arg);
 
 	mov	eax, DWORD PTR _arg$[ebp]
 	push	eax
@@ -1767,7 +1824,7 @@ $LN1@cmd_echo:
 	add	esp, 4
 $LN2@cmd_echo:
 
-; 304  : }
+; 313  : }
 
 	pop	edi
 	pop	esi

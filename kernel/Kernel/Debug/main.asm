@@ -126,15 +126,15 @@ CONST	SEGMENT
 CONST	ENDS
 ;	COMDAT ?loop@@YAXXZ
 _TEXT	SEGMENT
-_c$3567 = -4						; size = 1
+_c$3597 = -4						; size = 1
 ?loop@@YAXXZ PROC					; loop, COMDAT
 
-; 378  : {
+; 384  : {
 
 	push	ecx
 	push	esi
 
-; 379  : 	DebugPrintf("\n[LevOS-KRNL]~#");
+; 385  : 	DebugPrintf("\n[LevOS-KRNL]~#");
 
 	push	OFFSET ??_C@_0BA@NBBNMPGM@?6?$FLLevOS?9KRNL?$FN?$HO?$CD?$AA@
 	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
@@ -142,11 +142,11 @@ $LN13@loop:
 	add	esp, 4
 	npad	1
 
-; 380  : 	KEYCODE key;
-; 381  : 	//geninterrupt(0x21);
-; 382  : 	while(true)
-; 383  : 	{
-; 384  : 		key = getch();
+; 386  : 	KEYCODE key;
+; 387  : 	//geninterrupt(0x21);
+; 388  : 	while(true)
+; 389  : 	{
+; 390  : 		key = getch();
 
 $LL7@loop:
 	call	?kkybrd_get_last_key@@YA?AW4KEYCODE@@XZ	; kkybrd_get_last_key
@@ -155,28 +155,29 @@ $LL7@loop:
 	je	SHORT $LL7@loop
 	call	?kkybrd_discard_last_key@@YAXXZ		; kkybrd_discard_last_key
 
-; 385  : 		char c = kkybrd_key_to_ascii(key);
+; 391  : 		char c = kkybrd_key_to_ascii(key);
 
 	push	esi
 	call	?kkybrd_key_to_ascii@@YADW4KEYCODE@@@Z	; kkybrd_key_to_ascii
 	add	esp, 4
-	mov	BYTE PTR _c$3567[esp+8], al
+	mov	BYTE PTR _c$3597[esp+8], al
 
-; 386  : 		if(c!=0)DebugPutc(c);
+; 392  : 		if(c!=0)DebugPutc(c);
 
 	test	al, al
 	je	SHORT $LL7@loop
-	mov	eax, DWORD PTR _c$3567[esp+8]
+	mov	eax, DWORD PTR _c$3597[esp+8]
 	push	eax
 	call	?DebugPutc@@YAXE@Z			; DebugPutc
 
-; 387  : 	}
+; 393  : 	}
 
 	jmp	SHORT $LN13@loop
 ?loop@@YAXXZ ENDP					; loop
 _TEXT	ENDS
 PUBLIC	??_C@_07INNMNHPJ@cmd?4exe?$AA@			; `string'
 PUBLIC	??_C@_0BE@LCPKODCM@?6Loading?5up?5shell?3?5?$AA@ ; `string'
+PUBLIC	??_C@_0CJ@KMJKDNIK@?6Multitasking?5Testing?5has?5been?5d@ ; `string'
 PUBLIC	??_C@_0CN@DLLMGEPA@Press?5any?5key?5to?5continue?5to?5the@ ; `string'
 PUBLIC	??_C@_0O@CHBMCDKH@Saving?5font?3?5?$AA@		; `string'
 PUBLIC	??_C@_0BB@CAIKOGDG@Mounting?5FAT12?3?5?$AA@	; `string'
@@ -198,9 +199,15 @@ PUBLIC	??_C@_05MBDEGLCK@ERROR?$AA@			; `string'
 PUBLIC	??_C@_02GIPFHKNO@OK?$AA@			; `string'
 PUBLIC	??_C@_0L@DNGAJNGH@0xC0000000?$AA@		; `string'
 PUBLIC	??_C@_0CD@CHEEAOJK@LevOS2?5loading?5Kernel?5Version?3?5?$CF@ ; `string'
-PUBLIC	??_C@_06EIAEFCGB@040713?$AA@			; `string'
+PUBLIC	??_C@_06FMMPDGK@060713?$AA@			; `string'
 PUBLIC	_main
 EXTRN	?PE_mapApp@@YA_NPADH@Z:PROC			; PE_mapApp
+EXTRN	?setCurrentProc@@YAXPAU__PROCESS@@@Z:PROC	; setCurrentProc
+EXTRN	?taskthree@@YAXXZ:PROC				; taskthree
+EXTRN	?tasktwo@@YAXXZ:PROC				; tasktwo
+EXTRN	?allocStack@@YAPAEPAU__PROCESS@@@Z:PROC		; allocStack
+EXTRN	?taskone@@YAXXZ:PROC				; taskone
+EXTRN	?initProcessManager@@YAXXZ:PROC			; initProcessManager
 EXTRN	?VGA_setfont@@YAXPAD@Z:PROC			; VGA_setfont
 EXTRN	?fsysFatInitialize@@YAXU__DATA_DEVICE@@@Z:PROC	; fsysFatInitialize
 EXTRN	?vd_getCurrentDataDevice@@YA?AU__DATA_DEVICE@@XZ:PROC ; vd_getCurrentDataDevice
@@ -243,7 +250,13 @@ EXTRN	?pm_setup@@YA_NPAD@Z:PROC			; pm_setup
 EXTRN	?DebugSetColor@@YAII@Z:PROC			; DebugSetColor
 EXTRN	?DebugClrScr@@YAXG@Z:PROC			; DebugClrScr
 _BSS	SEGMENT
-_currentData DB	01cH DUP (?)
+_p2	DB	02bH DUP (?)
+	ALIGN	4
+
+_p	DB	02bH DUP (?)
+	ALIGN	4
+
+_currentData DB	020H DUP (?)
 _BSS	ENDS
 ;	COMDAT ??_C@_07INNMNHPJ@cmd?4exe?$AA@
 CONST	SEGMENT
@@ -253,6 +266,11 @@ CONST	ENDS
 CONST	SEGMENT
 ??_C@_0BE@LCPKODCM@?6Loading?5up?5shell?3?5?$AA@ DB 0aH, 'Loading up shel'
 	DB	'l: ', 00H					; `string'
+CONST	ENDS
+;	COMDAT ??_C@_0CJ@KMJKDNIK@?6Multitasking?5Testing?5has?5been?5d@
+CONST	SEGMENT
+??_C@_0CJ@KMJKDNIK@?6Multitasking?5Testing?5has?5been?5d@ DB 0aH, 'Multit'
+	DB	'asking Testing has been disabled!', 00H	; `string'
 CONST	ENDS
 ;	COMDAT ??_C@_0CN@DLLMGEPA@Press?5any?5key?5to?5continue?5to?5the@
 CONST	SEGMENT
@@ -351,54 +369,56 @@ CONST	SEGMENT
 ??_C@_0CD@CHEEAOJK@LevOS2?5loading?5Kernel?5Version?3?5?$CF@ DB 'LevOS2 l'
 	DB	'oading Kernel Version: %s', 0aH, 00H	; `string'
 CONST	ENDS
-;	COMDAT ??_C@_06EIAEFCGB@040713?$AA@
+;	COMDAT ??_C@_06FMMPDGK@060713?$AA@
 CONST	SEGMENT
-??_C@_06EIAEFCGB@040713?$AA@ DB '040713', 00H		; `string'
+??_C@_06FMMPDGK@060713?$AA@ DB '060713', 00H		; `string'
 ; Function compile flags: /Ogtpy
 CONST	ENDS
 ;	COMDAT _main
 _TEXT	SEGMENT
-$T3652 = -36						; size = 28
+_p3$ = -84						; size = 43
+$T3683 = -40						; size = 32
+_a$ = -8						; size = 4
 __font$ = -8						; size = 4
 __ts$ = -4						; size = 4
 _main	PROC						; COMDAT
 
-; 117  : void _cdecl main () {
+; 120  : void _cdecl main () {
 
 	push	ebp
 	mov	ebp, esp
-	sub	esp, 36					; 00000024H
+	sub	esp, 84					; 00000054H
 	push	ebx
 	push	esi
 	push	edi
 
-; 118  : 
-; 119  : 	int i=0x12;
-; 120  : 
-; 121  : 	DebugClrScr (0x18);
+; 121  : 
+; 122  : 	int i=0x12;
+; 123  : 
+; 124  : 	DebugClrScr (0x18);
 
 	push	24					; 00000018H
 	call	?DebugClrScr@@YAXG@Z			; DebugClrScr
 
-; 122  : 	DebugSetColor (0x17);
+; 125  : 	DebugSetColor (0x17);
 
 	push	23					; 00000017H
 	call	?DebugSetColor@@YAII@Z			; DebugSetColor
 	add	esp, 8
 
-; 123  : 	bool retur = false;
+; 126  : 	bool retur = false;
 
 	xor	bl, bl
 
-; 124  : 	int _ts = 0;
+; 127  : 	int _ts = 0;
 
 	mov	DWORD PTR __ts$[ebp], 0
 
-; 125  : 	_asm mov _ts, edx
+; 128  : 	_asm mov _ts, edx
 
 	mov	DWORD PTR __ts$[ebp], edx
 
-; 126  : 	if(_ts == 0x1337) { retur = true; goto returning;}
+; 129  : 	if(_ts == 0x1337) { retur = true; goto returning;}
 
 	cmp	DWORD PTR __ts$[ebp], 4919		; 00001337H
 	jne	SHORT $LN22@main
@@ -406,16 +426,16 @@ _main	PROC						; COMDAT
 	jmp	SHORT $LN20@main
 $LN22@main:
 
-; 127  : 
-; 128  : 	DebugPrintf ("LevOS2 loading Kernel Version: %s\n", KERNEL_VERSION);
+; 130  : 
+; 131  : 	DebugPrintf ("LevOS2 loading Kernel Version: %s\n", KERNEL_VERSION);
 
-	push	OFFSET ??_C@_06EIAEFCGB@040713?$AA@
+	push	OFFSET ??_C@_06FMMPDGK@060713?$AA@
 	push	OFFSET ??_C@_0CD@CHEEAOJK@LevOS2?5loading?5Kernel?5Version?3?5?$CF@
 	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
 
-; 129  : 	DebugPrintf ("Loading Physical Memory Manager: %s\n", (pm_setup((char*)(KERNEL_BASE+KERNEL_SIZE+4096)) ? "OK":"ERROR"));
+; 132  : 	DebugPrintf ("Loading Physical Memory Manager: %s\n", (pm_setup((char*)(KERNEL_BASE+KERNEL_SIZE+4096)) ? "OK":"ERROR"));
 
-	push	OFFSET ??_C@_0L@DNGAJNGH@0xC0000000?$AA@+24576
+	push	OFFSET ??_C@_0L@DNGAJNGH@0xC0000000?$AA@+86016
 	call	?pm_setup@@YA_NPAD@Z			; pm_setup
 	add	esp, 12					; 0000000cH
 	test	al, al
@@ -427,19 +447,19 @@ $LN26@main:
 	push	OFFSET ??_C@_0CF@JENKCJHG@Loading?5Physical?5Memory?5Manager?3@
 	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
 
-; 130  : #ifdef DEBUG
-; 131  : 	DebugPrintf ("   HEAP start: 0x%X\n", KERNEL_BASE+KERNEL_SIZE+4096);
-; 132  : 	DebugPrintf ("Testing malloc: 0x%x", (int)malloc(1));
-; 133  : 	DebugPrintf ("; 0x%x", (int)malloc(1));
-; 134  : 	DebugPrintf ("; 0x%x\n", (int)malloc(1));
-; 135  : #endif
-; 136  : 	int pagestart = (((unsigned int)malloc_ps((char*)0x400000,4*1024*1024)));
+; 133  : #ifdef DEBUG
+; 134  : 	DebugPrintf ("   HEAP start: 0x%X\n", KERNEL_BASE+KERNEL_SIZE+4096);
+; 135  : 	DebugPrintf ("Testing malloc: 0x%x", (int)malloc(1));
+; 136  : 	DebugPrintf ("; 0x%x", (int)malloc(1));
+; 137  : 	DebugPrintf ("; 0x%x\n", (int)malloc(1));
+; 138  : #endif
+; 139  : 	int pagestart = (((unsigned int)malloc_ps((char*)0x400000,4*1024*1024)));
 
 	push	4194304					; 00400000H
 	push	4194304					; 00400000H
 	call	?malloc_ps@@YAPAXPADH@Z			; malloc_ps
 
-; 137  : 	DebugPrintf ("Loading Virtual Memory Manager: %s\n", (vm_setup((int*)(pagestart)) ? "OK":"ERROR"));
+; 140  : 	DebugPrintf ("Loading Virtual Memory Manager: %s\n", (vm_setup((int*)(pagestart)) ? "OK":"ERROR"));
 
 	push	eax
 	call	?vm_setup@@YA_NPAX@Z			; vm_setup
@@ -453,56 +473,62 @@ $LN28@main:
 	push	OFFSET ??_C@_0CE@EEMONILL@Loading?5Virtual?5Memory?5Manager?3?5@
 	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
 
-; 138  : #ifdef DEBUG
-; 139  : 	DebugPrintf ("   PAGE start: 0x%X\n", pagestart);
-; 140  : 	DebugPrintf ("   malloc failure test: 0x%x\n", (int)malloc(1));
-; 141  : #endif
-; 142  : returning: /***************/
-; 143  : 	if(!retur)DebugPrintf ("Setting up Paging: ");
+; 141  : #ifdef DEBUG
+; 142  : 	DebugPrintf ("   PAGE start: 0x%X\n", pagestart);
+; 143  : 	DebugPrintf ("   malloc failure test: 0x%x\n", (int)malloc(1));
+; 144  : #endif
+; 145  : returning: /***************/
+; 146  : 	if(!retur)DebugPrintf ("Setting up Paging: ");
 
 	push	OFFSET ??_C@_0BE@CFDKAHDD@Setting?5up?5Paging?3?5?$AA@
 	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
 	add	esp, 12					; 0000000cH
 $LN20@main:
 
-; 144  : 	vm_map_virt_to_phys(0, 0);
+; 147  : 	vm_map_virt_to_phys(0, 0); // 0-4mb
 
 	push	0
 	push	0
 	call	?vm_map_virt_to_phys@@YAXHH@Z		; vm_map_virt_to_phys
 
-; 145  : 	vm_map_virt_to_phys(1, 0x400000);
+; 148  : 	vm_map_virt_to_phys(1, 0x400000); //4mb - 8mb
 
 	push	4194304					; 00400000H
 	push	1
 	call	?vm_map_virt_to_phys@@YAXHH@Z		; vm_map_virt_to_phys
 
-; 146  : 	vm_map_virt_to_phys(2, 0x800000);
+; 149  : 	vm_map_virt_to_phys(2, 0x800000); // 8-12
 
 	push	8388608					; 00800000H
 	push	2
 	call	?vm_map_virt_to_phys@@YAXHH@Z		; vm_map_virt_to_phys
 
-; 147  : 	vm_map_virt_to_phys(3, 0xC00000);
+; 150  : 	vm_map_virt_to_phys(3, 0xC00000); // 12-16
 
 	push	12582912				; 00c00000H
 	push	3
 	call	?vm_map_virt_to_phys@@YAXHH@Z		; vm_map_virt_to_phys
 
-; 148  : 	vm_map_virt_to_phys(4, 0x1000000);
+; 151  : 	vm_map_virt_to_phys(4, 0x1000000); // 16-18
 
 	push	16777216				; 01000000H
 	push	4
 	call	?vm_map_virt_to_phys@@YAXHH@Z		; vm_map_virt_to_phys
 
-; 149  : 	vm_map_virt_to_phys(768, 0x100000);
+; 152  : 	vm_map_virt_to_phys(767, 0x1400000); // process stack reserve start: 0xBFC00000 - 0xC0000000 (4mb)
+
+	push	20971520				; 01400000H
+	push	767					; 000002ffH
+	call	?vm_map_virt_to_phys@@YAXHH@Z		; vm_map_virt_to_phys
+
+; 153  : 	vm_map_virt_to_phys(768, 0x100000); // 3gb+ 
 
 	push	1048576					; 00100000H
 	push	768					; 00000300H
 	call	?vm_map_virt_to_phys@@YAXHH@Z		; vm_map_virt_to_phys
-	add	esp, 48					; 00000030H
+	add	esp, 56					; 00000038H
 
-; 150  : 	if(!retur)DebugPrintf ("OK\n");
+; 154  : 	if(!retur)DebugPrintf ("OK\n");
 
 	test	bl, bl
 	jne	SHORT $LN17@main
@@ -510,7 +536,7 @@ $LN20@main:
 	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
 	add	esp, 4
 
-; 151  : 	if(!retur)DebugPrintf ("Enabling Paging: %s\n", vm_enable_paging()?"OK":"ERROR");
+; 155  : 	if(!retur)DebugPrintf ("Enabling Paging: %s\n", vm_enable_paging()?"OK":"ERROR");
 
 	call	?vm_enable_paging@@YA_NXZ		; vm_enable_paging
 	test	al, al
@@ -522,9 +548,9 @@ $LN30@main:
 	push	OFFSET ??_C@_0BF@OCGOOMEB@Enabling?5Paging?3?5?$CFs?6?$AA@
 	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
 
-; 152  : 	//int GDTstart = (int)malloc(sizeof(struct gdt_descriptor)*MAX_DESCRIPTORS);
-; 153  : 	int GDTstart = 0x400;
-; 154  : 	if(!retur)DebugPrintf ("Setting up GDT: %s\n", i86_gdt_setup(GDTstart)?"OK":"ERROR");
+; 156  : 	//int GDTstart = (int)malloc(sizeof(struct gdt_descriptor)*MAX_DESCRIPTORS);
+; 157  : 	int GDTstart = 0x400;
+; 158  : 	if(!retur)DebugPrintf ("Setting up GDT: %s\n", i86_gdt_setup(GDTstart)?"OK":"ERROR");
 
 	push	1024					; 00000400H
 	call	?i86_gdt_setup@@YA_NH@Z			; i86_gdt_setup
@@ -540,17 +566,17 @@ $LN32@main:
 	add	esp, 8
 $LN17@main:
 
-; 155  : #ifdef DEBUG 
-; 156  : 		DebugPrintf ("   GDT start: 0x%X\n", GDTstart);
-; 157  : 		DebugPrintf ("   malloc failure test: 0x%x\n", (int)malloc(1));
-; 158  : #endif
-; 159  : 	int IDTstart = (int)malloc(sizeof(struct idt_descriptor)*I86_MAX_INTERRUPTS);
+; 159  : #ifdef DEBUG 
+; 160  : 		DebugPrintf ("   GDT start: 0x%X\n", GDTstart);
+; 161  : 		DebugPrintf ("   malloc failure test: 0x%x\n", (int)malloc(1));
+; 162  : #endif
+; 163  : 	int IDTstart = (int)malloc(sizeof(struct idt_descriptor)*I86_MAX_INTERRUPTS);
 
 	push	2048					; 00000800H
 	call	?malloc@@YAPAXH@Z			; malloc
 	add	esp, 4
 
-; 160  : 	if(!retur)DebugPrintf ("Setting up IDT: %s\n", i86_setup(IDTstart)?"OK":"ERROR");
+; 164  : 	if(!retur)DebugPrintf ("Setting up IDT: %s\n", i86_setup(IDTstart)?"OK":"ERROR");
 
 	test	bl, bl
 	jne	SHORT $LN16@main
@@ -568,11 +594,11 @@ $LN34@main:
 	add	esp, 8
 $LN16@main:
 
-; 161  : #ifdef DEBUG 
-; 162  : 		DebugPrintf ("   IDT start: 0x%X\n", IDTstart);
-; 163  : 		DebugPrintf ("   malloc failure test: 0x%x\n", (int)malloc(1));
-; 164  : #endif
-; 165  : 	i86_install_ir (0x2F, I86_IDT_DESC_PRESENT | I86_IDT_DESC_BIT32, 0x8, (I86_IRQ_HANDLER)handleSysCall); // install SystemCall
+; 165  : #ifdef DEBUG 
+; 166  : 		DebugPrintf ("   IDT start: 0x%X\n", IDTstart);
+; 167  : 		DebugPrintf ("   malloc failure test: 0x%x\n", (int)malloc(1));
+; 168  : #endif
+; 169  : 	i86_install_ir (0x2F, I86_IDT_DESC_PRESENT | I86_IDT_DESC_BIT32, 0x8, (I86_IRQ_HANDLER)handleSysCall); // install SystemCall
 
 	push	OFFSET ?handleSysCall@@YAXXZ		; handleSysCall
 	push	8
@@ -581,7 +607,7 @@ $LN16@main:
 	call	?i86_install_ir@@YAHIGGP6AXXZ@Z		; i86_install_ir
 	add	esp, 16					; 00000010H
 
-; 166  : 	if(!retur)DebugPrintf ("Setting up PICs: %s\n",  pic_initialize(0x20, 0x28)?"OK":"ERROR");
+; 170  : 	if(!retur)DebugPrintf ("Setting up PICs: %s\n",  pic_initialize(0x20, 0x28)?"OK":"ERROR");
 
 	test	bl, bl
 	jne	SHORT $LN15@main
@@ -600,118 +626,118 @@ $LN36@main:
 	add	esp, 8
 $LN15@main:
 
-; 167  : 	setint (0,(void (__cdecl &)(void))divide_by_zero_fault);
+; 171  : 	setint (0,(void (__cdecl &)(void))divide_by_zero_fault);
 
 	push	OFFSET ?divide_by_zero_fault@@YAXIIII@Z	; divide_by_zero_fault
 	push	0
 	call	?setint@@YAXHP6AXXZ@Z			; setint
 
-; 168  : 	setint (1,(void (__cdecl &)(void))single_step_trap);
+; 172  : 	setint (1,(void (__cdecl &)(void))single_step_trap);
 
 	push	OFFSET ?single_step_trap@@YAXIII@Z	; single_step_trap
 	push	1
 	call	?setint@@YAXHP6AXXZ@Z			; setint
 
-; 169  : 	setint (2,(void (__cdecl &)(void))nmi_trap);
+; 173  : 	setint (2,(void (__cdecl &)(void))nmi_trap);
 
 	push	OFFSET ?nmi_trap@@YAXIII@Z		; nmi_trap
 	push	2
 	call	?setint@@YAXHP6AXXZ@Z			; setint
 
-; 170  : 	setint (3,(void (__cdecl &)(void))breakpoint_trap);
+; 174  : 	setint (3,(void (__cdecl &)(void))breakpoint_trap);
 
 	push	OFFSET ?breakpoint_trap@@YAXIII@Z	; breakpoint_trap
 	push	3
 	call	?setint@@YAXHP6AXXZ@Z			; setint
 
-; 171  : 	setint (4,(void (__cdecl &)(void))overflow_trap);
+; 175  : 	setint (4,(void (__cdecl &)(void))overflow_trap);
 
 	push	OFFSET ?overflow_trap@@YAXIII@Z		; overflow_trap
 	push	4
 	call	?setint@@YAXHP6AXXZ@Z			; setint
 
-; 172  : 	setint (5,(void (__cdecl &)(void))bounds_check_fault);
+; 176  : 	setint (5,(void (__cdecl &)(void))bounds_check_fault);
 
 	push	OFFSET ?bounds_check_fault@@YAXIII@Z	; bounds_check_fault
 	push	5
 	call	?setint@@YAXHP6AXXZ@Z			; setint
 
-; 173  : 	setint (6,(void (__cdecl &)(void))invalid_opcode_fault);
+; 177  : 	setint (6,(void (__cdecl &)(void))invalid_opcode_fault);
 
 	push	OFFSET ?invalid_opcode_fault@@YAXIII@Z	; invalid_opcode_fault
 	push	6
 	call	?setint@@YAXHP6AXXZ@Z			; setint
 
-; 174  : 	setint (7,(void (__cdecl &)(void))no_device_fault);
+; 178  : 	setint (7,(void (__cdecl &)(void))no_device_fault);
 
 	push	OFFSET ?no_device_fault@@YAXIII@Z	; no_device_fault
 	push	7
 	call	?setint@@YAXHP6AXXZ@Z			; setint
 	add	esp, 64					; 00000040H
 
-; 175  : 	setint (8,(void (__cdecl &)(void))double_fault_abort);
+; 179  : 	setint (8,(void (__cdecl &)(void))double_fault_abort);
 
 	push	OFFSET ?double_fault_abort@@YAXIIII@Z	; double_fault_abort
 	push	8
 	call	?setint@@YAXHP6AXXZ@Z			; setint
 
-; 176  : 	setint (10,(void (__cdecl &)(void))invalid_tss_fault);
+; 180  : 	setint (10,(void (__cdecl &)(void))invalid_tss_fault);
 
 	push	OFFSET ?invalid_tss_fault@@YAXIIII@Z	; invalid_tss_fault
 	push	10					; 0000000aH
 	call	?setint@@YAXHP6AXXZ@Z			; setint
 
-; 177  : 	setint (11,(void (__cdecl &)(void))no_segment_fault);
+; 181  : 	setint (11,(void (__cdecl &)(void))no_segment_fault);
 
 	push	OFFSET ?no_segment_fault@@YAXIIII@Z	; no_segment_fault
 	push	11					; 0000000bH
 	call	?setint@@YAXHP6AXXZ@Z			; setint
 
-; 178  : 	setint (12,(void (__cdecl &)(void))stack_fault);
+; 182  : 	setint (12,(void (__cdecl &)(void))stack_fault);
 
 	push	OFFSET ?stack_fault@@YAXIIII@Z		; stack_fault
 	push	12					; 0000000cH
 	call	?setint@@YAXHP6AXXZ@Z			; setint
 
-; 179  : 	setint (13,(void (__cdecl &)(void))general_protection_fault);
+; 183  : 	setint (13,(void (__cdecl &)(void))general_protection_fault);
 
 	push	OFFSET ?general_protection_fault@@YAXIIII@Z ; general_protection_fault
 	push	13					; 0000000dH
 	call	?setint@@YAXHP6AXXZ@Z			; setint
 
-; 180  : 	setint (14,(void (__cdecl &)(void))page_fault);
+; 184  : 	setint (14,(void (__cdecl &)(void))page_fault);
 
 	push	OFFSET ?page_fault@@YAXIIII@Z		; page_fault
 	push	14					; 0000000eH
 	call	?setint@@YAXHP6AXXZ@Z			; setint
 
-; 181  : 	setint (16,(void (__cdecl &)(void))fpu_fault);
+; 185  : 	setint (16,(void (__cdecl &)(void))fpu_fault);
 
 	push	OFFSET ?fpu_fault@@YAXIII@Z		; fpu_fault
 	push	16					; 00000010H
 	call	?setint@@YAXHP6AXXZ@Z			; setint
 
-; 182  : 	setint (17,(void (__cdecl &)(void))alignment_check_fault);
+; 186  : 	setint (17,(void (__cdecl &)(void))alignment_check_fault);
 
 	push	OFFSET ?alignment_check_fault@@YAXIIII@Z ; alignment_check_fault
 	push	17					; 00000011H
 	call	?setint@@YAXHP6AXXZ@Z			; setint
 	add	esp, 64					; 00000040H
 
-; 183  : 	setint (18,(void (__cdecl &)(void))machine_check_abort);
+; 187  : 	setint (18,(void (__cdecl &)(void))machine_check_abort);
 
 	push	OFFSET ?machine_check_abort@@YAXIII@Z	; machine_check_abort
 	push	18					; 00000012H
 	call	?setint@@YAXHP6AXXZ@Z			; setint
 
-; 184  : 	setint (19,(void (__cdecl &)(void))simd_fpu_fault);
+; 188  : 	setint (19,(void (__cdecl &)(void))simd_fpu_fault);
 
 	push	OFFSET ?simd_fpu_fault@@YAXIII@Z	; simd_fpu_fault
 	push	19					; 00000013H
 	call	?setint@@YAXHP6AXXZ@Z			; setint
 	add	esp, 16					; 00000010H
 
-; 185  : 	if(!retur)DebugPrintf ("Setting up PIT: %s\n", i86_pit_initialize()?"OK":"ERROR");
+; 189  : 	if(!retur)DebugPrintf ("Setting up PIT: %s\n", i86_pit_initialize()?"OK":"ERROR");
 
 	test	bl, bl
 	jne	SHORT $LN14@main
@@ -727,7 +753,7 @@ $LN38@main:
 	add	esp, 8
 $LN14@main:
 
-; 186  : 	i86_pit_start_counter (200,I86_PIT_OCW_COUNTER_0, I86_PIT_OCW_MODE_SQUAREWAVEGEN);
+; 190  : 	i86_pit_start_counter (200,I86_PIT_OCW_COUNTER_0, I86_PIT_OCW_MODE_SQUAREWAVEGEN);
 
 	push	6
 	push	0
@@ -735,7 +761,7 @@ $LN14@main:
 	call	?i86_pit_start_counter@@YAXIEE@Z	; i86_pit_start_counter
 	add	esp, 12					; 0000000cH
 
-; 187  : 	if(!retur)DebugPrintf ("Enabling Exceptions & IRQs: ");
+; 191  : 	if(!retur)DebugPrintf ("Enabling Exceptions & IRQs: ");
 
 	test	bl, bl
 	jne	SHORT $LN13@main
@@ -744,36 +770,36 @@ $LN14@main:
 	add	esp, 4
 $LN13@main:
 
-; 188  : 	_asm sti
+; 192  : 	_asm sti
 
 	sti
 
-; 189  : 	if(!retur)DebugPrintf ("OK\n");
+; 193  : 	if(!retur)DebugPrintf ("OK\n");
 
 	test	bl, bl
 	jne	SHORT $LN11@main
 	push	OFFSET ??_C@_03JLOMOCCD@OK?6?$AA@
 	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
 
-; 190  : 	//setint (0x20, irq0handler);
-; 191  : 	if(!retur)DebugPrintf ("Setting up Keyboard: ");
+; 194  : 	//setint (0x20, irq0handler);
+; 195  : 	if(!retur)DebugPrintf ("Setting up Keyboard: ");
 
 	push	OFFSET ??_C@_0BG@GHPIMDEG@Setting?5up?5Keyboard?3?5?$AA@
 	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
 	add	esp, 8
 $LN11@main:
 
-; 192  : 	kkybrd_install(33);
+; 196  : 	kkybrd_install(33);
 
 	push	33					; 00000021H
 	call	?kkybrd_install@@YAXH@Z			; kkybrd_install
 	add	esp, 4
 
-; 193  : 	kkybrd_enable();
+; 197  : 	kkybrd_enable();
 
 	call	?kkybrd_enable@@YAXXZ			; kkybrd_enable
 
-; 194  : 	if(!retur)DebugPrintf ("OK\n");
+; 198  : 	if(!retur)DebugPrintf ("OK\n");
 
 	test	bl, bl
 	jne	SHORT $LN10@main
@@ -782,7 +808,7 @@ $LN11@main:
 	add	esp, 4
 $LN10@main:
 
-; 195  : 	DebugPrintf("Setting up Mouse: %s\n", mice_install()?"OK":"DISABLED");
+; 199  : 	DebugPrintf("Setting up Mouse: %s\n", mice_install()?"OK":"DISABLED");
 
 	call	?mice_install@@YA_NXZ			; mice_install
 	test	al, al
@@ -795,7 +821,7 @@ $LN40@main:
 	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
 	add	esp, 8
 
-; 196  : 	DebugPrintf ("Setting up drives: %s\n", vd_populate()?"OK":"ERROR");
+; 200  : 	DebugPrintf ("Setting up drives: %s\n", vd_populate()?"OK":"ERROR");
 
 	call	?vd_populate@@YA_NXZ			; vd_populate
 	test	al, al
@@ -808,350 +834,409 @@ $LN42@main:
 	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
 	add	esp, 8
 
-; 197  : 	if(!retur)currentData = vd_getCurrentDataDevice();
+; 201  : 	if(!retur)currentData = vd_getCurrentDataDevice();
 
 	test	bl, bl
 	jne	SHORT $LN9@main
-	lea	eax, DWORD PTR $T3652[ebp]
+	lea	eax, DWORD PTR $T3683[ebp]
 	push	eax
 	call	?vd_getCurrentDataDevice@@YA?AU__DATA_DEVICE@@XZ ; vd_getCurrentDataDevice
-	mov	ecx, 7
+	mov	ecx, 8
 	mov	esi, eax
 	mov	edi, OFFSET _currentData
 	add	esp, 4
 	rep movsd
 $LN9@main:
 
-; 198  : #ifdef DEBUG
-; 199  : 	DebugPrintf ("Testing VD_READ: OK\n");
-; 200  : 	//cmd_read_sect();
-; 201  : #endif
-; 202  : 	DebugPrintf ("Mounting FAT12: ");
+; 202  : #ifdef DEBUG
+; 203  : 	DebugPrintf ("Testing VD_READ: OK\n");
+; 204  : 	//cmd_read_sect();
+; 205  : #endif
+; 206  : 	DebugPrintf ("Mounting FAT12: ");
 
 	push	OFFSET ??_C@_0BB@CAIKOGDG@Mounting?5FAT12?3?5?$AA@
 	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
 	add	esp, 4
 
-; 203  : 	if(!retur)fsysFatInitialize(currentData);
+; 207  : 	if(!retur)fsysFatInitialize(currentData);
 
 	test	bl, bl
 	jne	SHORT $LN6@main
-	sub	esp, 28					; 0000001cH
-	mov	ecx, 7
+	sub	esp, 32					; 00000020H
+	mov	ecx, 8
 	mov	esi, OFFSET _currentData
 	mov	edi, esp
 	rep movsd
 	call	?fsysFatInitialize@@YAXU__DATA_DEVICE@@@Z ; fsysFatInitialize
 
-; 204  : #ifdef DEBUG
-; 205  : 	FILE file = volOpenFile ("test.txt");
-; 206  : 	while (file.eof != 1) {
-; 207  : 
-; 208  : 		// read cluster
-; 209  : 		unsigned char buf[512];
-; 210  : 		volReadFile ( &file, buf, 512);
+; 208  : #ifdef DEBUG
+; 209  : 	FILE file = volOpenFile ("test.txt");
+; 210  : 	while (file.eof != 1) {
 ; 211  : 
-; 212  : 		// display file
-; 213  : 		for (int i=0; i<512; i++)
-; 214  : 			DebugPutc(buf[i]);
+; 212  : 		// read cluster
+; 213  : 		unsigned char buf[512];
+; 214  : 		volReadFile ( &file, buf, 512);
 ; 215  : 
-; 216  : 		// wait for input to continue if not EOF
-; 217  : 		if (file.eof != 1) {
-; 218  : 			DebugPrintf ("\n\r------[Press a key to continue]------");
-; 219  : 			getch ();
-; 220  : 			DebugPrintf ("\r"); //clear last line
-; 221  : 		}
-; 222  : 	}
-; 223  : #endif
-; 224  : 	if(!retur)DebugPrintf("OK\n");
+; 216  : 		// display file
+; 217  : 		for (int i=0; i<512; i++)
+; 218  : 			DebugPutc(buf[i]);
+; 219  : 
+; 220  : 		// wait for input to continue if not EOF
+; 221  : 		if (file.eof != 1) {
+; 222  : 			DebugPrintf ("\n\r------[Press a key to continue]------");
+; 223  : 			getch ();
+; 224  : 			DebugPrintf ("\r"); //clear last line
+; 225  : 		}
+; 226  : 	}
+; 227  : #endif
+; 228  : 	if(!retur)DebugPrintf("OK\n");
 
 	push	OFFSET ??_C@_03JLOMOCCD@OK?6?$AA@
 	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
 
-; 225  : 	if(!retur)DebugPrintf("Saving font: ");
+; 229  : 	if(!retur)DebugPrintf("Saving font: ");
 
 	push	OFFSET ??_C@_0O@CHBMCDKH@Saving?5font?3?5?$AA@
 	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
-	add	esp, 36					; 00000024H
+	add	esp, 40					; 00000028H
 $LN6@main:
 
-; 226  : 	char* _font = (char*)malloc(8192);
+; 230  : 	char* _font = (char*)malloc(8192);
 
 	push	8192					; 00002000H
 	call	?malloc@@YAPAXH@Z			; malloc
 	add	esp, 4
 	mov	DWORD PTR __font$[ebp], eax
 
-; 227  : 	/*short _es;
-; 228  : 	short _bx;
-; 229  : 	_asm mov _es, [0x1990]
-; 230  : 	_asm mov _bx, [0x199F]
-; 231  : 	char* loc = (char*)(_es * 0x10 + _bx);
-; 232  : 	memcpy(loc, _font, 8192);
-; 233  : 	VGA_setfont(_font);*/
-; 234  : 	_asm {
-; 235  : 		;clear even/odd
-; 236  : 		mov			dx, 03ceh
+; 231  : 	/*short _es;
+; 232  : 	short _bx;
+; 233  : 	_asm mov _es, [0x1990]
+; 234  : 	_asm mov _bx, [0x199F]
+; 235  : 	char* loc = (char*)(_es * 0x10 + _bx);
+; 236  : 	memcpy(loc, _font, 8192);
+; 237  : 	VGA_setfont(_font);*/
+; 238  : 	_asm {
+; 239  : 		;clear even/odd
+; 240  : 		mov			dx, 03ceh
 
 	mov	dx, 974					; 000003ceH
 
-; 237  : 		mov			ax, 5
+; 241  : 		mov			ax, 5
 
 	mov	ax, 5
 
-; 238  : 		out			dx, ax
+; 242  : 		out			dx, ax
 
 	out	dx, ax
 
-; 239  : 		;map VGA memory to 0A0000h
-; 240  : 		mov			ax, 0406h
+; 243  : 		;map VGA memory to 0A0000h
+; 244  : 		mov			ax, 0406h
 
 	mov	ax, 1030				; 00000406H
-
-; 241  : 		out			dx, ax
-
-	out	dx, ax
-
-; 242  : 		;set bitplane 2
-; 243  : 		mov			dx, 03c4h
-
-	mov	dx, 964					; 000003c4H
-
-; 244  : 		mov			ax, 0402h
-
-	mov	ax, 1026				; 00000402H
 
 ; 245  : 		out			dx, ax
 
 	out	dx, ax
 
-; 246  : 		;clear even/odd mode
-; 247  : 		mov			ax, 0604h
+; 246  : 		;set bitplane 2
+; 247  : 		mov			dx, 03c4h
+
+	mov	dx, 964					; 000003c4H
+
+; 248  : 		mov			ax, 0402h
+
+	mov	ax, 1026				; 00000402H
+
+; 249  : 		out			dx, ax
+
+	out	dx, ax
+
+; 250  : 		;clear even/odd mode
+; 251  : 		mov			ax, 0604h
 
 	mov	ax, 1540				; 00000604H
 
-; 248  : 		out			dx, ax
+; 252  : 		out			dx, ax
 
 	out	dx, ax
 
-; 249  : 		mov			esi, 0A0000h
+; 253  : 		mov			esi, 0A0000h
 
 	mov	esi, 655360				; 000a0000H
 
-; 250  : 		mov			ecx, 256
+; 254  : 		mov			ecx, 256
 
 	mov	ecx, 256				; 00000100H
 
-; 251  : 		mov			edi, _font
+; 255  : 		mov			edi, _font
 
 	mov	edi, DWORD PTR __font$[ebp]
 
-; 252  : 		cld
+; 256  : 		cld
 
 	cld
-$lol$3549:
+$lol$3573:
 
-; 253  : 		;copy 16 bytes to bitmap
-; 254  : lol:	movsd
-
-	movsd
-
-; 255  : 		movsd
+; 257  : 		;copy 16 bytes to bitmap
+; 258  : lol:	movsd
 
 	movsd
 
-; 256  : 		movsd
+; 259  : 		movsd
 
 	movsd
 
-; 257  : 		movsd
+; 260  : 		movsd
 
 	movsd
 
-; 258  : 		;skip another 16 bytes
-; 259  : 		add			esi, 16
+; 261  : 		movsd
+
+	movsd
+
+; 262  : 		;skip another 16 bytes
+; 263  : 		add			esi, 16
 
 	add	esi, 16					; 00000010H
 
-; 260  : 		loop			lol
+; 264  : 		loop			lol
 
-	loop	$lol$3549
+	loop	$lol$3573
 
-; 261  : 		;restore VGA state to normal operation
-; 262  : 		mov			ax, 0302h
+; 265  : 		;restore VGA state to normal operation
+; 266  : 		mov			ax, 0302h
 
 	mov	ax, 770					; 00000302H
 
-; 263  : 		out			dx, ax
+; 267  : 		out			dx, ax
 
 	out	dx, ax
 
-; 264  : 		mov			ax, 0204h
+; 268  : 		mov			ax, 0204h
 
 	mov	ax, 516					; 00000204H
 
-; 265  : 		out			dx, ax
+; 269  : 		out			dx, ax
 
 	out	dx, ax
 
-; 266  : 		mov			dx, 03ceh
+; 270  : 		mov			dx, 03ceh
 
 	mov	dx, 974					; 000003ceH
 
-; 267  : 		mov			ax, 1005h
+; 271  : 		mov			ax, 1005h
 
 	mov	ax, 4101				; 00001005H
 
-; 268  : 		out			dx, ax
+; 272  : 		out			dx, ax
 
 	out	dx, ax
 
-; 269  : 		mov			ax, 0E06h
+; 273  : 		mov			ax, 0E06h
 
 	mov	ax, 3590				; 00000e06H
 
-; 270  : 		out			dx, ax
+; 274  : 		out			dx, ax
 
 	out	dx, ax
 
-; 271  : 	}
-; 272  : 	VGA_setfont(_font);
+; 275  : 	}
+; 276  : 	VGA_setfont(_font);
 
 	mov	ecx, DWORD PTR __font$[ebp]
 	push	ecx
 	call	?VGA_setfont@@YAXPAD@Z			; VGA_setfont
 
-; 273  : 	DebugPrintf("OK\n");
+; 277  : 	DebugPrintf("OK\n");
 
 	push	OFFSET ??_C@_03JLOMOCCD@OK?6?$AA@
 	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
 	add	esp, 8
 
-; 274  : 	//DebugSetColor(0x17);
-; 275  : 	if(!retur)DebugPrintf("Press any key to continue to the terminal...");
+; 278  : 	//DebugSetColor(0x17);
+; 279  : 	if(!retur)DebugPrintf("Press any key to continue to the terminal...");
 
 	test	bl, bl
-	jne	SHORT $LN3@main
+	jne	SHORT $LN45@main
 	push	OFFSET ??_C@_0CN@DLLMGEPA@Press?5any?5key?5to?5continue?5to?5the@
 	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
 	add	esp, 4
-	npad	3
+	npad	4
 
-; 276  : 	if(!retur)getch();
+; 280  : 	if(!retur)getch();
 
 $LL44@main:
 	call	?kkybrd_get_last_key@@YA?AW4KEYCODE@@XZ	; kkybrd_get_last_key
 	cmp	eax, 16402				; 00004012H
 	je	SHORT $LL44@main
 	call	?kkybrd_discard_last_key@@YAXXZ		; kkybrd_discard_last_key
+$LN45@main:
 
-; 277  : 	/*DebugPrintf("\nMultitasking Testing has been enabled!");
-; 278  : 	PROCESS p = *(PROCESS*)malloc(sizeof(PROCESS));
-; 279  : 	p.myPhysicalBase = 0;
-; 280  : 	p.myVirtualTableId = 0;
-; 281  : 	p.optionalHeader = 0;
-; 282  : 	p.PEHeader = 0;
-; 283  : 	p.pid = 0;
-; 284  : 	p.regs->eip = (int)taskone;
-; 285  : 	int d = 0;
-; 286  : 	_asm mov d, ebp
-; 287  : 	p.regs->ebp = d;
-; 288  : 	p.stackBase = (unsigned char*)d;
-; 289  : 	_asm mov d, esp
-; 290  : 	p.regs->esp = d;
-; 291  : 	p.stackPointer = (unsigned char*)d;
-; 292  : 	addProcess(p);
-; 293  : 
-; 294  : 	PROCESS p2 = *(PROCESS*)malloc(sizeof(PROCESS));
-; 295  : 	p2.myPhysicalBase = 0;
-; 296  : 	p2.myVirtualTableId = 0;
-; 297  : 	p2.optionalHeader = 0;
-; 298  : 	p2.PEHeader = 0;
-; 299  : 	p2.pid = 1;
-; 300  : 	p2.regs->eip = (int)tasktwo;
-; 301  : 	int d2 = 0;
-; 302  : 	_asm mov d2, ebp
-; 303  : 	p2.regs->ebp = d2;
-; 304  : 	p2.stackBase = (unsigned char*)d2;
-; 305  : 	_asm mov d2, esp
-; 306  : 	p2.regs->esp = d2;
-; 307  : 	p2.stackPointer = (unsigned char*)d2;
-; 308  : 	addProcess(p2);
-; 309  : 
-; 310  : 	setCurrentProc(p);
+; 281  : 	//DebugPrintf("\nMultitasking Testing has been enabled!");
+; 282  : 	//startMultitask();
+; 283  : 	//for(;;);
+; 284  : 	DebugPrintf("\nMultitasking Testing has been disabled!");
+
+	push	OFFSET ??_C@_0CJ@KMJKDNIK@?6Multitasking?5Testing?5has?5been?5d@
+	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
+	add	esp, 4
+
+; 285  : 	initProcessManager();
+
+	call	?initProcessManager@@YAXXZ		; initProcessManager
+
+; 286  : 
+; 287  : 	//p = (PROCESS*)malloc(sizeof(PROCESS));
+; 288  : 	getch();
+
+$LL48@main:
+	call	?kkybrd_get_last_key@@YA?AW4KEYCODE@@XZ	; kkybrd_get_last_key
+	cmp	eax, 16402				; 00004012H
+	je	SHORT $LL48@main
+	call	?kkybrd_discard_last_key@@YAXXZ		; kkybrd_discard_last_key
+
+; 289  : 	p.valid = true;
+; 290  : 	p.ran = false;
+; 291  : 	p.eip = (int)taskone;
+; 292  : 	allocStack(&p);
+
+	push	OFFSET _p
+	mov	WORD PTR _p, 1
+	mov	DWORD PTR _p+7, OFFSET ?taskone@@YAXXZ	; taskone
+	call	?allocStack@@YAPAEPAU__PROCESS@@@Z	; allocStack
+
+; 293  : 	//addProcess(&p);
+; 294  : 	//getch();
+; 295  : 
+; 296  : 	//p2 = (PROCESS*)malloc(sizeof(PROCESS));
+; 297  : 	p2.valid = true;
+; 298  : 	p2.ran = false;
+; 299  : 	p2.eip = (int)tasktwo;
+; 300  : 	allocStack(&p2);
+
+	push	OFFSET _p2
+	mov	WORD PTR _p2, 1
+	mov	DWORD PTR _p2+7, OFFSET ?tasktwo@@YAXXZ	; tasktwo
+	call	?allocStack@@YAPAEPAU__PROCESS@@@Z	; allocStack
+
+; 301  : 	//addProcess(&p2);
+; 302  : 	//getch();
+; 303  : 
+; 304  : 	PROCESS p3;
+; 305  : 	p3.valid = true;
+; 306  : 	p3.ran = false;
+; 307  : 	p3.eip = (int)taskthree;
+; 308  : 	allocStack(&p3);
+
+	lea	edx, DWORD PTR _p3$[ebp]
+	push	edx
+	mov	WORD PTR _p3$[ebp], 1
+	mov	DWORD PTR _p3$[ebp+7], OFFSET ?taskthree@@YAXXZ ; taskthree
+	call	?allocStack@@YAPAEPAU__PROCESS@@@Z	; allocStack
+
+; 309  : 	//addProcess(&p3);
+; 310  : 	//getch();
 ; 311  : 
-; 312  : 	//startMultitask();
-; 313  : 	taskone();*/
-; 314  : 	/*int a = 0;
-; 315  : 	a = p.regs->eip;
-; 316  : 	_asm call a*/
-; 317  : 
-; 318  : 	//for(;;);
-; 319  : 	if(!retur)DebugPrintf("\nLoading up shell: ");
+; 312  : 	setCurrentProc(&p);
 
+	push	OFFSET _p
+	call	?setCurrentProc@@YAXPAU__PROCESS@@@Z	; setCurrentProc
+
+; 313  : 
+; 314  : 	//startMultitask();
+; 315  : 	int a = p.regs.esp;
+
+	mov	eax, DWORD PTR _p+35
+	add	esp, 16					; 00000010H
+	mov	DWORD PTR _a$[ebp], eax
+
+; 316  : 	_asm mov esp, a
+
+	mov	esp, DWORD PTR _a$[ebp]
+
+; 317  : 	a = p.regs.ebp;
+
+	mov	ecx, DWORD PTR _p+39
+	mov	DWORD PTR _a$[ebp], ecx
+
+; 318  : 	_asm mov ebp, a
+
+	mov	ebp, DWORD PTR _a$[ebp]
+
+; 319  : 	//taskone();
+; 320  : 	/*int a = 0;
+; 321  : 	a = p.regs->eip;
+; 322  : 	_asm call a*/
+; 323  : 
+; 324  : 	//for(;;);
+; 325  : 	if(!retur)DebugPrintf("\nLoading up shell: ");
+
+	test	bl, bl
+	jne	SHORT $LN3@main
 	push	OFFSET ??_C@_0BE@LCPKODCM@?6Loading?5up?5shell?3?5?$AA@
 	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
 	add	esp, 4
 $LN3@main:
 
-; 320  : 	/*DebugPrintf("\nFiles in root: \n");
-; 321  : 	char* files = fsysFatGetFilesInRoot();
-; 322  : 	char num = fsysFatGetNumberOfFilesInRoot();
-; 323  : 	char name[11];
-; 324  : 	for(int i = 0; i < num; i++)
-; 325  : 	{
-; 326  : 			for(int j = 0; j < 11; j++)
-; 327  : 			{
-; 328  : 				DebugPutc(*(files + j + i *11));
-; 329  : 			}
-; 330  : 			DebugPutc('\n');
-; 331  : 	}
-; 332  : 	getch();*/
-; 333  : 	//memcpy((char*)0x100000,(char*)0xB8000, 32768); //fixme
-; 334  : 	//loadFileToLoc("cmd.exe", (void*)IMAGE_BASE);
-; 335  : 	PE_mapApp("cmd.exe", IMAGE_BASE);
+; 326  : 	/*DebugPrintf("\nFiles in root: \n");
+; 327  : 	char* files = fsysFatGetFilesInRoot();
+; 328  : 	char num = fsysFatGetNumberOfFilesInRoot();
+; 329  : 	char name[11];
+; 330  : 	for(int i = 0; i < num; i++)
+; 331  : 	{
+; 332  : 			for(int j = 0; j < 11; j++)
+; 333  : 			{
+; 334  : 				DebugPutc(*(files + j + i *11));
+; 335  : 			}
+; 336  : 			DebugPutc('\n');
+; 337  : 	}
+; 338  : 	getch();*/
+; 339  : 	//memcpy((char*)0x100000,(char*)0xB8000, 32768); //fixme
+; 340  : 	//loadFileToLoc("cmd.exe", (void*)IMAGE_BASE);
+; 341  : 	PE_mapApp("cmd.exe", IMAGE_BASE);
 
 	push	12582912				; 00c00000H
 	push	OFFSET ??_C@_07INNMNHPJ@cmd?4exe?$AA@
 	call	?PE_mapApp@@YA_NPADH@Z			; PE_mapApp
 	add	esp, 8
+	npad	5
 $LL2@main:
 
-; 336  : 	/*char* test = (char*)0x800000;
-; 337  : 	DebugPrintf(test);*/
-; 338  : 	/*int* AddressOfEntryPoint = (int*)IMAGE_BASE+ 0xC0 + 0x18 + 0x12;
-; 339  : 	int* SizeOfCode = (int*)0xC000d4;
-; 340  : 	int* BaseOfCode = (int*)0xC000e4;
-; 341  : 	int* BaseOfData = (int*)0xC000e8;
-; 342  : 	int* textVirtualAddress = (int*)0xC001c4;
-; 343  : 	int* textPointerToRawData = (int*)0xC001c8;
-; 344  : 	//	int* SizeOfCode = (int*)0xC000d4;
-; 345  : 	int* SizeOfInitializedData = (int*)0xC000d8;
-; 346  : 	DebugPrintf("Address=0x%x, size=0x%x, base=0x%x, base-size=0x%x => fileaddr=0x%x\n", *AddressOfEntryPoint, *BaseOfCode, *SizeOfCode, *BaseOfCode - *SizeOfCode, *AddressOfEntryPoint - *BaseOfCode + *SizeOfCode );*/
-; 347  : 	//char* entryPoint = (char*)(0x1070 + 0x400 + 0xC00000 - 0x1000);
-; 348  : 	unsigned int ientryPoint = 0;
-; 349  : 	ientryPoint = getEntryPoint(IMAGE_BASE);
-; 350  : 	/*DebugPrintf("Entrypoint = 0x%x\n", ientryPoint);
-; 351  : 	PROCESS p;
-; 352  : 		//fillProcess(p, IMAGE_BASE);
-; 353  : 		p.pid = 1;
-; 354  : 		int PE_HEADER_LOCATION = *(int*)(IMAGE_BASE + 0x3C);
-; 355  : 		PE_HEADER_LOCATION += IMAGE_BASE;
-; 356  : 		int OPTIONAL_HEADER_LOCATION = PE_HEADER_LOCATION + 24;
-; 357  : 		p.BaseOfCode = *(unsigned int*)(OPTIONAL_HEADER_LOCATION + 20);
-; 358  : 		p.BaseOfData = *(unsigned int*)(OPTIONAL_HEADER_LOCATION + 24);
-; 359  : 		//DebugPrintf("BaseOfData=0x%X", p.BaseOfData);
-; 360  : 		p.SizeOfCode = *(unsigned int*)(OPTIONAL_HEADER_LOCATION + 4);
-; 361  : 		p.SizeOfInitializedData = *(unsigned int*)(OPTIONAL_HEADER_LOCATION + 8);
-; 362  : 	setCurrentProc(p);*/
-; 363  : 	/*_asm {
-; 364  : 		mov ax, 0x08
-; 365  : 		mov     ds, ax
-; 366  :         mov     es, ax
-; 367  :         mov     fs, ax
-; 368  :         mov     gs, ax
-; 369  : 	}*/
-; 370  : 	for(;;);
+; 342  : 	/*char* test = (char*)0x800000;
+; 343  : 	DebugPrintf(test);*/
+; 344  : 	/*int* AddressOfEntryPoint = (int*)IMAGE_BASE+ 0xC0 + 0x18 + 0x12;
+; 345  : 	int* SizeOfCode = (int*)0xC000d4;
+; 346  : 	int* BaseOfCode = (int*)0xC000e4;
+; 347  : 	int* BaseOfData = (int*)0xC000e8;
+; 348  : 	int* textVirtualAddress = (int*)0xC001c4;
+; 349  : 	int* textPointerToRawData = (int*)0xC001c8;
+; 350  : 	//	int* SizeOfCode = (int*)0xC000d4;
+; 351  : 	int* SizeOfInitializedData = (int*)0xC000d8;
+; 352  : 	DebugPrintf("Address=0x%x, size=0x%x, base=0x%x, base-size=0x%x => fileaddr=0x%x\n", *AddressOfEntryPoint, *BaseOfCode, *SizeOfCode, *BaseOfCode - *SizeOfCode, *AddressOfEntryPoint - *BaseOfCode + *SizeOfCode );*/
+; 353  : 	//char* entryPoint = (char*)(0x1070 + 0x400 + 0xC00000 - 0x1000);
+; 354  : 	unsigned int ientryPoint = 0;
+; 355  : 	ientryPoint = getEntryPoint(IMAGE_BASE);
+; 356  : 	/*DebugPrintf("Entrypoint = 0x%x\n", ientryPoint);
+; 357  : 	PROCESS p;
+; 358  : 		//fillProcess(p, IMAGE_BASE);
+; 359  : 		p.pid = 1;
+; 360  : 		int PE_HEADER_LOCATION = *(int*)(IMAGE_BASE + 0x3C);
+; 361  : 		PE_HEADER_LOCATION += IMAGE_BASE;
+; 362  : 		int OPTIONAL_HEADER_LOCATION = PE_HEADER_LOCATION + 24;
+; 363  : 		p.BaseOfCode = *(unsigned int*)(OPTIONAL_HEADER_LOCATION + 20);
+; 364  : 		p.BaseOfData = *(unsigned int*)(OPTIONAL_HEADER_LOCATION + 24);
+; 365  : 		//DebugPrintf("BaseOfData=0x%X", p.BaseOfData);
+; 366  : 		p.SizeOfCode = *(unsigned int*)(OPTIONAL_HEADER_LOCATION + 4);
+; 367  : 		p.SizeOfInitializedData = *(unsigned int*)(OPTIONAL_HEADER_LOCATION + 8);
+; 368  : 	setCurrentProc(p);*/
+; 369  : 	/*_asm {
+; 370  : 		mov ax, 0x08
+; 371  : 		mov     ds, ax
+; 372  :         mov     es, ax
+; 373  :         mov     fs, ax
+; 374  :         mov     gs, ax
+; 375  : 	}*/
+; 376  : 	for(;;);
 
 	jmp	SHORT $LL2@main
 _main	ENDP

@@ -57,6 +57,7 @@ typedef struct _MOUNT_INFO {
 
 extern FILE fsysFatDirectory (const char* DirectoryName);
 extern void fsysFatRead(PFILE file, unsigned char* Buffer, unsigned int Length);
+extern void fsysFatWrite(PFILE file, unsigned char* Buffer, unsigned int Length);
 extern FILE fsysFatOpen (const char* FileName);
 extern void fsysFatInitialize (DATADEVICE datadev);
 extern void fsysFatMount ();

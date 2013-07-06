@@ -94,6 +94,12 @@
     <Filter Include="Hardware\PCI">
       <UniqueIdentifier>{d652a870-2919-4702-a1a2-cb779deaac48}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Misc">
+      <UniqueIdentifier>{8be433f7-9880-4be4-ab75-8e8d0dd62f26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Misc\ACPI">
+      <UniqueIdentifier>{262abbe2-eb0e-44ff-95ac-82da34f66832}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DebugDisplay.cpp">
@@ -184,6 +190,9 @@
     </ClCompile>
     <ClCompile Include="PCI.cpp">
       <Filter>Hardware\PCI</Filter>
+    </ClCompile>
+    <ClCompile Include="ACPI.cpp">
+      <Filter>Misc\ACPI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -282,6 +291,12 @@
     </ClInclude>
     <ClInclude Include="PCI.h">
       <Filter>Hardware\PCI</Filter>
+    </ClInclude>
+    <ClInclude Include="ACPI.h">
+      <Filter>Misc\ACPI</Filter>
+    </ClInclude>
+    <ClInclude Include="error.h">
+      <Filter>Misc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

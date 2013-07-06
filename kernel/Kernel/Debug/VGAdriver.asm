@@ -31,6 +31,7 @@ _BSS	SEGMENT
 ?VGA_width@@3IA DD 01H DUP (?)				; VGA_width
 ?VGA_bpp@@3IA DD 01H DUP (?)				; VGA_bpp
 ?vidmem@@3PADA DD 01H DUP (?)				; vidmem
+__isVGA	DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
 ?mode_320_200_256@@3PAEA DB 063H			; mode_320_200_256
@@ -2268,24 +2269,36 @@ _g_8x8_font DB	00H
 	DB	00H
 	DB	00H
 _DATA	ENDS
+PUBLIC	?isVGA@@YA_NXZ					; isVGA
+; Function compile flags: /Ogtpy
+; File c:\dev\levos\kernel\kernel\vgadriver.cpp
+;	COMDAT ?isVGA@@YA_NXZ
+_TEXT	SEGMENT
+?isVGA@@YA_NXZ PROC					; isVGA, COMDAT
+
+; 39   : bool isVGA() { return _isVGA; }
+
+	mov	al, BYTE PTR __isVGA
+	ret	0
+?isVGA@@YA_NXZ ENDP					; isVGA
+_TEXT	ENDS
 PUBLIC	?read_registers@@YAXPAE@Z			; read_registers
 EXTRN	?outport@@YAXGE@Z:PROC				; outport
 EXTRN	?inport@@YAEG@Z:PROC				; inport
 ; Function compile flags: /Ogtpy
-; File c:\dev\levos\kernel\kernel\vgadriver.cpp
 ;	COMDAT ?read_registers@@YAXPAE@Z
 _TEXT	SEGMENT
 _regs$ = 8						; size = 4
 ?read_registers@@YAXPAE@Z PROC				; read_registers, COMDAT
 
-; 232  : {
+; 237  : {
 
 	push	esi
 	push	edi
 
-; 233  : 	unsigned i;
-; 234  : /* read MISCELLANEOUS reg */
-; 235  : 	*regs = inport(VGA_MISC_READ);
+; 238  : 	unsigned i;
+; 239  : /* read MISCELLANEOUS reg */
+; 240  : 	*regs = inport(VGA_MISC_READ);
 
 	push	972					; 000003ccH
 	call	?inport@@YAEG@Z				; inport
@@ -2293,25 +2306,25 @@ _regs$ = 8						; size = 4
 	mov	BYTE PTR [esi], al
 	add	esp, 4
 
-; 236  : 	regs++;
+; 241  : 	regs++;
 
 	inc	esi
 
-; 237  : /* read SEQUENCER regs */
-; 238  : 	for(i = 0; i < VGA_NUM_SEQ_REGS; i++)
+; 242  : /* read SEQUENCER regs */
+; 243  : 	for(i = 0; i < VGA_NUM_SEQ_REGS; i++)
 
 	xor	edi, edi
 	npad	8
 $LL12@read_regis:
 
-; 239  : 	{
-; 240  : 		outport(VGA_SEQ_INDEX, i);
+; 244  : 	{
+; 245  : 		outport(VGA_SEQ_INDEX, i);
 
 	push	edi
 	push	964					; 000003c4H
 	call	?outport@@YAXGE@Z			; outport
 
-; 241  : 		*regs = inport(VGA_SEQ_DATA);
+; 246  : 		*regs = inport(VGA_SEQ_DATA);
 
 	push	965					; 000003c5H
 	call	?inport@@YAEG@Z				; inport
@@ -2319,27 +2332,27 @@ $LL12@read_regis:
 	inc	edi
 	add	esp, 12					; 0000000cH
 
-; 242  : 		regs++;
+; 247  : 		regs++;
 
 	inc	esi
 	cmp	edi, 5
 	jb	SHORT $LL12@read_regis
 
-; 243  : 	}
-; 244  : /* read CRTC regs */
-; 245  : 	for(i = 0; i < VGA_NUM_CRTC_REGS; i++)
+; 248  : 	}
+; 249  : /* read CRTC regs */
+; 250  : 	for(i = 0; i < VGA_NUM_CRTC_REGS; i++)
 
 	xor	edi, edi
 $LL9@read_regis:
 
-; 246  : 	{
-; 247  : 		outport(VGA_CRTC_INDEX, i);
+; 251  : 	{
+; 252  : 		outport(VGA_CRTC_INDEX, i);
 
 	push	edi
 	push	980					; 000003d4H
 	call	?outport@@YAXGE@Z			; outport
 
-; 248  : 		*regs = inport(VGA_CRTC_DATA);
+; 253  : 		*regs = inport(VGA_CRTC_DATA);
 
 	push	981					; 000003d5H
 	call	?inport@@YAEG@Z				; inport
@@ -2347,28 +2360,28 @@ $LL9@read_regis:
 	inc	edi
 	add	esp, 12					; 0000000cH
 
-; 249  : 		regs++;
+; 254  : 		regs++;
 
 	inc	esi
 	cmp	edi, 25					; 00000019H
 	jb	SHORT $LL9@read_regis
 
-; 250  : 	}
-; 251  : /* read GRAPHICS CONTROLLER regs */
-; 252  : 	for(i = 0; i < VGA_NUM_GC_REGS; i++)
+; 255  : 	}
+; 256  : /* read GRAPHICS CONTROLLER regs */
+; 257  : 	for(i = 0; i < VGA_NUM_GC_REGS; i++)
 
 	xor	edi, edi
 	npad	10
 $LL6@read_regis:
 
-; 253  : 	{
-; 254  : 		outport(VGA_GC_INDEX, i);
+; 258  : 	{
+; 259  : 		outport(VGA_GC_INDEX, i);
 
 	push	edi
 	push	974					; 000003ceH
 	call	?outport@@YAXGE@Z			; outport
 
-; 255  : 		*regs = inport(VGA_GC_DATA);
+; 260  : 		*regs = inport(VGA_GC_DATA);
 
 	push	975					; 000003cfH
 	call	?inport@@YAEG@Z				; inport
@@ -2376,32 +2389,32 @@ $LL6@read_regis:
 	inc	edi
 	add	esp, 12					; 0000000cH
 
-; 256  : 		regs++;
+; 261  : 		regs++;
 
 	inc	esi
 	cmp	edi, 9
 	jb	SHORT $LL6@read_regis
 
-; 257  : 	}
-; 258  : /* read ATTRIBUTE CONTROLLER regs */
-; 259  : 	for(i = 0; i < VGA_NUM_AC_REGS; i++)
+; 262  : 	}
+; 263  : /* read ATTRIBUTE CONTROLLER regs */
+; 264  : 	for(i = 0; i < VGA_NUM_AC_REGS; i++)
 
 	xor	edi, edi
 $LL3@read_regis:
 
-; 260  : 	{
-; 261  : 		(void)inport(VGA_INSTAT_READ);
+; 265  : 	{
+; 266  : 		(void)inport(VGA_INSTAT_READ);
 
 	push	986					; 000003daH
 	call	?inport@@YAEG@Z				; inport
 
-; 262  : 		outport(VGA_AC_INDEX, i);
+; 267  : 		outport(VGA_AC_INDEX, i);
 
 	push	edi
 	push	960					; 000003c0H
 	call	?outport@@YAXGE@Z			; outport
 
-; 263  : 		*regs = inport(VGA_AC_READ);
+; 268  : 		*regs = inport(VGA_AC_READ);
 
 	push	961					; 000003c1H
 	call	?inport@@YAEG@Z				; inport
@@ -2409,20 +2422,20 @@ $LL3@read_regis:
 	inc	edi
 	add	esp, 16					; 00000010H
 
-; 264  : 		regs++;
+; 269  : 		regs++;
 
 	inc	esi
 	cmp	edi, 21					; 00000015H
 	jb	SHORT $LL3@read_regis
 
-; 265  : 	}
-; 266  : 	/* lock 16-color palette and unblank display */
-; 267  : 		(void)inport(VGA_INSTAT_READ);
+; 270  : 	}
+; 271  : 	/* lock 16-color palette and unblank display */
+; 272  : 		(void)inport(VGA_INSTAT_READ);
 
 	push	986					; 000003daH
 	call	?inport@@YAEG@Z				; inport
 
-; 268  : 		outport(VGA_AC_INDEX, 0x20);
+; 273  : 		outport(VGA_AC_INDEX, 0x20);
 
 	push	32					; 00000020H
 	push	960					; 000003c0H
@@ -2431,7 +2444,7 @@ $LL3@read_regis:
 	pop	edi
 	pop	esi
 
-; 269  : }
+; 274  : }
 
 	ret	0
 ?read_registers@@YAXPAE@Z ENDP				; read_registers
@@ -2443,12 +2456,12 @@ _TEXT	SEGMENT
 _p$ = 8							; size = 4
 ?savePalette@@YAXPAUpalette_entry@@@Z PROC		; savePalette, COMDAT
 
-; 272  : {
+; 277  : {
 
 	push	esi
 	push	edi
 
-; 273  : 	outport(0x3C7, 0x00);
+; 278  : 	outport(0x3C7, 0x00);
 
 	push	0
 	push	967					; 000003c7H
@@ -2460,20 +2473,20 @@ _p$ = 8							; size = 4
 	npad	3
 $LL3@savePalett:
 
-; 274  : 	for(int i = 0; i < 256; i++)
-; 275  : 	{
-; 276  : 		p[i].R = inport(0x3C9);
+; 279  : 	for(int i = 0; i < 256; i++)
+; 280  : 	{
+; 281  : 		p[i].R = inport(0x3C9);
 
 	push	969					; 000003c9H
 	call	?inport@@YAEG@Z				; inport
 
-; 277  : 		p[i].G = inport(0x3C9);
+; 282  : 		p[i].G = inport(0x3C9);
 
 	push	969					; 000003c9H
 	mov	BYTE PTR [esi-2], al
 	call	?inport@@YAEG@Z				; inport
 
-; 278  : 		p[i].B = inport(0x3C9);
+; 283  : 		p[i].B = inport(0x3C9);
 
 	push	969					; 000003c9H
 	mov	BYTE PTR [esi-1], al
@@ -2484,8 +2497,8 @@ $LL3@savePalett:
 	dec	edi
 	jne	SHORT $LL3@savePalett
 
-; 279  : 	}
-; 280  : }
+; 284  : 	}
+; 285  : }
 
 	pop	edi
 	pop	esi
@@ -2502,28 +2515,28 @@ _g$ = 16						; size = 1
 _b$ = 20						; size = 1
 ?VGA_map_color@@YAXDDDD@Z PROC				; VGA_map_color, COMDAT
 
-; 292  : 	outport(0x3c8,index);
+; 297  : 	outport(0x3c8,index);
 
 	mov	eax, DWORD PTR _index$[esp-4]
 	push	eax
 	push	968					; 000003c8H
 	call	?outport@@YAXGE@Z			; outport
 
-; 293  : 	outport(0x3c9,r);
+; 298  : 	outport(0x3c9,r);
 
 	mov	ecx, DWORD PTR _r$[esp+4]
 	push	ecx
 	push	969					; 000003c9H
 	call	?outport@@YAXGE@Z			; outport
 
-; 294  : 	outport(0x3c9,g);
+; 299  : 	outport(0x3c9,g);
 
 	mov	edx, DWORD PTR _g$[esp+12]
 	push	edx
 	push	969					; 000003c9H
 	call	?outport@@YAXGE@Z			; outport
 
-; 295  : 	outport(0x3c9,b);
+; 300  : 	outport(0x3c9,b);
 
 	mov	eax, DWORD PTR _b$[esp+20]
 	push	eax
@@ -2531,7 +2544,7 @@ _b$ = 20						; size = 1
 	call	?outport@@YAXGE@Z			; outport
 	add	esp, 32					; 00000020H
 
-; 296  : }
+; 301  : }
 
 	ret	0
 ?VGA_map_color@@YAXDDDD@Z ENDP				; VGA_map_color
@@ -2542,31 +2555,31 @@ _TEXT	SEGMENT
 ?set_plane@@YAXI@Z PROC					; set_plane, COMDAT
 ; _p$ = eax
 
-; 560  : {
+; 565  : {
 
 	push	esi
 	mov	esi, eax
 
-; 561  : 	unsigned char pmask;
-; 562  : 
-; 563  : 	p &= 3;
-; 564  : 	pmask = 1 << p;
-; 565  : /* set read plane */
-; 566  : 	outport(VGA_GC_INDEX, 4);
+; 566  : 	unsigned char pmask;
+; 567  : 
+; 568  : 	p &= 3;
+; 569  : 	pmask = 1 << p;
+; 570  : /* set read plane */
+; 571  : 	outport(VGA_GC_INDEX, 4);
 
 	push	4
 	push	974					; 000003ceH
 	and	esi, 3
 	call	?outport@@YAXGE@Z			; outport
 
-; 567  : 	outport(VGA_GC_DATA, p);
+; 572  : 	outport(VGA_GC_DATA, p);
 
 	push	esi
 	push	975					; 000003cfH
 	call	?outport@@YAXGE@Z			; outport
 
-; 568  : /* set write plane */
-; 569  : 	outport(VGA_SEQ_INDEX, 2);
+; 573  : /* set write plane */
+; 574  : 	outport(VGA_SEQ_INDEX, 2);
 
 	push	2
 	push	964					; 000003c4H
@@ -2575,7 +2588,7 @@ _TEXT	SEGMENT
 	mov	ecx, esi
 	shl	al, cl
 
-; 570  : 	outport(VGA_SEQ_DATA, pmask);
+; 575  : 	outport(VGA_SEQ_DATA, pmask);
 
 	movzx	ecx, al
 	push	ecx
@@ -2584,7 +2597,7 @@ _TEXT	SEGMENT
 	add	esp, 32					; 00000020H
 	pop	esi
 
-; 571  : }
+; 576  : }
 
 	ret	0
 ?set_plane@@YAXI@Z ENDP					; set_plane
@@ -2596,131 +2609,131 @@ _TEXT	SEGMENT
 _num$ = 8						; size = 1
 ?reverseBits@@YAID@Z PROC				; reverseBits, COMDAT
 
-; 632  :     unsigned int  NO_OF_BITS = sizeof(num) * 8;
-; 633  :     unsigned int reverse_num = 0;
-; 634  :     int i;
-; 635  :     for (i = 0; i < NO_OF_BITS; i++)
-; 636  :     {
-; 637  :         if((num & (1 << i)))
+; 637  :     unsigned int  NO_OF_BITS = sizeof(num) * 8;
+; 638  :     unsigned int reverse_num = 0;
+; 639  :     int i;
+; 640  :     for (i = 0; i < NO_OF_BITS; i++)
+; 641  :     {
+; 642  :         if((num & (1 << i)))
 
 	movsx	ecx, BYTE PTR _num$[esp-4]
 	xor	eax, eax
 	test	cl, 1
 	je	SHORT $LN3@reverseBit
 
-; 638  :            reverse_num |= 1 << ((NO_OF_BITS - 1) - i);  
+; 643  :            reverse_num |= 1 << ((NO_OF_BITS - 1) - i);  
 
 	mov	eax, 128				; 00000080H
 $LN3@reverseBit:
 
-; 632  :     unsigned int  NO_OF_BITS = sizeof(num) * 8;
-; 633  :     unsigned int reverse_num = 0;
-; 634  :     int i;
-; 635  :     for (i = 0; i < NO_OF_BITS; i++)
-; 636  :     {
-; 637  :         if((num & (1 << i)))
+; 637  :     unsigned int  NO_OF_BITS = sizeof(num) * 8;
+; 638  :     unsigned int reverse_num = 0;
+; 639  :     int i;
+; 640  :     for (i = 0; i < NO_OF_BITS; i++)
+; 641  :     {
+; 642  :         if((num & (1 << i)))
 
 	test	cl, 2
 	je	SHORT $LN13@reverseBit
 
-; 638  :            reverse_num |= 1 << ((NO_OF_BITS - 1) - i);  
+; 643  :            reverse_num |= 1 << ((NO_OF_BITS - 1) - i);  
 
 	or	eax, 64					; 00000040H
 $LN13@reverseBit:
 
-; 632  :     unsigned int  NO_OF_BITS = sizeof(num) * 8;
-; 633  :     unsigned int reverse_num = 0;
-; 634  :     int i;
-; 635  :     for (i = 0; i < NO_OF_BITS; i++)
-; 636  :     {
-; 637  :         if((num & (1 << i)))
+; 637  :     unsigned int  NO_OF_BITS = sizeof(num) * 8;
+; 638  :     unsigned int reverse_num = 0;
+; 639  :     int i;
+; 640  :     for (i = 0; i < NO_OF_BITS; i++)
+; 641  :     {
+; 642  :         if((num & (1 << i)))
 
 	test	cl, 4
 	je	SHORT $LN15@reverseBit
 
-; 638  :            reverse_num |= 1 << ((NO_OF_BITS - 1) - i);  
+; 643  :            reverse_num |= 1 << ((NO_OF_BITS - 1) - i);  
 
 	or	eax, 32					; 00000020H
 $LN15@reverseBit:
 
-; 632  :     unsigned int  NO_OF_BITS = sizeof(num) * 8;
-; 633  :     unsigned int reverse_num = 0;
-; 634  :     int i;
-; 635  :     for (i = 0; i < NO_OF_BITS; i++)
-; 636  :     {
-; 637  :         if((num & (1 << i)))
+; 637  :     unsigned int  NO_OF_BITS = sizeof(num) * 8;
+; 638  :     unsigned int reverse_num = 0;
+; 639  :     int i;
+; 640  :     for (i = 0; i < NO_OF_BITS; i++)
+; 641  :     {
+; 642  :         if((num & (1 << i)))
 
 	test	cl, 8
 	je	SHORT $LN17@reverseBit
 
-; 638  :            reverse_num |= 1 << ((NO_OF_BITS - 1) - i);  
+; 643  :            reverse_num |= 1 << ((NO_OF_BITS - 1) - i);  
 
 	or	eax, 16					; 00000010H
 $LN17@reverseBit:
 
-; 632  :     unsigned int  NO_OF_BITS = sizeof(num) * 8;
-; 633  :     unsigned int reverse_num = 0;
-; 634  :     int i;
-; 635  :     for (i = 0; i < NO_OF_BITS; i++)
-; 636  :     {
-; 637  :         if((num & (1 << i)))
+; 637  :     unsigned int  NO_OF_BITS = sizeof(num) * 8;
+; 638  :     unsigned int reverse_num = 0;
+; 639  :     int i;
+; 640  :     for (i = 0; i < NO_OF_BITS; i++)
+; 641  :     {
+; 642  :         if((num & (1 << i)))
 
 	test	cl, 16					; 00000010H
 	je	SHORT $LN19@reverseBit
 
-; 638  :            reverse_num |= 1 << ((NO_OF_BITS - 1) - i);  
+; 643  :            reverse_num |= 1 << ((NO_OF_BITS - 1) - i);  
 
 	or	eax, 8
 $LN19@reverseBit:
 
-; 632  :     unsigned int  NO_OF_BITS = sizeof(num) * 8;
-; 633  :     unsigned int reverse_num = 0;
-; 634  :     int i;
-; 635  :     for (i = 0; i < NO_OF_BITS; i++)
-; 636  :     {
-; 637  :         if((num & (1 << i)))
+; 637  :     unsigned int  NO_OF_BITS = sizeof(num) * 8;
+; 638  :     unsigned int reverse_num = 0;
+; 639  :     int i;
+; 640  :     for (i = 0; i < NO_OF_BITS; i++)
+; 641  :     {
+; 642  :         if((num & (1 << i)))
 
 	test	cl, 32					; 00000020H
 	je	SHORT $LN21@reverseBit
 
-; 638  :            reverse_num |= 1 << ((NO_OF_BITS - 1) - i);  
+; 643  :            reverse_num |= 1 << ((NO_OF_BITS - 1) - i);  
 
 	or	eax, 4
 $LN21@reverseBit:
 
-; 632  :     unsigned int  NO_OF_BITS = sizeof(num) * 8;
-; 633  :     unsigned int reverse_num = 0;
-; 634  :     int i;
-; 635  :     for (i = 0; i < NO_OF_BITS; i++)
-; 636  :     {
-; 637  :         if((num & (1 << i)))
+; 637  :     unsigned int  NO_OF_BITS = sizeof(num) * 8;
+; 638  :     unsigned int reverse_num = 0;
+; 639  :     int i;
+; 640  :     for (i = 0; i < NO_OF_BITS; i++)
+; 641  :     {
+; 642  :         if((num & (1 << i)))
 
 	test	cl, 64					; 00000040H
 	je	SHORT $LN23@reverseBit
 
-; 638  :            reverse_num |= 1 << ((NO_OF_BITS - 1) - i);  
+; 643  :            reverse_num |= 1 << ((NO_OF_BITS - 1) - i);  
 
 	or	eax, 2
 $LN23@reverseBit:
 
-; 632  :     unsigned int  NO_OF_BITS = sizeof(num) * 8;
-; 633  :     unsigned int reverse_num = 0;
-; 634  :     int i;
-; 635  :     for (i = 0; i < NO_OF_BITS; i++)
-; 636  :     {
-; 637  :         if((num & (1 << i)))
+; 637  :     unsigned int  NO_OF_BITS = sizeof(num) * 8;
+; 638  :     unsigned int reverse_num = 0;
+; 639  :     int i;
+; 640  :     for (i = 0; i < NO_OF_BITS; i++)
+; 641  :     {
+; 642  :         if((num & (1 << i)))
 
 	test	cl, cl
 	jns	SHORT $LN25@reverseBit
 
-; 638  :            reverse_num |= 1 << ((NO_OF_BITS - 1) - i);  
+; 643  :            reverse_num |= 1 << ((NO_OF_BITS - 1) - i);  
 
 	or	eax, 1
 $LN25@reverseBit:
 
-; 639  :    }
-; 640  :     return reverse_num;
-; 641  : }
+; 644  :    }
+; 645  :     return reverse_num;
+; 646  : }
 
 	ret	0
 ?reverseBits@@YAID@Z ENDP				; reverseBits
@@ -2732,12 +2745,12 @@ _TEXT	SEGMENT
 _font$ = 8						; size = 4
 ?VGA_setfont@@YAXPAD@Z PROC				; VGA_setfont, COMDAT
 
-; 645  : 	__font = font;
+; 650  : 	__font = font;
 
 	mov	eax, DWORD PTR _font$[esp-4]
 	mov	DWORD PTR ?__font@@3PADA, eax		; __font
 
-; 646  : }
+; 651  : }
 
 	ret	0
 ?VGA_setfont@@YAXPAD@Z ENDP				; VGA_setfont
@@ -2749,21 +2762,21 @@ EXTRN	?memset@@YAPAXPAXDI@Z:PROC			; memset
 _TEXT	SEGMENT
 ?VGA_clear_screen@@YAXXZ PROC				; VGA_clear_screen, COMDAT
 
-; 648  : void VGA_clear_screen() {
+; 653  : void VGA_clear_screen() {
 
 	push	esi
 	push	edi
 
-; 649  :    unsigned int x=0;
-; 650  :    unsigned int y=0;
-; 651  :    //qVGA_map_color(0, 0xFF, 0xFF, 0xFF);
-; 652  :    for(int p = 0; p < 4; p++)
+; 654  :    unsigned int x=0;
+; 655  :    unsigned int y=0;
+; 656  :    //qVGA_map_color(0, 0xFF, 0xFF, 0xFF);
+; 657  :    for(int p = 0; p < 4; p++)
 
 	xor	edi, edi
 $LL3@VGA_clear_:
 
-; 653  :    {
-; 654  : 	set_plane(p);
+; 658  :    {
+; 659  : 	set_plane(p);
 
 	push	4
 	mov	esi, edi
@@ -2784,7 +2797,7 @@ $LL3@VGA_clear_:
 	push	965					; 000003c5H
 	call	?outport@@YAXGE@Z			; outport
 
-; 655  : 	memset(VGA_address, 0, 64*1024);
+; 660  : 	memset(VGA_address, 0, 64*1024);
 
 	mov	edx, DWORD PTR ?VGA_address@@3PAEA	; VGA_address
 	push	65536					; 00010000H
@@ -2796,13 +2809,13 @@ $LL3@VGA_clear_:
 	cmp	edi, 4
 	jl	SHORT $LL3@VGA_clear_
 
-; 656  :    }
-; 657  :    /*for(y=0; y<VGA_height; y++){
-; 658  :       for(x=0; x<VGA_width; x++){
-; 659  :          VGA_address[VGA_width*y+x]=0x00;
-; 660  :       }
-; 661  :    }*/
-; 662  : }
+; 661  :    }
+; 662  :    /*for(y=0; y<VGA_height; y++){
+; 663  :       for(x=0; x<VGA_width; x++){
+; 664  :          VGA_address[VGA_width*y+x]=0x00;
+; 665  :       }
+; 666  :    }*/
+; 667  : }
 
 	pop	edi
 	pop	esi
@@ -2816,104 +2829,107 @@ _TEXT	SEGMENT
 _k$ = 8							; size = 1
 ?pow2@@YAHD@Z PROC					; pow2, COMDAT
 
-; 728  : 	return 2 << k;
+; 737  : 	return 2 << k;
 
 	mov	cl, BYTE PTR _k$[esp-4]
 	mov	eax, 2
 	shl	eax, cl
 
-; 729  : }
+; 738  : }
 
 	ret	0
 ?pow2@@YAHD@Z ENDP					; pow2
 _TEXT	ENDS
-PUBLIC	?VGA_put_char@@YAXHHD@Z				; VGA_put_char
+PUBLIC	?VGA_put_char@@YAXHHDD@Z			; VGA_put_char
 ; Function compile flags: /Ogtpy
-;	COMDAT ?VGA_put_char@@YAXHHD@Z
+;	COMDAT ?VGA_put_char@@YAXHHDD@Z
 _TEXT	SEGMENT
 tv239 = -36						; size = 4
 _mask$ = -32						; size = 32
 _x$ = 8							; size = 4
 _y$ = 12						; size = 4
-tv257 = 16						; size = 4
+tv259 = 16						; size = 4
 _c$ = 16						; size = 1
-?VGA_put_char@@YAXHHD@Z PROC				; VGA_put_char, COMDAT
+_color$ = 20						; size = 1
+?VGA_put_char@@YAXHHDD@Z PROC				; VGA_put_char, COMDAT
 
-; 743  : {
+; 752  : {
 
 	sub	esp, 36					; 00000024H
 
-; 744  : 	int cx,cy;
-; 745  : 	int mask[8]={1,2,4,8,16,32,64,128};
+; 753  : 	int cx,cy;
+; 754  : 	int mask[8]={1,2,4,8,16,32,64,128};
+; 755  : 	unsigned char *glyph=g_8x8_font+(int)c*8;
 
-	mov	ecx, DWORD PTR _x$[esp+32]
+	movsx	eax, BYTE PTR _c$[esp+32]
+	mov	edx, DWORD PTR _x$[esp+32]
 	push	ebx
 	push	ebp
+	mov	ebp, DWORD PTR _y$[esp+40]
+	mov	ecx, 8
 
-; 746  : 	unsigned char *glyph=g_8x8_font+(int)c*8;
+; 758  : 		for(cx=0;cx<8;cx++){
 
-	movsx	ebp, BYTE PTR _c$[esp+40]
-	mov	eax, 8
+	add	edx, ecx
 	push	esi
+	lea	ebx, DWORD PTR _g_8x8_font[eax*8]
 	push	edi
-	mov	edi, DWORD PTR _y$[esp+48]
-
-; 749  : 		for(cx=0;cx<8;cx++){
-
-	add	ecx, eax
-	lea	ebp, DWORD PTR _g_8x8_font[ebp*8]
 	mov	DWORD PTR _mask$[esp+52], 1
 	mov	DWORD PTR _mask$[esp+56], 2
 	mov	DWORD PTR _mask$[esp+60], 4
-	mov	DWORD PTR _mask$[esp+64], eax
+	mov	DWORD PTR _mask$[esp+64], ecx
 	mov	DWORD PTR _mask$[esp+68], 16		; 00000010H
 	mov	DWORD PTR _mask$[esp+72], 32		; 00000020H
 	mov	DWORD PTR _mask$[esp+76], 64		; 00000040H
 	mov	DWORD PTR _mask$[esp+80], 128		; 00000080H
-	mov	DWORD PTR tv239[esp+52], ecx
-	sub	ebp, edi
-	mov	DWORD PTR tv257[esp+48], eax
+	mov	DWORD PTR tv239[esp+52], edx
+	sub	ebx, ebp
+	mov	DWORD PTR tv259[esp+48], ecx
 	npad	8
-$LL13@VGA_put_ch:
-	mov	ebx, DWORD PTR tv239[esp+52]
+$LL15@VGA_put_ch:
+	mov	edi, DWORD PTR tv239[esp+52]
 	xor	esi, esi
-$LL3@VGA_put_ch:
+$LL16@VGA_put_ch:
 
-; 750  : 			//glyph[cy] = reverseBits(glyph[cy]);
-; 751  : 			mode.putpixel(x+(8-cx),y+cy,glyph[cy]&mask[cx]?0x01:0x00);
+; 759  : 			//glyph[cy] = reverseBits(glyph[cy]);
+; 760  : 			mode.putpixel(x+(8-cx),y+cy,glyph[cy]&mask[cx]?color:0x00);
 
-	mov	dl, BYTE PTR [edi+ebp]
-	test	BYTE PTR _mask$[esp+esi*4+52], dl
-	setne	al
-	movzx	ecx, al
-	push	ecx
+	mov	al, BYTE PTR [ebx+ebp]
+	test	BYTE PTR _mask$[esp+esi*4+52], al
+	je	SHORT $LN9@VGA_put_ch
+	movsx	eax, BYTE PTR _color$[esp+48]
+	jmp	SHORT $LN10@VGA_put_ch
+$LN9@VGA_put_ch:
+	xor	eax, eax
+$LN10@VGA_put_ch:
+	push	eax
+	push	ebp
 	push	edi
-	push	ebx
 	call	DWORD PTR ?mode@@3UVIDEO_MODE@@A+10
 	inc	esi
 	add	esp, 12					; 0000000cH
-	dec	ebx
+	dec	edi
 	cmp	esi, 8
-	jl	SHORT $LL3@VGA_put_ch
+	jl	SHORT $LL16@VGA_put_ch
 
-; 747  :  
-; 748  : 	for(cy=0;cy<8;cy++){
+; 756  :  
+; 757  : 	for(cy=0;cy<8;cy++){
 
-	inc	edi
-	dec	DWORD PTR tv257[esp+48]
-	jne	SHORT $LL13@VGA_put_ch
+	inc	ebp
+	dec	DWORD PTR tv259[esp+48]
+	jne	SHORT $LL15@VGA_put_ch
 	pop	edi
 	pop	esi
 	pop	ebp
 	pop	ebx
 
-; 752  : 		}
-; 753  : 	}
-; 754  : }
+; 761  : 		}
+; 762  : 	}
+; 763  : }
 
 	add	esp, 36					; 00000024H
 	ret	0
-?VGA_put_char@@YAXHHD@Z ENDP				; VGA_put_char
+?VGA_put_char@@YAXHHDD@Z ENDP				; VGA_put_char
 _TEXT	ENDS
 PUBLIC	?VGA_put_image@@YAXHHPAD@Z			; VGA_put_image
 EXTRN	?loadFileToLoc@@YA_NPADPAX@Z:PROC		; loadFileToLoc
@@ -2921,43 +2937,43 @@ EXTRN	?malloc@@YAPAXH@Z:PROC				; malloc
 ; Function compile flags: /Ogtpy
 ;	COMDAT ?VGA_put_image@@YAXHHPAD@Z
 _TEXT	SEGMENT
-$T3143 = -12						; size = 1
-$T3144 = -8						; size = 1
-$T3145 = -4						; size = 1
+$T3169 = -12						; size = 1
+$T3170 = -8						; size = 1
+$T3171 = -4						; size = 1
 _x$ = 8							; size = 4
 _y$ = 12						; size = 4
 _filename$ = 16						; size = 4
 ?VGA_put_image@@YAXHHPAD@Z PROC				; VGA_put_image, COMDAT
 
-; 757  : {
+; 766  : {
 
 	sub	esp, 12					; 0000000cH
 	push	ebx
 	push	esi
 	push	edi
 
-; 758  : 	char* buf = (char*)malloc(16*1024);
+; 767  : 	char* buf = (char*)malloc(16*1024);
 
 	push	16384					; 00004000H
 	call	?malloc@@YAPAXH@Z			; malloc
 	mov	esi, eax
 
-; 759  : 	loadFileToLoc(filename, buf);
+; 768  : 	loadFileToLoc(filename, buf);
 
 	mov	eax, DWORD PTR _filename$[esp+24]
 	push	esi
 	push	eax
 	call	?loadFileToLoc@@YA_NPADPAX@Z		; loadFileToLoc
 
-; 760  : 	bmpHeader* bmph = (bmpHeader*)buf;
-; 761  : 	bmpInfoHeader* bmpinfo = (bmpInfoHeader*)(buf + sizeof(bmpHeader));
-; 762  : 	// map colors!
-; 763  : 	//outport(0xE9, bmpinfo->mNumberOfColorsInPalette);
-; 764  : 	bmpColor* me = (bmpColor*)(buf+sizeof(bmpHeader)+bmpinfo->mHeaderSize);
+; 769  : 	bmpHeader* bmph = (bmpHeader*)buf;
+; 770  : 	bmpInfoHeader* bmpinfo = (bmpInfoHeader*)(buf + sizeof(bmpHeader));
+; 771  : 	// map colors!
+; 772  : 	//outport(0xE9, bmpinfo->mNumberOfColorsInPalette);
+; 773  : 	bmpColor* me = (bmpColor*)(buf+sizeof(bmpHeader)+bmpinfo->mHeaderSize);
 
 	mov	ecx, DWORD PTR [esi+14]
 
-; 765  : 	for(int i = 0; i < bmpinfo->mNumberOfColorsInPalette; i++)
+; 774  : 	for(int i = 0; i < bmpinfo->mNumberOfColorsInPalette; i++)
 
 	xor	ebx, ebx
 	add	esp, 12					; 0000000cH
@@ -2967,43 +2983,43 @@ _filename$ = 16						; size = 4
 	npad	2
 $LL9@VGA_put_im:
 
-; 766  : 	{
-; 767  : 		VGA_map_color(i, me->R, me->G, me->B);
+; 775  : 	{
+; 776  : 		VGA_map_color(i, me->R, me->G, me->B);
 
 	mov	dl, BYTE PTR [edi]
 	mov	al, BYTE PTR [edi+1]
 	mov	cl, BYTE PTR [edi+2]
 	push	ebx
 	push	968					; 000003c8H
-	mov	BYTE PTR $T3145[esp+32], dl
-	mov	BYTE PTR $T3144[esp+32], al
-	mov	BYTE PTR $T3143[esp+32], cl
+	mov	BYTE PTR $T3171[esp+32], dl
+	mov	BYTE PTR $T3170[esp+32], al
+	mov	BYTE PTR $T3169[esp+32], cl
 	call	?outport@@YAXGE@Z			; outport
-	mov	edx, DWORD PTR $T3143[esp+32]
+	mov	edx, DWORD PTR $T3169[esp+32]
 	push	edx
 	push	969					; 000003c9H
 	call	?outport@@YAXGE@Z			; outport
-	mov	eax, DWORD PTR $T3144[esp+40]
+	mov	eax, DWORD PTR $T3170[esp+40]
 	push	eax
 	push	969					; 000003c9H
 	call	?outport@@YAXGE@Z			; outport
-	mov	ecx, DWORD PTR $T3145[esp+48]
+	mov	ecx, DWORD PTR $T3171[esp+48]
 	push	ecx
 	push	969					; 000003c9H
 	call	?outport@@YAXGE@Z			; outport
 	inc	ebx
 	add	esp, 32					; 00000020H
 
-; 768  : 		me++;
+; 777  : 		me++;
 
 	add	edi, 4
 	cmp	ebx, DWORD PTR [esi+46]
 	jl	SHORT $LL9@VGA_put_im
 $LN7@VGA_put_im:
 
-; 769  : 	}
-; 770  : 	// memcpy the image!
-; 771  : 	for(int a = bmpinfo->mHeight; a > 0; a --)
+; 778  : 	}
+; 779  : 	// memcpy the image!
+; 780  : 	for(int a = bmpinfo->mHeight; a > 0; a --)
 
 	mov	ebx, DWORD PTR [esi+22]
 	test	ebx, ebx
@@ -3012,8 +3028,8 @@ $LN7@VGA_put_im:
 	mov	ebp, DWORD PTR _y$[esp+24]
 $LL6@VGA_put_im:
 
-; 772  : 	{
-; 773  : 		for(int b = bmpinfo->mWidth; b > 0; b --)
+; 781  : 	{
+; 782  : 		for(int b = bmpinfo->mWidth; b > 0; b --)
 
 	mov	edi, DWORD PTR [esi+18]
 	test	edi, edi
@@ -3021,9 +3037,9 @@ $LL6@VGA_put_im:
 	npad	5
 $LL3@VGA_put_im:
 
-; 774  : 		{
-; 775  : 			//VGA_address[x + y*VGA_width + (bmpinfo->mWidth-b) + (bmpinfo->mHeight-a)*VGA_width] = *(char*)(buf + bmph->mAddressOfPixelArray + a * bmpinfo->mWidth - b);
-; 776  : 			mode.putpixel(x + bmpinfo->mWidth - b, y + bmpinfo->mHeight - a, *(char*)(buf + bmph->mAddressOfPixelArray + a * bmpinfo->mWidth - b));
+; 783  : 		{
+; 784  : 			//VGA_address[x + y*VGA_width + (bmpinfo->mWidth-b) + (bmpinfo->mHeight-a)*VGA_width] = *(char*)(buf + bmph->mAddressOfPixelArray + a * bmpinfo->mWidth - b);
+; 785  : 			mode.putpixel(x + bmpinfo->mWidth - b, y + bmpinfo->mHeight - a, *(char*)(buf + bmph->mAddressOfPixelArray + a * bmpinfo->mWidth - b));
 
 	mov	eax, DWORD PTR [esi+18]
 	mov	edx, eax
@@ -3046,9 +3062,9 @@ $LL3@VGA_put_im:
 	jg	SHORT $LL3@VGA_put_im
 $LN5@VGA_put_im:
 
-; 769  : 	}
-; 770  : 	// memcpy the image!
-; 771  : 	for(int a = bmpinfo->mHeight; a > 0; a --)
+; 778  : 	}
+; 779  : 	// memcpy the image!
+; 780  : 	for(int a = bmpinfo->mHeight; a > 0; a --)
 
 	dec	ebx
 	test	ebx, ebx
@@ -3059,9 +3075,9 @@ $LN4@VGA_put_im:
 	pop	esi
 	pop	ebx
 
-; 777  : 		}
-; 778  : 	}
-; 779  : }
+; 786  : 		}
+; 787  : 	}
+; 788  : }
 
 	add	esp, 12					; 0000000cH
 	ret	0
@@ -3076,7 +3092,7 @@ _y$ = 12						; size = 4
 _color$ = 16						; size = 1
 ?VGA_put_pixel@@YAXHHD@Z PROC				; VGA_put_pixel, COMDAT
 
-; 783  : 	VGA_address[VGA_width*y+x] = color;
+; 792  : 	VGA_address[VGA_width*y+x] = color;
 
 	mov	eax, DWORD PTR ?VGA_width@@3IA		; VGA_width
 	imul	eax, DWORD PTR _y$[esp-4]
@@ -3085,7 +3101,7 @@ _color$ = 16						; size = 1
 	mov	edx, DWORD PTR _x$[esp-4]
 	mov	BYTE PTR [eax+edx], cl
 
-; 784  : }
+; 793  : }
 
 	ret	0
 ?VGA_put_pixel@@YAXHHD@Z ENDP				; VGA_put_pixel
@@ -3099,10 +3115,10 @@ _y$ = 12						; size = 4
 _c$ = 16						; size = 4
 ?write_pixel4p@@YAXIII@Z PROC				; write_pixel4p, COMDAT
 
-; 788  : 	unsigned wd_in_bytes, off, mask, p, pmask;
-; 789  : 
-; 790  : 	wd_in_bytes = VGA_width / 8;
-; 791  : 	off = wd_in_bytes * y + x / 8;
+; 797  : 	unsigned wd_in_bytes, off, mask, p, pmask;
+; 798  : 
+; 799  : 	wd_in_bytes = VGA_width / 8;
+; 800  : 	off = wd_in_bytes * y + x / 8;
 
 	mov	ecx, DWORD PTR _x$[esp-4]
 	push	ebx
@@ -3114,29 +3130,29 @@ _c$ = 16						; size = 4
 	shr	eax, 3
 	add	ebp, eax
 
-; 792  : 	x = (x & 7) * 1;
+; 801  : 	x = (x & 7) * 1;
 
 	and	ecx, 7
 
-; 793  : 	mask = 0x80 >> x;
+; 802  : 	mask = 0x80 >> x;
 
 	mov	eax, 128				; 00000080H
 	sar	eax, cl
 	push	esi
 	push	edi
 
-; 794  : 	pmask = 1;
+; 803  : 	pmask = 1;
 
 	mov	ebx, 1
 	mov	DWORD PTR _mask$[esp+12], eax
 
-; 795  : 	for(p = 0; p < 4; p++)
+; 804  : 	for(p = 0; p < 4; p++)
 
 	xor	edi, edi
 $LL5@write_pixe:
 
-; 796  : 	{
-; 797  : 		set_plane(p);
+; 805  : 	{
+; 806  : 		set_plane(p);
 
 	push	4
 	mov	esi, edi
@@ -3158,37 +3174,37 @@ $LL5@write_pixe:
 	call	?outport@@YAXGE@Z			; outport
 	add	esp, 32					; 00000020H
 
-; 798  : 		if(pmask & c)
+; 807  : 		if(pmask & c)
 
 	test	ebx, DWORD PTR _c$[esp+12]
 	je	SHORT $LN2@write_pixe
 
-; 799  : 			*(char*)(0xA000*16+off) = (*(char*)((unsigned int)0xA000*16 + off))|mask;
+; 808  : 			*(char*)(0xA000*16+off) = (*(char*)((unsigned int)0xA000*16 + off))|mask;
 
 	mov	dl, BYTE PTR _mask$[esp+12]
 	or	BYTE PTR [ebp+655360], dl
 
-; 800  : 		else
+; 809  : 		else
 
 	jmp	SHORT $LN1@write_pixe
 $LN2@write_pixe:
 
-; 801  : 			*(char*)(0xA000*16+off) = (*(char*)((unsigned int)0xA000*16 + off))&~mask;
+; 810  : 			*(char*)(0xA000*16+off) = (*(char*)((unsigned int)0xA000*16 + off))&~mask;
 
 	mov	al, BYTE PTR _mask$[esp+12]
 	not	al
 	and	BYTE PTR [ebp+655360], al
 $LN1@write_pixe:
 
-; 802  : 		pmask <<= 1;
+; 811  : 		pmask <<= 1;
 
 	inc	edi
 	add	ebx, ebx
 	cmp	edi, 4
 	jb	SHORT $LL5@write_pixe
 
-; 803  : 	}
-; 804  : }
+; 812  : 	}
+; 813  : }
 
 	pop	edi
 	pop	esi
@@ -3212,30 +3228,30 @@ _y1$ = 20						; size = 4
 _color$ = 24						; size = 1
 ?VGA_put_line@@YAXHHHHD@Z PROC				; VGA_put_line, COMDAT
 
-; 810  : 	/*
-; 811  : 	http://en.wikipedia.org/wiki/Bresenham's_line_algorithm
-; 812  : 	 function line(x0, y0, x1, y1)
-; 813  :      boolean steep := abs(y1 - y0) > abs(x1 - x0)
-; 814  :      if steep then
-; 815  :          swap(x0, y0)
-; 816  :          swap(x1, y1)
-; 817  :      if x0 > x1 then
-; 818  :          swap(x0, x1)
-; 819  :          swap(y0, y1)
-; 820  :      int deltax := x1 - x0
-; 821  :      int deltay := abs(y1 - y0)
-; 822  :      int error := deltax / 2
-; 823  :      int ystep
-; 824  :      int y := y0
-; 825  :      if y0 < y1 then ystep := 1 else ystep := -1
-; 826  :      for x from x0 to x1
-; 827  :          if steep then plot(y,x) else plot(x,y)
-; 828  :          error := error - deltay
-; 829  :          if error < 0 then
-; 830  :              y := y + ystep
-; 831  :              error := error + deltax
-; 832  : 	*/
-; 833  : 	bool steep = math_abs(y1-y0) > math_abs(x1-x0);
+; 819  : 	/*
+; 820  : 	http://en.wikipedia.org/wiki/Bresenham's_line_algorithm
+; 821  : 	 function line(x0, y0, x1, y1)
+; 822  :      boolean steep := abs(y1 - y0) > abs(x1 - x0)
+; 823  :      if steep then
+; 824  :          swap(x0, y0)
+; 825  :          swap(x1, y1)
+; 826  :      if x0 > x1 then
+; 827  :          swap(x0, x1)
+; 828  :          swap(y0, y1)
+; 829  :      int deltax := x1 - x0
+; 830  :      int deltay := abs(y1 - y0)
+; 831  :      int error := deltax / 2
+; 832  :      int ystep
+; 833  :      int y := y0
+; 834  :      if y0 < y1 then ystep := 1 else ystep := -1
+; 835  :      for x from x0 to x1
+; 836  :          if steep then plot(y,x) else plot(x,y)
+; 837  :          error := error - deltay
+; 838  :          if error < 0 then
+; 839  :              y := y + ystep
+; 840  :              error := error + deltax
+; 841  : 	*/
+; 842  : 	bool steep = math_abs(y1-y0) > math_abs(x1-x0);
 
 	mov	eax, DWORD PTR _x1$[esp-4]
 	push	ebx
@@ -3258,36 +3274,36 @@ _color$ = 24						; size = 1
 	seta	al
 	mov	BYTE PTR _steep$[esp+12], al
 
-; 834  : 	int tmp = 0;
-; 835  : 	if(steep)
+; 843  : 	int tmp = 0;
+; 844  : 	if(steep)
 
 	test	al, al
 	je	SHORT $LN15@VGA_put_li
 
-; 836  : 	{
-; 837  : 		tmp = x0;
+; 845  : 	{
+; 846  : 		tmp = x0;
 
 	mov	eax, esi
 
-; 838  : 		x0 = y0;
+; 847  : 		x0 = y0;
 
 	mov	esi, edi
 
-; 839  : 		y0 = tmp;
+; 848  : 		y0 = tmp;
 
 	mov	edi, eax
 
-; 840  : 
-; 841  : 		tmp = x1;
+; 849  : 
+; 850  : 		tmp = x1;
 
 	mov	eax, DWORD PTR _x1$[esp+12]
 
-; 842  : 		x1 = y1;
+; 851  : 		x1 = y1;
 
 	mov	ebx, ebp
 	mov	DWORD PTR _x1$[esp+12], ebx
 
-; 843  : 		y1 = tmp;
+; 852  : 		y1 = tmp;
 
 	mov	ebp, eax
 	jmp	SHORT $LN10@VGA_put_li
@@ -3295,36 +3311,36 @@ $LN15@VGA_put_li:
 	mov	ebx, DWORD PTR _x1$[esp+12]
 $LN10@VGA_put_li:
 
-; 844  : 	}
-; 845  : 	if(x0 > x1)
+; 853  : 	}
+; 854  : 	if(x0 > x1)
 
 	cmp	esi, ebx
 	jle	SHORT $LN9@VGA_put_li
 
-; 846  : 	{
-; 847  : 		tmp = x0;
-; 848  : 		x0 = x1;
-; 849  : 		x1 = tmp;
+; 855  : 	{
+; 856  : 		tmp = x0;
+; 857  : 		x0 = x1;
+; 858  : 		x1 = tmp;
 
 	mov	DWORD PTR _x1$[esp+12], esi
 
-; 850  : 
-; 851  : 		tmp = y0;
+; 859  : 
+; 860  : 		tmp = y0;
 
 	mov	eax, edi
 	mov	esi, ebx
 
-; 852  : 		y0 = y1;
-; 853  : 		y1 = tmp;
+; 861  : 		y0 = y1;
+; 862  : 		y1 = tmp;
 
 	mov	ebx, DWORD PTR _x1$[esp+12]
 	mov	edi, ebp
 	mov	ebp, eax
 $LN9@VGA_put_li:
 
-; 854  : 	}
-; 855  : 	int deltax = x1-x0;
-; 856  : 	int deltay = math_abs(y1-y0);
+; 863  : 	}
+; 864  : 	int deltax = x1-x0;
+; 865  : 	int deltay = math_abs(y1-y0);
 
 	mov	edx, ebp
 	sub	edx, edi
@@ -3333,7 +3349,7 @@ $LN9@VGA_put_li:
 	call	?math_abs@@YAIH@Z			; math_abs
 	mov	DWORD PTR _deltay$[esp+16], eax
 
-; 857  : 	int error = deltax / 2;
+; 866  : 	int error = deltax / 2;
 
 	mov	eax, ebx
 	cdq
@@ -3341,9 +3357,9 @@ $LN9@VGA_put_li:
 	sar	eax, 1
 	mov	DWORD PTR _error$[esp+16], eax
 
-; 858  : 	int ystep;
-; 859  : 	int y = y0;
-; 860  : 	if(y0 < y1) ystep = 1; else ystep = -1;
+; 867  : 	int ystep;
+; 868  : 	int y = y0;
+; 869  : 	if(y0 < y1) ystep = 1; else ystep = -1;
 
 	xor	eax, eax
 	add	esp, 4
@@ -3351,14 +3367,14 @@ $LN9@VGA_put_li:
 	setl	al
 	lea	ebp, DWORD PTR [eax+eax-1]
 
-; 861  : 	for(int x = x0; x < x1;x++)
+; 870  : 	for(int x = x0; x < x1;x++)
 
 	cmp	esi, DWORD PTR _x1$[esp+12]
 	jge	SHORT $LN4@VGA_put_li
 $LL6@VGA_put_li:
 
-; 862  : 	{
-; 863  : 		if(steep) mode.putpixel(y, x, color); else mode.putpixel(x,y,color);
+; 871  : 	{
+; 872  : 		if(steep) mode.putpixel(y, x, color); else mode.putpixel(x,y,color);
 
 	cmp	BYTE PTR _steep$[esp+12], 0
 	je	SHORT $LN3@VGA_put_li
@@ -3375,27 +3391,27 @@ $LN3@VGA_put_li:
 $LN16@VGA_put_li:
 	call	DWORD PTR ?mode@@3UVIDEO_MODE@@A+10
 
-; 864  : 		error = error - deltay;
+; 873  : 		error = error - deltay;
 
 	mov	eax, DWORD PTR _deltay$[esp+24]
 	add	esp, 12					; 0000000cH
 	sub	DWORD PTR _error$[esp+12], eax
 
-; 865  : 		if(error < 0)
+; 874  : 		if(error < 0)
 
 	jns	SHORT $LN5@VGA_put_li
 
-; 866  : 		{
-; 867  : 			y = y + ystep;
+; 875  : 		{
+; 876  : 			y = y + ystep;
 
 	add	edi, ebp
 
-; 868  : 			error = error +deltax;
+; 877  : 			error = error +deltax;
 
 	add	DWORD PTR _error$[esp+12], ebx
 $LN5@VGA_put_li:
 
-; 861  : 	for(int x = x0; x < x1;x++)
+; 870  : 	for(int x = x0; x < x1;x++)
 
 	inc	esi
 	cmp	esi, DWORD PTR _x1$[esp+12]
@@ -3406,10 +3422,10 @@ $LN4@VGA_put_li:
 	pop	ebp
 	pop	ebx
 
-; 869  : 		}
-; 870  : 	}
-; 871  : 
-; 872  : }
+; 878  : 		}
+; 879  : 	}
+; 880  : 
+; 881  : }
 
 	ret	0
 ?VGA_put_line@@YAXHHHHD@Z ENDP				; VGA_put_line
@@ -3425,11 +3441,11 @@ _ey$ = 20						; size = 4
 _fill$ = 24						; size = 1
 ?VGA_put_rectangle@@YAXHHHHD@Z PROC			; VGA_put_rectangle, COMDAT
 
-; 875  : {
+; 884  : {
 
 	push	ebx
 
-; 876  : 		VGA_put_line(sx, sy, ex, sy, fill);
+; 885  : 		VGA_put_line(sx, sy, ex, sy, fill);
 
 	mov	ebx, DWORD PTR _ex$[esp]
 	push	ebp
@@ -3445,7 +3461,7 @@ _fill$ = 24						; size = 1
 	push	ebp
 	call	?VGA_put_line@@YAXHHHHD@Z		; VGA_put_line
 
-; 877  : 		VGA_put_line(sx, sy, sx, ey, fill);
+; 886  : 		VGA_put_line(sx, sy, sx, ey, fill);
 
 	mov	eax, DWORD PTR _ey$[esp+32]
 	push	esi
@@ -3455,7 +3471,7 @@ _fill$ = 24						; size = 1
 	push	ebp
 	call	?VGA_put_line@@YAXHHHHD@Z		; VGA_put_line
 
-; 878  : 		VGA_put_line(sx, ey, ex, ey, fill);
+; 887  : 		VGA_put_line(sx, ey, ex, ey, fill);
 
 	mov	eax, DWORD PTR _ey$[esp+52]
 	push	esi
@@ -3465,7 +3481,7 @@ _fill$ = 24						; size = 1
 	push	ebp
 	call	?VGA_put_line@@YAXHHHHD@Z		; VGA_put_line
 
-; 879  : 		VGA_put_line(ex, ey, ex, sy, fill);
+; 888  : 		VGA_put_line(ex, ey, ex, sy, fill);
 
 	mov	ecx, DWORD PTR _ey$[esp+72]
 	push	esi
@@ -3480,7 +3496,7 @@ _fill$ = 24						; size = 1
 	pop	ebp
 	pop	ebx
 
-; 880  : }
+; 889  : }
 
 	ret	0
 ?VGA_put_rectangle@@YAXHHHHD@Z ENDP			; VGA_put_rectangle
@@ -3492,14 +3508,14 @@ _TEXT	SEGMENT
 _regs$ = 8						; size = 4
 ?write_registers@@YAXPAE@Z PROC				; write_registers, COMDAT
 
-; 180  : void write_registers(unsigned char *regs){
+; 185  : void write_registers(unsigned char *regs){
 
 	push	esi
 
-; 181  :    unsigned i;
-; 182  : 
-; 183  :    /* write MISCELLANEOUS reg */
-; 184  :    outport(VGA_MISC_WRITE, *regs);
+; 186  :    unsigned i;
+; 187  : 
+; 188  :    /* write MISCELLANEOUS reg */
+; 189  :    outport(VGA_MISC_WRITE, *regs);
 
 	mov	esi, DWORD PTR _regs$[esp]
 	movzx	eax, BYTE PTR [esi]
@@ -3509,25 +3525,25 @@ _regs$ = 8						; size = 4
 	call	?outport@@YAXGE@Z			; outport
 	add	esp, 8
 
-; 185  :    regs++;
+; 190  :    regs++;
 
 	inc	esi
 
-; 186  :    /* write SEQUENCER regs */
-; 187  :    for(i = 0; i < VGA_NUM_SEQ_REGS; i++)
+; 191  :    /* write SEQUENCER regs */
+; 192  :    for(i = 0; i < VGA_NUM_SEQ_REGS; i++)
 
 	xor	edi, edi
 	npad	6
 $LL12@write_regi:
 
-; 188  :    {
-; 189  :       outport(VGA_SEQ_INDEX, i);
+; 193  :    {
+; 194  :       outport(VGA_SEQ_INDEX, i);
 
 	push	edi
 	push	964					; 000003c4H
 	call	?outport@@YAXGE@Z			; outport
 
-; 190  :       outport(VGA_SEQ_DATA, *regs);
+; 195  :       outport(VGA_SEQ_DATA, *regs);
 
 	movzx	ecx, BYTE PTR [esi]
 	push	ecx
@@ -3536,21 +3552,21 @@ $LL12@write_regi:
 	inc	edi
 	add	esp, 16					; 00000010H
 
-; 191  :       regs++;
+; 196  :       regs++;
 
 	inc	esi
 	cmp	edi, 5
 	jb	SHORT $LL12@write_regi
 
-; 192  :    }
-; 193  :    /* unlock CRTC registers */
-; 194  :    outport(VGA_CRTC_INDEX, 0x03);
+; 197  :    }
+; 198  :    /* unlock CRTC registers */
+; 199  :    outport(VGA_CRTC_INDEX, 0x03);
 
 	push	3
 	push	980					; 000003d4H
 	call	?outport@@YAXGE@Z			; outport
 
-; 195  :    outport(VGA_CRTC_DATA, inport(VGA_CRTC_DATA) | 0x80);
+; 200  :    outport(VGA_CRTC_DATA, inport(VGA_CRTC_DATA) | 0x80);
 
 	push	981					; 000003d5H
 	call	?inport@@YAEG@Z				; inport
@@ -3560,13 +3576,13 @@ $LL12@write_regi:
 	push	981					; 000003d5H
 	call	?outport@@YAXGE@Z			; outport
 
-; 196  :    outport(VGA_CRTC_INDEX, 0x11);
+; 201  :    outport(VGA_CRTC_INDEX, 0x11);
 
 	push	17					; 00000011H
 	push	980					; 000003d4H
 	call	?outport@@YAXGE@Z			; outport
 
-; 197  :    outport(VGA_CRTC_DATA, inport(VGA_CRTC_DATA) & ~0x80);
+; 202  :    outport(VGA_CRTC_DATA, inport(VGA_CRTC_DATA) & ~0x80);
 
 	push	981					; 000003d5H
 	call	?inport@@YAEG@Z				; inport
@@ -3576,31 +3592,31 @@ $LL12@write_regi:
 	push	981					; 000003d5H
 	call	?outport@@YAXGE@Z			; outport
 
-; 198  :    /* make sure they remain unlocked */
-; 199  :    regs[0x03] |= 0x80;
+; 203  :    /* make sure they remain unlocked */
+; 204  :    regs[0x03] |= 0x80;
 
 	or	BYTE PTR [esi+3], 128			; 00000080H
 
-; 200  :    regs[0x11] &= ~0x80;
+; 205  :    regs[0x11] &= ~0x80;
 
 	and	BYTE PTR [esi+17], 127			; 0000007fH
 	add	esp, 40					; 00000028H
 
-; 201  :    /* write CRTC regs */
-; 202  :    for(i = 0; i < VGA_NUM_CRTC_REGS; i++)
+; 206  :    /* write CRTC regs */
+; 207  :    for(i = 0; i < VGA_NUM_CRTC_REGS; i++)
 
 	xor	edi, edi
 	npad	4
 $LL9@write_regi:
 
-; 203  :    {
-; 204  :       outport(VGA_CRTC_INDEX, i);
+; 208  :    {
+; 209  :       outport(VGA_CRTC_INDEX, i);
 
 	push	edi
 	push	980					; 000003d4H
 	call	?outport@@YAXGE@Z			; outport
 
-; 205  :       outport(VGA_CRTC_DATA, *regs);
+; 210  :       outport(VGA_CRTC_DATA, *regs);
 
 	movzx	ecx, BYTE PTR [esi]
 	push	ecx
@@ -3609,27 +3625,27 @@ $LL9@write_regi:
 	inc	edi
 	add	esp, 16					; 00000010H
 
-; 206  :       regs++;
+; 211  :       regs++;
 
 	inc	esi
 	cmp	edi, 25					; 00000019H
 	jb	SHORT $LL9@write_regi
 
-; 207  :    }
-; 208  :    /* write GRAPHICS CONTROLLER regs */
-; 209  :    for(i = 0; i < VGA_NUM_GC_REGS; i++)
+; 212  :    }
+; 213  :    /* write GRAPHICS CONTROLLER regs */
+; 214  :    for(i = 0; i < VGA_NUM_GC_REGS; i++)
 
 	xor	edi, edi
 $LL6@write_regi:
 
-; 210  :    {
-; 211  :       outport(VGA_GC_INDEX, i);
+; 215  :    {
+; 216  :       outport(VGA_GC_INDEX, i);
 
 	push	edi
 	push	974					; 000003ceH
 	call	?outport@@YAXGE@Z			; outport
 
-; 212  :       outport(VGA_GC_DATA, *regs);
+; 217  :       outport(VGA_GC_DATA, *regs);
 
 	movzx	edx, BYTE PTR [esi]
 	push	edx
@@ -3638,33 +3654,33 @@ $LL6@write_regi:
 	inc	edi
 	add	esp, 16					; 00000010H
 
-; 213  :       regs++;
+; 218  :       regs++;
 
 	inc	esi
 	cmp	edi, 9
 	jb	SHORT $LL6@write_regi
 
-; 214  :    }
-; 215  :    /* write ATTRIBUTE CONTROLLER regs */
-; 216  :    for(i = 0; i < VGA_NUM_AC_REGS; i++)
+; 219  :    }
+; 220  :    /* write ATTRIBUTE CONTROLLER regs */
+; 221  :    for(i = 0; i < VGA_NUM_AC_REGS; i++)
 
 	xor	edi, edi
 	npad	6
 $LL3@write_regi:
 
-; 217  :    {
-; 218  :       (void)inport(VGA_INSTAT_READ);
+; 222  :    {
+; 223  :       (void)inport(VGA_INSTAT_READ);
 
 	push	986					; 000003daH
 	call	?inport@@YAEG@Z				; inport
 
-; 219  :       outport(VGA_AC_INDEX, i);
+; 224  :       outport(VGA_AC_INDEX, i);
 
 	push	edi
 	push	960					; 000003c0H
 	call	?outport@@YAXGE@Z			; outport
 
-; 220  :       outport(VGA_AC_WRITE, *regs);
+; 225  :       outport(VGA_AC_WRITE, *regs);
 
 	movzx	eax, BYTE PTR [esi]
 	push	eax
@@ -3673,28 +3689,28 @@ $LL3@write_regi:
 	inc	edi
 	add	esp, 20					; 00000014H
 
-; 221  :       regs++;
+; 226  :       regs++;
 
 	inc	esi
 	cmp	edi, 21					; 00000015H
 	jb	SHORT $LL3@write_regi
 
-; 222  :    }
-; 223  :    
-; 224  :    /* lock 16-color palette and unblank display */
-; 225  :    (void)inport(VGA_INSTAT_READ);
+; 227  :    }
+; 228  :    
+; 229  :    /* lock 16-color palette and unblank display */
+; 230  :    (void)inport(VGA_INSTAT_READ);
 
 	push	986					; 000003daH
 	call	?inport@@YAEG@Z				; inport
 
-; 226  :    outport(VGA_AC_INDEX, 0x20);
+; 231  :    outport(VGA_AC_INDEX, 0x20);
 
 	push	32					; 00000020H
 	push	960					; 000003c0H
 	call	?outport@@YAXGE@Z			; outport
 
-; 227  :    /* add new palette */
-; 228  :    VGA_map_color(0, 0xFF, 0xFF, 0xFF);
+; 232  :    /* add new palette */
+; 233  :    VGA_map_color(0, 0xFF, 0xFF, 0xFF);
 
 	push	0
 	push	968					; 000003c8H
@@ -3712,7 +3728,7 @@ $LL3@write_regi:
 	pop	edi
 	pop	esi
 
-; 229  : }
+; 234  : }
 
 	ret	0
 ?write_registers@@YAXPAE@Z ENDP				; write_registers
@@ -3721,18 +3737,18 @@ PUBLIC	?restorePalette@@YAXPAUpalette_entry@@@Z	; restorePalette
 ; Function compile flags: /Ogtpy
 ;	COMDAT ?restorePalette@@YAXPAUpalette_entry@@@Z
 _TEXT	SEGMENT
-$T3195 = -12						; size = 1
-$T3196 = -8						; size = 1
-$T3197 = -4						; size = 1
+$T3221 = -12						; size = 1
+$T3222 = -8						; size = 1
+$T3223 = -4						; size = 1
 _p$ = 8							; size = 4
 ?restorePalette@@YAXPAUpalette_entry@@@Z PROC		; restorePalette, COMDAT
 
-; 283  : {
+; 288  : {
 
 	sub	esp, 12					; 0000000cH
 	push	esi
 
-; 284  : 	for(int i = 0; i<256;i++)
+; 289  : 	for(int i = 0; i<256;i++)
 
 	mov	esi, DWORD PTR _p$[esp+12]
 	push	edi
@@ -3741,27 +3757,27 @@ _p$ = 8							; size = 4
 	npad	4
 $LL3@restorePal:
 
-; 285  : 	{
-; 286  : 		VGA_map_color(i, p[i].R, p[i].G, p[i].B);
+; 290  : 	{
+; 291  : 		VGA_map_color(i, p[i].R, p[i].G, p[i].B);
 
 	mov	al, BYTE PTR [esi+1]
 	mov	cl, BYTE PTR [esi]
 	mov	dl, BYTE PTR [esi-1]
 	push	edi
 	push	968					; 000003c8H
-	mov	BYTE PTR $T3197[esp+28], al
-	mov	BYTE PTR $T3196[esp+28], cl
-	mov	BYTE PTR $T3195[esp+28], dl
+	mov	BYTE PTR $T3223[esp+28], al
+	mov	BYTE PTR $T3222[esp+28], cl
+	mov	BYTE PTR $T3221[esp+28], dl
 	call	?outport@@YAXGE@Z			; outport
-	mov	eax, DWORD PTR $T3195[esp+28]
+	mov	eax, DWORD PTR $T3221[esp+28]
 	push	eax
 	push	969					; 000003c9H
 	call	?outport@@YAXGE@Z			; outport
-	mov	ecx, DWORD PTR $T3196[esp+36]
+	mov	ecx, DWORD PTR $T3222[esp+36]
 	push	ecx
 	push	969					; 000003c9H
 	call	?outport@@YAXGE@Z			; outport
-	mov	edx, DWORD PTR $T3197[esp+44]
+	mov	edx, DWORD PTR $T3223[esp+44]
 	push	edx
 	push	969					; 000003c9H
 	call	?outport@@YAXGE@Z			; outport
@@ -3773,14 +3789,15 @@ $LL3@restorePal:
 	pop	edi
 	pop	esi
 
-; 287  : 	}
-; 288  : }
+; 292  : 	}
+; 293  : }
 
 	add	esp, 12					; 0000000cH
 	ret	0
 ?restorePalette@@YAXPAUpalette_entry@@@Z ENDP		; restorePalette
 _TEXT	ENDS
 PUBLIC	?VGA_init@@YAXHHH@Z				; VGA_init
+EXTRN	?DebugReset@@YAXXZ:PROC				; DebugReset
 EXTRN	?memcpy@@YAXPAD0H@Z:PROC			; memcpy
 ; Function compile flags: /Ogtpy
 ;	COMDAT ?VGA_init@@YAXHHH@Z
@@ -3790,39 +3807,39 @@ _height$ = 12						; size = 4
 _bpp$ = 16						; size = 4
 ?VGA_init@@YAXHHH@Z PROC				; VGA_init, COMDAT
 
-; 665  : void VGA_init(int width, int height, int bpp){
+; 670  : void VGA_init(int width, int height, int bpp){
 
 	push	ebx
 
-; 666  : 	//savefont();
-; 667  : 	savePalette(savedPalette);
+; 671  : 	//savefont();
+; 672  : 	savePalette(savedPalette);
 
 	push	OFFSET ?savedPalette@@3PAUpalette_entry@@A ; savedPalette
 	call	?savePalette@@YAXPAUpalette_entry@@@Z	; savePalette
 
-; 668  : 	//read_registers(mode_80_25_text);
-; 669  : 	/*outport(0x3C4, 0x02);
-; 670  : 	char in = inport(0x3C5);
-; 671  : 	DebugPrintf("\n0x3c4.0x02=0x%x", in);
-; 672  : 	for(;;);*/
-; 673  :    //setup the vga struct
-; 674  :    VGA_width=(unsigned int)width;
+; 673  : 	//read_registers(mode_80_25_text);
+; 674  : 	/*outport(0x3C4, 0x02);
+; 675  : 	char in = inport(0x3C5);
+; 676  : 	DebugPrintf("\n0x3c4.0x02=0x%x", in);
+; 677  : 	for(;;);*/
+; 678  :    //setup the vga struct
+; 679  :    VGA_width=(unsigned int)width;
 
 	mov	eax, DWORD PTR _width$[esp+4]
 
-; 675  :    VGA_height=(unsigned int)height;
+; 680  :    VGA_height=(unsigned int)height;
 
 	mov	ecx, DWORD PTR _height$[esp+4]
 
-; 676  :    VGA_bpp=bpp;
+; 681  :    VGA_bpp=bpp;
 
 	mov	ebx, DWORD PTR _bpp$[esp+4]
 
-; 677  :    VGA_address = (unsigned char*)0xA0000;
-; 678  : 
-; 679  :    //enables the mode 13 state
-; 680  :    //write_registers(mode_320_200_256);
-; 681  :    write_registers(mode_640_480_16);
+; 682  :    VGA_address = (unsigned char*)0xA0000;
+; 683  : 
+; 684  :    //enables the mode 13 state
+; 685  :    //write_registers(mode_320_200_256);
+; 686  :    write_registers(mode_640_480_16);
 
 	push	OFFSET ?mode_640_480_16@@3PAEA		; mode_640_480_16
 	mov	DWORD PTR ?VGA_width@@3IA, eax		; VGA_width
@@ -3831,21 +3848,21 @@ _bpp$ = 16						; size = 4
 	mov	DWORD PTR ?VGA_address@@3PAEA, 655360	; VGA_address, 000a0000H
 	call	?write_registers@@YAXPAE@Z		; write_registers
 
-; 682  :    VGA_width = 640;
-; 683  :    VGA_height = 480;
-; 684  :    mode.address = (char*)VGA_address;
+; 687  :    VGA_width = 640;
+; 688  :    VGA_height = 480;
+; 689  :    mode.address = (char*)VGA_address;
 
 	mov	edx, DWORD PTR ?VGA_address@@3PAEA	; VGA_address
 	mov	ecx, 640				; 00000280H
 	mov	eax, 480				; 000001e0H
 
-; 685  :    mode.bpp = bpp;
-; 686  :    mode.height = VGA_height;
-; 687  :    mode.width = VGA_width;
-; 688  :    mode.id = 0x12;
-; 689  :    mode.putpixel = (PIXEL_WRITER)write_pixel4p;
-; 690  :    //save videomemory
-; 691  :    vidmem = (char*)malloc(256*1024);
+; 690  :    mode.bpp = bpp;
+; 691  :    mode.height = VGA_height;
+; 692  :    mode.width = VGA_width;
+; 693  :    mode.id = 0x12;
+; 694  :    mode.putpixel = (PIXEL_WRITER)write_pixel4p;
+; 695  :    //save videomemory
+; 696  :    vidmem = (char*)malloc(256*1024);
 
 	push	262144					; 00040000H
 	mov	DWORD PTR ?VGA_width@@3IA, ecx		; VGA_width
@@ -3858,7 +3875,7 @@ _bpp$ = 16						; size = 4
 	mov	DWORD PTR ?mode@@3UVIDEO_MODE@@A+10, OFFSET ?write_pixel4p@@YAXIII@Z ; write_pixel4p
 	call	?malloc@@YAPAXH@Z			; malloc
 
-; 692  :    memcpy((char*)VGA_address, vidmem, 256*1024);
+; 697  :    memcpy((char*)VGA_address, vidmem, 256*1024);
 
 	push	262144					; 00040000H
 	push	eax
@@ -3867,18 +3884,26 @@ _bpp$ = 16						; size = 4
 	push	eax
 	call	?memcpy@@YAXPAD0H@Z			; memcpy
 
-; 693  : 
-; 694  :    //clears the screen
-; 695  :    VGA_clear_screen();
+; 698  :    _isVGA = true;
+
+	mov	BYTE PTR __isVGA, 1
+
+; 699  :    DebugReset();
+
+	call	?DebugReset@@YAXXZ			; DebugReset
+
+; 700  : 
+; 701  :    //clears the screen
+; 702  :    VGA_clear_screen();
 
 	call	?VGA_clear_screen@@YAXXZ		; VGA_clear_screen
 
-; 696  : 
-; 697  :    //write_pixel4p(16, 16, 0x3d);
-; 698  :   // for(;;);
-; 699  : 
-; 700  :   // VGA_put_pixel(16, 16, 11);
-; 701  :    VGA_map_color(0x3D, 0xFF, 0x00, 0x00);
+; 703  : 
+; 704  :    //write_pixel4p(16, 16, 0x3d);
+; 705  :   // for(;;);
+; 706  : 
+; 707  :   // VGA_put_pixel(16, 16, 11);
+; 708  :    VGA_map_color(0x3D, 0xFF, 0x00, 0x00);
 
 	push	61					; 0000003dH
 	push	968					; 000003c8H
@@ -3893,7 +3918,7 @@ _bpp$ = 16						; size = 4
 	push	969					; 000003c9H
 	call	?outport@@YAXGE@Z			; outport
 
-; 702  :    VGA_map_color(0x00, 0xFF, 0xFF, 0xFF);
+; 709  :    VGA_map_color(0x00, 0xFF, 0xFF, 0xFF);
 
 	push	0
 	push	968					; 000003c8H
@@ -3911,17 +3936,17 @@ _bpp$ = 16						; size = 4
 	add	esp, 24					; 00000018H
 	pop	ebx
 
-; 703  : 	/*_put_char(16, 16, 'l');
-; 704  : 	_put_char(24, 16, 'e');
-; 705  : 	_put_char(32, 16, 'v');
-; 706  : 	_put_char(40, 16, 'e');
-; 707  : 	_put_char(48, 16, 'x');*/
-; 708  :    //VGA_put_string(16,16, "levex");
-; 709  :    //mehgfor(;;);
-; 710  : 
-; 711  :  //  VGA_put_image(10, 10, "test.bmp");
-; 712  : 
-; 713  : }
+; 710  : 	/*_put_char(16, 16, 'l');
+; 711  : 	_put_char(24, 16, 'e');
+; 712  : 	_put_char(32, 16, 'v');
+; 713  : 	_put_char(40, 16, 'e');
+; 714  : 	_put_char(48, 16, 'x');*/
+; 715  :    //VGA_put_string(16,16, "levex");
+; 716  :    //mehgfor(;;);
+; 717  : 
+; 718  :  //  VGA_put_image(10, 10, "test.bmp");
+; 719  : 
+; 720  : }
 
 	ret	0
 ?VGA_init@@YAXHHH@Z ENDP				; VGA_init
@@ -3934,7 +3959,7 @@ EXTRN	?memcpyTF@@YAXPAD0H@Z:PROC			; memcpyTF
 _TEXT	SEGMENT
 ?VGA_deinit@@YAXXZ PROC					; VGA_deinit, COMDAT
 
-; 717  : 	memcpyTF((char*)VGA_address, vidmem, 256*1024);
+; 724  : 	memcpyTF((char*)VGA_address, vidmem, 256*1024);
 
 	mov	eax, DWORD PTR ?vidmem@@3PADA		; vidmem
 	mov	ecx, DWORD PTR ?VGA_address@@3PAEA	; VGA_address
@@ -3943,49 +3968,58 @@ _TEXT	SEGMENT
 	push	ecx
 	call	?memcpyTF@@YAXPAD0H@Z			; memcpyTF
 
-; 718  : 	write_registers(mode_80_25_text);
+; 725  : 	write_registers(mode_80_25_text);
 
 	push	OFFSET ?mode_80_25_text@@3PAEA		; mode_80_25_text
 	call	?write_registers@@YAXPAE@Z		; write_registers
 
-; 719  : 	restorePalette(savedPalette);
+; 726  : 	restorePalette(savedPalette);
 
 	push	OFFSET ?savedPalette@@3PAUpalette_entry@@A ; savedPalette
 	call	?restorePalette@@YAXPAUpalette_entry@@@Z ; restorePalette
 
-; 720  : 	//restorefont((char*)g_8x8_font);
-; 721  : 	//write_font(g_8x8_font, 8);
-; 722  : 	//memset((char*)0xB8000, 0, 64*1024);
-; 723  : 	DebugClrScr(0x17);
+; 727  : 	_isVGA = false;
+
+	mov	BYTE PTR __isVGA, 0
+
+; 728  : 	DebugReset();
+
+	call	?DebugReset@@YAXXZ			; DebugReset
+
+; 729  : 	//restorefont((char*)g_8x8_font);
+; 730  : 	//write_font(g_8x8_font, 8);
+; 731  : 	//memset((char*)0xB8000, 0, 64*1024);
+; 732  : 	DebugClrScr(0x17);
 
 	push	23					; 00000017H
 	call	?DebugClrScr@@YAXG@Z			; DebugClrScr
 	add	esp, 24					; 00000018H
 
-; 724  : }
+; 733  : }
 
 	ret	0
 ?VGA_deinit@@YAXXZ ENDP					; VGA_deinit
 _TEXT	ENDS
-PUBLIC	?VGA_put_string@@YAXHHPAD@Z			; VGA_put_string
+PUBLIC	?VGA_put_string@@YAXHHPADD@Z			; VGA_put_string
 ; Function compile flags: /Ogtpy
-;	COMDAT ?VGA_put_string@@YAXHHPAD@Z
+;	COMDAT ?VGA_put_string@@YAXHHPADD@Z
 _TEXT	SEGMENT
 _i$ = -41						; size = 1
-tv303 = -40						; size = 4
+tv305 = -40						; size = 4
 tv262 = -36						; size = 4
-_mask$3220 = -32					; size = 32
+_mask$3250 = -32					; size = 32
 _x$ = 8							; size = 4
 _y$ = 12						; size = 4
 _str$ = 16						; size = 4
-?VGA_put_string@@YAXHHPAD@Z PROC			; VGA_put_string, COMDAT
+_col$ = 20						; size = 1
+?VGA_put_string@@YAXHHPADD@Z PROC			; VGA_put_string, COMDAT
 
-; 732  : {
+; 741  : {
 
 	sub	esp, 44					; 0000002cH
 
-; 733  : 	char i = 0;
-; 734  : 	while(*str != '\0')
+; 742  : 	char i = 0;
+; 743  : 	while(*str != '\0')
 
 	mov	eax, DWORD PTR _str$[esp+40]
 	mov	al, BYTE PTR [eax]
@@ -3999,37 +4033,41 @@ _str$ = 16						; size = 4
 	npad	6
 $LL2@VGA_put_st:
 	movsx	edx, BYTE PTR _i$[esp+60]
+	mov	esi, DWORD PTR _x$[esp+56]
 
-; 735  : 	{
-; 736  : 		VGA_put_char(x + i*8, y, *str);
+; 744  : 	{
+; 745  : 		VGA_put_char(x + i*8, y, *str, col);
 
 	mov	edi, DWORD PTR _y$[esp+56]
-	movsx	ebx, al
-	mov	eax, DWORD PTR _x$[esp+56]
+	movsx	eax, al
 	mov	ecx, 8
-	lea	ebx, DWORD PTR _g_8x8_font[ebx*8]
-	lea	edx, DWORD PTR [eax+edx*8+8]
-	mov	DWORD PTR _mask$3220[esp+60], 1
-	mov	DWORD PTR _mask$3220[esp+64], 2
-	mov	DWORD PTR _mask$3220[esp+68], 4
-	mov	DWORD PTR _mask$3220[esp+72], ecx
-	mov	DWORD PTR _mask$3220[esp+76], 16	; 00000010H
-	mov	DWORD PTR _mask$3220[esp+80], 32	; 00000020H
-	mov	DWORD PTR _mask$3220[esp+84], 64	; 00000040H
-	mov	DWORD PTR _mask$3220[esp+88], 128	; 00000080H
+	lea	ebx, DWORD PTR _g_8x8_font[eax*8]
+	lea	edx, DWORD PTR [esi+edx*8+8]
+	mov	DWORD PTR _mask$3250[esp+60], 1
+	mov	DWORD PTR _mask$3250[esp+64], 2
+	mov	DWORD PTR _mask$3250[esp+68], 4
+	mov	DWORD PTR _mask$3250[esp+72], ecx
+	mov	DWORD PTR _mask$3250[esp+76], 16	; 00000010H
+	mov	DWORD PTR _mask$3250[esp+80], 32	; 00000020H
+	mov	DWORD PTR _mask$3250[esp+84], 64	; 00000040H
+	mov	DWORD PTR _mask$3250[esp+88], 128	; 00000080H
 	mov	DWORD PTR tv262[esp+60], edx
 	sub	ebx, edi
-	mov	DWORD PTR tv303[esp+60], ecx
-$LL20@VGA_put_st:
+	mov	DWORD PTR tv305[esp+60], ecx
+$LL22@VGA_put_st:
 	mov	ebp, DWORD PTR tv262[esp+60]
 	xor	esi, esi
 	npad	4
-$LL7@VGA_put_st:
+$LL23@VGA_put_st:
 	mov	al, BYTE PTR [ebx+edi]
-	test	BYTE PTR _mask$3220[esp+esi*4+60], al
-	setne	cl
-	movzx	edx, cl
-	push	edx
+	test	BYTE PTR _mask$3250[esp+esi*4+60], al
+	je	SHORT $LN13@VGA_put_st
+	movsx	eax, BYTE PTR _col$[esp+56]
+	jmp	SHORT $LN14@VGA_put_st
+$LN13@VGA_put_st:
+	xor	eax, eax
+$LN14@VGA_put_st:
+	push	eax
 	push	edi
 	push	ebp
 	call	DWORD PTR ?mode@@3UVIDEO_MODE@@A+10
@@ -4037,16 +4075,16 @@ $LL7@VGA_put_st:
 	add	esp, 12					; 0000000cH
 	dec	ebp
 	cmp	esi, 8
-	jl	SHORT $LL7@VGA_put_st
+	jl	SHORT $LL23@VGA_put_st
 	inc	edi
-	dec	DWORD PTR tv303[esp+60]
-	jne	SHORT $LL20@VGA_put_st
+	dec	DWORD PTR tv305[esp+60]
+	jne	SHORT $LL22@VGA_put_st
 
-; 737  : 		str++;
+; 746  : 		str++;
 
 	mov	eax, DWORD PTR _str$[esp+56]
 
-; 738  : 		i++;
+; 747  : 		i++;
 
 	inc	BYTE PTR _i$[esp+60]
 	inc	eax
@@ -4060,11 +4098,11 @@ $LL7@VGA_put_st:
 	pop	ebx
 $LN1@VGA_put_st:
 
-; 739  : 	}
-; 740  : }
+; 748  : 	}
+; 749  : }
 
 	add	esp, 44					; 0000002cH
 	ret	0
-?VGA_put_string@@YAXHHPAD@Z ENDP			; VGA_put_string
+?VGA_put_string@@YAXHHPADD@Z ENDP			; VGA_put_string
 _TEXT	ENDS
 END

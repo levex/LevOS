@@ -12,7 +12,6 @@ INCLUDELIB OLDNAMES
 PUBLIC	?kernel_panic@@YAXPBDZZ				; kernel_panic
 EXTRN	?outport@@YAXGE@Z:PROC				; outport
 EXTRN	?strlen@@YAIPBD@Z:PROC				; strlen
-EXTRN	?DebugPrintf@@YAHPBDZZ:PROC			; DebugPrintf
 ; Function compile flags: /Ogtpy
 ; File c:\dev\levos\kernel\kernel\exception.cpp
 ;	COMDAT ?kernel_panic@@YAXPBDZZ
@@ -20,39 +19,43 @@ _TEXT	SEGMENT
 _fmt$ = 8						; size = 4
 ?kernel_panic@@YAXPBDZZ PROC				; kernel_panic, COMDAT
 
-; 7    : {
+; 8    : {
 
 	push	ebx
 	push	esi
 	push	edi
 
-; 8    : 	_asm cli
+; 9    : 	_asm cli
 
 	cli
 
-; 9    : 	char* r = (char*)fmt;
+; 10   : 	char* r = (char*)fmt;
 
 	mov	ebx, DWORD PTR _fmt$[esp+8]
 
-; 10   : 	DebugPrintf(fmt);
+; 11   : 	/*if(isVGA())
+; 12   : 	{
+; 13   : 		for(int i = 0; i < strlen(fmt); i++)
+; 14   : 		{
+; 15   : 			VGA_put_char(0+i*8,0, *r++);
+; 16   : 		}
+; 17   : 		return;
+; 18   : 	}
+; 19   : 	DebugPrintf(fmt);*/
+; 20   : 	for(int i = 0; i < strlen(fmt); i++)
 
 	push	ebx
 	mov	esi, ebx
-	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
-
-; 11   : 	for(int i = 0; i < strlen(fmt); i++)
-
-	push	ebx
 	xor	edi, edi
 	call	?strlen@@YAIPBD@Z			; strlen
-	add	esp, 8
+	add	esp, 4
 	test	eax, eax
 	je	SHORT $LL2@kernel_pan
-	npad	1
+	npad	7
 $LL5@kernel_pan:
 
-; 12   : 	{
-; 13   : 		outport(0xE9, *r++);
+; 21   : 	{
+; 22   : 		outport(0xE9, *r++);
 
 	movzx	eax, BYTE PTR [esi]
 	push	eax
@@ -68,8 +71,8 @@ $LL5@kernel_pan:
 	npad	3
 $LL2@kernel_pan:
 
-; 14   : 	}
-; 15   : 	for (;;);
+; 23   : 	}
+; 24   : 	for (;;);
 
 	jmp	SHORT $LL2@kernel_pan
 ?kernel_panic@@YAXPBDZZ ENDP				; kernel_panic
@@ -90,28 +93,28 @@ _eip$ = 16						; size = 4
 _other$ = 20						; size = 4
 ?divide_by_zero_fault@@YAXIIII@Z PROC			; divide_by_zero_fault, COMDAT
 
-; 27   : void _cdecl divide_by_zero_fault (uint32_t eflags,uint32_t cs,uint32_t eip, uint32_t other) {
+; 36   : void _cdecl divide_by_zero_fault (uint32_t eflags,uint32_t cs,uint32_t eip, uint32_t other) {
 
 	push	ebp
 	mov	ebp, esp
 
-; 28   : 
-; 29   : 	_asm {
-; 30   : 		cli
+; 37   : 
+; 38   : 	_asm {
+; 39   : 		cli
 
 	cli
 
-; 31   : 		add esp, 12
+; 40   : 		add esp, 12
 
 	add	esp, 12					; 0000000cH
 
-; 32   : 		pushad
+; 41   : 		pushad
 
 	pushad
 
-; 33   : 	}
-; 34   : 
-; 35   : 	kernel_panic ("Divide by 0 at physical address [0x%x:0x%x] EFLAGS [0x%x] other: 0x%x",cs,eip, eflags, other);
+; 42   : 	}
+; 43   : 
+; 44   : 	kernel_panic ("Divide by 0 at physical address [0x%x:0x%x] EFLAGS [0x%x] other: 0x%x",cs,eip, eflags, other);
 
 	mov	eax, DWORD PTR _other$[ebp]
 	mov	ecx, DWORD PTR _eflags$[ebp]
@@ -142,13 +145,13 @@ _eip$ = 12						; size = 4
 _eflags$ = 16						; size = 4
 ?single_step_trap@@YAXIII@Z PROC			; single_step_trap, COMDAT
 
-; 41   : 
-; 42   : 	intstart ();
+; 50   : 
+; 51   : 	intstart ();
 
 	cli
 	sub	ebp, 4
 
-; 43   : 	kernel_panic ("Single step");
+; 52   : 	kernel_panic ("Single step");
 
 	push	OFFSET ??_C@_0M@HBBAMPBG@Single?5step?$AA@
 	call	?kernel_panic@@YAXPBDZZ			; kernel_panic
@@ -171,13 +174,13 @@ _eip$ = 12						; size = 4
 _eflags$ = 16						; size = 4
 ?nmi_trap@@YAXIII@Z PROC				; nmi_trap, COMDAT
 
-; 49   : 
-; 50   : 	intstart ();
+; 58   : 
+; 59   : 	intstart ();
 
 	cli
 	sub	ebp, 4
 
-; 51   : 	kernel_panic ("NMI trap");
+; 60   : 	kernel_panic ("NMI trap");
 
 	push	OFFSET ??_C@_08MAEPCHJN@NMI?5trap?$AA@
 	call	?kernel_panic@@YAXPBDZZ			; kernel_panic
@@ -200,13 +203,13 @@ _eip$ = 12						; size = 4
 _eflags$ = 16						; size = 4
 ?breakpoint_trap@@YAXIII@Z PROC				; breakpoint_trap, COMDAT
 
-; 57   : 
-; 58   : 	intstart ();
+; 66   : 
+; 67   : 	intstart ();
 
 	cli
 	sub	ebp, 4
 
-; 59   : 	kernel_panic ("Breakpoint trap");
+; 68   : 	kernel_panic ("Breakpoint trap");
 
 	push	OFFSET ??_C@_0BA@MJDBKJBI@Breakpoint?5trap?$AA@
 	call	?kernel_panic@@YAXPBDZZ			; kernel_panic
@@ -229,13 +232,13 @@ _eip$ = 12						; size = 4
 _eflags$ = 16						; size = 4
 ?overflow_trap@@YAXIII@Z PROC				; overflow_trap, COMDAT
 
-; 65   : 
-; 66   : 	intstart ();
+; 74   : 
+; 75   : 	intstart ();
 
 	cli
 	sub	ebp, 4
 
-; 67   : 	kernel_panic ("Overflow trap");
+; 76   : 	kernel_panic ("Overflow trap");
 
 	push	OFFSET ??_C@_0O@NPIPDPLG@Overflow?5trap?$AA@
 	call	?kernel_panic@@YAXPBDZZ			; kernel_panic
@@ -258,13 +261,13 @@ _eip$ = 12						; size = 4
 _eflags$ = 16						; size = 4
 ?bounds_check_fault@@YAXIII@Z PROC			; bounds_check_fault, COMDAT
 
-; 73   : 
-; 74   : 	intstart ();
+; 82   : 
+; 83   : 	intstart ();
 
 	cli
 	sub	ebp, 4
 
-; 75   : 	kernel_panic ("Bounds check fault");
+; 84   : 	kernel_panic ("Bounds check fault");
 
 	push	OFFSET ??_C@_0BD@OAFDEGEK@Bounds?5check?5fault?$AA@
 	call	?kernel_panic@@YAXPBDZZ			; kernel_panic
@@ -275,6 +278,7 @@ $LN5@bounds_che:
 _TEXT	ENDS
 PUBLIC	??_C@_0DF@BNKMBDNA@?6?$CK?$CK?$CK?5STOP?3?5Invalid?5opcode?5at?50x?$CF@ ; `string'
 PUBLIC	?invalid_opcode_fault@@YAXIII@Z			; invalid_opcode_fault
+EXTRN	?DebugPrintf@@YAHPBDZZ:PROC			; DebugPrintf
 ;	COMDAT ??_C@_0DF@BNKMBDNA@?6?$CK?$CK?$CK?5STOP?3?5Invalid?5opcode?5at?50x?$CF@
 CONST	SEGMENT
 ??_C@_0DF@BNKMBDNA@?6?$CK?$CK?$CK?5STOP?3?5Invalid?5opcode?5at?50x?$CF@ DB 0aH
@@ -288,13 +292,13 @@ _eip$ = 12						; size = 4
 _eflags$ = 16						; size = 4
 ?invalid_opcode_fault@@YAXIII@Z PROC			; invalid_opcode_fault, COMDAT
 
-; 81   : 
-; 82   : 	intstart ();
+; 90   : 
+; 91   : 	intstart ();
 
 	cli
 	sub	ebp, 4
 
-; 83   : 	DebugPrintf ("\n*** STOP: Invalid opcode at 0x%x:0x%x [EFLAGS=0x%X]", cs, eip, eflags);
+; 92   : 	DebugPrintf ("\n*** STOP: Invalid opcode at 0x%x:0x%x [EFLAGS=0x%X]", cs, eip, eflags);
 
 	mov	eax, DWORD PTR _eflags$[ebp]
 	mov	ecx, DWORD PTR _eip$[ebp]
@@ -308,7 +312,7 @@ _eflags$ = 16						; size = 4
 	npad	3
 $LL2@invalid_op:
 
-; 84   : 	for (;;);
+; 93   : 	for (;;);
 
 	jmp	SHORT $LL2@invalid_op
 ?invalid_opcode_fault@@YAXIII@Z ENDP			; invalid_opcode_fault
@@ -327,13 +331,13 @@ _eip$ = 12						; size = 4
 _eflags$ = 16						; size = 4
 ?no_device_fault@@YAXIII@Z PROC				; no_device_fault, COMDAT
 
-; 89   : 
-; 90   : 	intstart ();
+; 98   : 
+; 99   : 	intstart ();
 
 	cli
 	sub	ebp, 4
 
-; 91   : 	kernel_panic ("Device not found");
+; 100  : 	kernel_panic ("Device not found");
 
 	push	OFFSET ??_C@_0BB@KJJKIIDM@Device?5not?5found?$AA@
 	call	?kernel_panic@@YAXPBDZZ			; kernel_panic
@@ -357,13 +361,13 @@ _eip$ = 16						; size = 4
 _eflags$ = 20						; size = 4
 ?double_fault_abort@@YAXIIII@Z PROC			; double_fault_abort, COMDAT
 
-; 97   : 
-; 98   : 	intstart ();
+; 106  : 
+; 107  : 	intstart ();
 
 	cli
 	sub	ebp, 4
 
-; 99   : 	kernel_panic ("Double fault");
+; 108  : 	kernel_panic ("Double fault");
 
 	push	OFFSET ??_C@_0N@EMHPBCJE@Double?5fault?$AA@
 	call	?kernel_panic@@YAXPBDZZ			; kernel_panic
@@ -387,13 +391,13 @@ _eip$ = 16						; size = 4
 _eflags$ = 20						; size = 4
 ?invalid_tss_fault@@YAXIIII@Z PROC			; invalid_tss_fault, COMDAT
 
-; 105  : 
-; 106  : 	intstart ();
+; 114  : 
+; 115  : 	intstart ();
 
 	cli
 	sub	ebp, 4
 
-; 107  : 	kernel_panic ("Invalid TSS");
+; 116  : 	kernel_panic ("Invalid TSS");
 
 	push	OFFSET ??_C@_0M@OLMALBPG@Invalid?5TSS?$AA@
 	call	?kernel_panic@@YAXPBDZZ			; kernel_panic
@@ -417,13 +421,13 @@ _eip$ = 16						; size = 4
 _eflags$ = 20						; size = 4
 ?no_segment_fault@@YAXIIII@Z PROC			; no_segment_fault, COMDAT
 
-; 113  : 
-; 114  : 	intstart ();
+; 122  : 
+; 123  : 	intstart ();
 
 	cli
 	sub	ebp, 4
 
-; 115  : 	kernel_panic ("Invalid segment");
+; 124  : 	kernel_panic ("Invalid segment");
 
 	push	OFFSET ??_C@_0BA@FIBIGBGL@Invalid?5segment?$AA@
 	call	?kernel_panic@@YAXPBDZZ			; kernel_panic
@@ -447,13 +451,13 @@ _eip$ = 16						; size = 4
 _eflags$ = 20						; size = 4
 ?stack_fault@@YAXIIII@Z PROC				; stack_fault, COMDAT
 
-; 121  : 
-; 122  : 	intstart ();
+; 130  : 
+; 131  : 	intstart ();
 
 	cli
 	sub	ebp, 4
 
-; 123  : 	kernel_panic ("Stack fault");
+; 132  : 	kernel_panic ("Stack fault");
 
 	push	OFFSET ??_C@_0M@LEEDKLOB@Stack?5fault?$AA@
 	call	?kernel_panic@@YAXPBDZZ			; kernel_panic
@@ -478,13 +482,13 @@ _eip$ = 16						; size = 4
 _eflags$ = 20						; size = 4
 ?general_protection_fault@@YAXIIII@Z PROC		; general_protection_fault, COMDAT
 
-; 129  : 
-; 130  : 	intstart ();
+; 138  : 
+; 139  : 	intstart ();
 
 	cli
 	sub	ebp, 4
 
-; 131  : 	kernel_panic ("General Protection Fault");
+; 140  : 	kernel_panic ("General Protection Fault");
 
 	push	OFFSET ??_C@_0BJ@JKJOCMHH@General?5Protection?5Fault?$AA@
 	call	?kernel_panic@@YAXPBDZZ			; kernel_panic
@@ -515,41 +519,41 @@ _cs$ = 16						; size = 4
 _eip$ = 20						; size = 4
 ?page_fault@@YAXIIII@Z PROC				; page_fault, COMDAT
 
-; 137  : void _cdecl page_fault (uint32_t err,uint32_t eflags,uint32_t cs,uint32_t eip) {
+; 146  : void _cdecl page_fault (uint32_t err,uint32_t eflags,uint32_t cs,uint32_t eip) {
 
 	push	ebp
 	mov	ebp, esp
 	push	ecx
 
-; 138  : 
-; 139  : 	_asm	cli
+; 147  : 
+; 148  : 	_asm	cli
 
 	cli
 
-; 140  : 	_asm	sub		ebp, 4
+; 149  : 	_asm	sub		ebp, 4
 
 	sub	ebp, 4
 
-; 141  : 	//kernel_panic("PAGEFAULT");
-; 142  : 
-; 143  : 	int faultAddr=0;
+; 150  : 	//kernel_panic("PAGEFAULT");
+; 151  : 
+; 152  : 	int faultAddr=0;
 
 	mov	DWORD PTR _faultAddr$[ebp], 0
 
-; 144  : 
-; 145  : 	_asm {
-; 146  : 		mov eax, cr2
+; 153  : 
+; 154  : 	_asm {
+; 155  : 		mov eax, cr2
 
 	mov	eax, cr2
 
-; 147  : 		mov [faultAddr], eax
+; 156  : 		mov [faultAddr], eax
 
 	mov	DWORD PTR _faultAddr$[ebp], eax
 
-; 148  : 	}
-; 149  : 
-; 150  : 	DebugPrintf("Page Fault at 0x%x:0x%x referenced memory at 0x%x",
-; 151  : 		cs, eip, faultAddr);
+; 157  : 	}
+; 158  : 
+; 159  : 	DebugPrintf("Page Fault at 0x%x:0x%x referenced memory at 0x%x",
+; 160  : 		cs, eip, faultAddr);
 
 	mov	eax, DWORD PTR _faultAddr$[ebp]
 	mov	ecx, DWORD PTR _eip$[ebp]
@@ -561,7 +565,7 @@ _eip$ = 20						; size = 4
 	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
 	add	esp, 16					; 00000010H
 
-; 152  : 	kernel_panic("Page fault!");
+; 161  : 	kernel_panic("Page fault!");
 
 	push	OFFSET ??_C@_0M@EBNJMEJL@Page?5fault?$CB?$AA@
 	call	?kernel_panic@@YAXPBDZZ			; kernel_panic
@@ -584,13 +588,13 @@ _eip$ = 12						; size = 4
 _eflags$ = 16						; size = 4
 ?fpu_fault@@YAXIII@Z PROC				; fpu_fault, COMDAT
 
-; 162  : 
-; 163  : 	intstart ();
+; 171  : 
+; 172  : 	intstart ();
 
 	cli
 	sub	ebp, 4
 
-; 164  : 	kernel_panic ("FPU Fault");
+; 173  : 	kernel_panic ("FPU Fault");
 
 	push	OFFSET ??_C@_09ENEAMLC@FPU?5Fault?$AA@
 	call	?kernel_panic@@YAXPBDZZ			; kernel_panic
@@ -614,13 +618,13 @@ _eip$ = 16						; size = 4
 _eflags$ = 20						; size = 4
 ?alignment_check_fault@@YAXIIII@Z PROC			; alignment_check_fault, COMDAT
 
-; 170  : 
-; 171  : 	intstart ();
+; 179  : 
+; 180  : 	intstart ();
 
 	cli
 	sub	ebp, 4
 
-; 172  : 	kernel_panic ("Alignment Check");
+; 181  : 	kernel_panic ("Alignment Check");
 
 	push	OFFSET ??_C@_0BA@DLJHEABO@Alignment?5Check?$AA@
 	call	?kernel_panic@@YAXPBDZZ			; kernel_panic
@@ -643,13 +647,13 @@ _eip$ = 12						; size = 4
 _eflags$ = 16						; size = 4
 ?machine_check_abort@@YAXIII@Z PROC			; machine_check_abort, COMDAT
 
-; 178  : 
-; 179  : 	intstart ();
+; 187  : 
+; 188  : 	intstart ();
 
 	cli
 	sub	ebp, 4
 
-; 180  : 	kernel_panic ("Machine Check");
+; 189  : 	kernel_panic ("Machine Check");
 
 	push	OFFSET ??_C@_0O@LALCKNGJ@Machine?5Check?$AA@
 	call	?kernel_panic@@YAXPBDZZ			; kernel_panic
@@ -672,13 +676,13 @@ _eip$ = 12						; size = 4
 _eflags$ = 16						; size = 4
 ?simd_fpu_fault@@YAXIII@Z PROC				; simd_fpu_fault, COMDAT
 
-; 186  : 
-; 187  : 	intstart ();
+; 195  : 
+; 196  : 	intstart ();
 
 	cli
 	sub	ebp, 4
 
-; 188  : 	kernel_panic ("FPU SIMD fault");
+; 197  : 	kernel_panic ("FPU SIMD fault");
 
 	push	OFFSET ??_C@_0P@JHGCNKG@FPU?5SIMD?5fault?$AA@
 	call	?kernel_panic@@YAXPBDZZ			; kernel_panic

@@ -25,9 +25,9 @@
 #include "currentTest.h"
 
 
-#define KERNEL_VERSION "040713"
+#define KERNEL_VERSION "060713"
 #define KERNEL_BASE "0xC0000000"
-#define KERNEL_SIZE 4096*5
+#define KERNEL_SIZE 4096*20
 
 #define IMAGE_BASE 0xC00000
 
@@ -114,6 +114,9 @@ void cmd_read_sect () {
 
 #endif
 
+static PROCESS p;
+static PROCESS p2;
+
 void _cdecl main () {
 
 	int i=0x12;
@@ -141,12 +144,13 @@ void _cdecl main () {
 #endif
 returning: /***************/
 	if(!retur)DebugPrintf ("Setting up Paging: ");
-	vm_map_virt_to_phys(0, 0);
-	vm_map_virt_to_phys(1, 0x400000);
-	vm_map_virt_to_phys(2, 0x800000);
-	vm_map_virt_to_phys(3, 0xC00000);
-	vm_map_virt_to_phys(4, 0x1000000);
-	vm_map_virt_to_phys(768, 0x100000);
+	vm_map_virt_to_phys(0, 0); // 0-4mb
+	vm_map_virt_to_phys(1, 0x400000); //4mb - 8mb
+	vm_map_virt_to_phys(2, 0x800000); // 8-12
+	vm_map_virt_to_phys(3, 0xC00000); // 12-16
+	vm_map_virt_to_phys(4, 0x1000000); // 16-18
+	vm_map_virt_to_phys(767, 0x1400000); // process stack reserve start: 0xBFC00000 - 0xC0000000 (4mb)
+	vm_map_virt_to_phys(768, 0x100000); // 3gb+ 
 	if(!retur)DebugPrintf ("OK\n");
 	if(!retur)DebugPrintf ("Enabling Paging: %s\n", vm_enable_paging()?"OK":"ERROR");
 	//int GDTstart = (int)malloc(sizeof(struct gdt_descriptor)*MAX_DESCRIPTORS);
@@ -274,43 +278,45 @@ lol:	movsd
 	//DebugSetColor(0x17);
 	if(!retur)DebugPrintf("Press any key to continue to the terminal...");
 	if(!retur)getch();
-	/*DebugPrintf("\nMultitasking Testing has been enabled!");
-	PROCESS p = *(PROCESS*)malloc(sizeof(PROCESS));
-	p.myPhysicalBase = 0;
-	p.myVirtualTableId = 0;
-	p.optionalHeader = 0;
-	p.PEHeader = 0;
-	p.pid = 0;
-	p.regs->eip = (int)taskone;
-	int d = 0;
-	_asm mov d, ebp
-	p.regs->ebp = d;
-	p.stackBase = (unsigned char*)d;
-	_asm mov d, esp
-	p.regs->esp = d;
-	p.stackPointer = (unsigned char*)d;
-	addProcess(p);
+	//DebugPrintf("\nMultitasking Testing has been enabled!");
+	//startMultitask();
+	//for(;;);
+	DebugPrintf("\nMultitasking Testing has been disabled!");
+	initProcessManager();
 
-	PROCESS p2 = *(PROCESS*)malloc(sizeof(PROCESS));
-	p2.myPhysicalBase = 0;
-	p2.myVirtualTableId = 0;
-	p2.optionalHeader = 0;
-	p2.PEHeader = 0;
-	p2.pid = 1;
-	p2.regs->eip = (int)tasktwo;
-	int d2 = 0;
-	_asm mov d2, ebp
-	p2.regs->ebp = d2;
-	p2.stackBase = (unsigned char*)d2;
-	_asm mov d2, esp
-	p2.regs->esp = d2;
-	p2.stackPointer = (unsigned char*)d2;
-	addProcess(p2);
+	//p = (PROCESS*)malloc(sizeof(PROCESS));
+	getch();
+	p.valid = true;
+	p.ran = false;
+	p.eip = (int)taskone;
+	allocStack(&p);
+	//addProcess(&p);
+	//getch();
 
-	setCurrentProc(p);
+	//p2 = (PROCESS*)malloc(sizeof(PROCESS));
+	p2.valid = true;
+	p2.ran = false;
+	p2.eip = (int)tasktwo;
+	allocStack(&p2);
+	//addProcess(&p2);
+	//getch();
+
+	PROCESS p3;
+	p3.valid = true;
+	p3.ran = false;
+	p3.eip = (int)taskthree;
+	allocStack(&p3);
+	//addProcess(&p3);
+	//getch();
+
+	setCurrentProc(&p);
 
 	//startMultitask();
-	taskone();*/
+	int a = p.regs.esp;
+	_asm mov esp, a
+	a = p.regs.ebp;
+	_asm mov ebp, a
+	//taskone();
 	/*int a = 0;
 	a = p.regs->eip;
 	_asm call a*/

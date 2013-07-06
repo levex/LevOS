@@ -1,7 +1,7 @@
 #include "Window.h"
 #include "TextPopup.h"
 #include "string.h"
-#include "..\LevAPI\lev_vga.h"
+#include "..\dllTest\LevAPI\lev_vga.h"
 void OUTc(char a)
 {
 		_asm mov dx, 0xE9
@@ -24,15 +24,25 @@ void W_TEXTPOPUP_paint(WINDOW* w)
 
 void W_TEXTPOPUP_move(WINDOW* w, int x, int y)
 {
+	/* save me */
 	//OUTc('C');
 	int width = w->endX - w->startX;
 	int height = w->endY - w->startY;
-	//OUTc('D');
+	/* clear me */
+
+	char c = VGA_getcolor();
+	VGA_setcolor(0);
+	VGA_putrect(w->startX, w->startY, w->endX, w->startY + 12);
+	VGA_putstring(w->startX + 2 , w->startY + 2, w->title);
+	VGA_putrect(w->startX, w->startY, w->endX, w->endY);
+	/* END WINDOW PRIMITIVE */
+	VGA_putstring(w->startX + 2, (w->startY + w->endY) / 2, ((W_TEXTPOPUP*)(w->bigBro))->text);
+
+	/* redraw move */
 	w->startX = x;
 	w->startY = y;
 	w->endX = w->startX + width;
 	w->endY = w->startY + height;
-	//OUTc('E');
 	return;
 }
 
@@ -45,8 +55,8 @@ void W_TEXTPOPUP_init(W_TEXTPOPUP* t, WINDOW* w, char* title, char* str)
 	w->endY = w->startY + 45;
 	w->isValid = true;
 	w->title = title;
-	w->paint = (PAINTER)W_TEXTPOPUP_paint;
-	w->move = (MOVER)W_TEXTPOPUP_move;
+	w->paint = (void(__cdecl*)(void*))W_TEXTPOPUP_paint;
+	w->move = (void(__cdecl*)(void*, int, int))W_TEXTPOPUP_move;
 	w->bigBro = t;
 	t->window = w;
 }

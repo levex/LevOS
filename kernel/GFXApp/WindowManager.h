@@ -1,9 +1,10 @@
 #ifndef __WINDOWMANAGER_H_
 #define __WINDOWMANAGER_H_
 
-extern int addWindow(WINDOW w);
+extern int addWindow(WINDOW* w);
 extern void repaintScreen();
 extern void removeWindow(char id);
+extern void initWindowManager();
 extern WINDOW* getWindowById(char id);
 
 #endif

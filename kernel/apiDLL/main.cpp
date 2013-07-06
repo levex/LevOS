@@ -218,7 +218,7 @@ void _cdecl VGA_putstring(int x, int y, char* str)
 		}
 }
 
-void _cdecl VGA_putchar(int x, int y, char c)
+void _cdecl VGA_putchar(int x, int y, char c, char col)
 {
 	_asm {
 		mov eax, 0x0C
@@ -226,6 +226,7 @@ void _cdecl VGA_putchar(int x, int y, char c)
 		mov esi, x
 		mov edi, y
 		mov cl, c
+		mov ch, col
 		int 0x2f
 	}
 }
@@ -262,6 +263,28 @@ void _cdecl VGA_setcolor(char c)
 		mov ebx, 0x0A
 		mov cl, c
 		int 0x2F
+	}
+}
+char _cdecl VGA_getcolor()
+{
+	char c = 0;
+	_asm {
+		mov eax, 0x0C
+		mov ebx, 0x0B
+		int 0x2F
+		mov c, cl
+	}
+	return c;
+}
+void VGA_clearrect(int startX, int endX, int startY, int endY)
+{
+	char c = VGA_getcolor();
+	for(int x = startX-1; x < endX; x++)
+	{
+		for(int y = startY-1; y < endY; y++)
+		{
+			VGA_putchar(x, y, ' ', 0);
+		}
 	}
 }
 void _cdecl fillMouseState(MOUSE_STATE* m)

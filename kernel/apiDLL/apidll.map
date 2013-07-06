@@ -1,13 +1,13 @@
  LEVAPI
 
- Timestamp is 51d59ff0 (Thu Jul 04 18:16:48 2013)
+ Timestamp is 51d7c344 (Sat Jul 06 09:12:04 2013)
 
  Preferred load address is 00800000
 
  Start         Length     Name                   Class
- 0001:00000000 0000043aH .text                   CODE
+ 0001:00000000 000004daH .text                   CODE
  0002:00000000 00000017H .rdata                  DATA
- 0003:00000000 0000028cH .edata                  DATA
+ 0003:00000000 000002bbH .edata                  DATA
 
   Address         Publics by Value              Rva+Base       Lib:Object
 
@@ -39,7 +39,9 @@
  0001:000003a0       _VGA_putline               008013a0 f   main.obj
  0001:000003d0       _VGA_putrect               008013d0 f   main.obj
  0001:00000400       _VGA_setcolor              00801400 f   main.obj
- 0001:00000420       _fillMouseState            00801420 f   main.obj
+ 0001:00000420       _VGA_getcolor              00801420 f   main.obj
+ 0001:00000450       _VGA_clearrect             00801450 f   main.obj
+ 0001:000004c0       _fillMouseState            008014c0 f   main.obj
  0002:00000000       ??_C@_0BH@KLDECJHP@Relocation?5is?5working?4?$AA@ 00802000     main.obj
 
  entry point at        0000:00000000

@@ -1119,7 +1119,7 @@ PUBLIC	?flpydsk_read_sector_imp@@YAXEEE@Z		; flpydsk_read_sector_imp
 ;	COMDAT ?flpydsk_read_sector_imp@@YAXEEE@Z
 _TEXT	SEGMENT
 _head$ = 8						; size = 1
-$T3334 = 8						; size = 1
+$T3344 = 8						; size = 1
 _st0$ = 8						; size = 4
 _track$ = 12						; size = 1
 _sector$ = 16						; size = 1
@@ -1207,7 +1207,7 @@ $LN13@flpydsk_re@3:
 	add	al, al
 	or	al, BYTE PTR __CurrentDrive
 	xor	esi, esi
-	mov	BYTE PTR $T3334[esp+8], al
+	mov	BYTE PTR $T3344[esp+8], al
 $LL23@flpydsk_re@3:
 	push	1012					; 000003f4H
 	call	?inport@@YAEG@Z				; inport
@@ -1225,7 +1225,7 @@ $LN109@flpydsk_re@3:
 
 ; 417  : 	flpydsk_send_command ( head << 2 | _CurrentDrive );
 
-	mov	ecx, DWORD PTR $T3334[esp+8]
+	mov	ecx, DWORD PTR $T3344[esp+8]
 	push	ecx
 	push	1013					; 000003f5H
 	call	?outport@@YAXGE@Z			; outport
@@ -1483,42 +1483,56 @@ $LN2@flpydsk_re@3:
 	ret	0
 ?flpydsk_read_sector_imp@@YAXEEE@Z ENDP			; flpydsk_read_sector_imp
 _TEXT	ENDS
+PUBLIC	?flpydsk_write_sector@@YAXPAEII@Z		; flpydsk_write_sector
+; Function compile flags: /Ogtpy
+;	COMDAT ?flpydsk_write_sector@@YAXPAEII@Z
+_TEXT	SEGMENT
+_Buffer$ = 8						; size = 4
+_Length$ = 12						; size = 4
+_sector$ = 16						; size = 4
+?flpydsk_write_sector@@YAXPAEII@Z PROC			; flpydsk_write_sector, COMDAT
+
+; 439  : }
+
+	ret	0
+?flpydsk_write_sector@@YAXPAEII@Z ENDP			; flpydsk_write_sector
+_TEXT	ENDS
 PUBLIC	?flpydsk_seek@@YAHEE@Z				; flpydsk_seek
 ; Function compile flags: /Ogtpy
 ;	COMDAT ?flpydsk_seek@@YAHEE@Z
 _TEXT	SEGMENT
-$T3516 = -12						; size = 1
+$T3529 = -12						; size = 1
 _cyl0$ = -8						; size = 4
 _st0$ = -4						; size = 4
 _cyl$ = 8						; size = 1
 _head$ = 12						; size = 1
 ?flpydsk_seek@@YAHEE@Z PROC				; flpydsk_seek, COMDAT
 
-; 438  : int flpydsk_seek ( uint8_t cyl, uint8_t head ) {
+; 442  : int flpydsk_seek ( uint8_t cyl, uint8_t head ) {
 
 	sub	esp, 12					; 0000000cH
 
-; 439  : 
-; 440  : 	uint32_t st0, cyl0;
-; 441  : 
-; 442  : 	if (_CurrentDrive >= 4)
+; 443  : 
+; 444  : 	uint32_t st0, cyl0;
+; 445  : 
+; 446  : 	if (_CurrentDrive >= 4)
 
 	cmp	BYTE PTR __CurrentDrive, 4
 	jb	SHORT $LN5@flpydsk_se@2
 
-; 443  : 		return -1;
+; 447  : 		return -1;
 
 	or	eax, -1
 
-; 462  : }
+; 466  : }
 
 	add	esp, 12					; 0000000cH
 	ret	0
 $LN5@flpydsk_se@2:
 	push	ebx
 
-; 444  : 
-; 445  : 	for (int i = 0; i < 10; i++ ) {
+; 448  : 
+; 449  : 	for (int i = 0; i < 10; i++ ) {
 
 	mov	bl, BYTE PTR _head$[esp+12]
 	push	ebp
@@ -1531,9 +1545,9 @@ $LN5@flpydsk_se@2:
 	npad	10
 $LL51@flpydsk_se@2:
 
-; 446  : 
-; 447  : 		// send the command
-; 448  : 		flpydsk_send_command (FDC_CMD_SEEK);
+; 450  : 
+; 451  : 		// send the command
+; 452  : 		flpydsk_send_command (FDC_CMD_SEEK);
 
 	xor	esi, esi
 $LL11@flpydsk_se@2:
@@ -1546,16 +1560,16 @@ $LL11@flpydsk_se@2:
 	cmp	esi, 500				; 000001f4H
 	jl	SHORT $LL11@flpydsk_se@2
 
-; 455  : 
-; 456  : 		// found the cylinder?
-; 457  : 		if ( cyl0 == cyl)
+; 459  : 
+; 460  : 		// found the cylinder?
+; 461  : 		if ( cyl0 == cyl)
 
 	jmp	SHORT $LN9@flpydsk_se@2
 $LN41@flpydsk_se@2:
 
-; 446  : 
-; 447  : 		// send the command
-; 448  : 		flpydsk_send_command (FDC_CMD_SEEK);
+; 450  : 
+; 451  : 		// send the command
+; 452  : 		flpydsk_send_command (FDC_CMD_SEEK);
 
 	push	15					; 0000000fH
 	push	1013					; 000003f5H
@@ -1563,12 +1577,12 @@ $LN41@flpydsk_se@2:
 	add	esp, 8
 $LN9@flpydsk_se@2:
 
-; 449  : 		flpydsk_send_command ( (head) << 2 | _CurrentDrive);
+; 453  : 		flpydsk_send_command ( (head) << 2 | _CurrentDrive);
 
 	mov	al, bl
 	or	al, BYTE PTR __CurrentDrive
 	xor	esi, esi
-	mov	BYTE PTR $T3516[esp+28], al
+	mov	BYTE PTR $T3529[esp+28], al
 	npad	5
 $LL19@flpydsk_se@2:
 	push	1012					; 000003f4H
@@ -1580,23 +1594,23 @@ $LL19@flpydsk_se@2:
 	cmp	esi, 500				; 000001f4H
 	jl	SHORT $LL19@flpydsk_se@2
 
-; 455  : 
-; 456  : 		// found the cylinder?
-; 457  : 		if ( cyl0 == cyl)
+; 459  : 
+; 460  : 		// found the cylinder?
+; 461  : 		if ( cyl0 == cyl)
 
 	jmp	SHORT $LN17@flpydsk_se@2
 $LN42@flpydsk_se@2:
 
-; 449  : 		flpydsk_send_command ( (head) << 2 | _CurrentDrive);
+; 453  : 		flpydsk_send_command ( (head) << 2 | _CurrentDrive);
 
-	mov	ecx, DWORD PTR $T3516[esp+28]
+	mov	ecx, DWORD PTR $T3529[esp+28]
 	push	ecx
 	push	1013					; 000003f5H
 	call	?outport@@YAXGE@Z			; outport
 	add	esp, 8
 $LN17@flpydsk_se@2:
 
-; 450  : 		flpydsk_send_command (cyl);
+; 454  : 		flpydsk_send_command (cyl);
 
 	xor	esi, esi
 $LL27@flpydsk_se@2:
@@ -1609,14 +1623,14 @@ $LL27@flpydsk_se@2:
 	cmp	esi, 500				; 000001f4H
 	jl	SHORT $LL27@flpydsk_se@2
 
-; 455  : 
-; 456  : 		// found the cylinder?
-; 457  : 		if ( cyl0 == cyl)
+; 459  : 
+; 460  : 		// found the cylinder?
+; 461  : 		if ( cyl0 == cyl)
 
 	jmp	SHORT $LL33@flpydsk_se@2
 $LN43@flpydsk_se@2:
 
-; 450  : 		flpydsk_send_command (cyl);
+; 454  : 		flpydsk_send_command (cyl);
 
 	mov	edx, DWORD PTR _cyl$[esp+24]
 	push	edx
@@ -1625,16 +1639,16 @@ $LN43@flpydsk_se@2:
 	add	esp, 8
 	npad	2
 
-; 451  : 
-; 452  : 		// wait for the results phase IRQ
-; 453  : 		flpydsk_wait_irq ();
+; 455  : 
+; 456  : 		// wait for the results phase IRQ
+; 457  : 		flpydsk_wait_irq ();
 
 $LL33@flpydsk_se@2:
 	mov	al, BYTE PTR __FloppyDiskIRQ
 	test	al, al
 	je	SHORT $LL33@flpydsk_se@2
 
-; 454  : 		flpydsk_check_int (&st0,&cyl0);
+; 458  : 		flpydsk_check_int (&st0,&cyl0);
 
 	lea	ecx, DWORD PTR _cyl0$[esp+28]
 	push	ecx
@@ -1644,23 +1658,23 @@ $LL33@flpydsk_se@2:
 	call	?flpydsk_check_int@@YAXPAI0@Z		; flpydsk_check_int
 	add	esp, 8
 
-; 455  : 
-; 456  : 		// found the cylinder?
-; 457  : 		if ( cyl0 == cyl)
+; 459  : 
+; 460  : 		// found the cylinder?
+; 461  : 		if ( cyl0 == cyl)
 
 	cmp	DWORD PTR _cyl0$[esp+28], ebp
 	je	SHORT $LN44@flpydsk_se@2
 
-; 444  : 
-; 445  : 	for (int i = 0; i < 10; i++ ) {
+; 448  : 
+; 449  : 	for (int i = 0; i < 10; i++ ) {
 
 	inc	edi
 	cmp	edi, 10					; 0000000aH
 	jl	$LL51@flpydsk_se@2
 
-; 459  : 	}
-; 460  : 
-; 461  : 	return -1;
+; 463  : 	}
+; 464  : 
+; 465  : 	return -1;
 
 	pop	esi
 	pop	edi
@@ -1668,7 +1682,7 @@ $LL33@flpydsk_se@2:
 	or	eax, -1
 	pop	ebx
 
-; 462  : }
+; 466  : }
 
 	add	esp, 12					; 0000000cH
 	ret	0
@@ -1677,12 +1691,12 @@ $LN44@flpydsk_se@2:
 	pop	edi
 	pop	ebp
 
-; 458  : 			return 0;
+; 462  : 			return 0;
 
 	xor	eax, eax
 	pop	ebx
 
-; 462  : }
+; 466  : }
 
 	add	esp, 12					; 0000000cH
 	ret	0
@@ -1698,8 +1712,8 @@ _track$ = 16						; size = 4
 _sector$ = 20						; size = 4
 ?flpydsk_lba_to_chs@@YAXHPAH00@Z PROC			; flpydsk_lba_to_chs, COMDAT
 
-; 466  : 
-; 467  :    *head = ( lba % ( FLPY_SECTORS_PER_TRACK * 2 ) ) / ( FLPY_SECTORS_PER_TRACK );
+; 470  : 
+; 471  :    *head = ( lba % ( FLPY_SECTORS_PER_TRACK * 2 ) ) / ( FLPY_SECTORS_PER_TRACK );
 
 	mov	ecx, DWORD PTR _lba$[esp-4]
 	mov	eax, 954437177				; 38e38e39H
@@ -1723,12 +1737,12 @@ _sector$ = 20						; size = 4
 	mov	edx, DWORD PTR _head$[esp]
 	mov	DWORD PTR [edx], eax
 
-; 468  :    *track = lba / ( FLPY_SECTORS_PER_TRACK * 2 );
+; 472  :    *track = lba / ( FLPY_SECTORS_PER_TRACK * 2 );
 
 	mov	eax, DWORD PTR _track$[esp]
 	mov	DWORD PTR [eax], esi
 
-; 469  :    *sector = lba % FLPY_SECTORS_PER_TRACK + 1;
+; 473  :    *sector = lba % FLPY_SECTORS_PER_TRACK + 1;
 
 	mov	eax, 954437177				; 38e38e39H
 	imul	ecx
@@ -1744,7 +1758,7 @@ _sector$ = 20						; size = 4
 	mov	DWORD PTR [eax], ecx
 	pop	esi
 
-; 470  : }
+; 474  : }
 
 	ret	0
 ?flpydsk_lba_to_chs@@YAXHPAH00@Z ENDP			; flpydsk_lba_to_chs
@@ -1757,24 +1771,24 @@ _TEXT	SEGMENT
 _irq$ = 8						; size = 4
 ?flpydsk_install@@YAXH@Z PROC				; flpydsk_install, COMDAT
 
-; 474  : 
-; 475  : 	// install irq handler
-; 476  : 	setint (irq, i86_flpy_irq);
+; 478  : 
+; 479  : 	// install irq handler
+; 480  : 	setint (irq, i86_flpy_irq);
 
 	mov	eax, DWORD PTR _irq$[esp-4]
 	push	OFFSET ?i86_flpy_irq@@YAXXZ		; i86_flpy_irq
 	push	eax
 	call	?setint@@YAXHP6AXXZ@Z			; setint
 
-; 477  : 
-; 478  : 	// reset the fdc
-; 479  : 	flpydsk_reset ();
+; 481  : 
+; 482  : 	// reset the fdc
+; 483  : 	flpydsk_reset ();
 
 	call	?flpydsk_reset@@YAXXZ			; flpydsk_reset
 
-; 480  : 
-; 481  : 	// set drive information
-; 482  : 	flpydsk_drive_data (13, 1, 0xf, true);
+; 484  : 
+; 485  : 	// set drive information
+; 486  : 	flpydsk_drive_data (13, 1, 0xf, true);
 
 	push	1
 	push	15					; 0000000fH
@@ -1783,7 +1797,7 @@ _irq$ = 8						; size = 4
 	call	?flpydsk_drive_data@@YAXEEE_N@Z		; flpydsk_drive_data
 	add	esp, 24					; 00000018H
 
-; 483  : }
+; 487  : }
 
 	ret	0
 ?flpydsk_install@@YAXH@Z ENDP				; flpydsk_install
@@ -1795,19 +1809,19 @@ _TEXT	SEGMENT
 _drive$ = 8						; size = 1
 ?flpydsk_set_working_drive@@YAXE@Z PROC			; flpydsk_set_working_drive, COMDAT
 
-; 487  : 
-; 488  : 	if (drive < 4)
+; 491  : 
+; 492  : 	if (drive < 4)
 
 	mov	al, BYTE PTR _drive$[esp-4]
 	cmp	al, 4
 	jae	SHORT $LN1@flpydsk_se@3
 
-; 489  : 		_CurrentDrive = drive;
+; 493  : 		_CurrentDrive = drive;
 
 	mov	BYTE PTR __CurrentDrive, al
 $LN1@flpydsk_se@3:
 
-; 490  : }
+; 494  : }
 
 	ret	0
 ?flpydsk_set_working_drive@@YAXE@Z ENDP			; flpydsk_set_working_drive
@@ -1818,12 +1832,12 @@ PUBLIC	?flpydsk_get_working_drive@@YAEXZ		; flpydsk_get_working_drive
 _TEXT	SEGMENT
 ?flpydsk_get_working_drive@@YAEXZ PROC			; flpydsk_get_working_drive, COMDAT
 
-; 494  : 
-; 495  : 	return _CurrentDrive;
+; 498  : 
+; 499  : 	return _CurrentDrive;
 
 	mov	al, BYTE PTR __CurrentDrive
 
-; 496  : }
+; 500  : }
 
 	ret	0
 ?flpydsk_get_working_drive@@YAEXZ ENDP			; flpydsk_get_working_drive
@@ -1836,33 +1850,33 @@ tv170 = -4						; size = 4
 _sectorLBA$ = 8						; size = 4
 ?flpydsk_read_sector@@YAPAEH@Z PROC			; flpydsk_read_sector, COMDAT
 
-; 499  : uint8_t* flpydsk_read_sector (int sectorLBA) {
+; 503  : uint8_t* flpydsk_read_sector (int sectorLBA) {
 
 	push	ecx
 	push	ebx
 
-; 500  : 
-; 501  : 	if (_CurrentDrive >= 4)
+; 504  : 
+; 505  : 	if (_CurrentDrive >= 4)
 
 	mov	bl, BYTE PTR __CurrentDrive
 	cmp	bl, 4
 	jb	SHORT $LN2@flpydsk_re@4
 
-; 502  : 		return 0;
+; 506  : 		return 0;
 
 	xor	eax, eax
 	pop	ebx
 
-; 519  : }
+; 523  : }
 
 	pop	ecx
 	ret	0
 $LN2@flpydsk_re@4:
 
-; 503  : 
-; 504  : 	// convert LBA sector to CHS
-; 505  : 	int head=0, track=0, sector=1;
-; 506  : 	flpydsk_lba_to_chs (sectorLBA, &head, &track, &sector);
+; 507  : 
+; 508  : 	// convert LBA sector to CHS
+; 509  : 	int head=0, track=0, sector=1;
+; 510  : 	flpydsk_lba_to_chs (sectorLBA, &head, &track, &sector);
 
 	mov	ecx, DWORD PTR _sectorLBA$[esp+4]
 	mov	eax, 954437177				; 38e38e39H
@@ -1896,9 +1910,9 @@ $LN2@flpydsk_re@4:
 	sub	ecx, edx
 	lea	ebp, DWORD PTR [ecx+1]
 
-; 507  : 
-; 508  : 	// turn motor on and seek to track
-; 509  : 	flpydsk_control_motor (true);
+; 511  : 
+; 512  : 	// turn motor on and seek to track
+; 513  : 	flpydsk_control_motor (true);
 
 	cmp	bl, 3
 	ja	SHORT $LN37@flpydsk_re@4
@@ -1930,7 +1944,7 @@ $LN13@flpydsk_re@4:
 	add	esp, 12					; 0000000cH
 $LN37@flpydsk_re@4:
 
-; 510  : 	if (flpydsk_seek ((uint8_t)track, (uint8_t)head) != 0)
+; 514  : 	if (flpydsk_seek ((uint8_t)track, (uint8_t)head) != 0)
 
 	push	edi
 	push	esi
@@ -1939,7 +1953,7 @@ $LN37@flpydsk_re@4:
 	test	eax, eax
 	je	SHORT $LN1@flpydsk_re@4
 
-; 511  : 		return 0;
+; 515  : 		return 0;
 
 	pop	edi
 	pop	esi
@@ -1947,22 +1961,22 @@ $LN37@flpydsk_re@4:
 	xor	eax, eax
 	pop	ebx
 
-; 519  : }
+; 523  : }
 
 	pop	ecx
 	ret	0
 $LN1@flpydsk_re@4:
 
-; 512  : 
-; 513  : 	// read sector and turn motor off
-; 514  : 	flpydsk_read_sector_imp ((uint8_t)head, (uint8_t)track, (uint8_t)sector);
+; 516  : 
+; 517  : 	// read sector and turn motor off
+; 518  : 	flpydsk_read_sector_imp ((uint8_t)head, (uint8_t)track, (uint8_t)sector);
 
 	push	ebp
 	push	esi
 	push	edi
 	call	?flpydsk_read_sector_imp@@YAXEEE@Z	; flpydsk_read_sector_imp
 
-; 515  : 	flpydsk_control_motor (false);
+; 519  : 	flpydsk_control_motor (false);
 
 	mov	al, BYTE PTR __CurrentDrive
 	add	esp, 12					; 0000000cH
@@ -1976,9 +1990,9 @@ $LN1@flpydsk_re@4:
 	add	esp, 12					; 0000000cH
 $LN31@flpydsk_re@4:
 
-; 516  : 
-; 517  : 	// warning: this is a bit hackish
-; 518  : 	return (uint8_t*) DMA_BUFFER;
+; 520  : 
+; 521  : 	// warning: this is a bit hackish
+; 522  : 	return (uint8_t*) DMA_BUFFER;
 
 	pop	edi
 	pop	esi
@@ -1986,7 +2000,7 @@ $LN31@flpydsk_re@4:
 	mov	eax, 4096				; 00001000H
 	pop	ebx
 
-; 519  : }
+; 523  : }
 
 	pop	ecx
 	ret	0

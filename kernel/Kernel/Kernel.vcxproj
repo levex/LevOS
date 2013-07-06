@@ -94,6 +94,7 @@
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ACPI.cpp" />
     <ClCompile Include="buf_fifo.cpp" />
     <ClCompile Include="currentTest.cpp" />
     <ClCompile Include="DebugDisplay.cpp" />
@@ -127,12 +128,14 @@
     <ClCompile Include="vMemory.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ACPI.h" />
     <ClInclude Include="BiosBootBlock.h" />
     <ClInclude Include="BitMapImage.h" />
     <ClInclude Include="buf_fifo.h" />
     <ClInclude Include="currentTest.h" />
     <ClInclude Include="DebugDisplay.h" />
     <ClInclude Include="DMA.h" />
+    <ClInclude Include="error.h" />
     <ClInclude Include="Exception.h" />
     <ClInclude Include="FAT12.h" />
     <ClInclude Include="FileSystem.h" />

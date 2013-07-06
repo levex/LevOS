@@ -1,6 +1,6 @@
 #ifndef __LEV_KYBRD_H_
 #define __LEV_KYBRD_H_
-
+#define DLLIMPORT extern "C" __declspec(dllimport)
 typedef struct {
 	int mx;
 	int my;

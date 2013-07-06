@@ -434,6 +434,10 @@ void flpydsk_read_sector_imp (uint8_t head, uint8_t track, uint8_t sector) {
 	flpydsk_check_int (&st0,&cyl);
 }
 
+void flpydsk_write_sector (unsigned char* Buffer, unsigned int Length, unsigned int sector)
+{
+}
+
 // seek to given track/cylinder
 int flpydsk_seek ( uint8_t cyl, uint8_t head ) {
 

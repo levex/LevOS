@@ -25,6 +25,12 @@
     <Filter Include="stdlib">
       <UniqueIdentifier>{a140de05-a646-49b5-92f0-021157a20197}</UniqueIdentifier>
     </Filter>
+    <Filter Include="LevAPI">
+      <UniqueIdentifier>{2b9c0518-6da5-4725-aba7-5cf2275a82a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Windows\ImageViewer">
+      <UniqueIdentifier>{b9c7e206-d7de-459c-96ab-ce9cb4d3b133}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Window.h">
@@ -38,6 +44,27 @@
     </ClInclude>
     <ClInclude Include="string.h">
       <Filter>stdlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dllTest\LevAPI\lev_futils.h">
+      <Filter>LevAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dllTest\LevAPI\lev_input.h">
+      <Filter>LevAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dllTest\LevAPI\lev_misc.h">
+      <Filter>LevAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dllTest\LevAPI\lev_text.h">
+      <Filter>LevAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dllTest\LevAPI\lev_time.h">
+      <Filter>LevAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dllTest\LevAPI\lev_vga.h">
+      <Filter>LevAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageViewer.h">
+      <Filter>Windows\ImageViewer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

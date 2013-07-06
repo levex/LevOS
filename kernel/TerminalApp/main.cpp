@@ -30,6 +30,7 @@ void cmd_dobios(char* b);
 void cmd_dump(char* b);
 void cmd_pci(char* b);
 void cmd_reboot(char* b);
+void cmd_acpi(char* b);
 
 
 void createCommand(char* text, char* helptext, COMMAND_HANDLER f)
@@ -59,6 +60,7 @@ void main(int baseaddr)
 	createCommand("dump", "\nDumps a PE32 application or DLL", cmd_dump);
 	createCommand("pci", "\nTests PCI", cmd_pci);
 	createCommand("reboot", "\nReboots the PC", cmd_reboot);
+	createCommand("acpi", "\nShows ACPI info", cmd_acpi);
 
 	//moveCursorRelative(0, -1);
 	print("Welcome to LevOS 2.0\nThis is a basic CLI, use 'help' for more information.\nHave fun!\n");
@@ -230,6 +232,13 @@ void cmd_pci(char* buf)
 {
 	_asm mov eax, 0x01
 	_asm mov ebx, 0x02
+	_asm int 0x2F
+	return;
+}
+void cmd_acpi(char* buf)
+{
+	_asm mov eax, 0x01
+	_asm mov ebx, 0x03
 	_asm int 0x2F
 	return;
 }

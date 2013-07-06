@@ -1,12 +1,11 @@
 #ifndef __WINDOW_H_
 #define __WINDOW_H_
 
-typedef void (_cdecl *PAINTER)(void*);
-typedef void (_cdecl *MOVER)(void*, int, int);
+extern void OUT(char a);
 
 typedef struct {
-	PAINTER paint;
-	MOVER move;
+	void (*paint)(void* w);
+	void (*move)(void* w, int x, int y);
 	void* bigBro;
 	bool isValid;
 	int startX;

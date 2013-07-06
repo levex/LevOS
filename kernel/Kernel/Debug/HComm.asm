@@ -262,7 +262,7 @@ EXTRN	?volOpenFile@@YA?AU_FILE@@PBD@Z:PROC		; volOpenFile
 ;	COMDAT ?getFileSize@@YAHPAD@Z
 _TEXT	SEGMENT
 _f$ = -120						; size = 60
-$T2865 = -60						; size = 60
+$T3074 = -60						; size = 60
 _file$ = 8						; size = 4
 ?getFileSize@@YAHPAD@Z PROC				; getFileSize, COMDAT
 
@@ -276,7 +276,7 @@ _file$ = 8						; size = 4
 	push	esi
 	push	edi
 	push	eax
-	lea	ecx, DWORD PTR $T2865[esp+132]
+	lea	ecx, DWORD PTR $T3074[esp+132]
 	push	ecx
 	call	?volOpenFile@@YA?AU_FILE@@PBD@Z		; volOpenFile
 	mov	esi, eax
@@ -311,7 +311,7 @@ EXTRN	?volReadFile@@YAXPAU_FILE@@PAEI@Z:PROC		; volReadFile
 ;	COMDAT ?loadFileToLoc@@YA_NPADPAX@Z
 _TEXT	SEGMENT
 _f$ = -120						; size = 60
-$T2870 = -60						; size = 60
+$T3079 = -60						; size = 60
 _file$ = 8						; size = 4
 _loc$ = 12						; size = 4
 ?loadFileToLoc@@YA_NPADPAX@Z PROC			; loadFileToLoc, COMDAT
@@ -326,7 +326,7 @@ _loc$ = 12						; size = 4
 	push	esi
 	push	edi
 	push	eax
-	lea	ecx, DWORD PTR $T2870[esp+132]
+	lea	ecx, DWORD PTR $T3079[esp+132]
 	push	ecx
 	call	?volOpenFile@@YA?AU_FILE@@PBD@Z		; volOpenFile
 	mov	ecx, 15					; 0000000fH

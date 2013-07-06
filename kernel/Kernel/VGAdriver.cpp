@@ -5,6 +5,7 @@
 #include "pMemory.h"
 #include "Math.h"
 #include "DebugDisplay.h"
+#include <stdarg.h>
 
 
 #define   VGA_AC_INDEX      0x3C0
@@ -33,6 +34,9 @@ unsigned int VGA_width;
 unsigned int VGA_height;
 unsigned int VGA_bpp;
 unsigned char *VGA_address;
+
+static bool _isVGA = false;
+bool isVGA() { return _isVGA; }
 
 VIDEO_MODE mode;
 
@@ -176,6 +180,7 @@ unsigned char mode_640_480_16[] =
 	0x38, 0x39, 0x3A, 0x3B, 0x3C, 0x3D, 0x3E, 0x3F,
 	0x01, 0x00, 0x0F, 0x00, 0x00
 };
+
 
 void write_registers(unsigned char *regs){
    unsigned i;
@@ -690,6 +695,8 @@ void VGA_init(int width, int height, int bpp){
    //save videomemory
    vidmem = (char*)malloc(256*1024);
    memcpy((char*)VGA_address, vidmem, 256*1024);
+   _isVGA = true;
+   DebugReset();
 
    //clears the screen
    VGA_clear_screen();
@@ -717,6 +724,8 @@ void VGA_deinit()
 	memcpyTF((char*)VGA_address, vidmem, 256*1024);
 	write_registers(mode_80_25_text);
 	restorePalette(savedPalette);
+	_isVGA = false;
+	DebugReset();
 	//restorefont((char*)g_8x8_font);
 	//write_font(g_8x8_font, 8);
 	//memset((char*)0xB8000, 0, 64*1024);
@@ -728,18 +737,18 @@ int pow2(char k)
 	return 2 << k;
 }
 
-void VGA_put_string(int x, int y,char* str)
+void VGA_put_string(int x, int y,char* str, char col)
 {
 	char i = 0;
 	while(*str != '\0')
 	{
-		VGA_put_char(x + i*8, y, *str);
+		VGA_put_char(x + i*8, y, *str, col);
 		str++;
 		i++;
 	}
 }
 
-void VGA_put_char(int x, int y, char c)
+void VGA_put_char(int x, int y, char c, char color)
 {
 	int cx,cy;
 	int mask[8]={1,2,4,8,16,32,64,128};
@@ -748,7 +757,7 @@ void VGA_put_char(int x, int y, char c)
 	for(cy=0;cy<8;cy++){
 		for(cx=0;cx<8;cx++){
 			//glyph[cy] = reverseBits(glyph[cy]);
-			mode.putpixel(x+(8-cx),y+cy,glyph[cy]&mask[cx]?0x01:0x00);
+			mode.putpixel(x+(8-cx),y+cy,glyph[cy]&mask[cx]?color:0x00);
 		}
 	}
 }

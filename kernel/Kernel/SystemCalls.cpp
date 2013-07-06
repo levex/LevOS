@@ -10,6 +10,7 @@
 #include "hw_mouse.h"
 #include "realmodewrapper.h"
 #include "PCI.h"
+#include "ACPI.h"
 
 char* string = (char*)0;
 char c = 0;
@@ -17,6 +18,7 @@ int id = 0;
 int a=0,b=0, d=0, e=0;
 int _ebx = 0;
 char vgacol = 0;
+char f = 0;
 bool _b = 0;
 RTC_DATA* data = (RTC_DATA*)0;
 regs_t regs;
@@ -43,6 +45,10 @@ void handleSysCall()
 					break;
 				case 2:
 					PCI_test();
+					break;
+				case 3:
+					//outportW( 0xB004, 0x0 | 0x2000 );
+					ACPI_test();
 					break;
 			}
 			break;
@@ -254,7 +260,8 @@ void handleSysCall()
 						ESI = X coordinate
 						EDI = Y coordinate
 						CL = character
-						Print a character at (ESI, EDI)=CL
+						CH = color
+						Print a character at (ESI, EDI)=CL (CH)
 					EBX = 0x08
 						ESI = X0 coordinate
 						EDI = Y0 coordinate
@@ -308,15 +315,16 @@ void handleSysCall()
 						mov a, ecx
 						mov b, edx
 					}
-					VGA_put_string(a,b,filename);
+					VGA_put_string(a,b,filename, vgacol);
 					break;
 				case 0x07: // vga putchar
 					_asm {
 						mov a, esi
 						mov b, edi
 						mov c, cl
+						mov f, ch
 					}
-					VGA_put_char(a, b, c);
+					VGA_put_char(a, b, c, f);
 					break;
 				case 0x08: //vga putline
 					_asm {

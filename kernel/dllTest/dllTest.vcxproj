@@ -68,6 +68,7 @@
       <EntryPointSymbol>main</EntryPointSymbol>
       <TargetMachine>MachineX86</TargetMachine>
       <AdditionalDependencies>C:\Dev\LevOS\kernel\debug\LevAPI DLL.lib</AdditionalDependencies>
+      <MinimumRequiredVersion>4919</MinimumRequiredVersion>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

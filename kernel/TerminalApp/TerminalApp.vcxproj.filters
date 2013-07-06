@@ -24,9 +24,6 @@
     <ClInclude Include="string.h">
       <Filter>stdlib</Filter>
     </ClInclude>
-    <ClInclude Include="..\dllTest\LevAPI\lev_vga.h">
-      <Filter>LevAPI</Filter>
-    </ClInclude>
     <ClInclude Include="..\dllTest\LevAPI\lev_futils.h">
       <Filter>LevAPI</Filter>
     </ClInclude>
@@ -40,6 +37,9 @@
       <Filter>LevAPI</Filter>
     </ClInclude>
     <ClInclude Include="..\dllTest\LevAPI\lev_time.h">
+      <Filter>LevAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dllTest\LevAPI\lev_vga.h">
       <Filter>LevAPI</Filter>
     </ClInclude>
   </ItemGroup>

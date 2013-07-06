@@ -19,9 +19,9 @@ PUBLIC	?volOpenFile@@YA?AU_FILE@@PBD@Z			; volOpenFile
 ;	COMDAT ?volOpenFile@@YA?AU_FILE@@PBD@Z
 _TEXT	SEGMENT
 _file$ = -120						; size = 60
-_file$2644 = -120					; size = 60
-$T2694 = -60						; size = 60
-$T2692 = 8						; size = 4
+_file$2656 = -120					; size = 60
+$T2714 = -60						; size = 60
+$T2712 = 8						; size = 4
 _fname$ = 12						; size = 4
 ?volOpenFile@@YA?AU_FILE@@PBD@Z PROC			; volOpenFile, COMDAT
 
@@ -75,19 +75,19 @@ $LN2@volOpenFil:
 ; 32   : 			FILE file = _FileSystems[device - 'a']->Open (filename);
 
 	push	edx
-	mov	edx, DWORD PTR [eax+24]
-	lea	ecx, DWORD PTR $T2694[esp+136]
+	mov	edx, DWORD PTR [eax+28]
+	lea	ecx, DWORD PTR $T2714[esp+136]
 	push	ecx
 	call	edx
 	mov	ecx, 15					; 0000000fH
 	mov	esi, eax
-	lea	edi, DWORD PTR _file$2644[esp+140]
+	lea	edi, DWORD PTR _file$2656[esp+140]
 	rep movsd
 	add	esp, 8
 
 ; 33   : 			file.deviceID = device;
 
-	mov	DWORD PTR _file$2644[esp+188], ebx
+	mov	DWORD PTR _file$2656[esp+188], ebx
 
 ; 34   : 			return file;
 
@@ -106,7 +106,7 @@ $LN6@volOpenFil:
 
 ; 41   : 	return file;
 
-	mov	eax, DWORD PTR $T2692[esp+128]
+	mov	eax, DWORD PTR $T2712[esp+128]
 	mov	ecx, 15					; 0000000fH
 	mov	edi, eax
 	lea	esi, DWORD PTR _file$[esp+132]
@@ -156,6 +156,40 @@ $LN1@volReadFil:
 	ret	0
 ?volReadFile@@YAXPAU_FILE@@PAEI@Z ENDP			; volReadFile
 _TEXT	ENDS
+PUBLIC	?volWriteFile@@YAXPAU_FILE@@PAEI@Z		; volWriteFile
+; Function compile flags: /Ogtpy
+;	COMDAT ?volWriteFile@@YAXPAU_FILE@@PAEI@Z
+_TEXT	SEGMENT
+_file$ = 8						; size = 4
+_Buffer$ = 12						; size = 4
+_Length$ = 16						; size = 4
+?volWriteFile@@YAXPAU_FILE@@PAEI@Z PROC			; volWriteFile, COMDAT
+
+; 56   : 	if (file)
+
+	mov	ecx, DWORD PTR _file$[esp-4]
+	test	ecx, ecx
+	je	SHORT $LN1@volWriteFi
+
+; 57   : 		if (_FileSystems [file->deviceID - 'a'])
+
+	mov	eax, DWORD PTR [ecx+56]
+	mov	eax, DWORD PTR ?_FileSystems@@3PAPAU_FILE_SYSTEM@@A[eax*4-388]
+	test	eax, eax
+	je	SHORT $LN1@volWriteFi
+
+; 58   : 			_FileSystems[file->deviceID - 'a']->Write (file,Buffer,Length);
+
+	mov	eax, DWORD PTR [eax+20]
+	mov	DWORD PTR _file$[esp-4], ecx
+	jmp	eax
+$LN1@volWriteFi:
+
+; 59   : }
+
+	ret	0
+?volWriteFile@@YAXPAU_FILE@@PAEI@Z ENDP			; volWriteFile
+_TEXT	ENDS
 PUBLIC	?volCloseFile@@YAXPAU_FILE@@@Z			; volCloseFile
 ; Function compile flags: /Ogtpy
 ;	COMDAT ?volCloseFile@@YAXPAU_FILE@@@Z
@@ -163,28 +197,28 @@ _TEXT	SEGMENT
 _file$ = 8						; size = 4
 ?volCloseFile@@YAXPAU_FILE@@@Z PROC			; volCloseFile, COMDAT
 
-; 58   : 
-; 59   : 	if (file)
+; 66   : 
+; 67   : 	if (file)
 
 	mov	ecx, DWORD PTR _file$[esp-4]
 	test	ecx, ecx
 	je	SHORT $LN1@volCloseFi
 
-; 60   : 		if (_FileSystems [file->deviceID - 'a'])
+; 68   : 		if (_FileSystems [file->deviceID - 'a'])
 
 	mov	eax, DWORD PTR [ecx+56]
 	mov	eax, DWORD PTR ?_FileSystems@@3PAPAU_FILE_SYSTEM@@A[eax*4-388]
 	test	eax, eax
 	je	SHORT $LN1@volCloseFi
 
-; 61   : 			_FileSystems[file->deviceID - 'a']->Close (file);
+; 69   : 			_FileSystems[file->deviceID - 'a']->Close (file);
 
 	mov	DWORD PTR _file$[esp-4], ecx
-	mov	ecx, DWORD PTR [eax+20]
+	mov	ecx, DWORD PTR [eax+24]
 	jmp	ecx
 $LN1@volCloseFi:
 
-; 62   : }
+; 70   : }
 
 	ret	0
 ?volCloseFile@@YAXPAU_FILE@@@Z ENDP			; volCloseFile
@@ -201,33 +235,33 @@ _fsys$ = 8						; size = 4
 _deviceID$ = 12						; size = 4
 ?volRegisterFileSystem@@YAXPAU_FILE_SYSTEM@@I@Z PROC	; volRegisterFileSystem, COMDAT
 
-; 69   : 
-; 70   : 	static int i=0;
-; 71   : 
-; 72   : 	if (i < DEVICE_MAX)
+; 77   : 
+; 78   : 	static int i=0;
+; 79   : 
+; 80   : 	if (i < DEVICE_MAX)
 
 	cmp	DWORD PTR ?i@?1??volRegisterFileSystem@@YAXPAU_FILE_SYSTEM@@I@Z@4HA, 26 ; 0000001aH
 	jge	SHORT $LN1@volRegiste
 
-; 73   : 		if (fsys) {
+; 81   : 		if (fsys) {
 
 	mov	eax, DWORD PTR _fsys$[esp-4]
 	test	eax, eax
 	je	SHORT $LN1@volRegiste
 
-; 74   : 
-; 75   : 			_FileSystems[ deviceID ] = fsys;
+; 82   : 
+; 83   : 			_FileSystems[ deviceID ] = fsys;
 
 	mov	ecx, DWORD PTR _deviceID$[esp-4]
 
-; 76   : 			i++;
+; 84   : 			i++;
 
 	inc	DWORD PTR ?i@?1??volRegisterFileSystem@@YAXPAU_FILE_SYSTEM@@I@Z@4HA
 	mov	DWORD PTR ?_FileSystems@@3PAPAU_FILE_SYSTEM@@A[ecx*4], eax
 $LN1@volRegiste:
 
-; 77   : 		}
-; 78   : }
+; 85   : 		}
+; 86   : }
 
 	ret	0
 ?volRegisterFileSystem@@YAXPAU_FILE_SYSTEM@@I@Z ENDP	; volRegisterFileSystem
@@ -239,32 +273,32 @@ _TEXT	SEGMENT
 _fsys$ = 8						; size = 4
 ?volUnregisterFileSystem@@YAXPAU_FILE_SYSTEM@@@Z PROC	; volUnregisterFileSystem, COMDAT
 
-; 84   : 
-; 85   : 	for (int i=0;i < DEVICE_MAX; i++)
+; 92   : 
+; 93   : 	for (int i=0;i < DEVICE_MAX; i++)
 
 	mov	ecx, DWORD PTR _fsys$[esp-4]
 	mov	eax, OFFSET ?_FileSystems@@3PAPAU_FILE_SYSTEM@@A ; _FileSystems
 	npad	7
 $LL4@volUnregis:
 
-; 86   : 		if (_FileSystems[i]==fsys)
+; 94   : 		if (_FileSystems[i]==fsys)
 
 	cmp	DWORD PTR [eax], ecx
 	jne	SHORT $LN3@volUnregis
 
-; 87   : 			_FileSystems[i]=0;
+; 95   : 			_FileSystems[i]=0;
 
 	mov	DWORD PTR [eax], 0
 $LN3@volUnregis:
 
-; 84   : 
-; 85   : 	for (int i=0;i < DEVICE_MAX; i++)
+; 92   : 
+; 93   : 	for (int i=0;i < DEVICE_MAX; i++)
 
 	add	eax, 4
 	cmp	eax, OFFSET ?_FileSystems@@3PAPAU_FILE_SYSTEM@@A+104
 	jl	SHORT $LL4@volUnregis
 
-; 88   : }
+; 96   : }
 
 	ret	0
 ?volUnregisterFileSystem@@YAXPAU_FILE_SYSTEM@@@Z ENDP	; volUnregisterFileSystem
@@ -276,19 +310,19 @@ _TEXT	SEGMENT
 _deviceID$ = 8						; size = 4
 ?volUnregisterFileSystemByID@@YAXI@Z PROC		; volUnregisterFileSystemByID, COMDAT
 
-; 94   : 
-; 95   : 	if (deviceID < DEVICE_MAX)
+; 102  : 
+; 103  : 	if (deviceID < DEVICE_MAX)
 
 	mov	eax, DWORD PTR _deviceID$[esp-4]
 	cmp	eax, 26					; 0000001aH
 	jae	SHORT $LN1@volUnregis@2
 
-; 96   : 		_FileSystems [deviceID] = 0;
+; 104  : 		_FileSystems [deviceID] = 0;
 
 	mov	DWORD PTR ?_FileSystems@@3PAPAU_FILE_SYSTEM@@A[eax*4], 0
 $LN1@volUnregis@2:
 
-; 97   : }
+; 105  : }
 
 	ret	0
 ?volUnregisterFileSystemByID@@YAXI@Z ENDP		; volUnregisterFileSystemByID

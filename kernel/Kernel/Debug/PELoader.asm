@@ -30,8 +30,8 @@ CONST	ENDS
 _TEXT	SEGMENT
 _doReloc$ = -21						; size = 1
 tv385 = -20						; size = 4
-_i$2993 = -20						; size = 4
-_j$3045 = -16						; size = 4
+_i$2991 = -20						; size = 4
+_j$3043 = -16						; size = 4
 _PE_HEADER_LOCATION$ = -16				; size = 4
 _ddir$ = -12						; size = 4
 _relocDelta$ = -12					; size = 4
@@ -39,17 +39,17 @@ tv394 = -8						; size = 4
 tv403 = -4						; size = 4
 _filename$ = 8						; size = 4
 tv381 = 12						; size = 4
-_numberOfRelocations$3023 = 12				; size = 4
+_numberOfRelocations$3021 = 12				; size = 4
 _base$ = 12						; size = 4
 ?PE_loadDLL@@YAPAUPE_EXPORT_LIST@@PADH@Z PROC		; PE_loadDLL, COMDAT
 
-; 141  : {
+; 146  : {
 
 	sub	esp, 24					; 00000018H
 	push	ebx
 
-; 142  : 	int loadBase = base;
-; 143  : 	base = base + 4*1024*1024 - getFileSize(filename) - 0x1000;
+; 147  : 	int loadBase = base;
+; 148  : 	base = base + 4*1024*1024 - getFileSize(filename) - 0x1000;
 
 	mov	ebx, DWORD PTR _filename$[esp+24]
 	push	esi
@@ -62,7 +62,7 @@ _base$ = 12						; size = 4
 	sub	ecx, eax
 	add	edi, ecx
 
-; 144  : 	if(!loadFileToLoc(filename, (void*)base)) {return 0;}
+; 149  : 	if(!loadFileToLoc(filename, (void*)base)) {return 0;}
 
 	push	edi
 	push	ebx
@@ -76,48 +76,48 @@ _base$ = 12						; size = 4
 	xor	eax, eax
 	pop	ebx
 
-; 260  : }
+; 265  : }
 
 	add	esp, 24					; 00000018H
 	ret	0
 $LN26@PE_loadDLL:
 	push	ebp
 
-; 145  : 	// second step, extract PE headers from it.
-; 146  : 	int PE_HEADER_LOCATION = *(int*)(base + 0x3C);
-; 147  : 	PE_HEADER_LOCATION += base;
+; 150  : 	// second step, extract PE headers from it.
+; 151  : 	int PE_HEADER_LOCATION = *(int*)(base + 0x3C);
+; 152  : 	PE_HEADER_LOCATION += base;
 
 	mov	ebp, DWORD PTR [edi+60]
 	add	ebp, edi
 
-; 148  : 	PeHeader* peheader = (PeHeader*)PE_HEADER_LOCATION;
-; 149  : 	PeOptionalHeader* optionalheader = (PeOptionalHeader*)(PE_HEADER_LOCATION+24);
-; 150  : 	//DebugClrScr(0x17);
-; 151  : 	//DebugPrintf("\nDumping PeOptionalHeader...");
-; 152  : 	//DebugPrintf("\nMagic=0x%x\nSizeOfCode=0x%x\nSizeOfData=0x%x\nAddressOfEntryPoint=0x%x\nSizeOfImage=0x%x\nNumberOfSections=0x%x", optionalheader->mMagic, optionalheader->mSizeOfCode, optionalheader->mSizeOfInitializedData, optionalheader->mAddressOfEntryPoint, optionalheader->mSizeOfImage, peheader->mNumberOfSections);
-; 153  : 	// third step, map the sections
-; 154  : 	//int loadBase = base+0x1000+getFileSize(filename) - 4*1024*1024;
-; 155  : 	bool doReloc = false;
-; 156  : 	int relocDelta = 0;
+; 153  : 	PeHeader* peheader = (PeHeader*)PE_HEADER_LOCATION;
+; 154  : 	PeOptionalHeader* optionalheader = (PeOptionalHeader*)(PE_HEADER_LOCATION+24);
+; 155  : 	//DebugClrScr(0x17);
+; 156  : 	//DebugPrintf("\nDumping PeOptionalHeader...");
+; 157  : 	//DebugPrintf("\nMagic=0x%x\nSizeOfCode=0x%x\nSizeOfData=0x%x\nAddressOfEntryPoint=0x%x\nSizeOfImage=0x%x\nNumberOfSections=0x%x", optionalheader->mMagic, optionalheader->mSizeOfCode, optionalheader->mSizeOfInitializedData, optionalheader->mAddressOfEntryPoint, optionalheader->mSizeOfImage, peheader->mNumberOfSections);
+; 158  : 	// third step, map the sections
+; 159  : 	//int loadBase = base+0x1000+getFileSize(filename) - 4*1024*1024;
+; 160  : 	bool doReloc = false;
+; 161  : 	int relocDelta = 0;
 
 	xor	edi, edi
 	mov	DWORD PTR _PE_HEADER_LOCATION$[esp+40], ebp
 	mov	BYTE PTR _doReloc$[esp+40], 0
 	mov	DWORD PTR _relocDelta$[esp+40], edi
 
-; 157  : 	if(optionalheader->mImageBase != loadBase)
+; 162  : 	if(optionalheader->mImageBase != loadBase)
 
 	cmp	DWORD PTR [ebp+52], esi
 	je	SHORT $LN25@PE_loadDLL
 
-; 158  : 	{
-; 159  : 		relocDelta = loadBase - optionalheader->mImageBase;
+; 163  : 	{
+; 164  : 		relocDelta = loadBase - optionalheader->mImageBase;
 
 	mov	ecx, DWORD PTR [ebp+52]
 	mov	eax, esi
 	sub	eax, ecx
 
-; 160  : 		DebugPrintf("\nDLL needs relocation! ImageBase=0x%x loadBase=0x%x relocDelta=0x%x", optionalheader->mImageBase, loadBase, relocDelta);
+; 165  : 		DebugPrintf("\nDLL needs relocation! ImageBase=0x%x loadBase=0x%x relocDelta=0x%x", optionalheader->mImageBase, loadBase, relocDelta);
 
 	push	eax
 	push	esi
@@ -127,62 +127,62 @@ $LN26@PE_loadDLL:
 	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
 	add	esp, 16					; 00000010H
 
-; 161  : 		doReloc = true;
+; 166  : 		doReloc = true;
 
 	mov	BYTE PTR _doReloc$[esp+40], 1
 $LN25@PE_loadDLL:
 
-; 162  : 	}
-; 163  : #ifdef DEBUG
-; 164  : 	DebugPrintf("loadBase=0x%x,opt->imagebase=0x%x", base, optionalheader->mImageBase);
-; 165  : #endif
-; 166  : 	//if((unsigned int)loadBase != (unsigned int)optionalheader->mImageBase)
-; 167  : 	//vm_map_virt_to_phys(optionalheader->mImageBase / 0x400000, loadBase);
-; 168  : 	char* firstSectionHeader = (char*)(PE_HEADER_LOCATION+24+sizeof(PeOptionalHeader)+(optionalheader->mNumberOfRvaAndSizes * 8));
+; 167  : 	}
+; 168  : #ifdef DEBUG
+; 169  : 	DebugPrintf("loadBase=0x%x,opt->imagebase=0x%x", base, optionalheader->mImageBase);
+; 170  : #endif
+; 171  : 	//if((unsigned int)loadBase != (unsigned int)optionalheader->mImageBase)
+; 172  : 	//vm_map_virt_to_phys(optionalheader->mImageBase / 0x400000, loadBase);
+; 173  : 	char* firstSectionHeader = (char*)(PE_HEADER_LOCATION+24+sizeof(PeOptionalHeader)+(optionalheader->mNumberOfRvaAndSizes * 8));
 
 	mov	edx, DWORD PTR [ebp+116]
 
-; 169  : 	for(int i = 0; i < peheader->mNumberOfSections; i++)
+; 174  : 	for(int i = 0; i < peheader->mNumberOfSections; i++)
 
 	xor	eax, eax
 	lea	ebx, DWORD PTR [ebp+edx*8+120]
-	mov	DWORD PTR _i$2993[esp+40], edi
+	mov	DWORD PTR _i$2991[esp+40], edi
 	cmp	ax, WORD PTR [ebp+6]
 	jge	SHORT $LN22@PE_loadDLL
 
-; 162  : 	}
-; 163  : #ifdef DEBUG
-; 164  : 	DebugPrintf("loadBase=0x%x,opt->imagebase=0x%x", base, optionalheader->mImageBase);
-; 165  : #endif
-; 166  : 	//if((unsigned int)loadBase != (unsigned int)optionalheader->mImageBase)
-; 167  : 	//vm_map_virt_to_phys(optionalheader->mImageBase / 0x400000, loadBase);
-; 168  : 	char* firstSectionHeader = (char*)(PE_HEADER_LOCATION+24+sizeof(PeOptionalHeader)+(optionalheader->mNumberOfRvaAndSizes * 8));
+; 167  : 	}
+; 168  : #ifdef DEBUG
+; 169  : 	DebugPrintf("loadBase=0x%x,opt->imagebase=0x%x", base, optionalheader->mImageBase);
+; 170  : #endif
+; 171  : 	//if((unsigned int)loadBase != (unsigned int)optionalheader->mImageBase)
+; 172  : 	//vm_map_virt_to_phys(optionalheader->mImageBase / 0x400000, loadBase);
+; 173  : 	char* firstSectionHeader = (char*)(PE_HEADER_LOCATION+24+sizeof(PeOptionalHeader)+(optionalheader->mNumberOfRvaAndSizes * 8));
 
 	lea	ebp, DWORD PTR [ebx+20]
 	lea	edi, DWORD PTR [ebx+12]
 	add	ebx, 16					; 00000010H
 $LL24@PE_loadDLL:
 
-; 170  : 	{
-; 171  : 		PeSectionHeader* sect = (PeSectionHeader*)firstSectionHeader;
-; 172  : 		if(sect->sSizeOfRawData == 0) {
+; 175  : 	{
+; 176  : 		PeSectionHeader* sect = (PeSectionHeader*)firstSectionHeader;
+; 177  : 		if(sect->sSizeOfRawData == 0) {
 
 	mov	eax, DWORD PTR [ebx]
 	test	eax, eax
 
-; 173  : #ifdef DEBUG
-; 174  : 			DebugPrintf("\nSection %s is null-length! (0x%x) Skipped.", sect->sName, sect->sSizeOfRawData);
-; 175  : #endif
-; 176  : 			firstSectionHeader += sizeof(PeSectionHeader);
-; 177  : 			continue;
+; 178  : #ifdef DEBUG
+; 179  : 			DebugPrintf("\nSection %s is null-length! (0x%x) Skipped.", sect->sName, sect->sSizeOfRawData);
+; 180  : #endif
+; 181  : 			firstSectionHeader += sizeof(PeSectionHeader);
+; 182  : 			continue;
 
 	je	SHORT $LN45@PE_loadDLL
 
-; 178  : 		}
-; 179  : //#ifdef DEBUG
-; 180  : 		//DebugPrintf("\nCopying %s section to 0x%X from 0x%x, size: 0x%X ", sect->sName, optionalheader->mImageBase + sect->sVirtAddr,base + sect->sPointerToRawData, sect->sSizeOfRawData);
-; 181  : //#endif
-; 182  : 		memcpy((char*)(base + sect->sPointerToRawData), (char*)(loadBase + sect->sVirtAddr), sect->sSizeOfRawData);
+; 183  : 		}
+; 184  : //#ifdef DEBUG
+; 185  : 		//DebugPrintf("\nCopying %s section to 0x%X from 0x%x, size: 0x%X ", sect->sName, optionalheader->mImageBase + sect->sVirtAddr,base + sect->sPointerToRawData, sect->sSizeOfRawData);
+; 186  : //#endif
+; 187  : 		memcpy((char*)(base + sect->sPointerToRawData), (char*)(loadBase + sect->sVirtAddr), sect->sSizeOfRawData);
 
 	mov	ecx, DWORD PTR [edi]
 	mov	edx, DWORD PTR [ebp]
@@ -195,186 +195,186 @@ $LL24@PE_loadDLL:
 	add	esp, 12					; 0000000cH
 $LN45@PE_loadDLL:
 
-; 169  : 	for(int i = 0; i < peheader->mNumberOfSections; i++)
+; 174  : 	for(int i = 0; i < peheader->mNumberOfSections; i++)
 
 	mov	ecx, DWORD PTR _PE_HEADER_LOCATION$[esp+40]
-	mov	eax, DWORD PTR _i$2993[esp+40]
+	mov	eax, DWORD PTR _i$2991[esp+40]
 	movsx	edx, WORD PTR [ecx+6]
 	inc	eax
 
-; 183  : 		firstSectionHeader += sizeof(PeSectionHeader);
+; 188  : 		firstSectionHeader += sizeof(PeSectionHeader);
 
 	add	ebx, 40					; 00000028H
 	add	edi, 40					; 00000028H
 	add	ebp, 40					; 00000028H
-	mov	DWORD PTR _i$2993[esp+40], eax
+	mov	DWORD PTR _i$2991[esp+40], eax
 	cmp	eax, edx
 	jl	SHORT $LL24@PE_loadDLL
 
-; 169  : 	for(int i = 0; i < peheader->mNumberOfSections; i++)
+; 174  : 	for(int i = 0; i < peheader->mNumberOfSections; i++)
 
 	mov	ebp, ecx
 $LN22@PE_loadDLL:
 
-; 184  : 	}
-; 185  : 	unsigned int currentNameAddr=0;
-; 186  : 	char* currentName = 0;
-; 187  : 	unsigned int currentAddress = 0;
-; 188  : 	unsigned short currentOrdinal = 0;
-; 189  : 	PeExportDirectory* exp = 0;
-; 190  : 	PeImportDirectory* imp = 0;
-; 191  : 	PeRelocationTableBase* rtb = 0;
-; 192  : 	/* check for relocation */
-; 193  : 	if(doReloc)
+; 189  : 	}
+; 190  : 	unsigned int currentNameAddr=0;
+; 191  : 	char* currentName = 0;
+; 192  : 	unsigned int currentAddress = 0;
+; 193  : 	unsigned short currentOrdinal = 0;
+; 194  : 	PeExportDirectory* exp = 0;
+; 195  : 	PeImportDirectory* imp = 0;
+; 196  : 	PeRelocationTableBase* rtb = 0;
+; 197  : 	/* check for relocation */
+; 198  : 	if(doReloc)
 
 	cmp	BYTE PTR _doReloc$[esp+40], 0
 	je	SHORT $LN44@PE_loadDLL
 
-; 194  : 	{
-; 195  : 		PeDataDirectory* ddir = (PeDataDirectory*)((unsigned int)optionalheader + sizeof(PeOptionalHeader));
+; 199  : 	{
+; 200  : 		PeDataDirectory* ddir = (PeDataDirectory*)((unsigned int)optionalheader + sizeof(PeOptionalHeader));
 
 	lea	eax, DWORD PTR [ebp+120]
 
-; 196  : 		for(int j = 0; j < 16; j++)
+; 201  : 		for(int j = 0; j < 16; j++)
 
 	xor	ecx, ecx
 $LL19@PE_loadDLL:
 
-; 197  : 		{
-; 198  : 			if(ddir->dSize != 0 && ddir->dVirtualAddress != 0) {
+; 202  : 		{
+; 203  : 			if(ddir->dSize != 0 && ddir->dVirtualAddress != 0) {
 
 	cmp	DWORD PTR [eax+4], 0
 	je	SHORT $LN15@PE_loadDLL
 	cmp	DWORD PTR [eax], 0
 	je	SHORT $LN15@PE_loadDLL
 
-; 199  : 					if(j == 5) {
+; 204  : 					if(j == 5) {
 
 	cmp	ecx, 5
 	je	SHORT $LN35@PE_loadDLL
 $LN15@PE_loadDLL:
 
-; 196  : 		for(int j = 0; j < 16; j++)
+; 201  : 		for(int j = 0; j < 16; j++)
 
 	inc	ecx
 
-; 222  : 						} 
-; 223  : 						break;
-; 224  : 					}
-; 225  : 			}
-; 226  : 			ddir++;
+; 227  : 						} 
+; 228  : 						break;
+; 229  : 					}
+; 230  : 			}
+; 231  : 			ddir++;
 
 	add	eax, 8
 	cmp	ecx, 16					; 00000010H
 	jl	SHORT $LL19@PE_loadDLL
 
-; 199  : 					if(j == 5) {
+; 204  : 					if(j == 5) {
 
 	jmp	SHORT $LN44@PE_loadDLL
 $LN35@PE_loadDLL:
 
-; 200  : 						//break;
-; 201  : 						// relocation table
-; 202  : 						rtb = (PeRelocationTableBase*)(loadBase + ddir->dVirtualAddress);
+; 205  : 						//break;
+; 206  : 						// relocation table
+; 207  : 						rtb = (PeRelocationTableBase*)(loadBase + ddir->dVirtualAddress);
 
 	mov	edi, DWORD PTR [eax]
 
-; 203  : 						int numberOfRelocations = (rtb->rSize - sizeof(PeRelocationTableBase))/2; // number of relocations can be calculated with that formula
+; 208  : 						int numberOfRelocations = (rtb->rSize - sizeof(PeRelocationTableBase))/2; // number of relocations can be calculated with that formula
 
 	mov	eax, DWORD PTR [edi+esi+4]
 	add	edi, esi
 	lea	ebx, DWORD PTR [eax-8]
 	shr	ebx, 1
-	mov	DWORD PTR _numberOfRelocations$3023[esp+36], ebx
+	mov	DWORD PTR _numberOfRelocations$3021[esp+36], ebx
 
-; 204  : 						short* pr = (short*)(loadBase + ddir->dVirtualAddress + sizeof(PeRelocationTableBase)); // pr is a 2byte pointer
+; 209  : 						short* pr = (short*)(loadBase + ddir->dVirtualAddress + sizeof(PeRelocationTableBase)); // pr is a 2byte pointer
 
 	lea	edx, DWORD PTR [edi+8]
 
-; 205  : 						while(rtb->rSize != 0) { // loop until the next relocpage entry is 0
+; 210  : 						while(rtb->rSize != 0) { // loop until the next relocpage entry is 0
 
 	test	eax, eax
 	je	SHORT $LN44@PE_loadDLL
 	npad	5
 $LL14@PE_loadDLL:
 
-; 206  : 							//DebugPrintf("\n-->Page 0x%x found %d relocations, first at: 0x%x", rtb->rVirtualAddress ,numberOfRelocations, pr);
-; 207  : 							for(int i = 0; i<numberOfRelocations; i++) // loop thru the relocations
+; 211  : 							//DebugPrintf("\n-->Page 0x%x found %d relocations, first at: 0x%x", rtb->rVirtualAddress ,numberOfRelocations, pr);
+; 212  : 							for(int i = 0; i<numberOfRelocations; i++) // loop thru the relocations
 
 	test	ebx, ebx
 	jle	SHORT $LN10@PE_loadDLL
 $LL12@PE_loadDLL:
 
-; 208  : 							{
-; 209  : 								//DebugPrintf("\n--->Reloc: Offset: 0x%x Type: 0x%x",(*pr & 0x0FFF) + rtb->rVirtualAddress, (*pr & 0xF000) >> 12); // extract offset and type
-; 210  : 								int* offset = (int*)(rtb->rVirtualAddress + loadBase + (*pr & 0x0FFF));
+; 213  : 							{
+; 214  : 								//DebugPrintf("\n--->Reloc: Offset: 0x%x Type: 0x%x",(*pr & 0x0FFF) + rtb->rVirtualAddress, (*pr & 0xF000) >> 12); // extract offset and type
+; 215  : 								int* offset = (int*)(rtb->rVirtualAddress + loadBase + (*pr & 0x0FFF));
 
 	movzx	ecx, WORD PTR [edx]
 	mov	eax, ecx
 	and	eax, 4095				; 00000fffH
 	add	eax, DWORD PTR [edi]
 
-; 211  : 								short type = (*pr & 0xF000) >> 12;
+; 216  : 								short type = (*pr & 0xF000) >> 12;
 
 	sar	ecx, 12					; 0000000cH
 	test	cl, 15					; 0000000fH
 
-; 212  : 								//DebugPrintf("\nReloc: Offset: 0x%x Type: 0x%x ", offset, type, *offset);
-; 213  : 								if(type != 0) { // if type equals 0 then it is of type OBSOLETE and that means this Reloc is only here for rounding
+; 217  : 								//DebugPrintf("\nReloc: Offset: 0x%x Type: 0x%x ", offset, type, *offset);
+; 218  : 								if(type != 0) { // if type equals 0 then it is of type OBSOLETE and that means this Reloc is only here for rounding
 
 	je	SHORT $LN9@PE_loadDLL
 
-; 214  : 									int data = *offset;
-; 215  : 									//DebugPrintf("\n->Data before: 0x%x", data);
-; 216  : 									*offset = data + relocDelta;
+; 219  : 									int data = *offset;
+; 220  : 									//DebugPrintf("\n->Data before: 0x%x", data);
+; 221  : 									*offset = data + relocDelta;
 
 	mov	ecx, DWORD PTR _relocDelta$[esp+40]
 	add	DWORD PTR [eax+esi], ecx
 $LN9@PE_loadDLL:
 
-; 217  : 									//DebugPrintf("\n->Data now: 0x%x", *offset);
-; 218  : 								}
-; 219  : 								pr++; // advance to next relocation
+; 222  : 									//DebugPrintf("\n->Data now: 0x%x", *offset);
+; 223  : 								}
+; 224  : 								pr++; // advance to next relocation
 
 	add	edx, 2
 	dec	ebx
 	jne	SHORT $LL12@PE_loadDLL
 
-; 206  : 							//DebugPrintf("\n-->Page 0x%x found %d relocations, first at: 0x%x", rtb->rVirtualAddress ,numberOfRelocations, pr);
-; 207  : 							for(int i = 0; i<numberOfRelocations; i++) // loop thru the relocations
+; 211  : 							//DebugPrintf("\n-->Page 0x%x found %d relocations, first at: 0x%x", rtb->rVirtualAddress ,numberOfRelocations, pr);
+; 212  : 							for(int i = 0; i<numberOfRelocations; i++) // loop thru the relocations
 
-	mov	ebx, DWORD PTR _numberOfRelocations$3023[esp+36]
+	mov	ebx, DWORD PTR _numberOfRelocations$3021[esp+36]
 $LN10@PE_loadDLL:
 
-; 205  : 						while(rtb->rSize != 0) { // loop until the next relocpage entry is 0
+; 210  : 						while(rtb->rSize != 0) { // loop until the next relocpage entry is 0
 
 	cmp	DWORD PTR [edx+8], 0
 
-; 220  : 							}
-; 221  : 							rtb = (PeRelocationTableBase*)(pr + 2); // advance to next pagereloc
+; 225  : 							}
+; 226  : 							rtb = (PeRelocationTableBase*)(pr + 2); // advance to next pagereloc
 
 	lea	edi, DWORD PTR [edx+4]
 	jne	SHORT $LL14@PE_loadDLL
 $LN44@PE_loadDLL:
 
-; 227  : 		}
-; 228  : 	}
-; 229  : 
-; 230  : 	/* now, lets check the export table first! */
-; 231  : 	PeDataDirectory* ddir = (PeDataDirectory*)((unsigned int)optionalheader + sizeof(PeOptionalHeader));
+; 232  : 		}
+; 233  : 	}
+; 234  : 
+; 235  : 	/* now, lets check the export table first! */
+; 236  : 	PeDataDirectory* ddir = (PeDataDirectory*)((unsigned int)optionalheader + sizeof(PeOptionalHeader));
 
 	lea	ebx, DWORD PTR [ebp+120]
 
-; 232  : 	for(int j = 0; j < 16; j++)
+; 237  : 	for(int j = 0; j < 16; j++)
 
 	xor	edi, edi
 	mov	DWORD PTR _ddir$[esp+40], ebx
-	mov	DWORD PTR _j$3045[esp+40], edi
+	mov	DWORD PTR _j$3043[esp+40], edi
 	npad	1
 $LL8@PE_loadDLL:
 
-; 233  : 	{
-; 234  : 		if(ddir->dSize != 0 && ddir->dVirtualAddress != 0) {
+; 238  : 	{
+; 239  : 		if(ddir->dSize != 0 && ddir->dVirtualAddress != 0) {
 
 	cmp	DWORD PTR [ebx+4], 0
 	je	$LN43@PE_loadDLL
@@ -382,17 +382,17 @@ $LL8@PE_loadDLL:
 	test	eax, eax
 	je	$LN43@PE_loadDLL
 
-; 235  : 			//DebugPrintf("\nFound datadirectory: id=0x%x, VA=0x%x, Size=0x%x", j, ddir->dVirtualAddress, ddir->dSize);
-; 236  : 				if(j == 0) {
+; 240  : 			//DebugPrintf("\nFound datadirectory: id=0x%x, VA=0x%x, Size=0x%x", j, ddir->dVirtualAddress, ddir->dSize);
+; 241  : 				if(j == 0) {
 
 	test	edi, edi
 	jne	$LN43@PE_loadDLL
 
-; 237  : 					// export table
-; 238  : 					exp = (PeExportDirectory*)(loadBase + ddir->dVirtualAddress);
-; 239  : 					//DebugPrintf("\n->This is an export directory, containing %d function(s)! Located at 0x%x",exp->eNumberOfFunctions ,exp);
-; 240  : 					//DebugPrintf("\nnameoffset=0x%x",optionalheader->mImageBase + exp->eAddressOfNames);
-; 241  : 					for(int k= 0; k < exp->eNumberOfFunctions; k++)
+; 242  : 					// export table
+; 243  : 					exp = (PeExportDirectory*)(loadBase + ddir->dVirtualAddress);
+; 244  : 					//DebugPrintf("\n->This is an export directory, containing %d function(s)! Located at 0x%x",exp->eNumberOfFunctions ,exp);
+; 245  : 					//DebugPrintf("\nnameoffset=0x%x",optionalheader->mImageBase + exp->eAddressOfNames);
+; 246  : 					for(int k= 0; k < exp->eNumberOfFunctions; k++)
 
 	lea	edx, DWORD PTR [eax+esi+20]
 	xor	ecx, ecx
@@ -409,18 +409,18 @@ $LL8@PE_loadDLL:
 	npad	9
 $LL42@PE_loadDLL:
 
-; 242  : 					{
-; 243  : 						currentNameAddr = *(unsigned int*)(loadBase + exp->eAddressOfNames + k*4);
-; 244  : 						//DebugPrintf("\ncurrentNameAddr=0x%x", currentNameAddr);
-; 245  : 						currentName = (char*)(currentNameAddr + loadBase);
-; 246  : 						currentOrdinal = *(short*)(loadBase + exp->eAddressOfOrdinals + k*2);
+; 247  : 					{
+; 248  : 						currentNameAddr = *(unsigned int*)(loadBase + exp->eAddressOfNames + k*4);
+; 249  : 						//DebugPrintf("\ncurrentNameAddr=0x%x", currentNameAddr);
+; 250  : 						currentName = (char*)(currentNameAddr + loadBase);
+; 251  : 						currentOrdinal = *(short*)(loadBase + exp->eAddressOfOrdinals + k*2);
 
 	mov	edi, DWORD PTR tv394[esp+40]
 	movsx	edi, WORD PTR [edi]
 	mov	edx, DWORD PTR tv385[esp+40]
 	mov	edx, DWORD PTR [edx]
 
-; 247  : 						currentAddress = *(int*)(loadBase + exp->eAddressOfFunctions + currentOrdinal*4);
+; 252  : 						currentAddress = *(int*)(loadBase + exp->eAddressOfFunctions + currentOrdinal*4);
 
 	mov	ebp, DWORD PTR tv403[esp+40]
 	mov	ebp, DWORD PTR [ebp]
@@ -432,24 +432,24 @@ $LL42@PE_loadDLL:
 	lea	ebx, DWORD PTR [ebp+ebx*4]
 	mov	ebx, DWORD PTR [ebx+esi]
 
-; 248  : 						pel[k].numberOfExports = exp->eNumberOfFunctions;
+; 253  : 						pel[k].numberOfExports = exp->eNumberOfFunctions;
 
 	mov	ebp, DWORD PTR tv381[esp+36]
 	mov	bp, WORD PTR [ebp]
 	add	edx, esi
 
-; 249  : 						pel[k].address = currentAddress + loadBase;
+; 254  : 						pel[k].address = currentAddress + loadBase;
 
 	add	ebx, esi
 
-; 250  : 						pel[k].function = currentName;
+; 255  : 						pel[k].function = currentName;
 
 	mov	DWORD PTR [eax-4], edx
 	mov	edx, DWORD PTR tv381[esp+36]
 	mov	WORD PTR [eax-6], bp
 	mov	DWORD PTR [eax], ebx
 
-; 251  : 						pel[k].ordinal = currentOrdinal;
+; 256  : 						pel[k].ordinal = currentOrdinal;
 
 	mov	WORD PTR [eax+4], di
 	inc	ecx
@@ -457,32 +457,32 @@ $LL42@PE_loadDLL:
 	cmp	ecx, DWORD PTR [edx]
 	jl	SHORT $LL42@PE_loadDLL
 
-; 237  : 					// export table
-; 238  : 					exp = (PeExportDirectory*)(loadBase + ddir->dVirtualAddress);
-; 239  : 					//DebugPrintf("\n->This is an export directory, containing %d function(s)! Located at 0x%x",exp->eNumberOfFunctions ,exp);
-; 240  : 					//DebugPrintf("\nnameoffset=0x%x",optionalheader->mImageBase + exp->eAddressOfNames);
-; 241  : 					for(int k= 0; k < exp->eNumberOfFunctions; k++)
+; 242  : 					// export table
+; 243  : 					exp = (PeExportDirectory*)(loadBase + ddir->dVirtualAddress);
+; 244  : 					//DebugPrintf("\n->This is an export directory, containing %d function(s)! Located at 0x%x",exp->eNumberOfFunctions ,exp);
+; 245  : 					//DebugPrintf("\nnameoffset=0x%x",optionalheader->mImageBase + exp->eAddressOfNames);
+; 246  : 					for(int k= 0; k < exp->eNumberOfFunctions; k++)
 
-	mov	edi, DWORD PTR _j$3045[esp+40]
+	mov	edi, DWORD PTR _j$3043[esp+40]
 	mov	ebx, DWORD PTR _ddir$[esp+40]
 $LN43@PE_loadDLL:
 
-; 252  : 						//DebugPrintf("\n--->%s() at 0x%x, ordinal 0x%x", pel[k].function, pel[k].address, currentOrdinal);
-; 253  : 						//currentName += strlen(currentName) + 1;
-; 254  : 					}
-; 255  : 				}
-; 256  : 		}
-; 257  : 		ddir++;
+; 257  : 						//DebugPrintf("\n--->%s() at 0x%x, ordinal 0x%x", pel[k].function, pel[k].address, currentOrdinal);
+; 258  : 						//currentName += strlen(currentName) + 1;
+; 259  : 					}
+; 260  : 				}
+; 261  : 		}
+; 262  : 		ddir++;
 
 	inc	edi
 	add	ebx, 8
 	mov	DWORD PTR _ddir$[esp+40], ebx
-	mov	DWORD PTR _j$3045[esp+40], edi
+	mov	DWORD PTR _j$3043[esp+40], edi
 	cmp	edi, 16					; 00000010H
 	jl	$LL8@PE_loadDLL
 
-; 258  : 	}
-; 259  : 	return pel;
+; 263  : 	}
+; 264  : 	return pel;
 
 	pop	ebp
 	pop	edi
@@ -490,7 +490,7 @@ $LN43@PE_loadDLL:
 	mov	eax, OFFSET _pel
 	pop	ebx
 
-; 260  : }
+; 265  : }
 
 	add	esp, 24					; 00000018H
 	ret	0
@@ -503,16 +503,16 @@ _TEXT	SEGMENT
 _base$ = 8						; size = 4
 ?PE_verify@@YA_NH@Z PROC				; PE_verify, COMDAT
 
-; 390  : 	//DebugPrintf("Magic=0x%X", *(short*)(base));
-; 391  : 	if(*(short*)(base) == 0x5A4D) return true;
+; 395  : 	//DebugPrintf("Magic=0x%X", *(short*)(base));
+; 396  : 	if(*(short*)(base) == 0x5A4D) return true;
 
 	mov	ecx, DWORD PTR _base$[esp-4]
 	mov	eax, 23117				; 00005a4dH
 	cmp	WORD PTR [ecx], ax
 	sete	al
 
-; 392  : 	return false;
-; 393  : }
+; 397  : 	return false;
+; 398  : }
 
 	ret	0
 ?PE_verify@@YA_NH@Z ENDP				; PE_verify
@@ -524,52 +524,52 @@ _TEXT	SEGMENT
 _begin$ = 8						; size = 4
 ?PE_checkImport@@YA_NPAUPeDataDirectory@@@Z PROC	; PE_checkImport, COMDAT
 
-; 397  : 	for(int j = 0; j < 16; j++)
+; 402  : 	for(int j = 0; j < 16; j++)
 
 	mov	ecx, DWORD PTR _begin$[esp-4]
 	xor	eax, eax
 $LL5@PE_checkIm:
 
-; 398  : 	{
-; 399  : 		if(begin->dSize != 0 && begin->dVirtualAddress != 0) {
+; 403  : 	{
+; 404  : 		if(begin->dSize != 0 && begin->dVirtualAddress != 0) {
 
 	cmp	DWORD PTR [ecx+4], 0
 	je	SHORT $LN1@PE_checkIm
 	cmp	DWORD PTR [ecx], 0
 	je	SHORT $LN1@PE_checkIm
 
-; 400  : 			if(j == 1) return true;
+; 405  : 			if(j == 1) return true;
 
 	cmp	eax, 1
 	je	SHORT $LN9@PE_checkIm
 $LN1@PE_checkIm:
 
-; 397  : 	for(int j = 0; j < 16; j++)
+; 402  : 	for(int j = 0; j < 16; j++)
 
 	inc	eax
 
-; 401  : 		}
-; 402  : 		begin++;
+; 406  : 		}
+; 407  : 		begin++;
 
 	add	ecx, 8
 	cmp	eax, 16					; 00000010H
 	jl	SHORT $LL5@PE_checkIm
 
-; 403  : 	}
-; 404  : 	return false;
+; 408  : 	}
+; 409  : 	return false;
 
 	xor	al, al
 
-; 405  : }
+; 410  : }
 
 	ret	0
 $LN9@PE_checkIm:
 
-; 400  : 			if(j == 1) return true;
+; 405  : 			if(j == 1) return true;
 
 	mov	al, 1
 
-; 405  : }
+; 410  : }
 
 	ret	0
 ?PE_checkImport@@YA_NPAUPeDataDirectory@@@Z ENDP	; PE_checkImport
@@ -581,61 +581,67 @@ _TEXT	SEGMENT
 _begin$ = 8						; size = 4
 ?PE_checkReloc@@YA_NPAUPeDataDirectory@@@Z PROC		; PE_checkReloc, COMDAT
 
-; 409  : 	for(int j = 0; j < 16; j++)
+; 414  : 	for(int j = 0; j < 16; j++)
 
 	mov	ecx, DWORD PTR _begin$[esp-4]
 	xor	eax, eax
 $LL5@PE_checkRe:
 
-; 410  : 	{
-; 411  : 		if(begin->dSize != 0 && begin->dVirtualAddress != 0) {
+; 415  : 	{
+; 416  : 		if(begin->dSize != 0 && begin->dVirtualAddress != 0) {
 
 	cmp	DWORD PTR [ecx+4], 0
 	je	SHORT $LN1@PE_checkRe
 	cmp	DWORD PTR [ecx], 0
 	je	SHORT $LN1@PE_checkRe
 
-; 412  : 			if(j == 5) return true;
+; 417  : 			if(j == 5) return true;
 
 	cmp	eax, 5
 	je	SHORT $LN9@PE_checkRe
 $LN1@PE_checkRe:
 
-; 409  : 	for(int j = 0; j < 16; j++)
+; 414  : 	for(int j = 0; j < 16; j++)
 
 	inc	eax
 
-; 413  : 		}
-; 414  : 		begin++;
+; 418  : 		}
+; 419  : 		begin++;
 
 	add	ecx, 8
 	cmp	eax, 16					; 00000010H
 	jl	SHORT $LL5@PE_checkRe
 
-; 415  : 	}
-; 416  : 	return false;
+; 420  : 	}
+; 421  : 	return false;
 
 	xor	al, al
 
-; 417  : }
+; 422  : }
 
 	ret	0
 $LN9@PE_checkRe:
 
-; 412  : 			if(j == 5) return true;
+; 417  : 			if(j == 5) return true;
 
 	mov	al, 1
 
-; 417  : }
+; 422  : }
 
 	ret	0
 ?PE_checkReloc@@YA_NPAUPeDataDirectory@@@Z ENDP		; PE_checkReloc
 _TEXT	ENDS
+PUBLIC	??_C@_0CG@HKKCFNDF@?6ERROR?3?5Not?5a?5valid?5LevOS?5execut@ ; `string'
 PUBLIC	??_C@_0CC@CHBMNKGO@?6ERROR?3?5File?5is?5not?5for?5starting@ ; `string'
 PUBLIC	??_C@_0BN@NGGEOPCA@?6ERROR?3?5Not?5a?5valid?5PE?5file?$CB?$AA@ ; `string'
 PUBLIC	?PE_mapApp@@YA_NPADH@Z				; PE_mapApp
 EXTRN	?strcmp@@YAHPBD0@Z:PROC				; strcmp
 EXTRN	?vm_map_virt_to_phys@@YAXHH@Z:PROC		; vm_map_virt_to_phys
+;	COMDAT ??_C@_0CG@HKKCFNDF@?6ERROR?3?5Not?5a?5valid?5LevOS?5execut@
+CONST	SEGMENT
+??_C@_0CG@HKKCFNDF@?6ERROR?3?5Not?5a?5valid?5LevOS?5execut@ DB 0aH, 'ERRO'
+	DB	'R: Not a valid LevOS executable!', 00H	; `string'
+CONST	ENDS
 ;	COMDAT ??_C@_0CC@CHBMNKGO@?6ERROR?3?5File?5is?5not?5for?5starting@
 CONST	SEGMENT
 ??_C@_0CC@CHBMNKGO@?6ERROR?3?5File?5is?5not?5for?5starting@ DB 0aH, 'ERRO'
@@ -651,14 +657,14 @@ CONST	ENDS
 _TEXT	SEGMENT
 _loadBase$ = -28					; size = 4
 _entry$ = -24						; size = 4
-_filename$2939 = -24					; size = 4
-tv549 = -20						; size = 4
-tv615 = -16						; size = 4
-_numberOfExports$2941 = -12				; size = 4
-tv159 = -8						; size = 4
-_i$2921 = -8						; size = 4
-tv515 = -4						; size = 4
-_fixed$2958 = -4					; size = 4
+_filename$2937 = -24					; size = 4
+tv525 = -20						; size = 4
+tv591 = -16						; size = 4
+_numberOfExports$2939 = -12				; size = 4
+tv181 = -8						; size = 4
+_i$2919 = -8						; size = 4
+tv466 = -4						; size = 4
+_fixed$2956 = -4					; size = 4
 _filename$ = 8						; size = 4
 _base$ = 12						; size = 4
 ?PE_mapApp@@YA_NPADH@Z PROC				; PE_mapApp, COMDAT
@@ -679,7 +685,7 @@ _base$ = 12						; size = 4
 	call	?getFileSize@@YAHPAD@Z			; getFileSize
 	add	esp, 4
 	test	eax, eax
-	je	SHORT $LN59@PE_mapApp
+	je	SHORT $LN48@PE_mapApp
 
 ; 17   : 	// first step, load the application to the specified address
 ; 18   : 	base = base + 4*1024*1024 - getFileSize(filename) - 0x1000;
@@ -699,7 +705,7 @@ _base$ = 12						; size = 4
 	call	?loadFileToLoc@@YA_NPADPAX@Z		; loadFileToLoc
 	add	esp, 12					; 0000000cH
 	test	al, al
-	je	SHORT $LN59@PE_mapApp
+	je	SHORT $LN48@PE_mapApp
 
 ; 20   : 	// second step, extract PE headers from it.
 ; 21   : 	int PE_HEADER_LOCATION = *(int*)(base + 0x3C);
@@ -714,7 +720,7 @@ _base$ = 12						; size = 4
 	mov	edx, 23117				; 00005a4dH
 	add	edi, esi
 	cmp	WORD PTR [esi], dx
-	je	SHORT $LN20@PE_mapApp
+	je	SHORT $LN21@PE_mapApp
 
 ; 26   : 	{
 ; 27   : 		DebugPrintf("\nERROR: Not a valid PE file!");
@@ -722,15 +728,15 @@ _base$ = 12						; size = 4
 	push	OFFSET ??_C@_0BN@NGGEOPCA@?6ERROR?3?5Not?5a?5valid?5PE?5file?$CB?$AA@
 	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
 	add	esp, 4
-$LN59@PE_mapApp:
+$LN48@PE_mapApp:
 
 ; 28   : 		return false;
 
 	xor	al, al
 
-; 137  : 	//restoreKernelStack();
-; 138  : 	return true;
-; 139  : }
+; 142  : 	//restoreKernelStack();
+; 143  : 	return true;
+; 144  : }
 
 	pop	edi
 	pop	esi
@@ -738,13 +744,13 @@ $LN59@PE_mapApp:
 	mov	esp, ebp
 	pop	ebp
 	ret	0
-$LN20@PE_mapApp:
+$LN21@PE_mapApp:
 
 ; 29   : 	}
 ; 30   : 	if(optionalheader->mAddressOfEntryPoint == 0) {
 
 	cmp	DWORD PTR [edi+40], 0
-	jne	SHORT $LN19@PE_mapApp
+	jne	SHORT $LN20@PE_mapApp
 
 ; 31   : 		DebugPrintf("\nERROR: File is not for starting!");
 
@@ -756,9 +762,39 @@ $LN20@PE_mapApp:
 
 	xor	al, al
 
-; 137  : 	//restoreKernelStack();
-; 138  : 	return true;
-; 139  : }
+; 142  : 	//restoreKernelStack();
+; 143  : 	return true;
+; 144  : }
+
+	pop	edi
+	pop	esi
+	pop	ebx
+	mov	esp, ebp
+	pop	ebp
+	ret	0
+$LN20@PE_mapApp:
+
+; 33   : 	}
+; 34   : 	if(optionalheader->mMajorSubsystemVersion != 0x1337)
+
+	mov	eax, 4919				; 00001337H
+	cmp	WORD PTR [edi+72], ax
+	je	SHORT $LN19@PE_mapApp
+
+; 35   : 	{
+; 36   : 		DebugPrintf("\nERROR: Not a valid LevOS executable!");
+
+	push	OFFSET ??_C@_0CG@HKKCFNDF@?6ERROR?3?5Not?5a?5valid?5LevOS?5execut@
+	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
+	add	esp, 4
+
+; 37   : 		return false;
+
+	xor	al, al
+
+; 142  : 	//restoreKernelStack();
+; 143  : 	return true;
+; 144  : }
 
 	pop	edi
 	pop	esi
@@ -768,19 +804,19 @@ $LN20@PE_mapApp:
 	ret	0
 $LN19@PE_mapApp:
 
-; 33   : 	}
-; 34   : 	// third step, map the sections
-; 35   : 	int loadBase = base+0x1000+getFileSize(filename) - 4*1024*1024;
+; 38   : 	}
+; 39   : 	// third step, map the sections
+; 40   : 	int loadBase = base+0x1000+getFileSize(filename) - 4*1024*1024;
 
 	push	ebx
 	call	?getFileSize@@YAHPAD@Z			; getFileSize
 	lea	eax, DWORD PTR [eax+esi-4190208]
 
-; 36   : #ifdef DEBUG
-; 37   : 	DebugPrintf("loadBase=0x%x,opt->imagebase=0x%x", base, optionalheader->mImageBase);
-; 38   : #endif
-; 39   : 	//if((unsigned int)loadBase != (unsigned int)optionalheader->mImageBase)
-; 40   : 	vm_map_virt_to_phys(optionalheader->mImageBase / 0x400000, loadBase);
+; 41   : #ifdef DEBUG
+; 42   : 	DebugPrintf("loadBase=0x%x,opt->imagebase=0x%x", base, optionalheader->mImageBase);
+; 43   : #endif
+; 44   : 	//if((unsigned int)loadBase != (unsigned int)optionalheader->mImageBase)
+; 45   : 	vm_map_virt_to_phys(optionalheader->mImageBase / 0x400000, loadBase);
 
 	push	eax
 	mov	DWORD PTR _loadBase$[ebp], eax
@@ -792,222 +828,207 @@ $LN19@PE_mapApp:
 	push	eax
 	call	?vm_map_virt_to_phys@@YAXHH@Z		; vm_map_virt_to_phys
 
-; 41   : 	char* firstSectionHeader = (char*)(PE_HEADER_LOCATION+24+sizeof(PeOptionalHeader)+(optionalheader->mNumberOfRvaAndSizes * 8));
+; 46   : 	char* firstSectionHeader = (char*)(PE_HEADER_LOCATION+24+sizeof(PeOptionalHeader)+(optionalheader->mNumberOfRvaAndSizes * 8));
 
-	mov	eax, DWORD PTR [edi+116]
+	mov	ecx, DWORD PTR [edi+116]
 
-; 42   : 	for(int i = 0; i < peheader->mNumberOfSections; i++)
+; 47   : 	for(int i = 0; i < peheader->mNumberOfSections; i++)
 
-	xor	ecx, ecx
+	xor	edx, edx
 	add	esp, 12					; 0000000cH
-	lea	eax, DWORD PTR [edi+eax*8+120]
-	mov	DWORD PTR _i$2921[ebp], 0
-	cmp	cx, WORD PTR [edi+6]
+	lea	eax, DWORD PTR [edi+ecx*8+120]
+	mov	DWORD PTR _i$2919[ebp], 0
+	cmp	dx, WORD PTR [edi+6]
 	jge	SHORT $LN16@PE_mapApp
 
-; 33   : 	}
-; 34   : 	// third step, map the sections
-; 35   : 	int loadBase = base+0x1000+getFileSize(filename) - 4*1024*1024;
+; 38   : 	}
+; 39   : 	// third step, map the sections
+; 40   : 	int loadBase = base+0x1000+getFileSize(filename) - 4*1024*1024;
 
 	lea	ebx, DWORD PTR [eax+20]
 	lea	esi, DWORD PTR [eax+12]
 	add	eax, 16					; 00000010H
-	mov	DWORD PTR tv515[ebp], eax
+	mov	DWORD PTR tv466[ebp], eax
 $LN18@PE_mapApp:
 
-; 43   : 	{
-; 44   : 		PeSectionHeader* sect = (PeSectionHeader*)firstSectionHeader;
-; 45   : 		if(sect->sSizeOfRawData == 0) {
+; 48   : 	{
+; 49   : 		PeSectionHeader* sect = (PeSectionHeader*)firstSectionHeader;
+; 50   : 		if(sect->sSizeOfRawData == 0) {
 
-	mov	edx, DWORD PTR tv515[ebp]
-	mov	eax, DWORD PTR [edx]
+	mov	eax, DWORD PTR tv466[ebp]
+	mov	eax, DWORD PTR [eax]
 	test	eax, eax
 
-; 46   : #ifdef DEBUG
-; 47   : 			DebugPrintf("\nSection %s is null-length! (0x%x) Skipped.", sect->sName, sect->sSizeOfRawData);
-; 48   : #endif
-; 49   : 			firstSectionHeader += sizeof(PeSectionHeader);
-; 50   : 			continue;
+; 51   : #ifdef DEBUG
+; 52   : 			DebugPrintf("\nSection %s is null-length! (0x%x) Skipped.", sect->sName, sect->sSizeOfRawData);
+; 53   : #endif
+; 54   : 			firstSectionHeader += sizeof(PeSectionHeader);
+; 55   : 			continue;
 
-	je	SHORT $LN58@PE_mapApp
+	je	SHORT $LN47@PE_mapApp
 
-; 51   : 		}
-; 52   : #ifdef DEBUG
-; 53   : 		DebugPrintf("\nCopying %s section to 0x%X from 0x%x, size: 0x%X ", sect->sName, optionalheader->mImageBase + sect->sVirtAddr,base + sect->sPointerToRawData, sect->sSizeOfRawData);
-; 54   : #endif
-; 55   : 		memcpy((char*)(base + sect->sPointerToRawData), (char*)(optionalheader->mImageBase + sect->sVirtAddr), sect->sSizeOfRawData);
+; 56   : 		}
+; 57   : #ifdef DEBUG
+; 58   : 		DebugPrintf("\nCopying %s section to 0x%X from 0x%x, size: 0x%X ", sect->sName, optionalheader->mImageBase + sect->sVirtAddr,base + sect->sPointerToRawData, sect->sSizeOfRawData);
+; 59   : #endif
+; 60   : 		memcpy((char*)(base + sect->sPointerToRawData), (char*)(optionalheader->mImageBase + sect->sVirtAddr), sect->sSizeOfRawData);
 
-	mov	ecx, DWORD PTR [ebx]
-	add	ecx, DWORD PTR _base$[ebp]
-	push	eax
-	mov	eax, DWORD PTR [edi+52]
-	add	eax, DWORD PTR [esi]
+	mov	ecx, DWORD PTR [edi+52]
+	add	ecx, DWORD PTR [esi]
+	mov	edx, DWORD PTR [ebx]
+	add	edx, DWORD PTR _base$[ebp]
 	push	eax
 	push	ecx
+	push	edx
 	call	?memcpy@@YAXPAD0H@Z			; memcpy
 	add	esp, 12					; 0000000cH
-$LN58@PE_mapApp:
+$LN47@PE_mapApp:
 
-; 42   : 	for(int i = 0; i < peheader->mNumberOfSections; i++)
+; 47   : 	for(int i = 0; i < peheader->mNumberOfSections; i++)
 
-	mov	eax, DWORD PTR _i$2921[ebp]
-	movsx	edx, WORD PTR [edi+6]
+	mov	eax, DWORD PTR _i$2919[ebp]
+	movsx	ecx, WORD PTR [edi+6]
 
-; 56   : 		firstSectionHeader += sizeof(PeSectionHeader);
+; 61   : 		firstSectionHeader += sizeof(PeSectionHeader);
 
-	add	DWORD PTR tv515[ebp], 40		; 00000028H
+	add	DWORD PTR tv466[ebp], 40		; 00000028H
 	inc	eax
 	add	esi, 40					; 00000028H
 	add	ebx, 40					; 00000028H
-	mov	DWORD PTR _i$2921[ebp], eax
-	cmp	eax, edx
+	mov	DWORD PTR _i$2919[ebp], eax
+	cmp	eax, ecx
 	jl	SHORT $LN18@PE_mapApp
 $LN16@PE_mapApp:
 
-; 57   : 	}
-; 58   : #ifdef DEBUG	
-; 59   : 	_asm push eax
-; 60   : 	_asm mov eax, 0x4
-; 61   : 	_asm int 0x2F
-; 62   : 	_asm pop eax
-; 63   : #endif
-; 64   : 
-; 65   : 	/* Check for import */
-; 66   : 	PeDataDirectory* pdd = (PeDataDirectory*)((unsigned int)optionalheader+sizeof(PeOptionalHeader));
-; 67   : 	if(PE_checkImport(pdd))
+; 62   : 	}
+; 63   : #ifdef DEBUG	
+; 64   : 	_asm push eax
+; 65   : 	_asm mov eax, 0x4
+; 66   : 	_asm int 0x2F
+; 67   : 	_asm pop eax
+; 68   : #endif
+; 69   : 
+; 70   : 	/* Check for import */
+; 71   : 	PeDataDirectory* pdd = (PeDataDirectory*)((unsigned int)optionalheader+sizeof(PeOptionalHeader));
 
-	lea	ecx, DWORD PTR [edi+120]
-	xor	eax, eax
-$LL32@PE_mapApp:
-	cmp	DWORD PTR [ecx+4], 0
-	je	SHORT $LN28@PE_mapApp
-	cmp	DWORD PTR [ecx], 0
-	je	SHORT $LN28@PE_mapApp
-	cmp	eax, 1
-	je	SHORT $LN50@PE_mapApp
-$LN28@PE_mapApp:
-	inc	eax
-	add	ecx, 8
-	cmp	eax, 16					; 00000010H
-	jl	SHORT $LL32@PE_mapApp
+	lea	edx, DWORD PTR [edi+120]
 
-; 109  : 						} // exported =?= imported
-; 110  : 						//DebugPrintf("\nD");
-; 111  : 					} // export loop
-; 112  : 					
-; 113  : 					if(fixed == numberOfExports) break; // if we have fixed NumberOfExports addresses then quit
+; 72   : 	if(PE_checkImport(pdd))
 
-	jmp	$LN9@PE_mapApp
-$LN50@PE_mapApp:
+	push	edx
+	call	?PE_checkImport@@YA_NPAUPeDataDirectory@@@Z ; PE_checkImport
+	add	esp, 4
+	test	al, al
+	je	$LN9@PE_mapApp
 
-; 68   : 	{
-; 69   : 		/* yes we need to import! */
-; 70   : 		pdd++;
-; 71   : 		PeImportDirectory* pid = (PeImportDirectory*)(optionalheader->mImageBase + pdd->dVirtualAddress);
+; 73   : 	{
+; 74   : 		/* yes we need to import! */
+; 75   : 		pdd++;
+; 76   : 		PeImportDirectory* pid = (PeImportDirectory*)(optionalheader->mImageBase + pdd->dVirtualAddress);
 
 	mov	eax, DWORD PTR [edi+52]
-	mov	esi, DWORD PTR [edi+128]
+	mov	esi, DWORD PTR [edx+8]
 
-; 72   : 		char* filename = (char*)(optionalheader->mImageBase + pid->iName);
+; 77   : 		char* filename = (char*)(optionalheader->mImageBase + pid->iName);
 
 	mov	ebx, DWORD PTR [esi+eax+12]
 	add	esi, eax
 	add	ebx, eax
 
-; 73   : 		//DebugPrintf("\nLoading %s to 0x800000", filename);
-; 74   : 		PE_loadDLL(filename, 0x800000);
+; 78   : 		//DebugPrintf("\nLoading %s to 0x800000", filename);
+; 79   : 		PE_loadDLL(filename, 0x800000);
 
 	push	8388608					; 00800000H
 	push	ebx
-	mov	DWORD PTR _filename$2939[ebp], ebx
+	mov	DWORD PTR _filename$2937[ebp], ebx
 	call	?PE_loadDLL@@YAPAUPE_EXPORT_LIST@@PADH@Z ; PE_loadDLL
 
-; 75   : 		int numberOfExports = pel->numberOfExports;
+; 80   : 		int numberOfExports = pel->numberOfExports;
 
-	movsx	eax, WORD PTR _pel
+	movsx	edx, WORD PTR _pel
 	add	esp, 8
 
-; 76   : 		//DebugPrintf("\nDLL num = 0x%x", numberOfExports);
-; 77   : 		for(int i = 0; i < numberOfExports; i++)
-; 78   : 		{
-; 79   : 			//DebugPrintf("\nDLL export: %s @ 0x%x", pel[i].function, pel[i].address);
-; 80   : 		}
-; 81   : 		//DebugPrintf("\n->This is an import directory!");
-; 82   : 		int j = 0;
-; 83   : 		while(pid->iCharacteristics != 0) // structure ends with 0
+; 81   : 		//DebugPrintf("\nDLL num = 0x%x", numberOfExports);
+; 82   : 		for(int i = 0; i < numberOfExports; i++)
+; 83   : 		{
+; 84   : 			//DebugPrintf("\nDLL export: %s @ 0x%x", pel[i].function, pel[i].address);
+; 85   : 		}
+; 86   : 		//DebugPrintf("\n->This is an import directory!");
+; 87   : 		int j = 0;
+; 88   : 		while(pid->iCharacteristics != 0) // structure ends with 0
 
 	cmp	DWORD PTR [esi], 0
-	mov	DWORD PTR _numberOfExports$2941[ebp], eax
+	mov	DWORD PTR _numberOfExports$2939[ebp], edx
 	je	$LN9@PE_mapApp
 	add	esi, 16					; 00000010H
-	mov	DWORD PTR tv615[ebp], esi
-	npad	3
+	mov	DWORD PTR tv591[ebp], esi
+	npad	4
 $LL10@PE_mapApp:
 
-; 84   : 		{
-; 85   : 			//DebugPrintf("\n-->Found DLL import from module %s", (char*)(optionalheader->mImageBase + pid->iName));
-; 86   : 			if(strcmp((char*)(optionalheader->mImageBase + pid->iName), filename) == 0)
+; 89   : 		{
+; 90   : 			//DebugPrintf("\n-->Found DLL import from module %s", (char*)(optionalheader->mImageBase + pid->iName));
+; 91   : 			if(strcmp((char*)(optionalheader->mImageBase + pid->iName), filename) == 0)
 
-	mov	ecx, DWORD PTR [esi-4]
-	add	ecx, DWORD PTR [edi+52]
+	mov	eax, DWORD PTR [esi-4]
+	add	eax, DWORD PTR [edi+52]
 	push	ebx
-	push	ecx
+	push	eax
 	call	?strcmp@@YAHPBD0@Z			; strcmp
 	add	esp, 8
 	test	eax, eax
-	jne	SHORT $LN42@PE_mapApp
+	jne	SHORT $LN34@PE_mapApp
 
-; 87   : 			{
-; 88   : 				/* This is the DLL */
-; 89   : 				int IATbase = (optionalheader->mImageBase + pid->iFirstThunk); // The base of Import Address Table
+; 92   : 			{
+; 93   : 				/* This is the DLL */
+; 94   : 				int IATbase = (optionalheader->mImageBase + pid->iFirstThunk); // The base of Import Address Table
 
 	mov	ecx, DWORD PTR [edi+52]
 	mov	edx, DWORD PTR [esi]
 
-; 90   : 				int FTaddr = *(int*)(optionalheader->mImageBase + pid->iFirstThunk) + optionalheader->mImageBase; // Address of first thunk data
+; 95   : 				int FTaddr = *(int*)(optionalheader->mImageBase + pid->iFirstThunk) + optionalheader->mImageBase; // Address of first thunk data
 
 	mov	eax, DWORD PTR [edx+ecx]
 	add	edx, ecx
 	add	eax, ecx
 
-; 91   : 				//DebugPrintf("\n-->First thunk points to 0x%x",	FTaddr);
-; 92   : 				PeImportFunction* pif = (PeImportFunction*)(FTaddr); // Put structure on top of it
-; 93   : 				int k = 0;
-; 94   : 				int fixed = 0;
+; 96   : 				//DebugPrintf("\n-->First thunk points to 0x%x",	FTaddr);
+; 97   : 				PeImportFunction* pif = (PeImportFunction*)(FTaddr); // Put structure on top of it
+; 98   : 				int k = 0;
+; 99   : 				int fixed = 0;
 
-	mov	DWORD PTR _fixed$2958[ebp], 0
+	mov	DWORD PTR _fixed$2956[ebp], 0
 
-; 95   : 				while(FTaddr != optionalheader->mImageBase) 
+; 100  : 				while(FTaddr != optionalheader->mImageBase) 
 
 	cmp	eax, ecx
-	je	SHORT $LN42@PE_mapApp
+	je	SHORT $LN34@PE_mapApp
 
-; 87   : 			{
-; 88   : 				/* This is the DLL */
-; 89   : 				int IATbase = (optionalheader->mImageBase + pid->iFirstThunk); // The base of Import Address Table
+; 92   : 			{
+; 93   : 				/* This is the DLL */
+; 94   : 				int IATbase = (optionalheader->mImageBase + pid->iFirstThunk); // The base of Import Address Table
 
 	mov	ebx, edx
 	npad	3
 $LL7@PE_mapApp:
 
-; 96   : 				{ // loop while the address doesn't equal zero
-; 97   : 					//DebugPrintf("\nA");
-; 98   : 					for(int i = 0; i < numberOfExports; i++) // loop thru all the exports of the current DLL
+; 101  : 				{ // loop while the address doesn't equal zero
+; 102  : 					//DebugPrintf("\nA");
+; 103  : 					for(int i = 0; i < numberOfExports; i++) // loop thru all the exports of the current DLL
 
-	mov	ecx, DWORD PTR _numberOfExports$2941[ebp]
+	mov	ecx, DWORD PTR _numberOfExports$2939[ebp]
 	test	ecx, ecx
 	jle	SHORT $LN3@PE_mapApp
 	add	eax, 2
-	mov	DWORD PTR tv549[ebp], eax
+	mov	DWORD PTR tv525[ebp], eax
 	mov	esi, OFFSET _pel+6
-	mov	DWORD PTR tv159[ebp], ecx
+	mov	DWORD PTR tv181[ebp], ecx
 $LN5@PE_mapApp:
 
-; 99   : 					{
-; 100  : 						//DebugPrintf("\nB");
-; 101  : 						if(strcmp(pel[i].function, &pif->fName) == 0) // function names equal?
+; 104  : 					{
+; 105  : 						//DebugPrintf("\nB");
+; 106  : 						if(strcmp(pel[i].function, &pif->fName) == 0) // function names equal?
 
-	mov	eax, DWORD PTR tv549[ebp]
+	mov	eax, DWORD PTR tv525[ebp]
 	mov	ecx, DWORD PTR [esi-4]
 	push	eax
 	push	ecx
@@ -1016,100 +1037,100 @@ $LN5@PE_mapApp:
 	test	eax, eax
 	jne	SHORT $LN4@PE_mapApp
 
-; 102  : 						{
-; 103  : 							/* FUNCTION MATCH */
-; 104  : 							//DebugPrintf("\nFunction matched %s", pel[i].function);
-; 105  : 							//DebugPrintf("\nC");
-; 106  : 							*(int*)(IATbase + k*4) = pel[i].address; // if so, write the export address to the IAT (respective offset)
+; 107  : 						{
+; 108  : 							/* FUNCTION MATCH */
+; 109  : 							//DebugPrintf("\nFunction matched %s", pel[i].function);
+; 110  : 							//DebugPrintf("\nC");
+; 111  : 							*(int*)(IATbase + k*4) = pel[i].address; // if so, write the export address to the IAT (respective offset)
 
 	mov	edx, DWORD PTR [esi]
 
-; 107  : 							//DebugPrintf("\nIATwrite: Ordinal=%d, ADDR=0x%x, NAME=%s, IATaddr=0x%x", pel[i].ordinal, pel[i].address, pel[i].function, IATbase + k*4);
-; 108  : 							fixed++;
+; 112  : 							//DebugPrintf("\nIATwrite: Ordinal=%d, ADDR=0x%x, NAME=%s, IATaddr=0x%x", pel[i].ordinal, pel[i].address, pel[i].function, IATbase + k*4);
+; 113  : 							fixed++;
 
-	inc	DWORD PTR _fixed$2958[ebp]
+	inc	DWORD PTR _fixed$2956[ebp]
 	mov	DWORD PTR [ebx], edx
 $LN4@PE_mapApp:
 
-; 96   : 				{ // loop while the address doesn't equal zero
-; 97   : 					//DebugPrintf("\nA");
-; 98   : 					for(int i = 0; i < numberOfExports; i++) // loop thru all the exports of the current DLL
+; 101  : 				{ // loop while the address doesn't equal zero
+; 102  : 					//DebugPrintf("\nA");
+; 103  : 					for(int i = 0; i < numberOfExports; i++) // loop thru all the exports of the current DLL
 
 	add	esi, 12					; 0000000cH
-	dec	DWORD PTR tv159[ebp]
+	dec	DWORD PTR tv181[ebp]
 	jne	SHORT $LN5@PE_mapApp
-	mov	esi, DWORD PTR tv615[ebp]
-	mov	ecx, DWORD PTR _numberOfExports$2941[ebp]
+	mov	esi, DWORD PTR tv591[ebp]
+	mov	ecx, DWORD PTR _numberOfExports$2939[ebp]
 $LN3@PE_mapApp:
 
-; 109  : 						} // exported =?= imported
-; 110  : 						//DebugPrintf("\nD");
-; 111  : 					} // export loop
-; 112  : 					
-; 113  : 					if(fixed == numberOfExports) break; // if we have fixed NumberOfExports addresses then quit
+; 114  : 						} // exported =?= imported
+; 115  : 						//DebugPrintf("\nD");
+; 116  : 					} // export loop
+; 117  : 					
+; 118  : 					if(fixed == numberOfExports) break; // if we have fixed NumberOfExports addresses then quit
 
-	cmp	DWORD PTR _fixed$2958[ebp], ecx
-	je	SHORT $LN54@PE_mapApp
+	cmp	DWORD PTR _fixed$2956[ebp], ecx
+	je	SHORT $LN43@PE_mapApp
 
-; 114  : 			redo:
-; 115  : 					k++; // proceed to next import function
-; 116  : 					FTaddr = *(int*)(IATbase + k * 4) + optionalheader->mImageBase; // address of next import function
+; 119  : 			redo:
+; 120  : 					k++; // proceed to next import function
+; 121  : 					FTaddr = *(int*)(IATbase + k * 4) + optionalheader->mImageBase; // address of next import function
 
 	mov	ecx, DWORD PTR [edi+52]
 	mov	eax, DWORD PTR [ebx+4]
 	add	ebx, 4
 	add	eax, ecx
-$redo$2969:
+$redo$2967:
 	cmp	eax, ecx
 	jne	SHORT $LL7@PE_mapApp
-$LN54@PE_mapApp:
+$LN43@PE_mapApp:
 
-; 95   : 				while(FTaddr != optionalheader->mImageBase) 
+; 100  : 				while(FTaddr != optionalheader->mImageBase) 
 
-	mov	ebx, DWORD PTR _filename$2939[ebp]
-$LN42@PE_mapApp:
+	mov	ebx, DWORD PTR _filename$2937[ebp]
+$LN34@PE_mapApp:
 
-; 117  : 					//if(FTaddr > optionalheader->mImageBase + optionalheader->mSizeOfImage) goto redo;
-; 118  : 					//DebugPrintf("\nFTaddr = 0x%x, IATdata=0x%x", FTaddr, *(int*)(IATbase + k * 4));
-; 119  : 					pif = (PeImportFunction*)(FTaddr); // put the structure on it
-; 120  : 					//DebugPrintf("\nProceeding to next import from this DLL");
-; 121  : 				}
-; 122  : 			} // import loop
-; 123  : 			//DebugPrintf("\nDLL finished.");
-; 124  : 			j++;
-; 125  : 			pid ++; // go to next DLL entry
+; 122  : 					//if(FTaddr > optionalheader->mImageBase + optionalheader->mSizeOfImage) goto redo;
+; 123  : 					//DebugPrintf("\nFTaddr = 0x%x, IATdata=0x%x", FTaddr, *(int*)(IATbase + k * 4));
+; 124  : 					pif = (PeImportFunction*)(FTaddr); // put the structure on it
+; 125  : 					//DebugPrintf("\nProceeding to next import from this DLL");
+; 126  : 				}
+; 127  : 			} // import loop
+; 128  : 			//DebugPrintf("\nDLL finished.");
+; 129  : 			j++;
+; 130  : 			pid ++; // go to next DLL entry
 
 	add	esi, 20					; 00000014H
 	cmp	DWORD PTR [esi-16], 0
-	mov	DWORD PTR tv615[ebp], esi
+	mov	DWORD PTR tv591[ebp], esi
 	jne	$LL10@PE_mapApp
 $LN9@PE_mapApp:
 
-; 126  : 			//DebugPrintf("\nChar=0x%x",pid->iCharacteristics);
-; 127  : 		} // dll entries
-; 128  : 		//DebugPrintf("\nIMPORTing not yet implemented.");
-; 129  : 		//return false;
-; 130  : 	}
-; 131  : 
-; 132  : 
-; 133  : 	int entry = optionalheader->mImageBase + optionalheader->mAddressOfEntryPoint;
+; 131  : 			//DebugPrintf("\nChar=0x%x",pid->iCharacteristics);
+; 132  : 		} // dll entries
+; 133  : 		//DebugPrintf("\nIMPORTing not yet implemented.");
+; 134  : 		//return false;
+; 135  : 	}
+; 136  : 
+; 137  : 
+; 138  : 	int entry = optionalheader->mImageBase + optionalheader->mAddressOfEntryPoint;
 
 	mov	eax, DWORD PTR [edi+52]
 	add	eax, DWORD PTR [edi+40]
 	mov	DWORD PTR _entry$[ebp], eax
 
-; 134  : 	//DebugPrintf("App start...");
-; 135  : 	_asm push loadBase;
+; 139  : 	//DebugPrintf("App start...");
+; 140  : 	_asm push loadBase;
 
 	push	DWORD PTR _loadBase$[ebp]
 
-; 136  : 	_asm call entry;
+; 141  : 	_asm call entry;
 
 	call	DWORD PTR _entry$[ebp]
 
-; 137  : 	//restoreKernelStack();
-; 138  : 	return true;
-; 139  : }
+; 142  : 	//restoreKernelStack();
+; 143  : 	return true;
+; 144  : }
 
 	pop	edi
 	pop	esi
@@ -1205,20 +1226,20 @@ CONST	SEGMENT
 CONST	ENDS
 ;	COMDAT ?PE_dumpApp@@YA_NPADH@Z
 _TEXT	SEGMENT
-_j$3105 = -8						; size = 4
-_numberOfRelocations$3150 = -4				; size = 4
+_j$3103 = -8						; size = 4
+_numberOfRelocations$3148 = -4				; size = 4
 _filename$ = 8						; size = 4
 _ddir$ = 12						; size = 4
 _base$ = 12						; size = 4
 ?PE_dumpApp@@YA_NPADH@Z PROC				; PE_dumpApp, COMDAT
 
-; 262  : {
+; 267  : {
 
 	sub	esp, 8
 	push	ebx
 	push	esi
 
-; 263  : 	base = base + 4*1024*1024 - getFileSize(filename) - 0x1000;
+; 268  : 	base = base + 4*1024*1024 - getFileSize(filename) - 0x1000;
 
 	mov	esi, DWORD PTR _filename$[esp+12]
 	push	esi
@@ -1228,7 +1249,7 @@ _base$ = 12						; size = 4
 	sub	ecx, eax
 	add	ebx, ecx
 
-; 264  : 	if(!loadFileToLoc(filename, (void*)base)) {return false;}
+; 269  : 	if(!loadFileToLoc(filename, (void*)base)) {return false;}
 
 	push	ebx
 	push	esi
@@ -1237,27 +1258,27 @@ _base$ = 12						; size = 4
 	test	al, al
 	je	SHORT $LN55@PE_dumpApp
 
-; 265  : 	if(!PE_verify(base)) 
+; 270  : 	if(!PE_verify(base)) 
 
 	mov	edx, 23117				; 00005a4dH
 	cmp	WORD PTR [ebx], dx
 	je	SHORT $LN26@PE_dumpApp
 
-; 266  : 	{
-; 267  : 		DebugPrintf("\nERROR: Not a valid PE file!");
+; 271  : 	{
+; 272  : 		DebugPrintf("\nERROR: Not a valid PE file!");
 
 	push	OFFSET ??_C@_0BN@NGGEOPCA@?6ERROR?3?5Not?5a?5valid?5PE?5file?$CB?$AA@
 	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
 	add	esp, 4
 $LN55@PE_dumpApp:
 
-; 268  : 		return false;
+; 273  : 		return false;
 
 	pop	esi
 	xor	al, al
 	pop	ebx
 
-; 386  : }
+; 391  : }
 
 	add	esp, 8
 	ret	0
@@ -1265,23 +1286,23 @@ $LN26@PE_dumpApp:
 	push	ebp
 	push	edi
 
-; 269  : 	}
-; 270  : 	// second step, extract PE headers from it.
-; 271  : 	int PE_HEADER_LOCATION = *(int*)(base + 0x3C);
-; 272  : 	PE_HEADER_LOCATION += base;
+; 274  : 	}
+; 275  : 	// second step, extract PE headers from it.
+; 276  : 	int PE_HEADER_LOCATION = *(int*)(base + 0x3C);
+; 277  : 	PE_HEADER_LOCATION += base;
 
 	mov	edi, DWORD PTR [ebx+60]
 
-; 273  : 	PeHeader* peheader = (PeHeader*)PE_HEADER_LOCATION;
-; 274  : 	PeOptionalHeader* optionalheader = (PeOptionalHeader*)(PE_HEADER_LOCATION+24);
-; 275  : 	//DebugClrScr(0x17);
-; 276  : 	DebugPrintf("\nDumping PeOptionalHeader...");
+; 278  : 	PeHeader* peheader = (PeHeader*)PE_HEADER_LOCATION;
+; 279  : 	PeOptionalHeader* optionalheader = (PeOptionalHeader*)(PE_HEADER_LOCATION+24);
+; 280  : 	//DebugClrScr(0x17);
+; 281  : 	DebugPrintf("\nDumping PeOptionalHeader...");
 
 	push	OFFSET ??_C@_0BN@ODBFINGP@?6Dumping?5PeOptionalHeader?4?4?4?$AA@
 	add	edi, ebx
 	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
 
-; 277  : 	DebugPrintf("\nMagic=0x%x\nSizeOfCode=0x%x\nSizeOfData=0x%x\nAddressOfEntryPoint=0x%x\nSizeOfImage=0x%x\nNumberOfSections=0x%x", optionalheader->mMagic, optionalheader->mSizeOfCode, optionalheader->mSizeOfInitializedData, optionalheader->mAddressOfEntryPoint, optionalheader->mSizeOfImage, peheader->mNumberOfSections);
+; 282  : 	DebugPrintf("\nMagic=0x%x\nSizeOfCode=0x%x\nSizeOfData=0x%x\nAddressOfEntryPoint=0x%x\nSizeOfImage=0x%x\nNumberOfSections=0x%x", optionalheader->mMagic, optionalheader->mSizeOfCode, optionalheader->mSizeOfInitializedData, optionalheader->mAddressOfEntryPoint, optionalheader->mSizeOfImage, peheader->mNumberOfSections);
 
 	movsx	eax, WORD PTR [edi+6]
 	mov	ecx, DWORD PTR [edi+80]
@@ -1298,22 +1319,22 @@ $LN26@PE_dumpApp:
 	push	OFFSET ??_C@_0GM@FIPENAL@?6Magic?$DN0x?$CFx?6SizeOfCode?$DN0x?$CFx?6Size@
 	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
 
-; 278  : 	// third step, map the sections
-; 279  : 	int loadBase = base+0x1000+getFileSize(filename) - 4*1024*1024;
+; 283  : 	// third step, map the sections
+; 284  : 	int loadBase = base+0x1000+getFileSize(filename) - 4*1024*1024;
 
 	push	esi
 	call	?getFileSize@@YAHPAD@Z			; getFileSize
 
-; 280  : #ifdef DEBUG
-; 281  : 	DebugPrintf("loadBase=0x%x,opt->imagebase=0x%x", base, optionalheader->mImageBase);
-; 282  : #endif
-; 283  : 	//if((unsigned int)loadBase != (unsigned int)optionalheader->mImageBase)
-; 284  : 	//vm_map_virt_to_phys(optionalheader->mImageBase / 0x400000, loadBase);
-; 285  : 	char* firstSectionHeader = (char*)(PE_HEADER_LOCATION+24+sizeof(PeOptionalHeader)+(optionalheader->mNumberOfRvaAndSizes * 8));
+; 285  : #ifdef DEBUG
+; 286  : 	DebugPrintf("loadBase=0x%x,opt->imagebase=0x%x", base, optionalheader->mImageBase);
+; 287  : #endif
+; 288  : 	//if((unsigned int)loadBase != (unsigned int)optionalheader->mImageBase)
+; 289  : 	//vm_map_virt_to_phys(optionalheader->mImageBase / 0x400000, loadBase);
+; 290  : 	char* firstSectionHeader = (char*)(PE_HEADER_LOCATION+24+sizeof(PeOptionalHeader)+(optionalheader->mNumberOfRvaAndSizes * 8));
 
 	mov	eax, DWORD PTR [edi+116]
 
-; 286  : 	for(int i = 0; i < peheader->mNumberOfSections; i++)
+; 291  : 	for(int i = 0; i < peheader->mNumberOfSections; i++)
 
 	xor	ecx, ecx
 	add	esp, 36					; 00000024H
@@ -1323,24 +1344,24 @@ $LN26@PE_dumpApp:
 	jge	SHORT $LN23@PE_dumpApp
 $LL52@PE_dumpApp:
 
-; 287  : 	{
-; 288  : 		PeSectionHeader* sect = (PeSectionHeader*)firstSectionHeader;
-; 289  : 		if(sect->sSizeOfRawData == 0) {
+; 292  : 	{
+; 293  : 		PeSectionHeader* sect = (PeSectionHeader*)firstSectionHeader;
+; 294  : 		if(sect->sSizeOfRawData == 0) {
 
 	mov	eax, DWORD PTR [esi+16]
 	test	eax, eax
 
-; 290  : #ifdef DEBUG
-; 291  : 			DebugPrintf("\nSection %s is null-length! (0x%x) Skipped.", sect->sName, sect->sSizeOfRawData);
-; 292  : #endif
-; 293  : 			firstSectionHeader += sizeof(PeSectionHeader);
-; 294  : 			continue;
+; 295  : #ifdef DEBUG
+; 296  : 			DebugPrintf("\nSection %s is null-length! (0x%x) Skipped.", sect->sName, sect->sSizeOfRawData);
+; 297  : #endif
+; 298  : 			firstSectionHeader += sizeof(PeSectionHeader);
+; 299  : 			continue;
 
 	je	SHORT $LN54@PE_dumpApp
 
-; 295  : 		}
-; 296  : //#ifdef DEBUG
-; 297  : 		DebugPrintf("\nCopying %s section to 0x%X from 0x%x, size: 0x%X ", sect->sName, optionalheader->mImageBase + sect->sVirtAddr,base + sect->sPointerToRawData, sect->sSizeOfRawData);
+; 300  : 		}
+; 301  : //#ifdef DEBUG
+; 302  : 		DebugPrintf("\nCopying %s section to 0x%X from 0x%x, size: 0x%X ", sect->sName, optionalheader->mImageBase + sect->sVirtAddr,base + sect->sPointerToRawData, sect->sSizeOfRawData);
 
 	mov	edx, DWORD PTR [esi+20]
 	push	eax
@@ -1353,8 +1374,8 @@ $LL52@PE_dumpApp:
 	push	OFFSET ??_C@_0DD@LEJFHGOK@?6Copying?5?$CFs?5section?5to?50x?$CFX?5from@
 	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
 
-; 298  : //#endif
-; 299  : 		memcpy((char*)(base + sect->sPointerToRawData), (char*)(optionalheader->mImageBase + sect->sVirtAddr), sect->sSizeOfRawData);
+; 303  : //#endif
+; 304  : 		memcpy((char*)(base + sect->sPointerToRawData), (char*)(optionalheader->mImageBase + sect->sVirtAddr), sect->sSizeOfRawData);
 
 	mov	edx, DWORD PTR [esi+12]
 	mov	ecx, DWORD PTR [esi+16]
@@ -1368,51 +1389,51 @@ $LL52@PE_dumpApp:
 	add	esp, 32					; 00000020H
 $LN54@PE_dumpApp:
 
-; 286  : 	for(int i = 0; i < peheader->mNumberOfSections; i++)
+; 291  : 	for(int i = 0; i < peheader->mNumberOfSections; i++)
 
 	movsx	ecx, WORD PTR [edi+6]
 	inc	ebp
 
-; 300  : 		firstSectionHeader += sizeof(PeSectionHeader);
+; 305  : 		firstSectionHeader += sizeof(PeSectionHeader);
 
 	add	esi, 40					; 00000028H
 	cmp	ebp, ecx
 	jl	SHORT $LL52@PE_dumpApp
 $LN23@PE_dumpApp:
 
-; 301  : 	}
-; 302  : #ifdef DEBUG	
-; 303  : 	_asm push eax
-; 304  : 	_asm mov eax, 0x4
-; 305  : 	_asm int 0x2F
-; 306  : 	_asm pop eax
-; 307  : #endif
-; 308  : 	int entry = optionalheader->mImageBase + optionalheader->mAddressOfEntryPoint;
-; 309  : 	unsigned int currentNameAddr=0;
-; 310  : 	char* currentName = 0;
-; 311  : 	unsigned int currentAddress = 0;
-; 312  : 	unsigned short currentOrdinal = 0;
-; 313  : 	PeExportDirectory* exp = 0;
-; 314  : 	PeImportDirectory* imp = 0;
-; 315  : 	PeRelocationTableBase* rtb  = 0;
-; 316  : 	short* pr = 0;
-; 317  : 	int i = 0;
-; 318  : 	/* now, lets check the export table first! */
-; 319  : 	PeDataDirectory* ddir = (PeDataDirectory*)((unsigned int)optionalheader + sizeof(PeOptionalHeader));
+; 306  : 	}
+; 307  : #ifdef DEBUG	
+; 308  : 	_asm push eax
+; 309  : 	_asm mov eax, 0x4
+; 310  : 	_asm int 0x2F
+; 311  : 	_asm pop eax
+; 312  : #endif
+; 313  : 	int entry = optionalheader->mImageBase + optionalheader->mAddressOfEntryPoint;
+; 314  : 	unsigned int currentNameAddr=0;
+; 315  : 	char* currentName = 0;
+; 316  : 	unsigned int currentAddress = 0;
+; 317  : 	unsigned short currentOrdinal = 0;
+; 318  : 	PeExportDirectory* exp = 0;
+; 319  : 	PeImportDirectory* imp = 0;
+; 320  : 	PeRelocationTableBase* rtb  = 0;
+; 321  : 	short* pr = 0;
+; 322  : 	int i = 0;
+; 323  : 	/* now, lets check the export table first! */
+; 324  : 	PeDataDirectory* ddir = (PeDataDirectory*)((unsigned int)optionalheader + sizeof(PeOptionalHeader));
 
 	lea	ebp, DWORD PTR [edi+120]
 
-; 320  : 	//DebugPrintf("\nAddress of first Data Directory = 0x%x", (unsigned int)ddir);
-; 321  : 	for(int j = 0; j < 16; j++)
+; 325  : 	//DebugPrintf("\nAddress of first Data Directory = 0x%x", (unsigned int)ddir);
+; 326  : 	for(int j = 0; j < 16; j++)
 
 	xor	esi, esi
 	mov	DWORD PTR _ddir$[esp+20], ebp
-	mov	DWORD PTR _j$3105[esp+24], esi
+	mov	DWORD PTR _j$3103[esp+24], esi
 	npad	6
 $LL53@PE_dumpApp:
 
-; 322  : 	{
-; 323  : 		if(ddir->dSize != 0 && ddir->dVirtualAddress != 0) {
+; 327  : 	{
+; 328  : 		if(ddir->dSize != 0 && ddir->dVirtualAddress != 0) {
 
 	mov	ecx, DWORD PTR [ebp+4]
 	test	ecx, ecx
@@ -1421,7 +1442,7 @@ $LL53@PE_dumpApp:
 	test	eax, eax
 	je	$LN51@PE_dumpApp
 
-; 324  : 			DebugPrintf("\nFound datadirectory: id=0x%x, VA=0x%x, Size=0x%x", j, ddir->dVirtualAddress, ddir->dSize);
+; 329  : 			DebugPrintf("\nFound datadirectory: id=0x%x, VA=0x%x, Size=0x%x", j, ddir->dVirtualAddress, ddir->dSize);
 
 	push	ecx
 	push	eax
@@ -1429,7 +1450,7 @@ $LL53@PE_dumpApp:
 	push	OFFSET ??_C@_0DC@BPNEFLBD@?6Found?5datadirectory?3?5id?$DN0x?$CFx?0?5V@
 	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
 
-; 325  : 			switch(j)
+; 330  : 			switch(j)
 
 	mov	eax, esi
 	add	esp, 16					; 00000010H
@@ -1440,23 +1461,23 @@ $LL53@PE_dumpApp:
 	sub	eax, 4
 	jne	SHORT $LN51@PE_dumpApp
 
-; 365  : 				case 5:
-; 366  : 					//relocation table
-; 367  : 					rtb = (PeRelocationTableBase*)(optionalheader->mImageBase + ddir->dVirtualAddress);
+; 370  : 				case 5:
+; 371  : 					//relocation table
+; 372  : 					rtb = (PeRelocationTableBase*)(optionalheader->mImageBase + ddir->dVirtualAddress);
 
 	mov	ebx, DWORD PTR [ebp]
 	add	ebx, DWORD PTR [edi+52]
 
-; 368  : 					DebugPrintf("\n->This is a relocation table!");
+; 373  : 					DebugPrintf("\n->This is a relocation table!");
 
 	push	OFFSET ??_C@_0BP@NFHKIMHM@?6?9?$DOThis?5is?5a?5relocation?5table?$CB?$AA@
 	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
 
-; 369  : 					int numberOfRelocations = (rtb->rSize - sizeof(PeRelocationTableBase))/2; // number of relocations can be calculated with that formula
+; 374  : 					int numberOfRelocations = (rtb->rSize - sizeof(PeRelocationTableBase))/2; // number of relocations can be calculated with that formula
 
 	mov	eax, DWORD PTR [ebx+4]
 
-; 370  : 					pr = (short*)(optionalheader->mImageBase + ddir->dVirtualAddress + sizeof(PeRelocationTableBase)); // pr is a 2byte pointer
+; 375  : 					pr = (short*)(optionalheader->mImageBase + ddir->dVirtualAddress + sizeof(PeRelocationTableBase)); // pr is a 2byte pointer
 
 	mov	edx, DWORD PTR _ddir$[esp+24]
 	mov	ecx, DWORD PTR [edx]
@@ -1464,17 +1485,17 @@ $LL53@PE_dumpApp:
 	lea	ebp, DWORD PTR [eax-8]
 	shr	ebp, 1
 	add	esp, 4
-	mov	DWORD PTR _numberOfRelocations$3150[esp+24], ebp
+	mov	DWORD PTR _numberOfRelocations$3148[esp+24], ebp
 	lea	esi, DWORD PTR [ecx+edx+8]
 
-; 371  : 					while(rtb->rSize != 0) { // loop until the next relocpage entry is 0
+; 376  : 					while(rtb->rSize != 0) { // loop until the next relocpage entry is 0
 
 	test	eax, eax
 	je	SHORT $LN49@PE_dumpApp
 	npad	3
 $LL5@PE_dumpApp:
 
-; 372  : 						DebugPrintf("\n-->Page 0x%x found %d relocations, first at: 0x%x", rtb->rVirtualAddress ,numberOfRelocations, pr);
+; 377  : 						DebugPrintf("\n-->Page 0x%x found %d relocations, first at: 0x%x", rtb->rVirtualAddress ,numberOfRelocations, pr);
 
 	mov	eax, DWORD PTR [ebx]
 	push	esi
@@ -1484,14 +1505,14 @@ $LL5@PE_dumpApp:
 	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
 	add	esp, 16					; 00000010H
 
-; 373  : 						for(i = 0; i<numberOfRelocations; i++) // loop thru the relocations
+; 378  : 						for(i = 0; i<numberOfRelocations; i++) // loop thru the relocations
 
 	test	ebp, ebp
 	jle	SHORT $LN1@PE_dumpApp
 $LL3@PE_dumpApp:
 
-; 374  : 						{
-; 375  : 							DebugPrintf("\n--->Reloc: Offset: 0x%x Type: 0x%x",(*pr & 0x0FFF) + rtb->rVirtualAddress, (*pr & 0xF000) >> 12); // extract offset and type
+; 379  : 						{
+; 380  : 							DebugPrintf("\n--->Reloc: Offset: 0x%x Type: 0x%x",(*pr & 0x0FFF) + rtb->rVirtualAddress, (*pr & 0xF000) >> 12); // extract offset and type
 
 	movzx	eax, WORD PTR [esi]
 	mov	ecx, eax
@@ -1504,52 +1525,52 @@ $LL3@PE_dumpApp:
 	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
 	add	esp, 12					; 0000000cH
 
-; 376  : 							pr++; // advance to next relocation
+; 381  : 							pr++; // advance to next relocation
 
 	add	esi, 2
 	dec	ebp
 	jne	SHORT $LL3@PE_dumpApp
 
-; 373  : 						for(i = 0; i<numberOfRelocations; i++) // loop thru the relocations
+; 378  : 						for(i = 0; i<numberOfRelocations; i++) // loop thru the relocations
 
-	mov	ebp, DWORD PTR _numberOfRelocations$3150[esp+24]
+	mov	ebp, DWORD PTR _numberOfRelocations$3148[esp+24]
 $LN1@PE_dumpApp:
 
-; 371  : 					while(rtb->rSize != 0) { // loop until the next relocpage entry is 0
+; 376  : 					while(rtb->rSize != 0) { // loop until the next relocpage entry is 0
 
 	cmp	DWORD PTR [esi+8], 0
 
-; 377  : 						}
-; 378  : 						rtb = (PeRelocationTableBase*)(pr + 2); // advance to next pagereloc
+; 382  : 						}
+; 383  : 						rtb = (PeRelocationTableBase*)(pr + 2); // advance to next pagereloc
 
 	lea	ebx, DWORD PTR [esi+4]
 	jne	SHORT $LL5@PE_dumpApp
 $LN49@PE_dumpApp:
 
-; 379  : 					} 
-; 380  : 					break;
+; 384  : 					} 
+; 385  : 					break;
 
 	mov	ebp, DWORD PTR _ddir$[esp+20]
 $LN51@PE_dumpApp:
 
-; 320  : 	//DebugPrintf("\nAddress of first Data Directory = 0x%x", (unsigned int)ddir);
-; 321  : 	for(int j = 0; j < 16; j++)
+; 325  : 	//DebugPrintf("\nAddress of first Data Directory = 0x%x", (unsigned int)ddir);
+; 326  : 	for(int j = 0; j < 16; j++)
 
-	mov	esi, DWORD PTR _j$3105[esp+24]
+	mov	esi, DWORD PTR _j$3103[esp+24]
 	inc	esi
 
-; 381  : 			}
-; 382  : 		}
-; 383  : 		ddir++;
+; 386  : 			}
+; 387  : 		}
+; 388  : 		ddir++;
 
 	add	ebp, 8
 	mov	DWORD PTR _ddir$[esp+20], ebp
-	mov	DWORD PTR _j$3105[esp+24], esi
+	mov	DWORD PTR _j$3103[esp+24], esi
 	cmp	esi, 16					; 00000010H
 	jl	$LL53@PE_dumpApp
 
-; 384  : 	}
-; 385  : 	return true;
+; 389  : 	}
+; 390  : 	return true;
 
 	pop	edi
 	pop	ebp
@@ -1557,48 +1578,48 @@ $LN51@PE_dumpApp:
 	mov	al, 1
 	pop	ebx
 
-; 386  : }
+; 391  : }
 
 	add	esp, 8
 	ret	0
 $LN11@PE_dumpApp:
 
-; 340  : 						//currentName += strlen(currentName) + 1;
-; 341  : 					}
-; 342  : 					break;
-; 343  : 				case 1:
-; 344  : 					// import table
-; 345  : 					imp = (PeImportDirectory*)(optionalheader->mImageBase + ddir->dVirtualAddress);
+; 345  : 						//currentName += strlen(currentName) + 1;
+; 346  : 					}
+; 347  : 					break;
+; 348  : 				case 1:
+; 349  : 					// import table
+; 350  : 					imp = (PeImportDirectory*)(optionalheader->mImageBase + ddir->dVirtualAddress);
 
 	mov	ebx, DWORD PTR [ebp]
 	add	ebx, DWORD PTR [edi+52]
 
-; 346  : 					DebugPrintf("\n->This is an import directory!");
+; 351  : 					DebugPrintf("\n->This is an import directory!");
 
 	push	OFFSET ??_C@_0CA@FFOAOACM@?6?9?$DOThis?5is?5an?5import?5directory?$CB?$AA@
 	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
 	add	esp, 4
 
-; 347  : 					i = 0;
-; 348  : 					while(imp->iCharacteristics != 0) // structure ends with 0
+; 352  : 					i = 0;
+; 353  : 					while(imp->iCharacteristics != 0) // structure ends with 0
 
 	cmp	DWORD PTR [ebx], 0
 	je	SHORT $LN51@PE_dumpApp
 
-; 340  : 						//currentName += strlen(currentName) + 1;
-; 341  : 					}
-; 342  : 					break;
-; 343  : 				case 1:
-; 344  : 					// import table
-; 345  : 					imp = (PeImportDirectory*)(optionalheader->mImageBase + ddir->dVirtualAddress);
+; 345  : 						//currentName += strlen(currentName) + 1;
+; 346  : 					}
+; 347  : 					break;
+; 348  : 				case 1:
+; 349  : 					// import table
+; 350  : 					imp = (PeImportDirectory*)(optionalheader->mImageBase + ddir->dVirtualAddress);
 
 	mov	eax, DWORD PTR [edi+52]
 	add	ebx, 16					; 00000010H
 	npad	4
 $LL10@PE_dumpApp:
 
-; 349  : 					{
-; 350  : 						DebugPrintf("\n-->Found DLL import from module %s", (char*)(optionalheader->mImageBase + imp->iName));
+; 354  : 					{
+; 355  : 						DebugPrintf("\n-->Found DLL import from module %s", (char*)(optionalheader->mImageBase + imp->iName));
 
 	mov	edx, DWORD PTR [ebx-4]
 	add	edx, eax
@@ -1606,35 +1627,35 @@ $LL10@PE_dumpApp:
 	push	OFFSET ??_C@_0CE@KEIAOLOP@?6?9?9?$DOFound?5DLL?5import?5from?5module@
 	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
 
-; 351  : 						int FTaddr = *(int*)(optionalheader->mImageBase + imp->iFirstThunk) + optionalheader->mImageBase;
+; 356  : 						int FTaddr = *(int*)(optionalheader->mImageBase + imp->iFirstThunk) + optionalheader->mImageBase;
 
 	mov	eax, DWORD PTR [edi+52]
 	mov	ecx, DWORD PTR [ebx]
 	mov	esi, DWORD PTR [eax+ecx]
 	add	esi, eax
 
-; 352  : 						DebugPrintf("\n-->First thunk points to 0x%x",	FTaddr);
+; 357  : 						DebugPrintf("\n-->First thunk points to 0x%x",	FTaddr);
 
 	push	esi
 	push	OFFSET ??_C@_0BP@PEEAFDLG@?6?9?9?$DOFirst?5thunk?5points?5to?50x?$CFx?$AA@
 	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
 
-; 353  : 						PeImportFunction* pif = (PeImportFunction*)(FTaddr);
-; 354  : 						int j = 0;
-; 355  : 						while(FTaddr != optionalheader->mImageBase) {
+; 358  : 						PeImportFunction* pif = (PeImportFunction*)(FTaddr);
+; 359  : 						int j = 0;
+; 360  : 						while(FTaddr != optionalheader->mImageBase) {
 
 	mov	eax, DWORD PTR [edi+52]
 	add	esp, 16					; 00000010H
 	cmp	esi, eax
 	je	SHORT $LN7@PE_dumpApp
 
-; 349  : 					{
-; 350  : 						DebugPrintf("\n-->Found DLL import from module %s", (char*)(optionalheader->mImageBase + imp->iName));
+; 354  : 					{
+; 355  : 						DebugPrintf("\n-->Found DLL import from module %s", (char*)(optionalheader->mImageBase + imp->iName));
 
 	xor	ebp, ebp
 $LL8@PE_dumpApp:
 
-; 356  : 							DebugPrintf("\n-->Hint= 0x%X, name=%s", pif->fHint, &pif->fName);
+; 361  : 							DebugPrintf("\n-->Hint= 0x%X, name=%s", pif->fHint, &pif->fName);
 
 	movsx	eax, WORD PTR [esi]
 	lea	edx, DWORD PTR [esi+2]
@@ -1643,8 +1664,8 @@ $LL8@PE_dumpApp:
 	push	OFFSET ??_C@_0BI@NEHPEHBO@?6?9?9?$DOHint?$DN?50x?$CFX?0?5name?$DN?$CFs?$AA@
 	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
 
-; 357  : 							j++;
-; 358  : 							FTaddr = *(int*)(optionalheader->mImageBase + imp->iFirstThunk + j * 4) + optionalheader->mImageBase;
+; 362  : 							j++;
+; 363  : 							FTaddr = *(int*)(optionalheader->mImageBase + imp->iFirstThunk + j * 4) + optionalheader->mImageBase;
 
 	mov	eax, DWORD PTR [edi+52]
 	mov	edx, DWORD PTR [ebx]
@@ -1656,37 +1677,37 @@ $LL8@PE_dumpApp:
 	cmp	esi, eax
 	jne	SHORT $LL8@PE_dumpApp
 
-; 353  : 						PeImportFunction* pif = (PeImportFunction*)(FTaddr);
-; 354  : 						int j = 0;
-; 355  : 						while(FTaddr != optionalheader->mImageBase) {
+; 358  : 						PeImportFunction* pif = (PeImportFunction*)(FTaddr);
+; 359  : 						int j = 0;
+; 360  : 						while(FTaddr != optionalheader->mImageBase) {
 
 	mov	ebp, DWORD PTR _ddir$[esp+20]
 $LN7@PE_dumpApp:
 
-; 359  : 							pif = (PeImportFunction*)(FTaddr);
-; 360  : 						}
-; 361  : 						i++;
-; 362  : 						imp ++; // go to next DLL entry
+; 364  : 							pif = (PeImportFunction*)(FTaddr);
+; 365  : 						}
+; 366  : 						i++;
+; 367  : 						imp ++; // go to next DLL entry
 
 	add	ebx, 20					; 00000014H
 	cmp	DWORD PTR [ebx-16], 0
 	jne	SHORT $LL10@PE_dumpApp
 
-; 363  : 					}
-; 364  : 					break;
+; 368  : 					}
+; 369  : 					break;
 
 	jmp	$LN51@PE_dumpApp
 $LN15@PE_dumpApp:
 
-; 326  : 			{
-; 327  : 				case 0:
-; 328  : 					// export table
-; 329  : 					exp = (PeExportDirectory*)(optionalheader->mImageBase + ddir->dVirtualAddress);
+; 331  : 			{
+; 332  : 				case 0:
+; 333  : 					// export table
+; 334  : 					exp = (PeExportDirectory*)(optionalheader->mImageBase + ddir->dVirtualAddress);
 
 	mov	esi, DWORD PTR [ebp]
 	add	esi, DWORD PTR [edi+52]
 
-; 330  : 					DebugPrintf("\n->This is an export directory, containing %d function(s)! Located at 0x%x",exp->eNumberOfFunctions ,exp);
+; 335  : 					DebugPrintf("\n->This is an export directory, containing %d function(s)! Located at 0x%x",exp->eNumberOfFunctions ,exp);
 
 	mov	eax, DWORD PTR [esi+20]
 	push	esi
@@ -1694,8 +1715,8 @@ $LN15@PE_dumpApp:
 	push	OFFSET ??_C@_0EL@KHKFHGDG@?6?9?$DOThis?5is?5an?5export?5directory?0?5@
 	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
 
-; 331  : 					//DebugPrintf("\nnameoffset=0x%x",optionalheader->mImageBase + exp->eAddressOfNames);
-; 332  : 					for(int k= 0; k < exp->eNumberOfFunctions; k++)
+; 336  : 					//DebugPrintf("\nnameoffset=0x%x",optionalheader->mImageBase + exp->eAddressOfNames);
+; 337  : 					for(int k= 0; k < exp->eNumberOfFunctions; k++)
 
 	xor	ebx, ebx
 	add	esp, 12					; 0000000cH
@@ -1704,19 +1725,19 @@ $LN15@PE_dumpApp:
 	npad	1
 $LL14@PE_dumpApp:
 
-; 333  : 					{
-; 334  : 						currentNameAddr = *(unsigned int*)(optionalheader->mImageBase + exp->eAddressOfNames + k*4);
-; 335  : 						//DebugPrintf("\ncurrentNameAddr=0x%x", currentNameAddr);
-; 336  : 						currentName = (char*)(currentNameAddr + optionalheader->mImageBase);
-; 337  : 						currentOrdinal = *(short*)(optionalheader->mImageBase + exp->eAddressOfOrdinals + k*2);
+; 338  : 					{
+; 339  : 						currentNameAddr = *(unsigned int*)(optionalheader->mImageBase + exp->eAddressOfNames + k*4);
+; 340  : 						//DebugPrintf("\ncurrentNameAddr=0x%x", currentNameAddr);
+; 341  : 						currentName = (char*)(currentNameAddr + optionalheader->mImageBase);
+; 342  : 						currentOrdinal = *(short*)(optionalheader->mImageBase + exp->eAddressOfOrdinals + k*2);
 
 	mov	eax, DWORD PTR [edi+52]
 	movsx	ecx, WORD PTR [esi+36]
 	add	ecx, eax
 	movzx	ecx, WORD PTR [ecx+ebx*2]
 
-; 338  : 						currentAddress = *(int*)(optionalheader->mImageBase + exp->eAddressOfFunctions + currentOrdinal*4);
-; 339  : 						DebugPrintf("\n--->%s() at 0x%x, ordinal 0x%x", currentName, currentAddress, currentOrdinal);
+; 343  : 						currentAddress = *(int*)(optionalheader->mImageBase + exp->eAddressOfFunctions + currentOrdinal*4);
+; 344  : 						DebugPrintf("\n--->%s() at 0x%x, ordinal 0x%x", currentName, currentAddress, currentOrdinal);
 
 	push	ecx
 	lea	edx, DWORD PTR [eax+ecx*4]
@@ -1735,8 +1756,8 @@ $LL14@PE_dumpApp:
 	cmp	ebx, DWORD PTR [esi+20]
 	jl	SHORT $LL14@PE_dumpApp
 
-; 331  : 					//DebugPrintf("\nnameoffset=0x%x",optionalheader->mImageBase + exp->eAddressOfNames);
-; 332  : 					for(int k= 0; k < exp->eNumberOfFunctions; k++)
+; 336  : 					//DebugPrintf("\nnameoffset=0x%x",optionalheader->mImageBase + exp->eAddressOfNames);
+; 337  : 					for(int k= 0; k < exp->eNumberOfFunctions; k++)
 
 	jmp	$LN51@PE_dumpApp
 ?PE_dumpApp@@YA_NPADH@Z ENDP				; PE_dumpApp

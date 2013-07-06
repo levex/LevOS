@@ -1,6 +1,6 @@
 #ifndef __LEV_TIME_H_
 #define __LEV_TIME_H_
-
+#define DLLIMPORT extern "C" __declspec(dllimport)
 typedef struct __RTC__DATA {
 	int Year;
 	int Month;

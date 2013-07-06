@@ -14,6 +14,7 @@ bool vd_populate()
 	floppy.name = (char*)"FLOPPYDISKDRIVER";
 	floppy.uniqueID = 0;
 	floppy.read_sector = (FUNCTION1)flpydsk_read_sector;
+	floppy.write_sector = flpydsk_write_sector;
 	floppy.reset = (FUNCTION0) 0;
 	floppy.deinit = (FUNCTION0) 0;
 	floppy.set_drive = (FUNCTION1) flpydsk_set_working_drive;

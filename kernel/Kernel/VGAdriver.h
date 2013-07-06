@@ -6,12 +6,13 @@ extern void VGA_clear_screen();
 extern void VGA_init(int width, int height, int bpp);
 extern void VGA_put_pixel(int x, int y, char color);
 extern void VGA_put_image(int x, int y, char* filename);
-extern void VGA_put_string(int x, int y,char* str);
-extern void VGA_put_char(int x, int y,char c);
+extern void VGA_put_string(int x, int y,char* str, char col);
+extern void VGA_put_char(int x, int y,char c, char col);
 extern void VGA_deinit();
 extern void VGA_setfont(char* f);
 extern void VGA_put_line(int x0, int y0, int x1, int y1, char color);
 extern void VGA_put_rectangle(int sx, int sy, int ex, int ey, char fill);
+extern bool isVGA();
 
 typedef unsigned char* (_cdecl *PIXEL_WRITER)(int, int, char);
 

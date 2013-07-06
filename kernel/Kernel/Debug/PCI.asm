@@ -913,8 +913,8 @@ CONST	SEGMENT
 CONST	ENDS
 ;	COMDAT ?PCI_test@@YAXXZ
 _TEXT	SEGMENT
-_slot$2664 = -16					; size = 4
-_bus$2660 = -12						; size = 4
+_slot$2665 = -16					; size = 4
+_bus$2661 = -12						; size = 4
 tv440 = -8						; size = 4
 tv444 = -4						; size = 4
 ?PCI_test@@YAXXZ PROC					; PCI_test, COMDAT
@@ -936,17 +936,17 @@ tv444 = -4						; size = 4
 ; 14   : 	// Maximum PCI capacity: 256 bus each having at most 32 slots and each slots having at most 8 functions
 ; 15   : 	for(int bus = 0; bus < 256; bus++)
 
-	mov	DWORD PTR _bus$2660[esp+32], 0
+	mov	DWORD PTR _bus$2661[esp+32], 0
 	npad	4
 $LL39@PCI_test:
-	movzx	eax, WORD PTR _bus$2660[esp+32]
+	movzx	eax, WORD PTR _bus$2661[esp+32]
 	or	eax, -32768				; ffff8000H
 	shl	eax, 5
 
 ; 16   : 	{
 ; 17   : 		for(int slot = 0; slot < 32; slot++)
 
-	mov	DWORD PTR _slot$2664[esp+32], 0
+	mov	DWORD PTR _slot$2665[esp+32], 0
 	mov	DWORD PTR tv440[esp+32], eax
 	jmp	SHORT $LN7@PCI_test
 	npad	5
@@ -961,7 +961,7 @@ $LN7@PCI_test:
 ; 16   : 	{
 ; 17   : 		for(int slot = 0; slot < 32; slot++)
 
-	movzx	ecx, WORD PTR _slot$2664[esp+32]
+	movzx	ecx, WORD PTR _slot$2665[esp+32]
 	or	eax, ecx
 
 ; 22   : 				if(vendor == 0xFFFF) continue;
@@ -1008,11 +1008,11 @@ $LL41@PCI_test:
 
 ; 24   : 				DebugPrintf("\nPCI: Bus: 0x%X Slot: 0x%x Function: 0x%x Vendor: 0x%X Device=0x%x", bus, slot,function, vendor, device);
 
-	mov	esi, DWORD PTR _bus$2660[esp+44]
+	mov	esi, DWORD PTR _bus$2661[esp+44]
 	shr	eax, 16					; 00000010H
 	push	eax
 	push	ebp
-	mov	ebp, DWORD PTR _slot$2664[esp+52]
+	mov	ebp, DWORD PTR _slot$2665[esp+52]
 	push	edi
 	push	ebp
 	push	esi
@@ -1080,18 +1080,18 @@ $LN3@PCI_test:
 ; 16   : 	{
 ; 17   : 		for(int slot = 0; slot < 32; slot++)
 
-	mov	eax, DWORD PTR _slot$2664[esp+32]
+	mov	eax, DWORD PTR _slot$2665[esp+32]
 	inc	eax
-	mov	DWORD PTR _slot$2664[esp+32], eax
+	mov	DWORD PTR _slot$2665[esp+32], eax
 	cmp	eax, 32					; 00000020H
 	jl	$LL40@PCI_test
 
 ; 14   : 	// Maximum PCI capacity: 256 bus each having at most 32 slots and each slots having at most 8 functions
 ; 15   : 	for(int bus = 0; bus < 256; bus++)
 
-	mov	eax, DWORD PTR _bus$2660[esp+32]
+	mov	eax, DWORD PTR _bus$2661[esp+32]
 	inc	eax
-	mov	DWORD PTR _bus$2660[esp+32], eax
+	mov	DWORD PTR _bus$2661[esp+32], eax
 	cmp	eax, 256				; 00000100H
 	jl	$LL39@PCI_test
 	pop	edi

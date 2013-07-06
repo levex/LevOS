@@ -1,5 +1,5 @@
-﻿Build started 7/4/2013 6:19:58 PM.
-     1>Project "C:\Dev\LevOS\kernel\Kernel\Kernel.vcxproj" on node 4 (build target(s)).
+﻿Build started 7/6/2013 7:46:01 PM.
+     1>Project "C:\Dev\LevOS\kernel\Kernel\Kernel.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\Kernel.unsuccessfulbuild" because "AlwaysCreate" was specified.
        PreBuildEvent:
@@ -22,4 +22,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:00.27
+Time Elapsed 00:00:00.13

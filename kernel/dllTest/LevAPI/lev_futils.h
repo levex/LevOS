@@ -1,6 +1,6 @@
 #ifndef __LEV_FUTILS_H_
 #define __LEV_FUTILS_H_
-
+#define DLLIMPORT extern "C" __declspec(dllimport)
 DLLIMPORT int getNumberOfFilesInRoot();
 DLLIMPORT char* getFilesInRoot();
 DLLIMPORT bool _cdecl loadFileToLoc(char* filename, char* address);

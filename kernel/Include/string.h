@@ -6,6 +6,7 @@
 extern char *strcpy(char *s1, const char *s2);
 extern size_t strlen ( const char* str );
 extern int strcmp (const char* str1, const char* str2);
+extern bool strlcmp(char* str1, char* str2, int len);
 extern int strncpy( char *dest, char *src, int len );
 
 #define isspace(c)      ((c) == ' ' || ((c) >= '\t' && (c) <= '\r'))

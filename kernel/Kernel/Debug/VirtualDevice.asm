@@ -12,64 +12,63 @@ INCLUDELIB OLDNAMES
 PUBLIC	?hdd@@3U__DATA_DEVICE@@A			; hdd
 PUBLIC	?floppy@@3U__DATA_DEVICE@@A			; floppy
 _BSS	SEGMENT
-?hdd@@3U__DATA_DEVICE@@A DB 01cH DUP (?)		; hdd
-?floppy@@3U__DATA_DEVICE@@A DB 01cH DUP (?)		; floppy
+?hdd@@3U__DATA_DEVICE@@A DB 020H DUP (?)		; hdd
+?floppy@@3U__DATA_DEVICE@@A DB 020H DUP (?)		; floppy
 _BSS	ENDS
 PUBLIC	?vd_getDataDeviceById@@YA?AU__DATA_DEVICE@@H@Z	; vd_getDataDeviceById
 _BSS	SEGMENT
-_byid	DB	070H DUP (?)
+_byid	DB	080H DUP (?)
 ; Function compile flags: /Ogtpy
 ; File c:\dev\levos\kernel\kernel\virtualdevice.cpp
 _BSS	ENDS
 ;	COMDAT ?vd_getDataDeviceById@@YA?AU__DATA_DEVICE@@H@Z
 _TEXT	SEGMENT
-$T2644 = 8						; size = 4
+$T2652 = 8						; size = 4
 _id$ = 12						; size = 4
 ?vd_getDataDeviceById@@YA?AU__DATA_DEVICE@@H@Z PROC	; vd_getDataDeviceById, COMDAT
 
-; 42   : 	return byid[id];
+; 43   : 	return byid[id];
 
-	mov	eax, DWORD PTR _id$[esp-4]
+	mov	eax, DWORD PTR $T2652[esp-4]
 	push	esi
-	lea	esi, DWORD PTR [eax*8]
-	sub	esi, eax
-	mov	eax, DWORD PTR $T2644[esp]
+	mov	esi, DWORD PTR _id$[esp]
 	push	edi
-	lea	esi, DWORD PTR _byid[esi*4]
-	mov	ecx, 7
+	shl	esi, 5
+	add	esi, OFFSET _byid
+	mov	ecx, 8
 	mov	edi, eax
 	rep movsd
 	pop	edi
 	pop	esi
 
-; 43   : }
+; 44   : }
 
 	ret	0
 ?vd_getDataDeviceById@@YA?AU__DATA_DEVICE@@H@Z ENDP	; vd_getDataDeviceById
 _TEXT	ENDS
 PUBLIC	?vd_getCurrentDataDevice@@YA?AU__DATA_DEVICE@@XZ ; vd_getCurrentDataDevice
 _BSS	SEGMENT
-__c	DB	01cH DUP (?)
+__c	DB	020H DUP (?)
 ; Function compile flags: /Ogtpy
 _BSS	ENDS
 ;	COMDAT ?vd_getCurrentDataDevice@@YA?AU__DATA_DEVICE@@XZ
 _TEXT	SEGMENT
-$T2650 = 8						; size = 4
+$T2658 = 8						; size = 4
 ?vd_getCurrentDataDevice@@YA?AU__DATA_DEVICE@@XZ PROC	; vd_getCurrentDataDevice, COMDAT
 
-; 47   : 	return _c;
+; 48   : 	return _c;
 
-	mov	eax, DWORD PTR $T2650[esp-4]
+	mov	eax, DWORD PTR $T2658[esp-4]
 	push	esi
 	push	edi
-	mov	ecx, 7
+	mov	ecx, 8
 	mov	esi, OFFSET __c
 	mov	edi, eax
 	rep movsd
 	pop	edi
 	pop	esi
 
-; 48   : }
+; 49   : }
 
 	ret	0
 ?vd_getCurrentDataDevice@@YA?AU__DATA_DEVICE@@XZ ENDP	; vd_getCurrentDataDevice
@@ -78,24 +77,24 @@ PUBLIC	?vd_setCurrentDataDevice@@YAXU__DATA_DEVICE@@@Z	; vd_setCurrentDataDevice
 ; Function compile flags: /Ogtpy
 ;	COMDAT ?vd_setCurrentDataDevice@@YAXU__DATA_DEVICE@@@Z
 _TEXT	SEGMENT
-_d$ = 8							; size = 28
+_d$ = 8							; size = 32
 ?vd_setCurrentDataDevice@@YAXU__DATA_DEVICE@@@Z PROC	; vd_setCurrentDataDevice, COMDAT
 
-; 50   : {
+; 51   : {
 
 	push	esi
 	push	edi
 
-; 51   : 	_c = d;
+; 52   : 	_c = d;
 
-	mov	ecx, 7
+	mov	ecx, 8
 	lea	esi, DWORD PTR _d$[esp+4]
 	mov	edi, OFFSET __c
 	rep movsd
 	pop	edi
 	pop	esi
 
-; 52   : }
+; 53   : }
 
 	ret	0
 ?vd_setCurrentDataDevice@@YAXU__DATA_DEVICE@@@Z ENDP	; vd_setCurrentDataDevice
@@ -107,6 +106,7 @@ EXTRN	?hdd_set_working_drive@@YAXH@Z:PROC		; hdd_set_working_drive
 EXTRN	?hdd_read_sector@@YAPADH@Z:PROC			; hdd_read_sector
 EXTRN	?hdd_init@@YAXH@Z:PROC				; hdd_init
 EXTRN	?flpydsk_set_working_drive@@YAXE@Z:PROC		; flpydsk_set_working_drive
+EXTRN	?flpydsk_write_sector@@YAXPAEII@Z:PROC		; flpydsk_write_sector
 EXTRN	?flpydsk_read_sector@@YAPAEH@Z:PROC		; flpydsk_read_sector
 EXTRN	?flpydsk_install@@YAXH@Z:PROC			; flpydsk_install
 ;	COMDAT ??_C@_0P@CEBGFEPC@HARDDISKDRIVER?$AA@
@@ -135,85 +135,85 @@ _TEXT	SEGMENT
 	push	edi
 
 ; 16   : 	floppy.read_sector = (FUNCTION1)flpydsk_read_sector;
-; 17   : 	floppy.reset = (FUNCTION0) 0;
-; 18   : 	floppy.deinit = (FUNCTION0) 0;
-; 19   : 	floppy.set_drive = (FUNCTION1) flpydsk_set_working_drive;
-; 20   : 	floppy.set_drive(0);
+; 17   : 	floppy.write_sector = flpydsk_write_sector;
+; 18   : 	floppy.reset = (FUNCTION0) 0;
+; 19   : 	floppy.deinit = (FUNCTION0) 0;
+; 20   : 	floppy.set_drive = (FUNCTION1) flpydsk_set_working_drive;
+; 21   : 	floppy.set_drive(0);
 
 	push	ebx
-	mov	DWORD PTR ?floppy@@3U__DATA_DEVICE@@A+16, OFFSET ?flpydsk_install@@YAXH@Z ; flpydsk_install
+	mov	DWORD PTR ?floppy@@3U__DATA_DEVICE@@A+20, OFFSET ?flpydsk_install@@YAXH@Z ; flpydsk_install
 	mov	DWORD PTR ?floppy@@3U__DATA_DEVICE@@A, OFFSET ??_C@_0BB@NLFDNKDP@FLOPPYDISKDRIVER?$AA@
 	mov	DWORD PTR ?floppy@@3U__DATA_DEVICE@@A+4, ebx
 	mov	DWORD PTR ?floppy@@3U__DATA_DEVICE@@A+8, OFFSET ?flpydsk_read_sector@@YAPAEH@Z ; flpydsk_read_sector
-	mov	DWORD PTR ?floppy@@3U__DATA_DEVICE@@A+12, ebx
-	mov	DWORD PTR ?floppy@@3U__DATA_DEVICE@@A+20, ebx
-	mov	DWORD PTR ?floppy@@3U__DATA_DEVICE@@A+24, OFFSET ?flpydsk_set_working_drive@@YAXE@Z ; flpydsk_set_working_drive
+	mov	DWORD PTR ?floppy@@3U__DATA_DEVICE@@A+12, OFFSET ?flpydsk_write_sector@@YAXPAEII@Z ; flpydsk_write_sector
+	mov	DWORD PTR ?floppy@@3U__DATA_DEVICE@@A+16, ebx
+	mov	DWORD PTR ?floppy@@3U__DATA_DEVICE@@A+24, ebx
+	mov	DWORD PTR ?floppy@@3U__DATA_DEVICE@@A+28, OFFSET ?flpydsk_set_working_drive@@YAXE@Z ; flpydsk_set_working_drive
 	call	?flpydsk_set_working_drive@@YAXE@Z	; flpydsk_set_working_drive
 
-; 21   : 	floppy.init(38);
+; 22   : 	floppy.init(38);
 
 	push	38					; 00000026H
-	call	DWORD PTR ?floppy@@3U__DATA_DEVICE@@A+16
+	call	DWORD PTR ?floppy@@3U__DATA_DEVICE@@A+20
 
-; 22   : 	byid[floppy.uniqueID] = floppy;
+; 23   : 	byid[floppy.uniqueID] = floppy;
 
-	mov	eax, DWORD PTR ?floppy@@3U__DATA_DEVICE@@A+4
-	lea	edi, DWORD PTR [eax*8]
-	sub	edi, eax
-	lea	edi, DWORD PTR _byid[edi*4]
-	mov	ecx, 7
+	mov	edi, DWORD PTR ?floppy@@3U__DATA_DEVICE@@A+4
+	shl	edi, 5
+	add	edi, OFFSET _byid
+	mov	ecx, 8
 	mov	esi, OFFSET ?floppy@@3U__DATA_DEVICE@@A	; floppy
 
-; 23   : 
-; 24   : 	hdd.init = (FUNCTION1)hdd_init;
-; 25   : 	hdd.deinit = (FUNCTION0)0;
-; 26   : 	hdd.name = (char*)"HARDDISKDRIVER";
-; 27   : 	hdd.read_sector = (FUNCTION1)hdd_read_sector;
-; 28   : 	hdd.reset = (FUNCTION0) 0;
-; 29   : 	hdd.set_drive = (FUNCTION1) hdd_set_working_drive;
-; 30   : 	hdd.uniqueID = 1;
-; 31   : 	hdd.init(0);
+; 24   : 
+; 25   : 	hdd.init = (FUNCTION1)hdd_init;
+; 26   : 	hdd.deinit = (FUNCTION0)0;
+; 27   : 	hdd.name = (char*)"HARDDISKDRIVER";
+; 28   : 	hdd.read_sector = (FUNCTION1)hdd_read_sector;
+; 29   : 	hdd.reset = (FUNCTION0) 0;
+; 30   : 	hdd.set_drive = (FUNCTION1) hdd_set_working_drive;
+; 31   : 	hdd.uniqueID = 1;
+; 32   : 	hdd.init(0);
 
 	push	ebx
 	rep movsd
-	mov	DWORD PTR ?hdd@@3U__DATA_DEVICE@@A+16, OFFSET ?hdd_init@@YAXH@Z ; hdd_init
-	mov	DWORD PTR ?hdd@@3U__DATA_DEVICE@@A+20, ebx
+	mov	DWORD PTR ?hdd@@3U__DATA_DEVICE@@A+20, OFFSET ?hdd_init@@YAXH@Z ; hdd_init
+	mov	DWORD PTR ?hdd@@3U__DATA_DEVICE@@A+24, ebx
 	mov	DWORD PTR ?hdd@@3U__DATA_DEVICE@@A, OFFSET ??_C@_0P@CEBGFEPC@HARDDISKDRIVER?$AA@
 	mov	DWORD PTR ?hdd@@3U__DATA_DEVICE@@A+8, OFFSET ?hdd_read_sector@@YAPADH@Z ; hdd_read_sector
-	mov	DWORD PTR ?hdd@@3U__DATA_DEVICE@@A+12, ebx
-	mov	DWORD PTR ?hdd@@3U__DATA_DEVICE@@A+24, OFFSET ?hdd_set_working_drive@@YAXH@Z ; hdd_set_working_drive
+	mov	DWORD PTR ?hdd@@3U__DATA_DEVICE@@A+16, ebx
+	mov	DWORD PTR ?hdd@@3U__DATA_DEVICE@@A+28, OFFSET ?hdd_set_working_drive@@YAXH@Z ; hdd_set_working_drive
 	mov	DWORD PTR ?hdd@@3U__DATA_DEVICE@@A+4, 1
 	call	?hdd_init@@YAXH@Z			; hdd_init
 
-; 32   : 	byid[hdd.uniqueID] = hdd;
+; 33   : 	byid[hdd.uniqueID] = hdd;
 
-	mov	eax, DWORD PTR ?hdd@@3U__DATA_DEVICE@@A+4
-	lea	edi, DWORD PTR [eax*8]
-	sub	edi, eax
-	lea	edi, DWORD PTR _byid[edi*4]
-	mov	ecx, 7
+	mov	edi, DWORD PTR ?hdd@@3U__DATA_DEVICE@@A+4
+	shl	edi, 5
+	add	edi, OFFSET _byid
+	mov	ecx, 8
 	mov	esi, OFFSET ?hdd@@3U__DATA_DEVICE@@A	; hdd
 	rep movsd
 	add	esp, 12					; 0000000cH
 
-; 33   : 
 ; 34   : 
-; 35   : 	vd_setCurrentDataDevice(floppy);
+; 35   : 
+; 36   : 	vd_setCurrentDataDevice(floppy);
 
-	mov	ecx, 7
+	mov	ecx, 8
 	mov	esi, OFFSET ?floppy@@3U__DATA_DEVICE@@A	; floppy
 	mov	edi, OFFSET __c
 	rep movsd
 	pop	edi
 	pop	esi
 
-; 36   : 
-; 37   : 	return true;
+; 37   : 
+; 38   : 	return true;
 
 	mov	al, 1
 	pop	ebx
 
-; 38   : }
+; 39   : }
 
 	ret	0
 ?vd_populate@@YA_NXZ ENDP				; vd_populate

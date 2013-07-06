@@ -3,39 +3,39 @@
 
 #include "PE.h"
 
-typedef struct __registers {
-   int esp;
-   int ebp;
-   int eip;
-   int edi;
-   int esi;
-   int eax;
-   int ebx;
-   int ecx;
-   int edx;
-   int flags;
-} trapframe;
+typedef struct {
+	unsigned int eax;
+	unsigned int ebx;
+	unsigned int ecx;
+	unsigned int edx;
+	unsigned int esi;
+	unsigned int edi;
+	unsigned int esp;
+	unsigned int ebp;
+} REGISTER_DUMP;
 
 typedef struct __PROCESS {
+	bool valid;
+	bool ran;
+	unsigned char* stack_top;
 	unsigned char pid;
-	PeOptionalHeader* optionalHeader;
-	PeHeader* PEHeader;
-	unsigned char* stackBase;
-	unsigned char* stackPointer;
-	unsigned char* myPhysicalBase;
-	unsigned char myVirtualTableId;
-	trapframe* regs;
+	unsigned int eip;
+	REGISTER_DUMP regs;
 } PROCESS;
 
-extern PROCESS getCurrentProc();
-extern void setCurrentProc(PROCESS p);
-extern void addProcess(PROCESS p);
+extern unsigned char* allocStack(PROCESS* p);
+
+/*extern PROCESS* getCurrentProc();
+extern void setCurrentProc(PROCESS* p);
+extern void addProcess(PROCESS* p);
 
 extern void startMultitask();
 
 extern void switchTasks(int eip);
 
+extern void initProcessManager();
+
 extern void saveKernelStack();
-extern void restoreKernelStack();
+extern void restoreKernelStack();*/
 
 #endif

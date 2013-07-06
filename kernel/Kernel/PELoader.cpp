@@ -31,6 +31,11 @@ bool PE_mapApp(char* filename, int base)
 		DebugPrintf("\nERROR: File is not for starting!");
 		return false;
 	}
+	if(optionalheader->mMajorSubsystemVersion != 0x1337)
+	{
+		DebugPrintf("\nERROR: Not a valid LevOS executable!");
+		return false;
+	}
 	// third step, map the sections
 	int loadBase = base+0x1000+getFileSize(filename) - 4*1024*1024;
 #ifdef DEBUG

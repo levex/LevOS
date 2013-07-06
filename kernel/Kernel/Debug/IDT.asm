@@ -52,12 +52,12 @@ _n$ = 8							; size = 4
 
 ; 54   : 		mov byte ptr [genint+1], al
 
-	mov	OFFSET $genint$2678+1, al
+	mov	OFFSET $genint$2686+1, al
 
 ; 55   : 		jmp genint
 
-	jmp	SHORT $genint$2678
-$genint$2678:
+	jmp	SHORT $genint$2686
+$genint$2686:
 
 ; 56   : 	genint:
 ; 57   : 		int 0	// above code modifies the 0 to int number to generate

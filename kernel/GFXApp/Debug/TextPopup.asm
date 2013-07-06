@@ -49,10 +49,10 @@ _a$ = 8							; size = 1
 ?OUTc@@YAXD@Z ENDP					; OUTc
 _TEXT	ENDS
 PUBLIC	?W_TEXTPOPUP_paint@@YAXPAUWINDOW@@@Z		; W_TEXTPOPUP_paint
-EXTRN	?VGA_putstring@@YAXHHPAD@Z:PROC			; VGA_putstring
-EXTRN	?VGA_putrect@@YAXHHHH@Z:PROC			; VGA_putrect
-EXTRN	?VGA_setcolor@@YAXD@Z:PROC			; VGA_setcolor
-EXTRN	?VGA_getcolor@@YADXZ:PROC			; VGA_getcolor
+EXTRN	__imp__VGA_putstring:PROC
+EXTRN	__imp__VGA_putrect:PROC
+EXTRN	__imp__VGA_setcolor:PROC
+EXTRN	__imp__VGA_getcolor:PROC
 ; Function compile flags: /Odtp /ZI
 ;	COMDAT ?W_TEXTPOPUP_paint@@YAXPAUWINDOW@@@Z
 _TEXT	SEGMENT
@@ -71,13 +71,13 @@ _w$ = 8							; size = 4
 
 ; 14   : 	char c = VGA_getcolor();
 
-	call	?VGA_getcolor@@YADXZ			; VGA_getcolor
+	call	DWORD PTR __imp__VGA_getcolor
 	mov	BYTE PTR _c$[ebp], al
 
 ; 15   : 	VGA_setcolor(1);
 
 	push	1
-	call	?VGA_setcolor@@YAXD@Z			; VGA_setcolor
+	call	DWORD PTR __imp__VGA_setcolor
 	add	esp, 4
 
 ; 16   : 	/* WINDOW PRIMITIVE */
@@ -96,7 +96,7 @@ _w$ = 8							; size = 4
 	mov	eax, DWORD PTR _w$[ebp]
 	mov	ecx, DWORD PTR [eax+13]
 	push	ecx
-	call	?VGA_putrect@@YAXHHHH@Z			; VGA_putrect
+	call	DWORD PTR __imp__VGA_putrect
 	add	esp, 16					; 00000010H
 
 ; 18   : 	VGA_putstring(w->startX + 2 , w->startY + 2, w->title);
@@ -112,7 +112,7 @@ _w$ = 8							; size = 4
 	mov	edx, DWORD PTR [ecx+13]
 	add	edx, 2
 	push	edx
-	call	?VGA_putstring@@YAXHHPAD@Z		; VGA_putstring
+	call	DWORD PTR __imp__VGA_putstring
 	add	esp, 12					; 0000000cH
 
 ; 19   : 	VGA_putrect(w->startX, w->startY, w->endX, w->endY);
@@ -129,7 +129,7 @@ _w$ = 8							; size = 4
 	mov	eax, DWORD PTR _w$[ebp]
 	mov	ecx, DWORD PTR [eax+13]
 	push	ecx
-	call	?VGA_putrect@@YAXHHHH@Z			; VGA_putrect
+	call	DWORD PTR __imp__VGA_putrect
 	add	esp, 16					; 00000010H
 
 ; 20   : 	/* END WINDOW PRIMITIVE */
@@ -151,14 +151,14 @@ _w$ = 8							; size = 4
 	mov	eax, DWORD PTR [edx+13]
 	add	eax, 2
 	push	eax
-	call	?VGA_putstring@@YAXHHPAD@Z		; VGA_putstring
+	call	DWORD PTR __imp__VGA_putstring
 	add	esp, 12					; 0000000cH
 
 ; 22   : 	VGA_setcolor(c);
 
 	movzx	eax, BYTE PTR _c$[ebp]
 	push	eax
-	call	?VGA_setcolor@@YAXD@Z			; VGA_setcolor
+	call	DWORD PTR __imp__VGA_setcolor
 	add	esp, 4
 
 ; 23   : }
@@ -175,6 +175,7 @@ PUBLIC	?W_TEXTPOPUP_move@@YAXPAUWINDOW@@HH@Z		; W_TEXTPOPUP_move
 ; Function compile flags: /Odtp /ZI
 ;	COMDAT ?W_TEXTPOPUP_move@@YAXPAUWINDOW@@HH@Z
 _TEXT	SEGMENT
+_c$ = -9						; size = 1
 _height$ = -8						; size = 4
 _width$ = -4						; size = 4
 _w$ = 8							; size = 4
@@ -186,13 +187,14 @@ _y$ = 16						; size = 4
 
 	push	ebp
 	mov	ebp, esp
-	sub	esp, 72					; 00000048H
+	sub	esp, 76					; 0000004cH
 	push	ebx
 	push	esi
 	push	edi
 
-; 27   : 	//OUTc('C');
-; 28   : 	int width = w->endX - w->startX;
+; 27   : 	/* save me */
+; 28   : 	//OUTc('C');
+; 29   : 	int width = w->endX - w->startX;
 
 	mov	eax, DWORD PTR _w$[ebp]
 	mov	ecx, DWORD PTR _w$[ebp]
@@ -200,7 +202,7 @@ _y$ = 16						; size = 4
 	sub	edx, DWORD PTR [ecx+13]
 	mov	DWORD PTR _width$[ebp], edx
 
-; 29   : 	int height = w->endY - w->startY;
+; 30   : 	int height = w->endY - w->startY;
 
 	mov	eax, DWORD PTR _w$[ebp]
 	mov	ecx, DWORD PTR _w$[ebp]
@@ -208,20 +210,107 @@ _y$ = 16						; size = 4
 	sub	edx, DWORD PTR [ecx+17]
 	mov	DWORD PTR _height$[ebp], edx
 
-; 30   : 	//OUTc('D');
-; 31   : 	w->startX = x;
+; 31   : 	/* clear me */
+; 32   : 
+; 33   : 	char c = VGA_getcolor();
+
+	call	DWORD PTR __imp__VGA_getcolor
+	mov	BYTE PTR _c$[ebp], al
+
+; 34   : 	VGA_setcolor(0);
+
+	push	0
+	call	DWORD PTR __imp__VGA_setcolor
+	add	esp, 4
+
+; 35   : 	VGA_putrect(w->startX, w->startY, w->endX, w->startY + 12);
+
+	mov	eax, DWORD PTR _w$[ebp]
+	mov	ecx, DWORD PTR [eax+17]
+	add	ecx, 12					; 0000000cH
+	push	ecx
+	mov	edx, DWORD PTR _w$[ebp]
+	mov	eax, DWORD PTR [edx+21]
+	push	eax
+	mov	ecx, DWORD PTR _w$[ebp]
+	mov	edx, DWORD PTR [ecx+17]
+	push	edx
+	mov	eax, DWORD PTR _w$[ebp]
+	mov	ecx, DWORD PTR [eax+13]
+	push	ecx
+	call	DWORD PTR __imp__VGA_putrect
+	add	esp, 16					; 00000010H
+
+; 36   : 	VGA_putstring(w->startX + 2 , w->startY + 2, w->title);
+
+	mov	eax, DWORD PTR _w$[ebp]
+	mov	ecx, DWORD PTR [eax+30]
+	push	ecx
+	mov	edx, DWORD PTR _w$[ebp]
+	mov	eax, DWORD PTR [edx+17]
+	add	eax, 2
+	push	eax
+	mov	ecx, DWORD PTR _w$[ebp]
+	mov	edx, DWORD PTR [ecx+13]
+	add	edx, 2
+	push	edx
+	call	DWORD PTR __imp__VGA_putstring
+	add	esp, 12					; 0000000cH
+
+; 37   : 	VGA_putrect(w->startX, w->startY, w->endX, w->endY);
+
+	mov	eax, DWORD PTR _w$[ebp]
+	mov	ecx, DWORD PTR [eax+25]
+	push	ecx
+	mov	edx, DWORD PTR _w$[ebp]
+	mov	eax, DWORD PTR [edx+21]
+	push	eax
+	mov	ecx, DWORD PTR _w$[ebp]
+	mov	edx, DWORD PTR [ecx+17]
+	push	edx
+	mov	eax, DWORD PTR _w$[ebp]
+	mov	ecx, DWORD PTR [eax+13]
+	push	ecx
+	call	DWORD PTR __imp__VGA_putrect
+	add	esp, 16					; 00000010H
+
+; 38   : 	/* END WINDOW PRIMITIVE */
+; 39   : 	VGA_putstring(w->startX + 2, (w->startY + w->endY) / 2, ((W_TEXTPOPUP*)(w->bigBro))->text);
+
+	mov	eax, DWORD PTR _w$[ebp]
+	mov	ecx, DWORD PTR [eax+8]
+	mov	edx, DWORD PTR [ecx]
+	push	edx
+	mov	eax, DWORD PTR _w$[ebp]
+	mov	eax, DWORD PTR [eax+17]
+	mov	ecx, DWORD PTR _w$[ebp]
+	add	eax, DWORD PTR [ecx+25]
+	cdq
+	sub	eax, edx
+	sar	eax, 1
+	push	eax
+	mov	edx, DWORD PTR _w$[ebp]
+	mov	eax, DWORD PTR [edx+13]
+	add	eax, 2
+	push	eax
+	call	DWORD PTR __imp__VGA_putstring
+	add	esp, 12					; 0000000cH
+
+; 40   : 
+; 41   : 	/* redraw move */
+; 42   : 	w->startX = x;
 
 	mov	eax, DWORD PTR _w$[ebp]
 	mov	ecx, DWORD PTR _x$[ebp]
 	mov	DWORD PTR [eax+13], ecx
 
-; 32   : 	w->startY = y;
+; 43   : 	w->startY = y;
 
 	mov	eax, DWORD PTR _w$[ebp]
 	mov	ecx, DWORD PTR _y$[ebp]
 	mov	DWORD PTR [eax+17], ecx
 
-; 33   : 	w->endX = w->startX + width;
+; 44   : 	w->endX = w->startX + width;
 
 	mov	eax, DWORD PTR _w$[ebp]
 	mov	ecx, DWORD PTR [eax+13]
@@ -229,7 +318,7 @@ _y$ = 16						; size = 4
 	mov	edx, DWORD PTR _w$[ebp]
 	mov	DWORD PTR [edx+21], ecx
 
-; 34   : 	w->endY = w->startY + height;
+; 45   : 	w->endY = w->startY + height;
 
 	mov	eax, DWORD PTR _w$[ebp]
 	mov	ecx, DWORD PTR [eax+17]
@@ -237,9 +326,8 @@ _y$ = 16						; size = 4
 	mov	edx, DWORD PTR _w$[ebp]
 	mov	DWORD PTR [edx+25], ecx
 
-; 35   : 	//OUTc('E');
-; 36   : 	return;
-; 37   : }
+; 46   : 	return;
+; 47   : }
 
 	pop	edi
 	pop	esi
@@ -260,7 +348,7 @@ _title$ = 16						; size = 4
 _str$ = 20						; size = 4
 ?W_TEXTPOPUP_init@@YAXPAUW_TEXTPOPUP@@PAUWINDOW@@PAD2@Z PROC ; W_TEXTPOPUP_init, COMDAT
 
-; 40   : {
+; 50   : {
 
 	push	ebp
 	mov	ebp, esp
@@ -269,23 +357,23 @@ _str$ = 20						; size = 4
 	push	esi
 	push	edi
 
-; 41   : 	t->text = str;
+; 51   : 	t->text = str;
 
 	mov	eax, DWORD PTR _t$[ebp]
 	mov	ecx, DWORD PTR _str$[ebp]
 	mov	DWORD PTR [eax], ecx
 
-; 42   : 	w->startX = 45;
+; 52   : 	w->startX = 45;
 
 	mov	eax, DWORD PTR _w$[ebp]
 	mov	DWORD PTR [eax+13], 45			; 0000002dH
 
-; 43   : 	w->startY = 45;
+; 53   : 	w->startY = 45;
 
 	mov	eax, DWORD PTR _w$[ebp]
 	mov	DWORD PTR [eax+17], 45			; 0000002dH
 
-; 44   : 	w->endX = w->startX + (strlen(t->text) + 1)*8;
+; 54   : 	w->endX = w->startX + (strlen(t->text) + 1)*8;
 
 	mov	eax, DWORD PTR _t$[ebp]
 	mov	ecx, DWORD PTR [eax]
@@ -298,7 +386,7 @@ _str$ = 20						; size = 4
 	mov	eax, DWORD PTR _w$[ebp]
 	mov	DWORD PTR [eax+21], edx
 
-; 45   : 	w->endY = w->startY + 45;
+; 55   : 	w->endY = w->startY + 45;
 
 	mov	eax, DWORD PTR _w$[ebp]
 	mov	ecx, DWORD PTR [eax+17]
@@ -306,40 +394,40 @@ _str$ = 20						; size = 4
 	mov	edx, DWORD PTR _w$[ebp]
 	mov	DWORD PTR [edx+25], ecx
 
-; 46   : 	w->isValid = true;
+; 56   : 	w->isValid = true;
 
 	mov	eax, DWORD PTR _w$[ebp]
 	mov	BYTE PTR [eax+12], 1
 
-; 47   : 	w->title = title;
+; 57   : 	w->title = title;
 
 	mov	eax, DWORD PTR _w$[ebp]
 	mov	ecx, DWORD PTR _title$[ebp]
 	mov	DWORD PTR [eax+30], ecx
 
-; 48   : 	w->paint = (PAINTER)W_TEXTPOPUP_paint;
+; 58   : 	w->paint = (void(__cdecl*)(void*))W_TEXTPOPUP_paint;
 
 	mov	eax, DWORD PTR _w$[ebp]
 	mov	DWORD PTR [eax], OFFSET ?W_TEXTPOPUP_paint@@YAXPAUWINDOW@@@Z ; W_TEXTPOPUP_paint
 
-; 49   : 	w->move = (MOVER)W_TEXTPOPUP_move;
+; 59   : 	w->move = (void(__cdecl*)(void*, int, int))W_TEXTPOPUP_move;
 
 	mov	eax, DWORD PTR _w$[ebp]
 	mov	DWORD PTR [eax+4], OFFSET ?W_TEXTPOPUP_move@@YAXPAUWINDOW@@HH@Z ; W_TEXTPOPUP_move
 
-; 50   : 	w->bigBro = t;
+; 60   : 	w->bigBro = t;
 
 	mov	eax, DWORD PTR _w$[ebp]
 	mov	ecx, DWORD PTR _t$[ebp]
 	mov	DWORD PTR [eax+8], ecx
 
-; 51   : 	t->window = w;
+; 61   : 	t->window = w;
 
 	mov	eax, DWORD PTR _t$[ebp]
 	mov	ecx, DWORD PTR _w$[ebp]
 	mov	DWORD PTR [eax+4], ecx
 
-; 52   : }
+; 62   : }
 
 	pop	edi
 	pop	esi

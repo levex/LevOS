@@ -165,6 +165,31 @@ FILE fsysFatDirectory (const char* DirectoryName) {
 	return file;
 }
 
+void fsysFatWrite(PFILE file, unsigned char* Buffer, unsigned int Length)
+{
+	if(!file) return;
+	if(Length == 0) return;
+	if(Buffer == 0) return;
+	/*
+	Writing a file:
+		Find an empty cluster
+		Create a root directory entry
+		Create a FAT entry for the cluster
+		Repeat until filesize is accomplished.
+	*/
+	int StartSectorOfDataOnDisk = _MountInfo.rootOffset + _MountInfo.rootSize; // skip reserved, bpb, rootdir
+
+	/* STEP: find free spot in root directory */
+	// The root directory consists of 14 sectors AT MOST
+	unsigned char* sector = (unsigned char*)(vd_getCurrentDataDevice().read_sector(_MountInfo.rootOffset));
+	for(int i = 0; i < 14; i++) // do for each sector
+	{
+		sector = (unsigned char*)(vd_getCurrentDataDevice().read_sector(_MountInfo.rootOffset + i));
+		DIRECTORY* entry = (DIRECTORY*)sector;
+		
+	}
+}
+
 /**
 *	Reads from a file
 */

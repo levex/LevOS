@@ -15,6 +15,7 @@ uint8_t flpydsk_get_working_drive ();
 
 // read a sector
 uint8_t* flpydsk_read_sector (int sectorLBA);
+void flpydsk_write_sector (unsigned char* Buffer, unsigned int Length, unsigned int sector);
 
 // converts an LBA address to CHS
 void flpydsk_lba_to_chs (int lba,int *head,int *track,int *sector);

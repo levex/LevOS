@@ -8,6 +8,7 @@ typedef struct __DATA_DEVICE {
 	char* name;
 	int uniqueID;
 	FUNCTION1 read_sector;
+	void (*write_sector) (unsigned char* Buffer, unsigned int Length, unsigned int sector);
 	FUNCTION0 reset;
 	FUNCTION1 init;
 	FUNCTION0 deinit;

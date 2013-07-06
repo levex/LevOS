@@ -2,7 +2,7 @@
 #define _PIT_H_INCLUDED
 
 #include <stdint.h>
-
+#include "ProcessManager.h"
 //-----------------------------------------------
 //	Operational Command Bit masks
 //-----------------------------------------------
@@ -61,5 +61,11 @@ extern bool _cdecl i86_pit_initialize ();
 
 // Test if interface is initialized
 extern bool _cdecl i86_pit_is_initialized ();
+
+/* MULTITASKING */
+extern void initProcessManager();
+extern void addProcess(PROCESS* p);
+extern void setCurrentProc(PROCESS* p);
+extern void startMultitask();
 
 #endif

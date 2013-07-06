@@ -51,6 +51,14 @@ void volReadFile (PFILE file, unsigned char* Buffer, unsigned int Length) {
 			_FileSystems[file->deviceID - 'a']->Read (file,Buffer,Length);
 }
 
+void volWriteFile (PFILE file, unsigned char* Buffer, unsigned int Length)
+{
+	if (file)
+		if (_FileSystems [file->deviceID - 'a'])
+			_FileSystems[file->deviceID - 'a']->Write (file,Buffer,Length);
+}
+
+
 /**
 *	Close file
 */

@@ -62,8 +62,7 @@
       <GenerateDebugInformation>
       </GenerateDebugInformation>
       <OutputFile>A:\gui.exe</OutputFile>
-      <AdditionalDependencies>
-      </AdditionalDependencies>
+      <AdditionalDependencies>C:\Dev\LevOS\kernel\debug\LevAPI DLL.lib</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <GenerateMapFile>true</GenerateMapFile>
       <MapFileName>gui.map</MapFileName>
@@ -78,6 +77,7 @@
       <FixedBaseAddress>false</FixedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
+      <MinimumRequiredVersion>4919</MinimumRequiredVersion>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -100,14 +100,13 @@
     <ClCompile Include="WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LevAPI\LevAPI.vcxproj">
-      <Project>{7eeba9d5-f69c-448a-94fc-2c0fa0376ffa}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\TerminalApp\TerminalApp.vcxproj">
-      <Project>{af0d6aaa-260f-4ec6-9eee-75726f368a0c}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
+    <ClInclude Include="..\dllTest\LevAPI\lev_futils.h" />
+    <ClInclude Include="..\dllTest\LevAPI\lev_input.h" />
+    <ClInclude Include="..\dllTest\LevAPI\lev_misc.h" />
+    <ClInclude Include="..\dllTest\LevAPI\lev_text.h" />
+    <ClInclude Include="..\dllTest\LevAPI\lev_time.h" />
+    <ClInclude Include="..\dllTest\LevAPI\lev_vga.h" />
+    <ClInclude Include="ImageViewer.h" />
     <ClInclude Include="string.h" />
     <ClInclude Include="TextPopup.h" />
     <ClInclude Include="Window.h" />

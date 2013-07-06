@@ -44,12 +44,12 @@ PUBLIC	?DebugGetX@@YAHXZ				; DebugGetX
 _TEXT	SEGMENT
 ?DebugGetX@@YAHXZ PROC					; DebugGetX, COMDAT
 
-; 21   : 	return _xPos/2;
+; 22   : 	return _xPos/2;
 
 	mov	eax, DWORD PTR __xPos
 	shr	eax, 1
 
-; 22   : }
+; 23   : }
 
 	ret	0
 ?DebugGetX@@YAHXZ ENDP					; DebugGetX
@@ -60,12 +60,12 @@ PUBLIC	?DebugGetY@@YAHXZ				; DebugGetY
 _TEXT	SEGMENT
 ?DebugGetY@@YAHXZ PROC					; DebugGetY, COMDAT
 
-; 26   : 	return _yPos/2;
+; 27   : 	return _yPos/2;
 
 	mov	eax, DWORD PTR __yPos
 	shr	eax, 1
 
-; 27   : }
+; 28   : }
 
 	ret	0
 ?DebugGetY@@YAHXZ ENDP					; DebugGetY
@@ -78,20 +78,20 @@ _x$ = 8							; size = 4
 _y$ = 12						; size = 4
 ?DebugGotoRXY@@YAXII@Z PROC				; DebugGotoRXY, COMDAT
 
-; 30   : 
-; 31   : 	// reposition starting vectors for next text to follow
-; 32   : 	// multiply by 2 do to the video modes 2byte per character layout
-; 33   : 	_xPos = _xPos + x;
+; 40   : 
+; 41   : 	// reposition starting vectors for next text to follow
+; 42   : 	// multiply by 2 do to the video modes 2byte per character layout
+; 43   : 	_xPos = _xPos + x;
 
 	mov	eax, DWORD PTR _x$[esp-4]
 
-; 34   : 	_yPos = _yPos + y;
+; 44   : 	_yPos = _yPos + y;
 
 	mov	ecx, DWORD PTR _y$[esp-4]
 	add	DWORD PTR __xPos, eax
 	add	DWORD PTR __yPos, ecx
 
-; 35   : }
+; 45   : }
 
 	ret	0
 ?DebugGotoRXY@@YAXII@Z ENDP				; DebugGotoRXY
@@ -102,15 +102,15 @@ PUBLIC	?DebugNextline@@YAXXZ				; DebugNextline
 _TEXT	SEGMENT
 ?DebugNextline@@YAXXZ PROC				; DebugNextline, COMDAT
 
-; 66   : 		_yPos+=2;
-; 67   : 		_xPos=_startX;
+; 79   : 		_yPos+=2;
+; 80   : 		_xPos=_startX;
 
 	mov	eax, DWORD PTR __startX
 	add	DWORD PTR __yPos, 2
 	mov	DWORD PTR __xPos, eax
 
-; 68   : 		return;
-; 69   : }
+; 81   : 		return;
+; 82   : }
 
 	ret	0
 ?DebugNextline@@YAXXZ ENDP				; DebugNextline
@@ -124,11 +124,11 @@ _base$ = 12						; size = 4
 _buf$ = 16						; size = 4
 ?itoa@@YAXIIPAD@Z PROC					; itoa, COMDAT
 
-; 75   :    int pos = 0;
-; 76   :    int opos = 0;
-; 77   :    int top = 0;
-; 78   : 
-; 79   :    if (i == 0 || base > 16) {
+; 88   :    int pos = 0;
+; 89   :    int opos = 0;
+; 90   :    int top = 0;
+; 91   : 
+; 92   :    if (i == 0 || base > 16) {
 
 	mov	eax, DWORD PTR _i$[esp-4]
 	xor	ecx, ecx
@@ -140,17 +140,17 @@ _buf$ = 16						; size = 4
 	ja	SHORT $LN6@itoa
 $LL5@itoa:
 
-; 81   :       buf[1] = '\0';
-; 82   :       return;
-; 83   :    }
-; 84   : 
-; 85   :    while (i != 0) {
-; 86   :       tbuf[pos] = bchars[i % base];
+; 94   :       buf[1] = '\0';
+; 95   :       return;
+; 96   :    }
+; 97   : 
+; 98   :    while (i != 0) {
+; 99   :       tbuf[pos] = bchars[i % base];
 
 	xor	edx, edx
 	div	esi
 
-; 87   :       pos++;
+; 100  :       pos++;
 
 	inc	ecx
 	mov	dl, BYTE PTR ?bchars@@3PADA[edx]
@@ -158,28 +158,28 @@ $LL5@itoa:
 	test	eax, eax
 	jne	SHORT $LL5@itoa
 
-; 88   :       i /= base;
-; 89   :    }
-; 90   :    top=pos--;
+; 101  :       i /= base;
+; 102  :    }
+; 103  :    top=pos--;
 
 	mov	esi, ecx
 	push	edi
 
-; 91   :    for (opos=0; opos<top; pos--,opos++) {
+; 104  :    for (opos=0; opos<top; pos--,opos++) {
 
 	mov	edi, DWORD PTR _buf$[esp+4]
 	test	esi, esi
 	jle	SHORT $LN1@itoa
 
-; 88   :       i /= base;
-; 89   :    }
-; 90   :    top=pos--;
+; 101  :       i /= base;
+; 102  :    }
+; 103  :    top=pos--;
 
 	lea	ecx, DWORD PTR ?tbuf@@3PADA[ecx-1]
 	npad	6
 $LL3@itoa:
 
-; 92   :       buf[opos] = tbuf[pos];
+; 105  :       buf[opos] = tbuf[pos];
 
 	mov	dl, BYTE PTR [ecx]
 	mov	BYTE PTR [eax+edi], dl
@@ -189,25 +189,25 @@ $LL3@itoa:
 	jl	SHORT $LL3@itoa
 $LN1@itoa:
 
-; 93   :    }
-; 94   :    buf[opos] = 0;
+; 106  :    }
+; 107  :    buf[opos] = 0;
 
 	mov	BYTE PTR [eax+edi], 0
 	pop	edi
 	pop	esi
 
-; 95   : }
+; 108  : }
 
 	ret	0
 $LN6@itoa:
 
-; 80   :       buf[0] = '0';
+; 93   :       buf[0] = '0';
 
 	mov	eax, DWORD PTR _buf$[esp]
 	mov	WORD PTR [eax], 48			; 00000030H
 	pop	esi
 
-; 95   : }
+; 108  : }
 
 	ret	0
 ?itoa@@YAXIIPAD@Z ENDP					; itoa
@@ -221,17 +221,17 @@ _base$ = 12						; size = 4
 _buf$ = 16						; size = 4
 ?itoa_s@@YAXHIPAD@Z PROC				; itoa_s, COMDAT
 
-; 98   :    if (base > 16) return;
+; 111  :    if (base > 16) return;
 
 	mov	edx, DWORD PTR _base$[esp-4]
 	cmp	edx, 16					; 00000010H
 	ja	SHORT $LN3@itoa_s
 
-; 99   :    if (i < 0) {
+; 112  :    if (i < 0) {
 
 	mov	eax, DWORD PTR _i$[esp-4]
 
-; 100  :       *buf++ = '-';
+; 113  :       *buf++ = '-';
 
 	mov	ecx, DWORD PTR _buf$[esp-4]
 	test	eax, eax
@@ -239,13 +239,13 @@ _buf$ = 16						; size = 4
 	mov	BYTE PTR [ecx], 45			; 0000002dH
 	inc	ecx
 
-; 101  :       i *= -1;
+; 114  :       i *= -1;
 
 	neg	eax
 $LN1@itoa_s:
 
-; 102  :    }
-; 103  :    itoa(i,base,buf);
+; 115  :    }
+; 116  :    itoa(i,base,buf);
 
 	mov	DWORD PTR _buf$[esp-4], ecx
 	mov	DWORD PTR _base$[esp-4], edx
@@ -253,7 +253,7 @@ $LN1@itoa_s:
 	jmp	?itoa@@YAXIIPAD@Z			; itoa
 $LN3@itoa_s:
 
-; 104  : }
+; 117  : }
 
 	ret	0
 ?itoa_s@@YAXHIPAD@Z ENDP				; itoa_s
@@ -265,16 +265,16 @@ _TEXT	SEGMENT
 _c$ = 8							; size = 4
 ?DebugSetColor@@YAII@Z PROC				; DebugSetColor, COMDAT
 
-; 107  : 
-; 108  : 	unsigned t=_color;
-; 109  : 	_color=c;
+; 120  : 
+; 121  : 	unsigned t=_color;
+; 122  : 	_color=c;
 
 	mov	ecx, DWORD PTR _c$[esp-4]
 	mov	eax, DWORD PTR __color
 	mov	DWORD PTR __color, ecx
 
-; 110  : 	return t;
-; 111  : }
+; 123  : 	return t;
+; 124  : }
 
 	ret	0
 ?DebugSetColor@@YAII@Z ENDP				; DebugSetColor
@@ -287,14 +287,14 @@ _x$ = 8							; size = 4
 _y$ = 12						; size = 4
 ?DebugGotoXY@@YAXII@Z PROC				; DebugGotoXY, COMDAT
 
-; 114  : 
-; 115  : 	// reposition starting vectors for next text to follow
-; 116  : 	// multiply by 2 do to the video modes 2byte per character layout
-; 117  : 	_xPos = x*2;
+; 127  : 
+; 128  : 	// reposition starting vectors for next text to follow
+; 129  : 	// multiply by 2 do to the video modes 2byte per character layout
+; 130  : 	_xPos = x*2;
 
 	mov	eax, DWORD PTR _x$[esp-4]
 
-; 118  : 	_yPos = y*2;
+; 131  : 	_yPos = y*2;
 
 	mov	ecx, DWORD PTR _y$[esp-4]
 	add	eax, eax
@@ -302,15 +302,15 @@ _y$ = 12						; size = 4
 	mov	DWORD PTR __xPos, eax
 	mov	DWORD PTR __yPos, ecx
 
-; 119  : 	_startX=_xPos;
+; 132  : 	_startX=_xPos;
 
 	mov	DWORD PTR __startX, eax
 
-; 120  : 	_startY=_yPos;
+; 133  : 	_startY=_yPos;
 
 	mov	DWORD PTR __startY, ecx
 
-; 121  : }
+; 134  : }
 
 	ret	0
 ?DebugGotoXY@@YAXII@Z ENDP				; DebugGotoXY
@@ -322,11 +322,11 @@ _TEXT	SEGMENT
 _c$ = 8							; size = 2
 ?DebugClrScr@@YAXG@Z PROC				; DebugClrScr, COMDAT
 
-; 124  : 
-; 125  : 	unsigned char* p = (unsigned char*)VID_MEMORY;
-; 126  : 	//if(c == 0x00) c = _color;
-; 127  : 
-; 128  : 	for (int i=0; i<160*30; i+=2) {
+; 137  : 
+; 138  : 	unsigned char* p = (unsigned char*)VID_MEMORY;
+; 139  : 	//if(c == 0x00) c = _color;
+; 140  : 
+; 141  : 	for (int i=0; i<160*30; i+=2) {
 
 	mov	dl, BYTE PTR _c$[esp-4]
 	mov	eax, 753665				; 000b8001H
@@ -334,29 +334,29 @@ _c$ = 8							; size = 2
 	npad	2
 $LL3@DebugClrSc:
 
-; 129  : 
-; 130  : 		p[i] = ' ';  /* Need to watch out for MSVC++ optomization memset() call */
+; 142  : 
+; 143  : 		p[i] = ' ';  /* Need to watch out for MSVC++ optomization memset() call */
 
 	mov	BYTE PTR [eax-1], 32			; 00000020H
 
-; 131  : 		p[i+1] = c;
+; 144  : 		p[i+1] = c;
 
 	mov	BYTE PTR [eax], dl
 	add	eax, 2
 	dec	ecx
 	jne	SHORT $LL3@DebugClrSc
 
-; 132  : 	}
-; 133  : 
-; 134  : 	// go to start of previous set vector
-; 135  : 	_xPos=_startX;_yPos=_startY;
+; 145  : 	}
+; 146  : 
+; 147  : 	// go to start of previous set vector
+; 148  : 	_xPos=_startX;_yPos=_startY;
 
 	mov	eax, DWORD PTR __startX
 	mov	ecx, DWORD PTR __startY
 	mov	DWORD PTR __xPos, eax
 	mov	DWORD PTR __yPos, ecx
 
-; 136  : }
+; 149  : }
 
 	ret	0
 ?DebugClrScr@@YAXG@Z ENDP				; DebugClrScr
@@ -369,8 +369,8 @@ _x$ = 8							; size = 2
 _y$ = 12						; size = 2
 ?getPixel@@YADFF@Z PROC					; getPixel, COMDAT
 
-; 140  : 	volatile unsigned char* p = (unsigned char*)VID_MEMORY;
-; 141  : 	int lin = x + y * COLS;
+; 153  : 	volatile unsigned char* p = (unsigned char*)VID_MEMORY;
+; 154  : 	int lin = x + y * COLS;
 
 	movsx	eax, WORD PTR _y$[esp-4]
 	movsx	ecx, WORD PTR _x$[esp-4]
@@ -378,11 +378,11 @@ _y$ = 12						; size = 2
 	shl	eax, 4
 	add	eax, ecx
 
-; 142  : 	return p[lin*2];
+; 155  : 	return p[lin*2];
 
 	mov	al, BYTE PTR [eax+eax+753664]
 
-; 143  : }
+; 156  : }
 
 	ret	0
 ?getPixel@@YADFF@Z ENDP					; getPixel
@@ -396,9 +396,9 @@ _y$ = 12						; size = 2
 _c$ = 16						; size = 1
 ?setPixel@@YAXFFD@Z PROC				; setPixel, COMDAT
 
-; 147  : 	volatile unsigned char* p = (unsigned char*)VID_MEMORY;
-; 148  : 	int lin = x + y * COLS;
-; 149  : 	p[lin*2] = c;
+; 160  : 	volatile unsigned char* p = (unsigned char*)VID_MEMORY;
+; 161  : 	int lin = x + y * COLS;
+; 162  : 	p[lin*2] = c;
 
 	movsx	eax, WORD PTR _y$[esp-4]
 	movsx	ecx, WORD PTR _x$[esp-4]
@@ -408,7 +408,7 @@ _c$ = 16						; size = 1
 	add	eax, ecx
 	mov	BYTE PTR [eax*2+753664], dl
 
-; 150  : }
+; 163  : }
 
 	ret	0
 ?setPixel@@YAXFFD@Z ENDP				; setPixel
@@ -420,19 +420,19 @@ EXTRN	?memcpy@@YAXPAD0H@Z:PROC			; memcpy
 _TEXT	SEGMENT
 ?DebugScrollUp@@YAXXZ PROC				; DebugScrollUp, COMDAT
 
-; 153  : {
+; 166  : {
 
 	push	esi
 
-; 154  : 	volatile unsigned char* p = (unsigned char*)VID_MEMORY;
-; 155  : 	for(int y = 0; y < LINE; y++)
+; 167  : 	volatile unsigned char* p = (unsigned char*)VID_MEMORY;
+; 168  : 	for(int y = 0; y < LINE; y++)
 
 	mov	esi, 753824				; 000b80a0H
 	npad	10
 $LL3@DebugScrol:
 
-; 156  : 	{
-; 157  : 		memcpy((char*)(VID_MEMORY + y*COLS*2+COLS*2), (char*)(VID_MEMORY + y*COLS*2), COLS*2);
+; 169  : 	{
+; 170  : 		memcpy((char*)(VID_MEMORY + y*COLS*2+COLS*2), (char*)(VID_MEMORY + y*COLS*2), COLS*2);
 
 	push	160					; 000000a0H
 	lea	eax, DWORD PTR [esi-160]
@@ -444,87 +444,158 @@ $LL3@DebugScrol:
 	cmp	esi, 757824				; 000b9040H
 	jl	SHORT $LL3@DebugScrol
 
-; 158  : 		//memset((char*)(VID_MEMORY + y*COLS*2+COLS*2), COLS*2, ' ');
-; 159  : 	}
-; 160  : 	_yPos -= 2;
+; 171  : 		//memset((char*)(VID_MEMORY + y*COLS*2+COLS*2), COLS*2, ' ');
+; 172  : 	}
+; 173  : 	_yPos -= 2;
 
 	sub	DWORD PTR __yPos, 2
 	pop	esi
 
-; 161  : 	//DebugGotoXY(_startX/2,_startY/2-1);
-; 162  : }
+; 174  : 	//DebugGotoXY(_startX/2,_startY/2-1);
+; 175  : }
 
 	ret	0
 ?DebugScrollUp@@YAXXZ ENDP				; DebugScrollUp
 _TEXT	ENDS
+PUBLIC	?DebugReset@@YAXXZ				; DebugReset
+; Function compile flags: /Ogtpy
+;	COMDAT ?DebugReset@@YAXXZ
+_TEXT	SEGMENT
+?DebugReset@@YAXXZ PROC					; DebugReset, COMDAT
+
+; 31   : {
+
+	push	esi
+
+; 32   : 	_xPos = 0;
+; 33   : 	_yPos = 0;
+; 34   : 	_startX = 0;
+
+	xor	esi, esi
+	mov	DWORD PTR __startX, esi
+
+; 35   : 	_startY = 0;
+
+	mov	DWORD PTR __startY, esi
+	mov	eax, 753665				; 000b8001H
+	mov	ecx, 2400				; 00000960H
+	mov	dl, 32					; 00000020H
+	npad	5
+
+; 36   : 	DebugClrScr(0x17);
+
+$LL5@DebugReset:
+	mov	BYTE PTR [eax-1], dl
+	mov	BYTE PTR [eax], 23			; 00000017H
+	add	eax, 2
+	dec	ecx
+	jne	SHORT $LL5@DebugReset
+	mov	DWORD PTR __xPos, esi
+	mov	DWORD PTR __yPos, esi
+	pop	esi
+
+; 37   : }
+
+	ret	0
+?DebugReset@@YAXXZ ENDP					; DebugReset
+_TEXT	ENDS
 PUBLIC	?DebugPutc@@YAXE@Z				; DebugPutc
+EXTRN	?VGA_put_char@@YAXHHDD@Z:PROC			; VGA_put_char
+EXTRN	?isVGA@@YA_NXZ:PROC				; isVGA
 ; Function compile flags: /Ogtpy
 ;	COMDAT ?DebugPutc@@YAXE@Z
 _TEXT	SEGMENT
 _c$ = 8							; size = 1
 ?DebugPutc@@YAXE@Z PROC					; DebugPutc, COMDAT
 
-; 37   : void DebugPutc (unsigned char c) {
+; 47   : void DebugPutc (unsigned char c) {
 
 	push	ebx
 
-; 38   : 
-; 39   : 	if (c==0)
+; 48   : 
+; 49   : 	if (c==0)
 
-	mov	bl, BYTE PTR _c$[esp]
+	mov	ebx, DWORD PTR _c$[esp]
 	test	bl, bl
-	je	SHORT $LN6@DebugPutc
+	je	$LN7@DebugPutc
 
-; 40   : 		return;
-; 41   : 
-; 42   : 	if (c == '\n'||c=='\r') {	/* start new line */
+; 50   : 		return;
+; 51   : 
+; 52   : 	if (c == '\n'||c=='\r') {	/* start new line */
 
 	cmp	bl, 10					; 0000000aH
-	je	SHORT $LN3@DebugPutc
+	je	$LN4@DebugPutc
 	cmp	bl, 13					; 0000000dH
-	je	SHORT $LN3@DebugPutc
+	je	$LN4@DebugPutc
 
-; 45   : 		return;
-; 46   : 	}
-; 47   : 
-; 48   : 	if (_xPos > 79) {			/* start new line */
+; 55   : 		return;
+; 56   : 	}
+; 57   : 
+; 58   : 	if (_xPos > 79) {			/* start new line */
 
 	cmp	DWORD PTR __xPos, 79			; 0000004fH
-	jbe	SHORT $LN2@DebugPutc
+	jbe	SHORT $LN3@DebugPutc
 
-; 49   : 		_yPos+=2;
-; 50   : 		_xPos=_startX;
+; 59   : 		_yPos+=2;
+; 60   : 		_xPos=_startX;
 
 	mov	eax, DWORD PTR __startX
 	add	DWORD PTR __yPos, 2
 	mov	DWORD PTR __xPos, eax
 	pop	ebx
 
-; 62   : }
+; 75   : }
 
 	ret	0
-$LN2@DebugPutc:
+$LN3@DebugPutc:
 
-; 51   : 		return;
-; 52   : 	}
-; 53   : 	if(_yPos >= 49)
+; 61   : 		return;
+; 62   : 	}
+; 63   : 	if(_yPos >= 49)
 
-	mov	eax, DWORD PTR __yPos
-	cmp	eax, 49					; 00000031H
-	jb	SHORT $LN1@DebugPutc
+	cmp	DWORD PTR __yPos, 49			; 00000031H
+	jb	SHORT $LN2@DebugPutc
 
-; 54   : 	{
-; 55   : 		DebugScrollUp();
+; 64   : 	{
+; 65   : 		DebugScrollUp();
 
 	call	?DebugScrollUp@@YAXXZ			; DebugScrollUp
-	mov	eax, DWORD PTR __yPos
+$LN2@DebugPutc:
+
+; 66   : 	}
+; 67   : 	if(isVGA()) {
+
+	call	?isVGA@@YA_NXZ				; isVGA
+	test	al, al
+	je	SHORT $LN1@DebugPutc
+
+; 68   : 		VGA_put_char(_xPos++ * 8, _yPos * 8, c, 1);
+
+	mov	eax, DWORD PTR __xPos
+	mov	edx, DWORD PTR __yPos
+	lea	ecx, DWORD PTR [eax*8]
+	inc	eax
+	push	1
+	mov	DWORD PTR __xPos, eax
+	push	ebx
+	lea	eax, DWORD PTR [edx*8]
+	push	eax
+	push	ecx
+	call	?VGA_put_char@@YAXHHDD@Z		; VGA_put_char
+	add	esp, 16					; 00000010H
+	pop	ebx
+
+; 75   : }
+
+	ret	0
 $LN1@DebugPutc:
 
-; 56   : 	}
-; 57   : 
-; 58   : 	/* draw the character */
-; 59   : 	unsigned char* p = (unsigned char*)VID_MEMORY + (_xPos++)*2 + _yPos * 80;
+; 69   : 		return;
+; 70   : 	}
+; 71   : 	/* draw the character */
+; 72   : 	unsigned char* p = (unsigned char*)VID_MEMORY + (_xPos++)*2 + _yPos * 80;
 
+	mov	eax, DWORD PTR __yPos
 	mov	ecx, DWORD PTR __xPos
 	lea	edx, DWORD PTR [eax+eax*4]
 	lea	eax, DWORD PTR [ecx+edx*8]
@@ -532,29 +603,29 @@ $LN1@DebugPutc:
 	lea	eax, DWORD PTR [eax+eax+753664]
 	mov	DWORD PTR __xPos, ecx
 
-; 60   : 	*p++ = c;
-; 61   : 	*p =_color;
+; 73   : 	*p++ = c;
+; 74   : 	*p =_color;
 
 	mov	cl, BYTE PTR __color
 	mov	BYTE PTR [eax], bl
 	mov	BYTE PTR [eax+1], cl
 	pop	ebx
 
-; 62   : }
+; 75   : }
 
 	ret	0
-$LN3@DebugPutc:
+$LN4@DebugPutc:
 
-; 43   : 		_yPos+=2;
-; 44   : 		_xPos=_startX;
+; 53   : 		_yPos+=2;
+; 54   : 		_xPos=_startX;
 
 	mov	edx, DWORD PTR __startX
 	add	DWORD PTR __yPos, 2
 	mov	DWORD PTR __xPos, edx
-$LN6@DebugPutc:
+$LN7@DebugPutc:
 	pop	ebx
 
-; 62   : }
+; 75   : }
 
 	ret	0
 ?DebugPutc@@YAXE@Z ENDP					; DebugPutc
@@ -564,23 +635,24 @@ EXTRN	?strlen@@YAIPBD@Z:PROC				; strlen
 ; Function compile flags: /Ogtpy
 ;	COMDAT ?DebugPuts@@YAXPAD@Z
 _TEXT	SEGMENT
+$T2954 = 8						; size = 1
 _str$ = 8						; size = 4
 ?DebugPuts@@YAXPAD@Z PROC				; DebugPuts, COMDAT
 
-; 164  : void DebugPuts (char* str) {
+; 177  : void DebugPuts (char* str) {
 
 	push	edi
 
-; 165  : 
-; 166  : 	if (!str)
+; 178  : 
+; 179  : 	if (!str)
 
 	mov	edi, DWORD PTR _str$[esp]
 	test	edi, edi
 	je	$LN1@DebugPuts
 
-; 167  : 		return;
-; 168  : 
-; 169  : 	for (size_t i=0; i<strlen (str); i++)
+; 180  : 		return;
+; 181  : 
+; 182  : 	for (size_t i=0; i<strlen (str); i++)
 
 	push	esi
 	push	edi
@@ -588,36 +660,52 @@ _str$ = 8						; size = 4
 	call	?strlen@@YAIPBD@Z			; strlen
 	add	esp, 4
 	test	eax, eax
-	je	$LN16@DebugPuts
+	je	$LN18@DebugPuts
 	push	ebx
-	push	ebp
-	lea	ebp, DWORD PTR [esi+2]
 $LL3@DebugPuts:
 
-; 170  : 		DebugPutc (str[i]);
+; 183  : 		DebugPutc (str[i]);
 
 	mov	bl, BYTE PTR [esi+edi]
+	mov	BYTE PTR $T2954[esp+8], bl
 	test	bl, bl
-	je	SHORT $LN2@DebugPuts
+	je	$LN2@DebugPuts
 	cmp	bl, 10					; 0000000aH
-	je	SHORT $LN9@DebugPuts
+	je	$LN10@DebugPuts
 	cmp	bl, 13					; 0000000dH
-	je	SHORT $LN9@DebugPuts
+	je	$LN10@DebugPuts
 	cmp	DWORD PTR __xPos, 79			; 0000004fH
-	jbe	SHORT $LN8@DebugPuts
+	jbe	SHORT $LN9@DebugPuts
 	mov	eax, DWORD PTR __startX
 	mov	DWORD PTR __xPos, eax
-	jmp	SHORT $LN18@DebugPuts
-$LN8@DebugPuts:
-	mov	eax, DWORD PTR __yPos
-	cmp	eax, 49					; 00000031H
-	jb	SHORT $LN7@DebugPuts
+	jmp	$LN20@DebugPuts
+$LN9@DebugPuts:
+	cmp	DWORD PTR __yPos, 49			; 00000031H
+	jb	SHORT $LN8@DebugPuts
 	call	?DebugScrollUp@@YAXXZ			; DebugScrollUp
+$LN8@DebugPuts:
+	call	?isVGA@@YA_NXZ				; isVGA
+	test	al, al
+	je	SHORT $LN7@DebugPuts
+	mov	eax, DWORD PTR __xPos
+	mov	edx, DWORD PTR $T2954[esp+8]
+	lea	ecx, DWORD PTR [eax*8]
+	inc	eax
+	push	1
+	mov	DWORD PTR __xPos, eax
 	mov	eax, DWORD PTR __yPos
+	push	edx
+	lea	edx, DWORD PTR [eax*8]
+	push	edx
+	push	ecx
+	call	?VGA_put_char@@YAXHHDD@Z		; VGA_put_char
+	add	esp, 16					; 00000010H
+	jmp	SHORT $LN2@DebugPuts
 $LN7@DebugPuts:
+	mov	eax, DWORD PTR __yPos
 	mov	ecx, DWORD PTR __xPos
-	lea	edx, DWORD PTR [eax+eax*4]
-	lea	eax, DWORD PTR [ecx+edx*8]
+	lea	eax, DWORD PTR [eax+eax*4]
+	lea	eax, DWORD PTR [ecx+eax*8]
 	inc	ecx
 	lea	eax, DWORD PTR [eax+eax+753664]
 	mov	DWORD PTR __xPos, ecx
@@ -625,16 +713,16 @@ $LN7@DebugPuts:
 	mov	BYTE PTR [eax], bl
 	mov	BYTE PTR [eax+1], cl
 	jmp	SHORT $LN2@DebugPuts
-$LN9@DebugPuts:
+$LN10@DebugPuts:
 	mov	edx, DWORD PTR __startX
 	mov	DWORD PTR __xPos, edx
-$LN18@DebugPuts:
-	add	DWORD PTR __yPos, ebp
+$LN20@DebugPuts:
+	add	DWORD PTR __yPos, 2
 $LN2@DebugPuts:
 
-; 167  : 		return;
-; 168  : 
-; 169  : 	for (size_t i=0; i<strlen (str); i++)
+; 180  : 		return;
+; 181  : 
+; 182  : 	for (size_t i=0; i<strlen (str); i++)
 
 	push	edi
 	inc	esi
@@ -642,14 +730,13 @@ $LN2@DebugPuts:
 	add	esp, 4
 	cmp	esi, eax
 	jb	$LL3@DebugPuts
-	pop	ebp
 	pop	ebx
-$LN16@DebugPuts:
+$LN18@DebugPuts:
 	pop	esi
 $LN1@DebugPuts:
 	pop	edi
 
-; 171  : }
+; 184  : }
 
 	ret	0
 ?DebugPuts@@YAXPAD@Z ENDP				; DebugPuts
@@ -659,57 +746,57 @@ EXTRN	?strcpy@@YAPADPADPBD@Z:PROC			; strcpy
 ; Function compile flags: /Ogtpy
 ;	COMDAT ?DebugPrintf@@YAHPBDZZ
 _TEXT	SEGMENT
-_i$2708 = -164						; size = 4
-_str$2772 = -160					; size = 32
-_str$2762 = -160					; size = 32
-_str$2740 = -160					; size = 32
-_str$2751 = -128					; size = 128
+_i$2790 = -164						; size = 4
+_str$2854 = -160					; size = 32
+_str$2844 = -160					; size = 32
+_str$2822 = -160					; size = 32
+_str$2833 = -128					; size = 128
 _str$ = 8						; size = 4
 ?DebugPrintf@@YAHPBDZZ PROC				; DebugPrintf, COMDAT
 
-; 173  : int DebugPrintf (const char* str, ...) {
+; 186  : int DebugPrintf (const char* str, ...) {
 
 	sub	esp, 164				; 000000a4H
 	push	ebp
 
-; 174  : 
-; 175  : 	if(!str)
+; 187  : 
+; 188  : 	if(!str)
 
 	mov	ebp, DWORD PTR _str$[esp+164]
 	test	ebp, ebp
 	jne	SHORT $LN16@DebugPrint
 
-; 176  : 		return 0;
+; 189  : 		return 0;
 
 	xor	eax, eax
 	pop	ebp
 
-; 250  : 		}
-; 251  : 
-; 252  : 	}
-; 253  : 
-; 254  : 	va_end (args);
-; 255  : }
+; 263  : 		}
+; 264  : 
+; 265  : 	}
+; 266  : 
+; 267  : 	va_end (args);
+; 268  : }
 
 	add	esp, 164				; 000000a4H
 	ret	0
 $LN16@DebugPrint:
 	push	esi
 
-; 180  : 
-; 181  : 	for (size_t i=0; i<strlen(str);i++) {
+; 193  : 
+; 194  : 	for (size_t i=0; i<strlen(str);i++) {
 
 	xor	esi, esi
 	push	ebp
-	mov	DWORD PTR _i$2708[esp+176], esi
+	mov	DWORD PTR _i$2790[esp+176], esi
 	call	?strlen@@YAIPBD@Z			; strlen
 	add	esp, 4
 	test	eax, eax
 	je	$LN83@DebugPrint
 
-; 177  : 
-; 178  : 	va_list		args;
-; 179  : 	va_start (args, str);
+; 190  : 
+; 191  : 	va_list		args;
+; 192  : 	va_start (args, str);
 
 	push	ebx
 	lea	ebx, DWORD PTR _str$[esp+172]
@@ -717,33 +804,33 @@ $LN16@DebugPrint:
 	npad	3
 $LL82@DebugPrint:
 
-; 182  : 
-; 183  : 		switch (str[i]) {
+; 195  : 
+; 196  : 		switch (str[i]) {
 
 	movzx	eax, BYTE PTR [esi+ebp]
 	cmp	al, 37					; 00000025H
 	je	SHORT $LN10@DebugPrint
 
-; 243  : 				}
-; 244  : 
-; 245  : 				break;
-; 246  : 
-; 247  : 			default:
-; 248  : 				DebugPutc (str[i]);
+; 256  : 				}
+; 257  : 
+; 258  : 				break;
+; 259  : 
+; 260  : 			default:
+; 261  : 				DebugPutc (str[i]);
 
 	push	eax
 	call	?DebugPutc@@YAXE@Z			; DebugPutc
 	add	esp, 4
 
-; 249  : 				break;
+; 262  : 				break;
 
 	jmp	$LN14@DebugPrint
 $LN10@DebugPrint:
 
-; 184  : 
-; 185  : 			case '%':
-; 186  : 
-; 187  : 				switch (str[i+1]) {
+; 197  : 
+; 198  : 			case '%':
+; 199  : 
+; 200  : 				switch (str[i+1]) {
 
 	movsx	eax, BYTE PTR [esi+ebp+1]
 	add	eax, -88				; ffffffa8H
@@ -753,51 +840,51 @@ $LN10@DebugPrint:
 	jmp	DWORD PTR $LN88@DebugPrint[eax*4]
 $LN7@DebugPrint:
 
-; 188  : 
-; 189  : 					/*** characters ***/
-; 190  : 					case 'c': {
-; 191  : 						char c = va_arg (args, char);
-; 192  : 						DebugPutc (c);
+; 201  : 
+; 202  : 					/*** characters ***/
+; 203  : 					case 'c': {
+; 204  : 						char c = va_arg (args, char);
+; 205  : 						DebugPutc (c);
 
 	movzx	ecx, BYTE PTR [ebx+4]
 	add	ebx, 4
 	push	ecx
 	call	?DebugPutc@@YAXE@Z			; DebugPutc
 
-; 193  : 						i++;		// go to next character
-; 194  : 						break;
+; 206  : 						i++;		// go to next character
+; 207  : 						break;
 
 	jmp	$LN86@DebugPrint
 $LN6@DebugPrint:
 
-; 195  : 					}
-; 196  : 
-; 197  : 					/*** address of ***/
-; 198  : 					case 'a': {
-; 199  : 						int c = (int&) va_arg (args, char);
-; 200  : 						char str[32]={0};
+; 208  : 					}
+; 209  : 
+; 210  : 					/*** address of ***/
+; 211  : 					case 'a': {
+; 212  : 						int c = (int&) va_arg (args, char);
+; 213  : 						char str[32]={0};
 
 	xor	eax, eax
 	add	ebx, 4
-	mov	DWORD PTR _str$2740[esp+181], eax
-	mov	DWORD PTR _str$2740[esp+185], eax
-	mov	DWORD PTR _str$2740[esp+189], eax
-	mov	DWORD PTR _str$2740[esp+193], eax
-	mov	DWORD PTR _str$2740[esp+197], eax
-	mov	DWORD PTR _str$2740[esp+201], eax
-	mov	DWORD PTR _str$2740[esp+205], eax
-	mov	WORD PTR _str$2740[esp+209], ax
-	mov	BYTE PTR _str$2740[esp+211], al
+	mov	DWORD PTR _str$2822[esp+181], eax
+	mov	DWORD PTR _str$2822[esp+185], eax
+	mov	DWORD PTR _str$2822[esp+189], eax
+	mov	DWORD PTR _str$2822[esp+193], eax
+	mov	DWORD PTR _str$2822[esp+197], eax
+	mov	DWORD PTR _str$2822[esp+201], eax
+	mov	DWORD PTR _str$2822[esp+205], eax
+	mov	WORD PTR _str$2822[esp+209], ax
+	mov	BYTE PTR _str$2822[esp+211], al
 
-; 201  : 						itoa_s (c, 16, str);
+; 214  : 						itoa_s (c, 16, str);
 
 	mov	eax, DWORD PTR [ebx]
-	mov	BYTE PTR _str$2740[esp+180], 0
-	lea	edi, DWORD PTR _str$2740[esp+180]
+	mov	BYTE PTR _str$2822[esp+180], 0
+	lea	edi, DWORD PTR _str$2822[esp+180]
 	test	eax, eax
 	jns	SHORT $LN19@DebugPrint
-	mov	BYTE PTR _str$2740[esp+180], 45		; 0000002dH
-	lea	edi, DWORD PTR _str$2740[esp+181]
+	mov	BYTE PTR _str$2822[esp+180], 45		; 0000002dH
+	lea	edi, DWORD PTR _str$2822[esp+181]
 	neg	eax
 $LN19@DebugPrint:
 	xor	ecx, ecx
@@ -826,70 +913,70 @@ $LL25@DebugPrint:
 	jl	SHORT $LL25@DebugPrint
 $LN23@DebugPrint:
 	mov	ebp, DWORD PTR _str$[esp+176]
-	mov	esi, DWORD PTR _i$2708[esp+180]
+	mov	esi, DWORD PTR _i$2790[esp+180]
 	mov	BYTE PTR [eax+edi], 0
 	jmp	$LN56@DebugPrint
 $LN5@DebugPrint:
 
-; 202  : 						DebugPuts (str);
-; 203  : 						i++;		// go to next character
-; 204  : 						break;
-; 205  : 					}
-; 206  : 							   
-; 207  : 					/*** string **/
-; 208  : 					case 's': {
-; 209  : 						int c = (int&) va_arg (args, char);
-; 210  : 						char str[128];
-; 211  : 						strcpy (str,(const char*)c);
+; 215  : 						DebugPuts (str);
+; 216  : 						i++;		// go to next character
+; 217  : 						break;
+; 218  : 					}
+; 219  : 							   
+; 220  : 					/*** string **/
+; 221  : 					case 's': {
+; 222  : 						int c = (int&) va_arg (args, char);
+; 223  : 						char str[128];
+; 224  : 						strcpy (str,(const char*)c);
 
 	mov	ecx, DWORD PTR [ebx+4]
 	add	ebx, 4
 	push	ecx
-	lea	edx, DWORD PTR _str$2751[esp+184]
+	lea	edx, DWORD PTR _str$2833[esp+184]
 	push	edx
 	call	?strcpy@@YAPADPADPBD@Z			; strcpy
 
-; 212  : 						DebugPuts (str);
+; 225  : 						DebugPuts (str);
 
-	lea	eax, DWORD PTR _str$2751[esp+188]
+	lea	eax, DWORD PTR _str$2833[esp+188]
 	push	eax
 	call	?DebugPuts@@YAXPAD@Z			; DebugPuts
 	add	esp, 12					; 0000000cH
 
-; 213  : 						i++;		// go to next character
-; 214  : 						break;
+; 226  : 						i++;		// go to next character
+; 227  : 						break;
 
 	jmp	$LN87@DebugPrint
 $LN4@DebugPrint:
 
-; 215  : 
-; 216  : 					}
-; 217  : 
-; 218  : 					/*** integers ***/
-; 219  : 					case 'd':
-; 220  : 					case 'i': {
-; 221  : 						int c = va_arg (args, int);
-; 222  : 						char str[32]={0};
-; 223  : 						itoa_s (c, 10, str);
+; 228  : 
+; 229  : 					}
+; 230  : 
+; 231  : 					/*** integers ***/
+; 232  : 					case 'd':
+; 233  : 					case 'i': {
+; 234  : 						int c = va_arg (args, int);
+; 235  : 						char str[32]={0};
+; 236  : 						itoa_s (c, 10, str);
 
 	mov	ecx, DWORD PTR [ebx+4]
 	xor	eax, eax
 	add	ebx, 4
-	mov	BYTE PTR _str$2762[esp+180], 0
-	mov	DWORD PTR _str$2762[esp+181], eax
-	mov	DWORD PTR _str$2762[esp+185], eax
-	mov	DWORD PTR _str$2762[esp+189], eax
-	mov	DWORD PTR _str$2762[esp+193], eax
-	mov	DWORD PTR _str$2762[esp+197], eax
-	mov	DWORD PTR _str$2762[esp+201], eax
-	mov	DWORD PTR _str$2762[esp+205], eax
-	mov	WORD PTR _str$2762[esp+209], ax
-	mov	BYTE PTR _str$2762[esp+211], al
-	lea	ebp, DWORD PTR _str$2762[esp+180]
+	mov	BYTE PTR _str$2844[esp+180], 0
+	mov	DWORD PTR _str$2844[esp+181], eax
+	mov	DWORD PTR _str$2844[esp+185], eax
+	mov	DWORD PTR _str$2844[esp+189], eax
+	mov	DWORD PTR _str$2844[esp+193], eax
+	mov	DWORD PTR _str$2844[esp+197], eax
+	mov	DWORD PTR _str$2844[esp+201], eax
+	mov	DWORD PTR _str$2844[esp+205], eax
+	mov	WORD PTR _str$2844[esp+209], ax
+	mov	BYTE PTR _str$2844[esp+211], al
+	lea	ebp, DWORD PTR _str$2844[esp+180]
 	test	ecx, ecx
 	jns	SHORT $LN32@DebugPrint
-	mov	BYTE PTR _str$2762[esp+180], 45		; 0000002dH
-	lea	ebp, DWORD PTR _str$2762[esp+181]
+	mov	BYTE PTR _str$2844[esp+180], 45		; 0000002dH
+	lea	ebp, DWORD PTR _str$2844[esp+181]
 	neg	ecx
 $LN32@DebugPrint:
 	xor	esi, esi
@@ -928,51 +1015,51 @@ $LN41@DebugPrint:
 	mov	WORD PTR [ebp], 48			; 00000030H
 $LN43@DebugPrint:
 
-; 224  : 						DebugPuts (str);
+; 237  : 						DebugPuts (str);
 
-	lea	eax, DWORD PTR _str$2762[esp+180]
+	lea	eax, DWORD PTR _str$2844[esp+180]
 	push	eax
 	call	?DebugPuts@@YAXPAD@Z			; DebugPuts
 
-; 225  : 						i++;		// go to next character
-; 226  : 						break;
+; 238  : 						i++;		// go to next character
+; 239  : 						break;
 
 	mov	ebp, DWORD PTR _str$[esp+180]
 	add	esp, 4
-	inc	DWORD PTR _i$2708[esp+180]
-	mov	esi, DWORD PTR _i$2708[esp+180]
+	inc	DWORD PTR _i$2790[esp+180]
+	mov	esi, DWORD PTR _i$2790[esp+180]
 	jmp	$LN14@DebugPrint
 $LN3@DebugPrint:
 
-; 227  : 					}
-; 228  : 
-; 229  : 					/*** display in hex ***/
-; 230  : 					case 'X':
-; 231  : 					case 'x': {
-; 232  : 						int c = va_arg (args, int);
-; 233  : 						char str[32]={0};
+; 240  : 					}
+; 241  : 
+; 242  : 					/*** display in hex ***/
+; 243  : 					case 'X':
+; 244  : 					case 'x': {
+; 245  : 						int c = va_arg (args, int);
+; 246  : 						char str[32]={0};
 
 	xor	eax, eax
 	add	ebx, 4
-	mov	DWORD PTR _str$2772[esp+181], eax
-	mov	DWORD PTR _str$2772[esp+185], eax
-	mov	DWORD PTR _str$2772[esp+189], eax
-	mov	DWORD PTR _str$2772[esp+193], eax
-	mov	DWORD PTR _str$2772[esp+197], eax
-	mov	DWORD PTR _str$2772[esp+201], eax
-	mov	DWORD PTR _str$2772[esp+205], eax
-	mov	WORD PTR _str$2772[esp+209], ax
-	mov	BYTE PTR _str$2772[esp+211], al
+	mov	DWORD PTR _str$2854[esp+181], eax
+	mov	DWORD PTR _str$2854[esp+185], eax
+	mov	DWORD PTR _str$2854[esp+189], eax
+	mov	DWORD PTR _str$2854[esp+193], eax
+	mov	DWORD PTR _str$2854[esp+197], eax
+	mov	DWORD PTR _str$2854[esp+201], eax
+	mov	DWORD PTR _str$2854[esp+205], eax
+	mov	WORD PTR _str$2854[esp+209], ax
+	mov	BYTE PTR _str$2854[esp+211], al
 
-; 234  : 						itoa_s (c,16,str);
+; 247  : 						itoa_s (c,16,str);
 
 	mov	eax, DWORD PTR [ebx]
-	mov	BYTE PTR _str$2772[esp+180], 0
-	lea	edi, DWORD PTR _str$2772[esp+180]
+	mov	BYTE PTR _str$2854[esp+180], 0
+	lea	edi, DWORD PTR _str$2854[esp+180]
 	test	eax, eax
 	jns	SHORT $LN45@DebugPrint
-	mov	BYTE PTR _str$2772[esp+180], 45		; 0000002dH
-	lea	edi, DWORD PTR _str$2772[esp+181]
+	mov	BYTE PTR _str$2854[esp+180], 45		; 0000002dH
+	lea	edi, DWORD PTR _str$2854[esp+181]
 	neg	eax
 $LN45@DebugPrint:
 	xor	ecx, ecx
@@ -1001,33 +1088,33 @@ $LL51@DebugPrint:
 	jl	SHORT $LL51@DebugPrint
 $LN49@DebugPrint:
 	mov	ebp, DWORD PTR _str$[esp+176]
-	mov	esi, DWORD PTR _i$2708[esp+180]
+	mov	esi, DWORD PTR _i$2790[esp+180]
 	mov	BYTE PTR [eax+edi], 0
 	jmp	SHORT $LN56@DebugPrint
 $LN54@DebugPrint:
 	mov	WORD PTR [edi], 48			; 00000030H
 $LN56@DebugPrint:
 
-; 235  : 						DebugPuts (str);
+; 248  : 						DebugPuts (str);
 
-	lea	eax, DWORD PTR _str$2772[esp+180]
+	lea	eax, DWORD PTR _str$2854[esp+180]
 	push	eax
 	call	?DebugPuts@@YAXPAD@Z			; DebugPuts
 $LN86@DebugPrint:
 	add	esp, 4
 $LN87@DebugPrint:
 
-; 236  : 						i++;		// go to next character
+; 249  : 						i++;		// go to next character
 
 	inc	esi
 $LN14@DebugPrint:
 
-; 180  : 
-; 181  : 	for (size_t i=0; i<strlen(str);i++) {
+; 193  : 
+; 194  : 	for (size_t i=0; i<strlen(str);i++) {
 
 	inc	esi
 	push	ebp
-	mov	DWORD PTR _i$2708[esp+184], esi
+	mov	DWORD PTR _i$2790[esp+184], esi
 	call	?strlen@@YAIPBD@Z			; strlen
 	add	esp, 4
 	cmp	esi, eax
@@ -1037,24 +1124,24 @@ $LN14@DebugPrint:
 	pop	esi
 	pop	ebp
 
-; 250  : 		}
-; 251  : 
-; 252  : 	}
-; 253  : 
-; 254  : 	va_end (args);
-; 255  : }
+; 263  : 		}
+; 264  : 
+; 265  : 	}
+; 266  : 
+; 267  : 	va_end (args);
+; 268  : }
 
 	add	esp, 164				; 000000a4H
 	ret	0
 $LN2@DebugPrint:
 	pop	edi
 
-; 237  : 						break;
-; 238  : 					}
-; 239  : 
-; 240  : 					default:
-; 241  : 						va_end (args);
-; 242  : 						return 1;
+; 250  : 						break;
+; 251  : 					}
+; 252  : 
+; 253  : 					default:
+; 254  : 						va_end (args);
+; 255  : 						return 1;
 
 	mov	eax, 1
 	pop	ebx
@@ -1062,12 +1149,12 @@ $LN83@DebugPrint:
 	pop	esi
 	pop	ebp
 
-; 250  : 		}
-; 251  : 
-; 252  : 	}
-; 253  : 
-; 254  : 	va_end (args);
-; 255  : }
+; 263  : 		}
+; 264  : 
+; 265  : 	}
+; 266  : 
+; 267  : 	va_end (args);
+; 268  : }
 
 	add	esp, 164				; 000000a4H
 	ret	0

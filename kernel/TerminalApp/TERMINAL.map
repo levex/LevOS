@@ -1,13 +1,13 @@
  cmd
 
- Timestamp is 51d5a0ce (Thu Jul 04 18:20:30 2013)
+ Timestamp is 51d7c345 (Sat Jul 06 09:12:05 2013)
 
  Preferred load address is 00c00000
 
  Start         Length     Name                   Class
- 0001:00000000 00000975H .text                   CODE
+ 0001:00000000 000009b5H .text                   CODE
  0002:00000000 00000034H .idata$5                DATA
- 0002:00000038 00000453H .rdata                  DATA
+ 0002:00000038 0000046bH .rdata                  DATA
  0003:00000000 000001c0H .bss                    DATA
  0004:00000000 00000014H .idata$2                CODE
  0004:00000014 00000014H .idata$3                CODE
@@ -20,21 +20,22 @@
  0000:00000000       ___safe_se_handler_count   00000000     <absolute>
  0001:00000000       ?createCommand@@YAXPAD0P6AX0@Z@Z 00c01000 f   main.obj
  0001:00000060       _main                      00c01060 f   main.obj
- 0001:00000360       ?cmd_help@@YAXPAD@Z        00c01360 f   main.obj
- 0001:00000460       ?cmd_test@@YAXPAD@Z        00c01460 f   main.obj
- 0001:000004f0       ?cmd_reboot@@YAXPAD@Z      00c014f0 f   main.obj
- 0001:00000510       ?cmd_about@@YAXPAD@Z       00c01510 f   main.obj
- 0001:00000530       ?cmd_dobios@@YAXPAD@Z      00c01530 f   main.obj
- 0001:00000550       ?cmd_pci@@YAXPAD@Z         00c01550 f   main.obj
- 0001:00000570       ?cmd_start@@YAXPAD@Z       00c01570 f   main.obj
- 0001:00000620       ?cmd_dump@@YAXPAD@Z        00c01620 f   main.obj
- 0001:00000690       ?cmd_cls@@YAXPAD@Z         00c01690 f   main.obj
- 0001:000006b0       ?cmd_dir@@YAXPAD@Z         00c016b0 f   main.obj
- 0001:00000760       ?cmd_time@@YAXPAD@Z        00c01760 f   main.obj
- 0001:00000840       ?cmd_echo@@YAXPAD@Z        00c01840 f   main.obj
- 0001:00000890       ?strcmp@@YAHPBD0@Z         00c01890 f   string.obj
- 0001:00000900       ?strlen@@YAIPBD@Z          00c01900 f   string.obj
- 0001:00000940       ?strchr@@YAPADPADH@Z       00c01940 f   string.obj
+ 0001:00000380       ?cmd_help@@YAXPAD@Z        00c01380 f   main.obj
+ 0001:00000480       ?cmd_test@@YAXPAD@Z        00c01480 f   main.obj
+ 0001:00000510       ?cmd_reboot@@YAXPAD@Z      00c01510 f   main.obj
+ 0001:00000530       ?cmd_about@@YAXPAD@Z       00c01530 f   main.obj
+ 0001:00000550       ?cmd_dobios@@YAXPAD@Z      00c01550 f   main.obj
+ 0001:00000570       ?cmd_pci@@YAXPAD@Z         00c01570 f   main.obj
+ 0001:00000590       ?cmd_acpi@@YAXPAD@Z        00c01590 f   main.obj
+ 0001:000005b0       ?cmd_start@@YAXPAD@Z       00c015b0 f   main.obj
+ 0001:00000660       ?cmd_dump@@YAXPAD@Z        00c01660 f   main.obj
+ 0001:000006d0       ?cmd_cls@@YAXPAD@Z         00c016d0 f   main.obj
+ 0001:000006f0       ?cmd_dir@@YAXPAD@Z         00c016f0 f   main.obj
+ 0001:000007a0       ?cmd_time@@YAXPAD@Z        00c017a0 f   main.obj
+ 0001:00000880       ?cmd_echo@@YAXPAD@Z        00c01880 f   main.obj
+ 0001:000008d0       ?strcmp@@YAHPBD0@Z         00c018d0 f   string.obj
+ 0001:00000940       ?strlen@@YAIPBD@Z          00c01940 f   string.obj
+ 0001:00000980       ?strchr@@YAPADPADH@Z       00c01980 f   string.obj
  0002:00000000       __imp__printchar           00c02000     LevAPI DLL:LEVAPI.DLL
  0002:00000004       __imp__moveCursorRelative  00c02004     LevAPI DLL:LEVAPI.DLL
  0002:00000008       __imp__getInputChar        00c02008     LevAPI DLL:LEVAPI.DLL
@@ -50,46 +51,48 @@
  0002:00000030       \177LEVAPI_NULL_THUNK_DATA 00c02030     LevAPI DLL:LEVAPI.DLL
  0002:00000038       ??_C@_0L@GLAHGLNA@?6?$FLLevOS?$FN?$HO?5?$AA@ 00c02038     main.obj
  0002:00000048       ??_C@_0FG@KODAIHEC@Welcome?5to?5LevOS?52?40?6This?5is?5a?5b@ 00c02048     main.obj
- 0002:000000a0       ??_C@_06MJDCIMPN@reboot?$AA@ 00c020a0     main.obj
- 0002:000000a8       ??_C@_0BA@ELKBOACN@?6Reboots?5the?5PC?$AA@ 00c020a8     main.obj
- 0002:000000b8       ??_C@_03ELCKCFOI@pci?$AA@  00c020b8     main.obj
- 0002:000000bc       ??_C@_0L@DODJAOBJ@?6Tests?5PCI?$AA@ 00c020bc     main.obj
- 0002:000000c8       ??_C@_04GGLOKIEE@dump?$AA@ 00c020c8     main.obj
- 0002:000000d0       ??_C@_0CB@HEGMHNBI@?6Dumps?5a?5PE32?5application?5or?5DLL@ 00c020d0     main.obj
- 0002:000000f4       ??_C@_04NLJIDCGO@bios?$AA@ 00c020f4     main.obj
- 0002:000000fc       ??_C@_0BE@BNGHPFHM@?6Jumps?5back?5to?5BIOS?$AA@ 00c020fc     main.obj
- 0002:00000110       ??_C@_03DAPAKLGM@dir?$AA@  00c02110     main.obj
- 0002:00000114       ??_C@_0BP@OKJIHFLC@?6Lists?5files?5in?5root?5directory?$AA@ 00c02114     main.obj
- 0002:00000134       ??_C@_04CLCEDBPF@time?$AA@ 00c02134     main.obj
- 0002:0000013c       ??_C@_0N@DNDEBHMJ@?6Shows?5time?$CB?$AA@ 00c0213c     main.obj
- 0002:0000014c       ??_C@_04OFDNEFMC@echo?$AA@ 00c0214c     main.obj
- 0002:00000154       ??_C@_0CN@FFHNKIIF@?6Syntax?3?5echo?5?$DMstring?$DO?6Echoes?5th@ 00c02154     main.obj
- 0002:00000184       ??_C@_03LCPHGAHP@cls?$AA@  00c02184     main.obj
- 0002:00000188       ??_C@_0BK@KIOFNDBH@?6Clears?5the?5screen?5?$CI0x17?$CJ?$AA@ 00c02188     main.obj
- 0002:000001a4       ??_C@_05FAGFPHJG@start?$AA@ 00c021a4     main.obj
- 0002:000001b0       ??_C@_0EM@LIPFLACD@?6Syntax?3?5start?5?$DMfilename?$DO?6Starts@ 00c021b0     main.obj
- 0002:000001fc       ??_C@_05BEELFHJC@about?$AA@ 00c021fc     main.obj
- 0002:00000204       ??_C@_0BJ@LBMBLBLG@?6Opens?5up?5an?5about?5text?$CB?$AA@ 00c02204     main.obj
- 0002:00000220       ??_C@_07PHNAGKJK@readtxt?$AA@ 00c02220     main.obj
- 0002:00000228       ??_C@_0DM@EBHOHFFC@?6Syntax?3?5readtxt?5?$DMfilename?$DO?6Read@ 00c02228     main.obj
- 0002:00000264       ??_C@_04PCJFHION@help?$AA@ 00c02264     main.obj
- 0002:00000270       ??_C@_0HG@PPKLFMOH@?6Syntax?3?5help?5?$DMcommand?$DO?6Opens?5up@ 00c02270     main.obj
- 0002:000002e8       ??_C@_0BI@PCFEALJK@Terminal?5is?5executing?4?4?$AA@ 00c022e8     main.obj
- 0002:00000300       ??_C@_0DH@KHANMGIM@?6Use?5help?5?$DMcommand?$DO?5to?5get?5bette@ 00c02300     main.obj
- 0002:00000338       ??_C@_02LNAEAIDO@?$DL?5?$AA@ 00c02338     main.obj
- 0002:0000033c       ??_C@_0BG@DMKKJMII@?6Commands?5available?3?5?$AA@ 00c0233c     main.obj
- 0002:00000354       ??_C@_0BG@PIOLICDL@?6Welcome?5to?5LevOS2?40?$CB?$AA@ 00c02354     main.obj
- 0002:0000036c       ??_C@_0BI@FJMAFFGJ@?6ERROR?3?5File?5not?5found?$CB?$AA@ 00c0236c     main.obj
- 0002:00000384       ??_C@_0BJ@JLLABHCE@?6Please?5give?5a?5filename?$CB?$AA@ 00c02384     main.obj
- 0002:000003a0       ??_C@_0GO@GBIKKDFG@?6LevOS2?40?5is?5a?5rewrite?5of?5the?5no@ 00c023a0     main.obj
- 0002:00000410       ??_C@_0BM@CLBJFCLJ@?6No?5extra?5terminals?5yet?$CB?5?3?$CI?$AA@ 00c02410     main.obj
- 0002:0000042c       ??_C@_07INNMNHPJ@cmd?4exe?$AA@ 00c0242c     main.obj
- 0002:00000434       ??_C@_0BM@MGEKPPCA@?6Kernel?5can?8t?5be?5loaded?$CB?5?3?$CJ?$AA@ 00c02434     main.obj
- 0002:00000450       ??_C@_0L@FEMKKAMN@KRNL32?4exe?$AA@ 00c02450     main.obj
- 0002:0000045c       ??_C@_0BO@BBHHJJJP@?6Please?5give?5a?5software?5name?$CB?$AA@ 00c0245c     main.obj
- 0002:0000047c       ??_C@_06LJBKCCFA@Fails?$CB?$AA@ 00c0247c     main.obj
- 0002:00000484       ??_C@_02KHOJGJKF@?4?5?$AA@ 00c02484     main.obj
- 0002:00000488       ??_C@_02PIBHCBOA@20?$AA@   00c02488     main.obj
+ 0002:000000a0       ??_C@_04FENCLGEM@acpi?$AA@ 00c020a0     main.obj
+ 0002:000000a8       ??_C@_0BB@FEAGHJMJ@?6Shows?5ACPI?5info?$AA@ 00c020a8     main.obj
+ 0002:000000bc       ??_C@_06MJDCIMPN@reboot?$AA@ 00c020bc     main.obj
+ 0002:000000c4       ??_C@_0BA@ELKBOACN@?6Reboots?5the?5PC?$AA@ 00c020c4     main.obj
+ 0002:000000d4       ??_C@_03ELCKCFOI@pci?$AA@  00c020d4     main.obj
+ 0002:000000d8       ??_C@_0L@DODJAOBJ@?6Tests?5PCI?$AA@ 00c020d8     main.obj
+ 0002:000000e4       ??_C@_04GGLOKIEE@dump?$AA@ 00c020e4     main.obj
+ 0002:000000ec       ??_C@_0CB@HEGMHNBI@?6Dumps?5a?5PE32?5application?5or?5DLL@ 00c020ec     main.obj
+ 0002:00000110       ??_C@_04NLJIDCGO@bios?$AA@ 00c02110     main.obj
+ 0002:00000118       ??_C@_0BE@BNGHPFHM@?6Jumps?5back?5to?5BIOS?$AA@ 00c02118     main.obj
+ 0002:0000012c       ??_C@_03DAPAKLGM@dir?$AA@  00c0212c     main.obj
+ 0002:00000130       ??_C@_0BP@OKJIHFLC@?6Lists?5files?5in?5root?5directory?$AA@ 00c02130     main.obj
+ 0002:00000150       ??_C@_04CLCEDBPF@time?$AA@ 00c02150     main.obj
+ 0002:00000158       ??_C@_0N@DNDEBHMJ@?6Shows?5time?$CB?$AA@ 00c02158     main.obj
+ 0002:00000168       ??_C@_04OFDNEFMC@echo?$AA@ 00c02168     main.obj
+ 0002:00000170       ??_C@_0CN@FFHNKIIF@?6Syntax?3?5echo?5?$DMstring?$DO?6Echoes?5th@ 00c02170     main.obj
+ 0002:000001a0       ??_C@_03LCPHGAHP@cls?$AA@  00c021a0     main.obj
+ 0002:000001a4       ??_C@_0BK@KIOFNDBH@?6Clears?5the?5screen?5?$CI0x17?$CJ?$AA@ 00c021a4     main.obj
+ 0002:000001c0       ??_C@_05FAGFPHJG@start?$AA@ 00c021c0     main.obj
+ 0002:000001c8       ??_C@_0EM@LIPFLACD@?6Syntax?3?5start?5?$DMfilename?$DO?6Starts@ 00c021c8     main.obj
+ 0002:00000214       ??_C@_05BEELFHJC@about?$AA@ 00c02214     main.obj
+ 0002:0000021c       ??_C@_0BJ@LBMBLBLG@?6Opens?5up?5an?5about?5text?$CB?$AA@ 00c0221c     main.obj
+ 0002:00000238       ??_C@_07PHNAGKJK@readtxt?$AA@ 00c02238     main.obj
+ 0002:00000240       ??_C@_0DM@EBHOHFFC@?6Syntax?3?5readtxt?5?$DMfilename?$DO?6Read@ 00c02240     main.obj
+ 0002:0000027c       ??_C@_04PCJFHION@help?$AA@ 00c0227c     main.obj
+ 0002:00000288       ??_C@_0HG@PPKLFMOH@?6Syntax?3?5help?5?$DMcommand?$DO?6Opens?5up@ 00c02288     main.obj
+ 0002:00000300       ??_C@_0BI@PCFEALJK@Terminal?5is?5executing?4?4?$AA@ 00c02300     main.obj
+ 0002:00000318       ??_C@_0DH@KHANMGIM@?6Use?5help?5?$DMcommand?$DO?5to?5get?5bette@ 00c02318     main.obj
+ 0002:00000350       ??_C@_02LNAEAIDO@?$DL?5?$AA@ 00c02350     main.obj
+ 0002:00000354       ??_C@_0BG@DMKKJMII@?6Commands?5available?3?5?$AA@ 00c02354     main.obj
+ 0002:0000036c       ??_C@_0BG@PIOLICDL@?6Welcome?5to?5LevOS2?40?$CB?$AA@ 00c0236c     main.obj
+ 0002:00000384       ??_C@_0BI@FJMAFFGJ@?6ERROR?3?5File?5not?5found?$CB?$AA@ 00c02384     main.obj
+ 0002:0000039c       ??_C@_0BJ@JLLABHCE@?6Please?5give?5a?5filename?$CB?$AA@ 00c0239c     main.obj
+ 0002:000003b8       ??_C@_0GO@GBIKKDFG@?6LevOS2?40?5is?5a?5rewrite?5of?5the?5no@ 00c023b8     main.obj
+ 0002:00000428       ??_C@_0BM@CLBJFCLJ@?6No?5extra?5terminals?5yet?$CB?5?3?$CI?$AA@ 00c02428     main.obj
+ 0002:00000444       ??_C@_07INNMNHPJ@cmd?4exe?$AA@ 00c02444     main.obj
+ 0002:0000044c       ??_C@_0BM@MGEKPPCA@?6Kernel?5can?8t?5be?5loaded?$CB?5?3?$CJ?$AA@ 00c0244c     main.obj
+ 0002:00000468       ??_C@_0L@FEMKKAMN@KRNL32?4exe?$AA@ 00c02468     main.obj
+ 0002:00000474       ??_C@_0BO@BBHHJJJP@?6Please?5give?5a?5software?5name?$CB?$AA@ 00c02474     main.obj
+ 0002:00000494       ??_C@_06LJBKCCFA@Fails?$CB?$AA@ 00c02494     main.obj
+ 0002:0000049c       ??_C@_02KHOJGJKF@?4?5?$AA@ 00c0249c     main.obj
+ 0002:000004a0       ??_C@_02PIBHCBOA@20?$AA@   00c024a0     main.obj
  0003:00000000       ?buf@@3PADA                00c03000     main.obj
  0003:0000003c       ?num@@3DA                  00c0303c     main.obj
  0003:0000003d       ?c@@3DA                    00c0303d     main.obj

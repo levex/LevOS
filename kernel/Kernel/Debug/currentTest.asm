@@ -33,7 +33,9 @@ $LL2@taskone:
 	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
 	add	esp, 4
 
-; 8    : 	}
+; 8    : 		/*_asm mov al, '1'
+; 9    : 		_asm out 0xE9, al*/
+; 10   : 	}
 
 	jmp	SHORT $LL2@taskone
 ?taskone@@YAXXZ ENDP					; taskone
@@ -49,20 +51,51 @@ CONST	ENDS
 _TEXT	SEGMENT
 ?tasktwo@@YAXXZ PROC					; tasktwo, COMDAT
 
-; 11   : {
+; 13   : {
 
 $LL2@tasktwo:
 
-; 12   : 	while(1) {
-; 13   : 		DebugPrintf("2");
+; 14   : 	 while(1) {
+; 15   : 		DebugPrintf("2");
 
 	push	OFFSET ??_C@_01FDFGLJHB@2?$AA@
 	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
 	add	esp, 4
 
-; 14   : 	}
+; 16   : 		/* _asm mov al, '2'
+; 17   : 		_asm out 0xE9, al*/
+; 18   : 	}
 
 	jmp	SHORT $LL2@tasktwo
 ?tasktwo@@YAXXZ ENDP					; tasktwo
+_TEXT	ENDS
+PUBLIC	??_C@_01EKENIIDA@3?$AA@				; `string'
+PUBLIC	?taskthree@@YAXXZ				; taskthree
+;	COMDAT ??_C@_01EKENIIDA@3?$AA@
+CONST	SEGMENT
+??_C@_01EKENIIDA@3?$AA@ DB '3', 00H			; `string'
+; Function compile flags: /Ogtpy
+CONST	ENDS
+;	COMDAT ?taskthree@@YAXXZ
+_TEXT	SEGMENT
+?taskthree@@YAXXZ PROC					; taskthree, COMDAT
+
+; 21   : {
+
+$LL2@taskthree:
+
+; 22   : 	 while(1) {
+; 23   : 		DebugPrintf("3");
+
+	push	OFFSET ??_C@_01EKENIIDA@3?$AA@
+	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
+	add	esp, 4
+
+; 24   : 		 /*_asm mov al, '3'
+; 25   : 		_asm out 0xE9, al*/
+; 26   : 	}
+
+	jmp	SHORT $LL2@taskthree
+?taskthree@@YAXXZ ENDP					; taskthree
 _TEXT	ENDS
 END

@@ -58,6 +58,14 @@ int strcmp (const char* str1, const char* str2) {
 
 	return res;
 }
+bool strlcmp(char* str1, char* str2, int len)
+{
+	while(*str1++ == *str2++)
+	{
+		len --;
+	}
+	return len<=0;
+}
 
 void strsplit(char* s1, char delim, int &count)
 {

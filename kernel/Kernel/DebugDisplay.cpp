@@ -2,6 +2,7 @@
 #include <string.h>
 #include "DebugDisplay.h"
 #include "pMemory.h"
+#include "VGAdriver.h"
 #define VID_MEMORY	0xB8000
 #define COLS 80
 #define LINE 25
@@ -24,6 +25,15 @@ int DebugGetX()
 int DebugGetY()
 {
 	return _yPos/2;
+}
+
+void DebugReset()
+{
+	_xPos = 0;
+	_yPos = 0;
+	_startX = 0;
+	_startY = 0;
+	DebugClrScr(0x17);
 }
 
 void DebugGotoRXY (unsigned x, unsigned y) {
@@ -54,7 +64,10 @@ void DebugPutc (unsigned char c) {
 	{
 		DebugScrollUp();
 	}
-
+	if(isVGA()) {
+		VGA_put_char(_xPos++ * 8, _yPos * 8, c, 1);
+		return;
+	}
 	/* draw the character */
 	unsigned char* p = (unsigned char*)VID_MEMORY + (_xPos++)*2 + _yPos * 80;
 	*p++ = c;

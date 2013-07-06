@@ -2,12 +2,21 @@
 #include "HComm.h"
 #include "string.h"
 #include "DebugDisplay.h"
+#include "VGAdriver.h"
 
 void _cdecl kernel_panic (const char* fmt, ...)
 {
 	_asm cli
 	char* r = (char*)fmt;
-	DebugPrintf(fmt);
+	/*if(isVGA())
+	{
+		for(int i = 0; i < strlen(fmt); i++)
+		{
+			VGA_put_char(0+i*8,0, *r++);
+		}
+		return;
+	}
+	DebugPrintf(fmt);*/
 	for(int i = 0; i < strlen(fmt); i++)
 	{
 		outport(0xE9, *r++);

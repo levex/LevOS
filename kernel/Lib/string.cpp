@@ -54,6 +54,12 @@ int strcmp (const char* str1, const char* str2) {
 	return res;
 }
 
+bool strlcmp(char* str1, char* str2, int len)
+{
+	while(*str1++ == *str2++) { len --; if(len == 0) return true; }
+	return false;
+}
+
 // copies string s2 to s1
 char *strcpy(char *s1, const char *s2)
 {

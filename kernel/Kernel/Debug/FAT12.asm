@@ -14,7 +14,7 @@ PUBLIC	?_FSysFat@@3U_FILE_SYSTEM@@A			; _FSysFat
 PUBLIC	?_MountInfo@@3U_MOUNT_INFO@@A			; _MountInfo
 _BSS	SEGMENT
 ?FAT@@3PAEA DB	0400H DUP (?)				; FAT
-?_FSysFat@@3U_FILE_SYSTEM@@A DB 01cH DUP (?)		; _FSysFat
+?_FSysFat@@3U_FILE_SYSTEM@@A DB 020H DUP (?)		; _FSysFat
 ?_MountInfo@@3U_MOUNT_INFO@@A DB 01cH DUP (?)		; _MountInfo
 _BSS	ENDS
 PUBLIC	?ToDosFileName@@YAXPBDPADI@Z			; ToDosFileName
@@ -265,14 +265,14 @@ EXTRN	?vd_getCurrentDataDevice@@YA?AU__DATA_DEVICE@@XZ:PROC ; vd_getCurrentDataD
 ; Function compile flags: /Ogtpy
 ;	COMDAT ?fsysFatGetFilesInRoot@@YAXPAD@Z
 _TEXT	SEGMENT
-$T3043 = -56						; size = 28
-$T3044 = -28						; size = 28
+$T3088 = -64						; size = 32
+$T3089 = -32						; size = 32
 _ret$ = 8						; size = 4
 ?fsysFatGetFilesInRoot@@YAXPAD@Z PROC			; fsysFatGetFilesInRoot, COMDAT
 
 ; 67   : {
 
-	sub	esp, 56					; 00000038H
+	sub	esp, 64					; 00000040H
 	push	esi
 
 ; 68   : 	char* _ret = ret;
@@ -280,17 +280,17 @@ _ret$ = 8						; size = 4
 ; 70   : 	unsigned char* buf;
 ; 71   : 	buf = (unsigned char*) vd_getCurrentDataDevice().read_sector(_MountInfo.rootOffset);
 
-	lea	eax, DWORD PTR $T3044[esp+60]
+	lea	eax, DWORD PTR $T3089[esp+68]
 	push	edi
 	push	eax
 	call	?vd_getCurrentDataDevice@@YA?AU__DATA_DEVICE@@XZ ; vd_getCurrentDataDevice
 	mov	esi, eax
-	mov	ecx, 7
-	lea	edi, DWORD PTR $T3043[esp+68]
+	mov	ecx, 8
+	lea	edi, DWORD PTR $T3088[esp+76]
 	rep movsd
 	mov	ecx, DWORD PTR ?_MountInfo@@3U_MOUNT_INFO@@A+12
 	push	ecx
-	call	DWORD PTR $T3043[esp+80]
+	call	DWORD PTR $T3088[esp+88]
 	mov	esi, eax
 	add	esp, 8
 
@@ -298,7 +298,7 @@ _ret$ = 8						; size = 4
 
 	cmp	BYTE PTR [esi], 0
 	je	SHORT $LN1@fsysFatGet
-	mov	edi, DWORD PTR _ret$[esp+60]
+	mov	edi, DWORD PTR _ret$[esp+68]
 $LL2@fsysFatGet:
 
 ; 73   : 	{
@@ -326,7 +326,7 @@ $LN1@fsysFatGet:
 ; 80   : 	return;
 ; 81   : }
 
-	add	esp, 56					; 00000038H
+	add	esp, 64					; 00000040H
 	ret	0
 ?fsysFatGetFilesInRoot@@YAXPAD@Z ENDP			; fsysFatGetFilesInRoot
 _TEXT	ENDS
@@ -334,13 +334,13 @@ PUBLIC	?fsysFatGetNumberOfFilesInRoot@@YADXZ		; fsysFatGetNumberOfFilesInRoot
 ; Function compile flags: /Ogtpy
 ;	COMDAT ?fsysFatGetNumberOfFilesInRoot@@YADXZ
 _TEXT	SEGMENT
-$T3050 = -56						; size = 28
-$T3051 = -28						; size = 28
+$T3095 = -64						; size = 32
+$T3096 = -32						; size = 32
 ?fsysFatGetNumberOfFilesInRoot@@YADXZ PROC		; fsysFatGetNumberOfFilesInRoot, COMDAT
 
 ; 84   : {
 
-	sub	esp, 56					; 00000038H
+	sub	esp, 64					; 00000040H
 	push	ebx
 	push	esi
 
@@ -349,18 +349,18 @@ $T3051 = -28						; size = 28
 ; 87   : 	unsigned char* buf;
 ; 88   : 	buf = (unsigned char*) vd_getCurrentDataDevice().read_sector(_MountInfo.rootOffset);
 
-	lea	eax, DWORD PTR $T3051[esp+64]
+	lea	eax, DWORD PTR $T3096[esp+72]
 	push	edi
 	push	eax
 	xor	bl, bl
 	call	?vd_getCurrentDataDevice@@YA?AU__DATA_DEVICE@@XZ ; vd_getCurrentDataDevice
 	mov	esi, eax
-	mov	ecx, 7
-	lea	edi, DWORD PTR $T3050[esp+72]
+	mov	ecx, 8
+	lea	edi, DWORD PTR $T3095[esp+80]
 	rep movsd
 	mov	ecx, DWORD PTR ?_MountInfo@@3U_MOUNT_INFO@@A+12
 	push	ecx
-	call	DWORD PTR $T3050[esp+84]
+	call	DWORD PTR $T3095[esp+92]
 	add	esp, 8
 
 ; 89   : 	while(*buf != 0)
@@ -390,7 +390,7 @@ $LN1@fsysFatGet@2:
 
 ; 96   : }
 
-	add	esp, 56					; 00000038H
+	add	esp, 64					; 00000040H
 	ret	0
 ?fsysFatGetNumberOfFilesInRoot@@YADXZ ENDP		; fsysFatGetNumberOfFilesInRoot
 _TEXT	ENDS
@@ -401,17 +401,17 @@ EXTRN	?memcpyTF@@YAXPAD0H@Z:PROC			; memcpyTF
 ; Function compile flags: /Ogtpy
 ;	COMDAT ?fsysFatDirectory@@YA?AU_FILE@@PBD@Z
 _TEXT	SEGMENT
-_name$2889 = -80					; size = 11
-_DosFileName$ = -68					; size = 11
-$T3058 = -56						; size = 28
-$T3059 = -28						; size = 28
-$T3057 = 8						; size = 4
+_name$2913 = -88					; size = 11
+_DosFileName$ = -76					; size = 11
+$T3103 = -64						; size = 32
+$T3104 = -32						; size = 32
+$T3102 = 8						; size = 4
 _DirectoryName$ = 12					; size = 4
 ?fsysFatDirectory@@YA?AU_FILE@@PBD@Z PROC		; fsysFatDirectory, COMDAT
 
 ; 101  : FILE fsysFatDirectory (const char* DirectoryName) {
 
-	sub	esp, 80					; 00000050H
+	sub	esp, 88					; 00000058H
 
 ; 102  : 
 ; 103  : 	FILE file;
@@ -422,13 +422,13 @@ _DirectoryName$ = 12					; size = 4
 ; 108  : 	char DosFileName[11];
 ; 109  : 	ToDosFileName (DirectoryName, DosFileName, 11);
 
-	mov	ecx, DWORD PTR _DirectoryName$[esp+76]
+	mov	ecx, DWORD PTR _DirectoryName$[esp+84]
 	push	ebx
 	push	ebp
 	push	esi
 	push	edi
 	push	11					; 0000000bH
-	lea	eax, DWORD PTR _DosFileName$[esp+100]
+	lea	eax, DWORD PTR _DosFileName$[esp+108]
 	push	eax
 	push	ecx
 	call	?ToDosFileName@@YAXPBDPADI@Z		; ToDosFileName
@@ -437,7 +437,7 @@ _DirectoryName$ = 12					; size = 4
 
 	xor	ebx, ebx
 	add	esp, 12					; 0000000cH
-	mov	BYTE PTR _DosFileName$[esp+107], bl
+	mov	BYTE PTR _DosFileName$[esp+115], bl
 
 ; 111  : 
 ; 112  : 	//14 sectors per directory
@@ -455,17 +455,17 @@ $LL9@fsysFatDir:
 ; 120  : 		//read in sector of root directory
 ; 121  : 		buf = (unsigned char*) vd_getCurrentDataDevice().read_sector(_MountInfo.rootOffset + sector );
 
-	lea	edx, DWORD PTR $T3059[esp+96]
+	lea	edx, DWORD PTR $T3104[esp+104]
 	push	edx
 	call	?vd_getCurrentDataDevice@@YA?AU__DATA_DEVICE@@XZ ; vd_getCurrentDataDevice
 	mov	esi, eax
 	mov	eax, DWORD PTR ?_MountInfo@@3U_MOUNT_INFO@@A+12
 	add	eax, ebp
-	mov	ecx, 7
-	lea	edi, DWORD PTR $T3058[esp+100]
+	mov	ecx, 8
+	lea	edi, DWORD PTR $T3103[esp+108]
 	push	eax
 	rep movsd
-	call	DWORD PTR $T3058[esp+112]
+	call	DWORD PTR $T3103[esp+120]
 	add	esp, 8
 
 ; 122  : 
@@ -491,7 +491,7 @@ $LL6@fsysFatDir:
 ; 134  : 			memcpyTF (name, (char*)(directory->Filename), 11);
 
 	push	11					; 0000000bH
-	lea	ecx, DWORD PTR _name$2889[esp+100]
+	lea	ecx, DWORD PTR _name$2913[esp+108]
 	push	esi
 	push	ecx
 	call	?memcpyTF@@YAXPAD0H@Z			; memcpyTF
@@ -501,11 +501,11 @@ $LL6@fsysFatDir:
 ; 137  : 			//find a match?
 ; 138  : 			if (strcmp (DosFileName, name) == 0) {
 
-	lea	edx, DWORD PTR _name$2889[esp+108]
+	lea	edx, DWORD PTR _name$2913[esp+116]
 	push	edx
-	lea	eax, DWORD PTR _DosFileName$[esp+112]
+	lea	eax, DWORD PTR _DosFileName$[esp+120]
 	push	eax
-	mov	BYTE PTR _name$2889[esp+127], bl
+	mov	BYTE PTR _name$2913[esp+135], bl
 	call	?strcmp@@YAHPBD0@Z			; strcmp
 	add	esp, 20					; 00000014H
 	test	eax, eax
@@ -540,7 +540,7 @@ $LL6@fsysFatDir:
 ; 163  : 	//unable to find file
 ; 164  : 	file.flags = FS_INVALID;
 
-	mov	eax, DWORD PTR $T3057[esp+92]
+	mov	eax, DWORD PTR $T3102[esp+100]
 	pop	edi
 	pop	esi
 	pop	ebp
@@ -550,7 +550,7 @@ $LL6@fsysFatDir:
 ; 165  : 	return file;
 ; 166  : }
 
-	add	esp, 80					; 00000050H
+	add	esp, 88					; 00000058H
 	ret	0
 $LN14@fsysFatDir:
 
@@ -558,8 +558,8 @@ $LN14@fsysFatDir:
 ; 140  : 				//found it, set up file info
 ; 141  : 				strcpy (file.name, DirectoryName);
 
-	mov	ecx, DWORD PTR _DirectoryName$[esp+92]
-	mov	edi, DWORD PTR $T3057[esp+92]
+	mov	ecx, DWORD PTR _DirectoryName$[esp+100]
+	mov	edi, DWORD PTR $T3102[esp+100]
 	push	ecx
 	push	edi
 	call	?strcpy@@YAPADPADPBD@Z			; strcpy
@@ -613,214 +613,311 @@ $LN14@fsysFatDir:
 ; 165  : 	return file;
 ; 166  : }
 
-	add	esp, 80					; 00000050H
+	add	esp, 88					; 00000058H
 	ret	0
 ?fsysFatDirectory@@YA?AU_FILE@@PBD@Z ENDP		; fsysFatDirectory
+_TEXT	ENDS
+PUBLIC	?fsysFatWrite@@YAXPAU_FILE@@PAEI@Z		; fsysFatWrite
+; Function compile flags: /Ogtpy
+;	COMDAT ?fsysFatWrite@@YAXPAU_FILE@@PAEI@Z
+_TEXT	SEGMENT
+$T3115 = -64						; size = 32
+$T3113 = -64						; size = 32
+$T3116 = -32						; size = 32
+$T3114 = -32						; size = 32
+_file$ = 8						; size = 4
+_Buffer$ = 12						; size = 4
+_Length$ = 16						; size = 4
+?fsysFatWrite@@YAXPAU_FILE@@PAEI@Z PROC			; fsysFatWrite, COMDAT
+
+; 169  : {
+
+	sub	esp, 64					; 00000040H
+
+; 170  : 	if(!file) return;
+
+	cmp	DWORD PTR _file$[esp+60], 0
+	je	SHORT $LN1@fsysFatWri
+
+; 171  : 	if(Length == 0) return;
+
+	cmp	DWORD PTR _Length$[esp+60], 0
+	je	SHORT $LN1@fsysFatWri
+
+; 172  : 	if(Buffer == 0) return;
+
+	cmp	DWORD PTR _Buffer$[esp+60], 0
+	je	SHORT $LN1@fsysFatWri
+
+; 173  : 	/*
+; 174  : 	Writing a file:
+; 175  : 		Find an empty cluster
+; 176  : 		Create a root directory entry
+; 177  : 		Create a FAT entry for the cluster
+; 178  : 		Repeat until filesize is accomplished.
+; 179  : 	*/
+; 180  : 	int StartSectorOfDataOnDisk = _MountInfo.rootOffset + _MountInfo.rootSize; // skip reserved, bpb, rootdir
+; 181  : 
+; 182  : 	/* STEP: find free spot in root directory */
+; 183  : 	// The root directory consists of 14 sectors AT MOST
+; 184  : 	unsigned char* sector = (unsigned char*)(vd_getCurrentDataDevice().read_sector(_MountInfo.rootOffset));
+
+	push	ebx
+	push	esi
+	lea	eax, DWORD PTR $T3114[esp+72]
+	push	edi
+	push	eax
+	call	?vd_getCurrentDataDevice@@YA?AU__DATA_DEVICE@@XZ ; vd_getCurrentDataDevice
+	mov	esi, eax
+	mov	ecx, 8
+	lea	edi, DWORD PTR $T3113[esp+80]
+	rep movsd
+	mov	ecx, DWORD PTR ?_MountInfo@@3U_MOUNT_INFO@@A+12
+	push	ecx
+	call	DWORD PTR $T3113[esp+92]
+	add	esp, 8
+
+; 185  : 	for(int i = 0; i < 14; i++) // do for each sector
+
+	xor	ebx, ebx
+$LL3@fsysFatWri:
+
+; 186  : 	{
+; 187  : 		sector = (unsigned char*)(vd_getCurrentDataDevice().read_sector(_MountInfo.rootOffset + i));
+
+	lea	edx, DWORD PTR $T3116[esp+76]
+	push	edx
+	call	?vd_getCurrentDataDevice@@YA?AU__DATA_DEVICE@@XZ ; vd_getCurrentDataDevice
+	mov	esi, eax
+	mov	eax, DWORD PTR ?_MountInfo@@3U_MOUNT_INFO@@A+12
+	add	eax, ebx
+	mov	ecx, 8
+	lea	edi, DWORD PTR $T3115[esp+80]
+	push	eax
+	rep movsd
+	call	DWORD PTR $T3115[esp+92]
+	inc	ebx
+	add	esp, 8
+	cmp	ebx, 14					; 0000000eH
+	jl	SHORT $LL3@fsysFatWri
+	pop	edi
+	pop	esi
+	pop	ebx
+$LN1@fsysFatWri:
+
+; 188  : 		DIRECTORY* entry = (DIRECTORY*)sector;
+; 189  : 		
+; 190  : 	}
+; 191  : }
+
+	add	esp, 64					; 00000040H
+	ret	0
+?fsysFatWrite@@YAXPAU_FILE@@PAEI@Z ENDP			; fsysFatWrite
 _TEXT	ENDS
 PUBLIC	?fsysFatRead@@YAXPAU_FILE@@PAEI@Z		; fsysFatRead
 ; Function compile flags: /Ogtpy
 ;	COMDAT ?fsysFatRead@@YAXPAU_FILE@@PAEI@Z
 _TEXT	SEGMENT
-_nextCluster$2917 = -60					; size = 2
-$T3072 = -56						; size = 28
-$T3070 = -56						; size = 28
-$T3068 = -56						; size = 28
-$T3073 = -28						; size = 28
-$T3071 = -28						; size = 28
-$T3069 = -28						; size = 28
+_nextCluster$2961 = -68					; size = 2
+$T3126 = -64						; size = 32
+$T3124 = -64						; size = 32
+$T3122 = -64						; size = 32
+$T3127 = -32						; size = 32
+$T3125 = -32						; size = 32
+$T3123 = -32						; size = 32
 _file$ = 8						; size = 4
 _Buffer$ = 12						; size = 4
 _Length$ = 16						; size = 4
 ?fsysFatRead@@YAXPAU_FILE@@PAEI@Z PROC			; fsysFatRead, COMDAT
 
-; 171  : void fsysFatRead(PFILE file, unsigned char* Buffer, unsigned int Length) {
+; 196  : void fsysFatRead(PFILE file, unsigned char* Buffer, unsigned int Length) {
 
-	sub	esp, 60					; 0000003cH
+	sub	esp, 68					; 00000044H
 	push	ebp
 
-; 172  : 
-; 173  : 	if (file) {
+; 197  : 
+; 198  : 	if (file) {
 
-	mov	ebp, DWORD PTR _file$[esp+60]
+	mov	ebp, DWORD PTR _file$[esp+68]
 	test	ebp, ebp
 	je	$LN5@fsysFatRea
 
-; 174  : 
-; 175  : 		//starting physical sector
-; 176  : 		unsigned int physSector = 32 + (file->currentCluster - 1);
+; 199  : 
+; 200  : 		//starting physical sector
+; 201  : 		unsigned int physSector = 32 + (file->currentCluster - 1);
 
 	push	ebx
 	mov	ebx, DWORD PTR [ebp+52]
 	push	esi
 
-; 177  : 
-; 178  : 		//read in sector
-; 179  : 		unsigned char* sector = (unsigned char*) vd_getCurrentDataDevice().read_sector ( physSector );
+; 202  : 
+; 203  : 		//read in sector
+; 204  : 		unsigned char* sector = (unsigned char*) vd_getCurrentDataDevice().read_sector ( physSector );
 
-	lea	eax, DWORD PTR $T3069[esp+72]
+	lea	eax, DWORD PTR $T3123[esp+80]
 	push	edi
 	push	eax
 	add	ebx, 31					; 0000001fH
 	call	?vd_getCurrentDataDevice@@YA?AU__DATA_DEVICE@@XZ ; vd_getCurrentDataDevice
 	mov	esi, eax
-	mov	ecx, 7
-	lea	edi, DWORD PTR $T3068[esp+80]
+	mov	ecx, 8
+	lea	edi, DWORD PTR $T3122[esp+88]
 	push	ebx
 	rep movsd
-	call	DWORD PTR $T3068[esp+92]
+	call	DWORD PTR $T3122[esp+100]
 
-; 180  : 
-; 181  : 		//copy block of memory
-; 182  : 		memcpyTF ((char*)Buffer, (char*)sector, 512);
+; 205  : 
+; 206  : 		//copy block of memory
+; 207  : 		memcpyTF ((char*)Buffer, (char*)sector, 512);
 
-	mov	ecx, DWORD PTR _Buffer$[esp+80]
+	mov	ecx, DWORD PTR _Buffer$[esp+88]
 	push	512					; 00000200H
 	push	eax
 	push	ecx
 	call	?memcpyTF@@YAXPAD0H@Z			; memcpyTF
 
-; 183  : 
-; 184  : 		//locate FAT sector
-; 185  : 		unsigned int FAT_Offset = file->currentCluster + (file->currentCluster / 2); //multiply by 1.5
+; 208  : 
+; 209  : 		//locate FAT sector
+; 210  : 		unsigned int FAT_Offset = file->currentCluster + (file->currentCluster / 2); //multiply by 1.5
 
 	mov	eax, DWORD PTR [ebp+52]
 	mov	ebp, eax
 	shr	ebp, 1
 	add	ebp, eax
 
-; 186  : 		unsigned int FAT_Sector = 1 + (FAT_Offset / SECTOR_SIZE);
+; 211  : 		unsigned int FAT_Sector = 1 + (FAT_Offset / SECTOR_SIZE);
 
 	mov	ebx, ebp
 
-; 187  : 		unsigned int entryOffset = FAT_Offset % SECTOR_SIZE;
-; 188  : 
-; 189  : 		//read 1st FAT sector
-; 190  : 		sector = (unsigned char*) vd_getCurrentDataDevice().read_sector ( FAT_Sector );
+; 212  : 		unsigned int entryOffset = FAT_Offset % SECTOR_SIZE;
+; 213  : 
+; 214  : 		//read 1st FAT sector
+; 215  : 		sector = (unsigned char*) vd_getCurrentDataDevice().read_sector ( FAT_Sector );
 
-	lea	edx, DWORD PTR $T3071[esp+96]
+	lea	edx, DWORD PTR $T3125[esp+104]
 	shr	ebx, 9
 	push	edx
 	inc	ebx
 	call	?vd_getCurrentDataDevice@@YA?AU__DATA_DEVICE@@XZ ; vd_getCurrentDataDevice
 	mov	esi, eax
-	mov	ecx, 7
-	lea	edi, DWORD PTR $T3070[esp+100]
+	mov	ecx, 8
+	lea	edi, DWORD PTR $T3124[esp+108]
 	push	ebx
 	rep movsd
-	call	DWORD PTR $T3070[esp+112]
+	call	DWORD PTR $T3124[esp+120]
 
-; 191  : 		memcpyTF ((char*)FAT, (char*)sector, 512);
+; 216  : 		memcpyTF ((char*)FAT, (char*)sector, 512);
 
 	push	512					; 00000200H
 	push	eax
 	push	OFFSET ?FAT@@3PAEA			; FAT
 	call	?memcpyTF@@YAXPAD0H@Z			; memcpyTF
 
-; 192  : 
-; 193  : 		//read 2nd FAT sector
-; 194  : 		sector = (unsigned char*) vd_getCurrentDataDevice().read_sector ( FAT_Sector + 1 );
+; 217  : 
+; 218  : 		//read 2nd FAT sector
+; 219  : 		sector = (unsigned char*) vd_getCurrentDataDevice().read_sector ( FAT_Sector + 1 );
 
-	lea	eax, DWORD PTR $T3073[esp+116]
+	lea	eax, DWORD PTR $T3127[esp+124]
 	push	eax
 	call	?vd_getCurrentDataDevice@@YA?AU__DATA_DEVICE@@XZ ; vd_getCurrentDataDevice
 	mov	esi, eax
 	inc	ebx
-	mov	ecx, 7
-	lea	edi, DWORD PTR $T3072[esp+120]
+	mov	ecx, 8
+	lea	edi, DWORD PTR $T3126[esp+128]
 	push	ebx
 	rep movsd
-	call	DWORD PTR $T3072[esp+132]
+	call	DWORD PTR $T3126[esp+140]
 
-; 195  : 		memcpyTF ((char*)(FAT + SECTOR_SIZE), (char*)sector, 512);
+; 220  : 		memcpyTF ((char*)(FAT + SECTOR_SIZE), (char*)sector, 512);
 
 	push	512					; 00000200H
 	push	eax
 	push	OFFSET ?FAT@@3PAEA+512
 	call	?memcpyTF@@YAXPAD0H@Z			; memcpyTF
 
-; 196  : 
-; 197  : 		//read entry for next cluster
-; 198  : 		uint16_t nextCluster = *( uint16_t*) &FAT [entryOffset];
-; 199  : 
-; 200  : 		//test if entry is odd or even
-; 201  : 		if( file->currentCluster & 0x0001 )
+; 221  : 
+; 222  : 		//read entry for next cluster
+; 223  : 		uint16_t nextCluster = *( uint16_t*) &FAT [entryOffset];
+; 224  : 
+; 225  : 		//test if entry is odd or even
+; 226  : 		if( file->currentCluster & 0x0001 )
 
-	mov	eax, DWORD PTR _file$[esp+132]
+	mov	eax, DWORD PTR _file$[esp+140]
 	add	esp, 60					; 0000003cH
 	and	ebp, 511				; 000001ffH
 	test	BYTE PTR [eax+52], 1
 	movzx	ecx, WORD PTR ?FAT@@3PAEA[ebp]
 	pop	edi
 	pop	esi
-	mov	DWORD PTR _nextCluster$2917[esp+68], ecx
+	mov	DWORD PTR _nextCluster$2961[esp+76], ecx
 	pop	ebx
 	je	SHORT $LN4@fsysFatRea
 
-; 202  : 			nextCluster >>= 4;      //grab high 12 bits
+; 227  : 			nextCluster >>= 4;      //grab high 12 bits
 
 	shr	cx, 4
 
-; 203  : 		else
+; 228  : 		else
 
 	jmp	SHORT $LN3@fsysFatRea
 $LN4@fsysFatRea:
 
-; 204  : 			nextCluster &= 0x0FFF;   //grab low 12 bits
+; 229  : 			nextCluster &= 0x0FFF;   //grab low 12 bits
 
-	and	DWORD PTR _nextCluster$2917[esp+64], 4095 ; 00000fffH
-	mov	cx, WORD PTR _nextCluster$2917[esp+64]
+	and	DWORD PTR _nextCluster$2961[esp+72], 4095 ; 00000fffH
+	mov	cx, WORD PTR _nextCluster$2961[esp+72]
 $LN3@fsysFatRea:
 
-; 205  : 
-; 206  : 		//test for end of file
-; 207  : 		if ( nextCluster >= 0xff8) {
+; 230  : 
+; 231  : 		//test for end of file
+; 232  : 		if ( nextCluster >= 0xff8) {
 
 	mov	edx, 4088				; 00000ff8H
 	cmp	cx, dx
 	jb	SHORT $LN2@fsysFatRea
 $LN8@fsysFatRea:
 
-; 208  : 
-; 209  : 			file->eof = 1;
+; 233  : 
+; 234  : 			file->eof = 1;
 
 	mov	DWORD PTR [eax+44], 1
 	pop	ebp
 
-; 222  : 	}
-; 223  : }
+; 247  : 	}
+; 248  : }
 
-	add	esp, 60					; 0000003cH
+	add	esp, 68					; 00000044H
 	ret	0
 $LN2@fsysFatRea:
 
-; 210  : 			return;
-; 211  : 		}
-; 212  : 
-; 213  : 		//test for file corruption
-; 214  : 		if ( nextCluster == 0 ) {
+; 235  : 			return;
+; 236  : 		}
+; 237  : 
+; 238  : 		//test for file corruption
+; 239  : 		if ( nextCluster == 0 ) {
 
 	test	cx, cx
 
-; 215  : 
-; 216  : 			file->eof = 1;
-; 217  : 			return;
+; 240  : 
+; 241  : 			file->eof = 1;
+; 242  : 			return;
 
 	je	SHORT $LN8@fsysFatRea
 
-; 218  : 		}
-; 219  : 
-; 220  : 		//set next cluster
-; 221  : 		file->currentCluster = nextCluster;
+; 243  : 		}
+; 244  : 
+; 245  : 		//set next cluster
+; 246  : 		file->currentCluster = nextCluster;
 
 	movzx	ecx, cx
 	mov	DWORD PTR [eax+52], ecx
 $LN5@fsysFatRea:
 	pop	ebp
 
-; 222  : 	}
-; 223  : }
+; 247  : 	}
+; 248  : }
 
-	add	esp, 60					; 0000003cH
+	add	esp, 68					; 00000044H
 	ret	0
 ?fsysFatRead@@YAXPAU_FILE@@PAEI@Z ENDP			; fsysFatRead
 _TEXT	ENDS
@@ -831,19 +928,19 @@ _TEXT	SEGMENT
 _file$ = 8						; size = 4
 ?fsysFatClose@@YAXPAU_FILE@@@Z PROC			; fsysFatClose, COMDAT
 
-; 229  : 
-; 230  : 	if (file)
+; 254  : 
+; 255  : 	if (file)
 
 	mov	eax, DWORD PTR _file$[esp-4]
 	test	eax, eax
 	je	SHORT $LN1@fsysFatClo
 
-; 231  : 		file->flags = FS_INVALID;
+; 256  : 		file->flags = FS_INVALID;
 
 	mov	DWORD PTR [eax+32], 2
 $LN1@fsysFatClo:
 
-; 232  : }
+; 257  : }
 
 	ret	0
 ?fsysFatClose@@YAXPAU_FILE@@@Z ENDP			; fsysFatClose
@@ -852,24 +949,24 @@ PUBLIC	?fsysFatOpenSubDir@@YA?AU_FILE@@U1@PBD@Z	; fsysFatOpenSubDir
 ; Function compile flags: /Ogtpy
 ;	COMDAT ?fsysFatOpenSubDir@@YA?AU_FILE@@U1@PBD@Z
 _TEXT	SEGMENT
-_name$2943 = -536					; size = 11
+_name$2987 = -536					; size = 11
 _DosFileName$ = -524					; size = 11
-_buf$2936 = -512					; size = 512
-$T3081 = 8						; size = 4
+_buf$2980 = -512					; size = 512
+$T3135 = 8						; size = 4
 _kFile$ = 12						; size = 60
 _filename$ = 72						; size = 4
 ?fsysFatOpenSubDir@@YA?AU_FILE@@U1@PBD@Z PROC		; fsysFatOpenSubDir, COMDAT
 
-; 238  : 						const char* filename) {
+; 263  : 						const char* filename) {
 
 	sub	esp, 536				; 00000218H
 
-; 239  : 
-; 240  : 	FILE file;
-; 241  : 
-; 242  : 	//get 8.3 directory name
-; 243  : 	char DosFileName[11];
-; 244  : 	ToDosFileName (filename, DosFileName, 11);
+; 264  : 
+; 265  : 	FILE file;
+; 266  : 
+; 267  : 	//get 8.3 directory name
+; 268  : 	char DosFileName[11];
+; 269  : 	ToDosFileName (filename, DosFileName, 11);
 
 	mov	ecx, DWORD PTR _filename$[esp+532]
 	push	ebx
@@ -882,12 +979,12 @@ _filename$ = 72						; size = 4
 	push	ecx
 	call	?ToDosFileName@@YAXPBDPADI@Z		; ToDosFileName
 
-; 245  : 	DosFileName[11]=0;
-; 246  : 
-; 247  : 	//read directory
-; 248  : 	while (! kFile.eof ) {
+; 270  : 	DosFileName[11]=0;
+; 271  : 
+; 272  : 	//read directory
+; 273  : 	while (! kFile.eof ) {
 
-	mov	ebp, DWORD PTR $T3081[esp+560]
+	mov	ebp, DWORD PTR $T3135[esp+560]
 	xor	ebx, ebx
 	add	esp, 12					; 0000000cH
 	mov	BYTE PTR _DosFileName$[esp+563], bl
@@ -896,78 +993,78 @@ _filename$ = 72						; size = 4
 	npad	9
 $LL8@fsysFatOpe:
 
-; 249  : 
-; 250  : 		//read directory
-; 251  : 		unsigned char buf[512];
-; 252  : 		fsysFatRead (&file, buf, 512);
+; 274  : 
+; 275  : 		//read directory
+; 276  : 		unsigned char buf[512];
+; 277  : 		fsysFatRead (&file, buf, 512);
 
 	push	512					; 00000200H
-	lea	edx, DWORD PTR _buf$2936[esp+556]
+	lea	edx, DWORD PTR _buf$2980[esp+556]
 	push	edx
 	push	ebp
 	call	?fsysFatRead@@YAXPAU_FILE@@PAEI@Z	; fsysFatRead
 	add	esp, 12					; 0000000cH
 
-; 253  : 
-; 254  : 		//set directort
-; 255  : 		PDIRECTORY pkDir = (PDIRECTORY) buf;
+; 278  : 
+; 279  : 		//set directort
+; 280  : 		PDIRECTORY pkDir = (PDIRECTORY) buf;
 
-	lea	esi, DWORD PTR _buf$2936[esp+552]
+	lea	esi, DWORD PTR _buf$2980[esp+552]
 
-; 256  : 
-; 257  : 		//16 entries in buffer
-; 258  : 		for (unsigned int i = 0; i < 16; i++) {
+; 281  : 
+; 282  : 		//16 entries in buffer
+; 283  : 		for (unsigned int i = 0; i < 16; i++) {
 
 	xor	edi, edi
 	npad	7
 $LL6@fsysFatOpe:
 
-; 259  : 
-; 260  : 			//get current filename
-; 261  : 			char name[11];
-; 262  : 			memcpyTF (name, (char*)(pkDir->Filename), 11);
+; 284  : 
+; 285  : 			//get current filename
+; 286  : 			char name[11];
+; 287  : 			memcpyTF (name, (char*)(pkDir->Filename), 11);
 
 	push	11					; 0000000bH
-	lea	eax, DWORD PTR _name$2943[esp+556]
+	lea	eax, DWORD PTR _name$2987[esp+556]
 	push	esi
 	push	eax
 	call	?memcpyTF@@YAXPAD0H@Z			; memcpyTF
 
-; 263  : 			name[11]=0;
-; 264  : 
-; 265  : 			//match?
-; 266  : 			if (strcmp (name, DosFileName) == 0) {
+; 288  : 			name[11]=0;
+; 289  : 
+; 290  : 			//match?
+; 291  : 			if (strcmp (name, DosFileName) == 0) {
 
 	lea	ecx, DWORD PTR _DosFileName$[esp+564]
 	push	ecx
-	lea	edx, DWORD PTR _name$2943[esp+568]
+	lea	edx, DWORD PTR _name$2987[esp+568]
 	push	edx
-	mov	BYTE PTR _name$2943[esp+583], bl
+	mov	BYTE PTR _name$2987[esp+583], bl
 	call	?strcmp@@YAHPBD0@Z			; strcmp
 	add	esp, 20					; 00000014H
 	test	eax, eax
 	je	SHORT $LN13@fsysFatOpe
 
-; 278  : 					file.flags = FS_DIRECTORY;
-; 279  : 				else
-; 280  : 					file.flags = FS_FILE;
-; 281  : 
-; 282  : 				//return file
-; 283  : 				return file;
-; 284  : 			}
-; 285  : 
-; 286  : 			//go to next entry
-; 287  : 			pkDir++;
+; 303  : 					file.flags = FS_DIRECTORY;
+; 304  : 				else
+; 305  : 					file.flags = FS_FILE;
+; 306  : 
+; 307  : 				//return file
+; 308  : 				return file;
+; 309  : 			}
+; 310  : 
+; 311  : 			//go to next entry
+; 312  : 			pkDir++;
 
 	inc	edi
 	add	esi, 32					; 00000020H
 	cmp	edi, 16					; 00000010H
 	jb	SHORT $LL6@fsysFatOpe
 
-; 245  : 	DosFileName[11]=0;
-; 246  : 
-; 247  : 	//read directory
-; 248  : 	while (! kFile.eof ) {
+; 270  : 	DosFileName[11]=0;
+; 271  : 
+; 272  : 	//read directory
+; 273  : 	while (! kFile.eof ) {
 
 	cmp	DWORD PTR _kFile$[esp+592], ebx
 	je	SHORT $LL8@fsysFatOpe
@@ -975,50 +1072,50 @@ $LN7@fsysFatOpe:
 	pop	edi
 	pop	esi
 
-; 288  : 		}
-; 289  : 	}
-; 290  : 
-; 291  : 	//unable to find file
-; 292  : 	file.flags = FS_INVALID;
+; 313  : 		}
+; 314  : 	}
+; 315  : 
+; 316  : 	//unable to find file
+; 317  : 	file.flags = FS_INVALID;
 
 	mov	DWORD PTR [ebp+32], 2
 
-; 293  : 	return file;
+; 318  : 	return file;
 
 	mov	eax, ebp
 	pop	ebp
 	pop	ebx
 
-; 294  : }
+; 319  : }
 
 	add	esp, 536				; 00000218H
 	ret	0
 $LN13@fsysFatOpe:
 
-; 267  : 
-; 268  : 				//found it, set up file info
-; 269  : 				strcpy (file.name, filename);
+; 292  : 
+; 293  : 				//found it, set up file info
+; 294  : 				strcpy (file.name, filename);
 
 	mov	eax, DWORD PTR _filename$[esp+548]
 	push	eax
 	push	ebp
 	call	?strcpy@@YAPADPADPBD@Z			; strcpy
 
-; 270  : 				file.id             = 0;
-; 271  : 				file.currentCluster = pkDir->FirstCluster;
+; 295  : 				file.id             = 0;
+; 296  : 				file.currentCluster = pkDir->FirstCluster;
 
 	movzx	ecx, WORD PTR [esi+26]
 
-; 272  : 				file.fileLength     = pkDir->FileSize;
-; 273  : 				file.eof            = 0;
-; 274  : 				file.fileLength     = pkDir->FileSize;
+; 297  : 				file.fileLength     = pkDir->FileSize;
+; 298  : 				file.eof            = 0;
+; 299  : 				file.fileLength     = pkDir->FileSize;
 
 	mov	edx, DWORD PTR [esi+28]
 	add	esp, 8
 
-; 275  : 
-; 276  : 				//set file type
-; 277  : 				if (pkDir->Attrib == 0x10)
+; 300  : 
+; 301  : 				//set file type
+; 302  : 				if (pkDir->Attrib == 0x10)
 
 	xor	eax, eax
 	cmp	BYTE PTR [esi+11], 16			; 00000010H
@@ -1031,13 +1128,13 @@ $LN13@fsysFatOpe:
 	mov	DWORD PTR [ebp+36], edx
 	mov	DWORD PTR [ebp+32], eax
 
-; 293  : 	return file;
+; 318  : 	return file;
 
 	mov	eax, ebp
 	pop	ebp
 	pop	ebx
 
-; 294  : }
+; 319  : }
 
 	add	esp, 536				; 00000218H
 	ret	0
@@ -1051,31 +1148,31 @@ _TEXT	SEGMENT
 _rootDir$ = -145					; size = 1
 tv412 = -144						; size = 4
 tv410 = -140						; size = 4
-_pathname$2963 = -136					; size = 16
+_pathname$3007 = -136					; size = 16
 _ret$ = -120						; size = 60
 _curDirectory$ = -120					; size = 60
-$T3096 = -60						; size = 60
-$T3094 = -60						; size = 60
-$T3092 = -60						; size = 60
-$T3090 = 8						; size = 4
+$T3150 = -60						; size = 60
+$T3148 = -60						; size = 60
+$T3146 = -60						; size = 60
+$T3144 = 8						; size = 4
 _FileName$ = 12						; size = 4
 ?fsysFatOpen@@YA?AU_FILE@@PBD@Z PROC			; fsysFatOpen, COMDAT
 
-; 299  : FILE fsysFatOpen (const char* FileName) {
+; 324  : FILE fsysFatOpen (const char* FileName) {
 
 	sub	esp, 148				; 00000094H
 	push	ebx
 	push	ebp
 	push	esi
 
-; 300  : 
-; 301  : 	FILE curDirectory;
-; 302  : 	char* p = 0;
-; 303  : 	bool rootDir=true;
-; 304  : 	char* path = (char*) FileName;
-; 305  : 
-; 306  : 	//any '\'s in path?
-; 307  : 	p = strchr (path, '\\');
+; 325  : 
+; 326  : 	FILE curDirectory;
+; 327  : 	char* p = 0;
+; 328  : 	bool rootDir=true;
+; 329  : 	char* path = (char*) FileName;
+; 330  : 
+; 331  : 	//any '\'s in path?
+; 332  : 	p = strchr (path, '\\');
 
 	mov	esi, DWORD PTR _FileName$[esp+156]
 	push	edi
@@ -1085,18 +1182,18 @@ _FileName$ = 12						; size = 4
 	call	?strchr@@YAPADPADH@Z			; strchr
 	mov	ebp, eax
 
-; 308  : 	if (!p) {
+; 333  : 	if (!p) {
 
 	xor	ebx, ebx
 	add	esp, 8
 	cmp	ebp, ebx
 	jne	SHORT $LN14@fsysFatOpe@2
 
-; 309  : 
-; 310  : 		//nope, must be in root directory, search it
-; 311  : 		curDirectory = fsysFatDirectory (path);
+; 334  : 
+; 335  : 		//nope, must be in root directory, search it
+; 336  : 		curDirectory = fsysFatDirectory (path);
 
-	lea	eax, DWORD PTR $T3092[esp+164]
+	lea	eax, DWORD PTR $T3146[esp+164]
 	push	esi
 	push	eax
 	call	?fsysFatDirectory@@YA?AU_FILE@@PBD@Z	; fsysFatDirectory
@@ -1106,23 +1203,23 @@ _FileName$ = 12						; size = 4
 	rep movsd
 	add	esp, 8
 
-; 312  : 
-; 313  : 		//found file?
-; 314  : 		if (curDirectory.flags == FS_FILE)
-; 315  : 			return curDirectory;
+; 337  : 
+; 338  : 		//found file?
+; 339  : 		if (curDirectory.flags == FS_FILE)
+; 340  : 			return curDirectory;
 
 	lea	ecx, DWORD PTR [ebx+15]
 	cmp	DWORD PTR _curDirectory$[esp+196], ebx
 	jne	$LN13@fsysFatOpe@2
 	mov	esi, eax
 
-; 371  : 	return ret;
+; 396  : 	return ret;
 
-	mov	eax, DWORD PTR $T3090[esp+160]
+	mov	eax, DWORD PTR $T3144[esp+160]
 	mov	edi, eax
 	rep movsd
 
-; 372  : }
+; 397  : }
 
 	pop	edi
 	pop	esi
@@ -1132,44 +1229,44 @@ _FileName$ = 12						; size = 4
 	ret	0
 $LN14@fsysFatOpe@2:
 
-; 316  : 		//unable to find
-; 317  : 		FILE ret;
-; 318  : 		ret.flags = FS_INVALID;
-; 319  : 		return ret;
-; 320  : 	}
-; 321  : 
-; 322  : 	//go to next character after first '\'
-; 323  : 	p++;
+; 341  : 		//unable to find
+; 342  : 		FILE ret;
+; 343  : 		ret.flags = FS_INVALID;
+; 344  : 		return ret;
+; 345  : 	}
+; 346  : 
+; 347  : 	//go to next character after first '\'
+; 348  : 	p++;
 
 	inc	ebp
 
-; 324  : 
-; 325  : 	while ( p ) {
+; 349  : 
+; 350  : 	while ( p ) {
 
 	je	$LN31@fsysFatOpe@2
 $LL12@fsysFatOpe@2:
 
-; 326  : 
-; 327  : 		//get pathname
-; 328  : 		char pathname[16];
-; 329  : 		int i=0;
-; 330  : 		for (i=0; i<16; i++) {
+; 351  : 
+; 352  : 		//get pathname
+; 353  : 		char pathname[16];
+; 354  : 		int i=0;
+; 355  : 		for (i=0; i<16; i++) {
 
 	mov	ecx, ebp
 	xor	eax, eax
 	neg	ecx
-	lea	edx, DWORD PTR _pathname$2963[esp+ecx+166]
-	lea	esi, DWORD PTR _pathname$2963[esp+ecx+164]
-	lea	edi, DWORD PTR _pathname$2963[esp+ecx+165]
-	lea	ecx, DWORD PTR _pathname$2963[esp+ecx+167]
+	lea	edx, DWORD PTR _pathname$3007[esp+ecx+166]
+	lea	esi, DWORD PTR _pathname$3007[esp+ecx+164]
+	lea	edi, DWORD PTR _pathname$3007[esp+ecx+165]
+	lea	ecx, DWORD PTR _pathname$3007[esp+ecx+167]
 	mov	DWORD PTR tv410[esp+164], edx
 	mov	DWORD PTR tv412[esp+164], ecx
 	npad	2
 $LL30@fsysFatOpe@2:
 
-; 331  : 
-; 332  : 			//if another '\' or end of line is reached, we are done
-; 333  : 			if (p[i]=='\\' || p[i]=='\0')
+; 356  : 
+; 357  : 			//if another '\' or end of line is reached, we are done
+; 358  : 			if (p[i]=='\\' || p[i]=='\0')
 
 	mov	dl, BYTE PTR [eax+ebp]
 	lea	ecx, DWORD PTR [eax+ebp]
@@ -1178,44 +1275,44 @@ $LL30@fsysFatOpe@2:
 	test	dl, dl
 	je	SHORT $LN19@fsysFatOpe@2
 
-; 334  : 				break;
-; 335  : 
-; 336  : 			//copy character
-; 337  : 			pathname[i]=p[i];
+; 359  : 				break;
+; 360  : 
+; 361  : 			//copy character
+; 362  : 			pathname[i]=p[i];
 
 	mov	BYTE PTR [esi+ecx], dl
 	mov	dl, BYTE PTR [eax+ebp+1]
 	cmp	dl, 92					; 0000005cH
 	je	SHORT $LN23@fsysFatOpe@2
 
-; 331  : 
-; 332  : 			//if another '\' or end of line is reached, we are done
-; 333  : 			if (p[i]=='\\' || p[i]=='\0')
+; 356  : 
+; 357  : 			//if another '\' or end of line is reached, we are done
+; 358  : 			if (p[i]=='\\' || p[i]=='\0')
 
 	test	dl, dl
 	je	SHORT $LN23@fsysFatOpe@2
 
-; 334  : 				break;
-; 335  : 
-; 336  : 			//copy character
-; 337  : 			pathname[i]=p[i];
+; 359  : 				break;
+; 360  : 
+; 361  : 			//copy character
+; 362  : 			pathname[i]=p[i];
 
 	mov	BYTE PTR [edi+ecx], dl
 	mov	dl, BYTE PTR [eax+ebp+2]
 	cmp	dl, 92					; 0000005cH
 	je	SHORT $LN25@fsysFatOpe@2
 
-; 331  : 
-; 332  : 			//if another '\' or end of line is reached, we are done
-; 333  : 			if (p[i]=='\\' || p[i]=='\0')
+; 356  : 
+; 357  : 			//if another '\' or end of line is reached, we are done
+; 358  : 			if (p[i]=='\\' || p[i]=='\0')
 
 	test	dl, dl
 	je	SHORT $LN25@fsysFatOpe@2
 
-; 334  : 				break;
-; 335  : 
-; 336  : 			//copy character
-; 337  : 			pathname[i]=p[i];
+; 359  : 				break;
+; 360  : 
+; 361  : 			//copy character
+; 362  : 			pathname[i]=p[i];
 
 	mov	ebx, DWORD PTR tv410[esp+164]
 	mov	BYTE PTR [ebx+ecx], dl
@@ -1223,17 +1320,17 @@ $LL30@fsysFatOpe@2:
 	cmp	dl, 92					; 0000005cH
 	je	SHORT $LN28@fsysFatOpe@2
 
-; 331  : 
-; 332  : 			//if another '\' or end of line is reached, we are done
-; 333  : 			if (p[i]=='\\' || p[i]=='\0')
+; 356  : 
+; 357  : 			//if another '\' or end of line is reached, we are done
+; 358  : 			if (p[i]=='\\' || p[i]=='\0')
 
 	test	dl, dl
 	je	SHORT $LN28@fsysFatOpe@2
 
-; 334  : 				break;
-; 335  : 
-; 336  : 			//copy character
-; 337  : 			pathname[i]=p[i];
+; 359  : 				break;
+; 360  : 
+; 361  : 			//copy character
+; 362  : 			pathname[i]=p[i];
 
 	mov	ebx, DWORD PTR tv412[esp+164]
 	add	eax, 4
@@ -1243,9 +1340,9 @@ $LL30@fsysFatOpe@2:
 	jmp	SHORT $LN19@fsysFatOpe@2
 $LN23@fsysFatOpe@2:
 
-; 331  : 
-; 332  : 			//if another '\' or end of line is reached, we are done
-; 333  : 			if (p[i]=='\\' || p[i]=='\0')
+; 356  : 
+; 357  : 			//if another '\' or end of line is reached, we are done
+; 358  : 			if (p[i]=='\\' || p[i]=='\0')
 
 	inc	eax
 	jmp	SHORT $LN19@fsysFatOpe@2
@@ -1256,48 +1353,48 @@ $LN28@fsysFatOpe@2:
 	add	eax, 3
 $LN19@fsysFatOpe@2:
 
-; 338  : 		}
-; 339  : 		pathname[i]=0; //null terminate
+; 363  : 		}
+; 364  : 		pathname[i]=0; //null terminate
 
 	xor	ebx, ebx
-	mov	BYTE PTR _pathname$2963[esp+eax+164], bl
+	mov	BYTE PTR _pathname$3007[esp+eax+164], bl
 
-; 340  : 
-; 341  : 		//open subdirectory or file
-; 342  : 		if (rootDir) {
+; 365  : 
+; 366  : 		//open subdirectory or file
+; 367  : 		if (rootDir) {
 
 	cmp	BYTE PTR _rootDir$[esp+164], bl
 	je	SHORT $LN5@fsysFatOpe@2
 
-; 343  : 
-; 344  : 			//search root directory - open pathname
-; 345  : 			curDirectory = fsysFatDirectory (pathname);
+; 368  : 
+; 369  : 			//search root directory - open pathname
+; 370  : 			curDirectory = fsysFatDirectory (pathname);
 
-	lea	edx, DWORD PTR _pathname$2963[esp+164]
+	lea	edx, DWORD PTR _pathname$3007[esp+164]
 	push	edx
-	lea	eax, DWORD PTR $T3094[esp+168]
+	lea	eax, DWORD PTR $T3148[esp+168]
 	push	eax
 	call	?fsysFatDirectory@@YA?AU_FILE@@PBD@Z	; fsysFatDirectory
 	add	esp, 8
 
-; 346  : 			rootDir=false;
+; 371  : 			rootDir=false;
 
 	mov	BYTE PTR _rootDir$[esp+164], bl
 
-; 347  : 		}
-; 348  : 		else {
+; 372  : 		}
+; 373  : 		else {
 
 	jmp	SHORT $LN33@fsysFatOpe@2
 $LN5@fsysFatOpe@2:
 
-; 349  : 
-; 350  : 			//search a subdirectory instead for pathname
-; 351  : 			curDirectory = fsysFatOpenSubDir (curDirectory, pathname);
+; 374  : 
+; 375  : 			//search a subdirectory instead for pathname
+; 376  : 			curDirectory = fsysFatOpenSubDir (curDirectory, pathname);
 
-	lea	ecx, DWORD PTR _pathname$2963[esp+164]
+	lea	ecx, DWORD PTR _pathname$3007[esp+164]
 	push	ecx
 	sub	esp, 60					; 0000003cH
-	lea	edx, DWORD PTR $T3096[esp+228]
+	lea	edx, DWORD PTR $T3150[esp+228]
 	mov	edi, esp
 	mov	ecx, 15					; 0000000fH
 	lea	esi, DWORD PTR _curDirectory$[esp+228]
@@ -1311,26 +1408,26 @@ $LN33@fsysFatOpe@2:
 	lea	edi, DWORD PTR _curDirectory$[esp+164]
 	rep movsd
 
-; 352  : 		}
-; 353  : 
-; 354  : 		//found directory or file?
-; 355  : 		if (curDirectory.flags == FS_INVALID)
+; 377  : 		}
+; 378  : 
+; 379  : 		//found directory or file?
+; 380  : 		if (curDirectory.flags == FS_INVALID)
 
 	mov	eax, DWORD PTR _curDirectory$[esp+196]
 	cmp	eax, 2
 	je	SHORT $LN31@fsysFatOpe@2
 
-; 356  : 			break;
-; 357  : 
-; 358  : 		//found file?
-; 359  : 		if (curDirectory.flags == FS_FILE)
+; 381  : 			break;
+; 382  : 
+; 383  : 		//found file?
+; 384  : 		if (curDirectory.flags == FS_FILE)
 
 	cmp	eax, ebx
 	je	SHORT $LN21@fsysFatOpe@2
 
-; 361  : 
-; 362  : 		//find next '\'
-; 363  : 		p=strchr (p+1, '\\');
+; 386  : 
+; 387  : 		//find next '\'
+; 388  : 		p=strchr (p+1, '\\');
 
 	push	92					; 0000005cH
 	inc	ebp
@@ -1339,43 +1436,43 @@ $LN33@fsysFatOpe@2:
 	mov	ebp, eax
 	add	esp, 8
 
-; 364  : 		if (p)
+; 389  : 		if (p)
 
 	cmp	ebp, ebx
 	je	SHORT $LN31@fsysFatOpe@2
 
-; 365  : 			p++;
+; 390  : 			p++;
 
 	inc	ebp
 
-; 324  : 
-; 325  : 	while ( p ) {
+; 349  : 
+; 350  : 	while ( p ) {
 
 	jne	$LL12@fsysFatOpe@2
 $LN31@fsysFatOpe@2:
 
-; 371  : 	return ret;
+; 396  : 	return ret;
 
 	mov	ecx, 15					; 0000000fH
 $LN13@fsysFatOpe@2:
 
-; 366  : 	}
-; 367  : 
-; 368  : 	//unable to find
-; 369  : 	FILE ret;
-; 370  : 	ret.flags = FS_INVALID;
+; 391  : 	}
+; 392  : 
+; 393  : 	//unable to find
+; 394  : 	FILE ret;
+; 395  : 	ret.flags = FS_INVALID;
 
 	mov	DWORD PTR _ret$[esp+196], 2
 $LN34@fsysFatOpe@2:
 
-; 371  : 	return ret;
+; 396  : 	return ret;
 
-	mov	eax, DWORD PTR $T3090[esp+160]
+	mov	eax, DWORD PTR $T3144[esp+160]
 	lea	esi, DWORD PTR _ret$[esp+164]
 	mov	edi, eax
 	rep movsd
 
-; 372  : }
+; 397  : }
 
 	pop	edi
 	pop	esi
@@ -1385,7 +1482,7 @@ $LN34@fsysFatOpe@2:
 	ret	0
 $LN21@fsysFatOpe@2:
 
-; 360  : 			return curDirectory;
+; 385  : 			return curDirectory;
 
 	mov	ecx, 15					; 0000000fH
 	jmp	SHORT $LN34@fsysFatOpe@2
@@ -1395,60 +1492,60 @@ PUBLIC	?fsysFatMount@@YAXXZ				; fsysFatMount
 ; Function compile flags: /Ogtpy
 ;	COMDAT ?fsysFatMount@@YAXXZ
 _TEXT	SEGMENT
-$T3118 = -56						; size = 28
-$T3119 = -28						; size = 28
+$T3172 = -64						; size = 32
+$T3173 = -32						; size = 32
 ?fsysFatMount@@YAXXZ PROC				; fsysFatMount, COMDAT
 
-; 377  : void fsysFatMount () {
+; 402  : void fsysFatMount () {
 
-	sub	esp, 56					; 00000038H
+	sub	esp, 64					; 00000040H
 	push	esi
 
-; 378  : 
-; 379  : 	//Boot sector info
-; 380  : 	PBOOTSECTOR bootsector;
-; 381  : 
-; 382  : 	//read boot sector
-; 383  : 	bootsector = (PBOOTSECTOR) vd_getCurrentDataDevice().read_sector (0);
+; 403  : 
+; 404  : 	//Boot sector info
+; 405  : 	PBOOTSECTOR bootsector;
+; 406  : 
+; 407  : 	//read boot sector
+; 408  : 	bootsector = (PBOOTSECTOR) vd_getCurrentDataDevice().read_sector (0);
 
-	lea	eax, DWORD PTR $T3119[esp+60]
+	lea	eax, DWORD PTR $T3173[esp+68]
 	push	edi
 	push	eax
 	call	?vd_getCurrentDataDevice@@YA?AU__DATA_DEVICE@@XZ ; vd_getCurrentDataDevice
 	mov	esi, eax
-	mov	ecx, 7
-	lea	edi, DWORD PTR $T3118[esp+68]
+	mov	ecx, 8
+	lea	edi, DWORD PTR $T3172[esp+76]
 	push	0
 	rep movsd
-	call	DWORD PTR $T3118[esp+80]
+	call	DWORD PTR $T3172[esp+88]
 	mov	ecx, eax
 
-; 384  : 
-; 385  : 	//store mount info
-; 386  : 	_MountInfo.numSectors     = bootsector->Bpb.NumSectors;
+; 409  : 
+; 410  : 	//store mount info
+; 411  : 	_MountInfo.numSectors     = bootsector->Bpb.NumSectors;
 
 	movzx	edx, WORD PTR [ecx+19]
 	mov	DWORD PTR ?_MountInfo@@3U_MOUNT_INFO@@A, edx
 
-; 387  : 	_MountInfo.fatOffset      = 1;
+; 412  : 	_MountInfo.fatOffset      = 1;
 
 	mov	DWORD PTR ?_MountInfo@@3U_MOUNT_INFO@@A+4, 1
 
-; 388  : 	_MountInfo.fatSize        = bootsector->Bpb.SectorsPerFat;
+; 413  : 	_MountInfo.fatSize        = bootsector->Bpb.SectorsPerFat;
 
 	movzx	eax, WORD PTR [ecx+22]
 	mov	DWORD PTR ?_MountInfo@@3U_MOUNT_INFO@@A+20, eax
 
-; 389  : 	_MountInfo.fatEntrySize   = 8;
+; 414  : 	_MountInfo.fatEntrySize   = 8;
 
 	mov	DWORD PTR ?_MountInfo@@3U_MOUNT_INFO@@A+24, 8
 
-; 390  : 	_MountInfo.numRootEntries = bootsector->Bpb.NumDirEntries;
+; 415  : 	_MountInfo.numRootEntries = bootsector->Bpb.NumDirEntries;
 
 	movzx	edx, WORD PTR [ecx+17]
 	mov	DWORD PTR ?_MountInfo@@3U_MOUNT_INFO@@A+8, edx
 
-; 391  : 	_MountInfo.rootOffset     = (bootsector->Bpb.NumberOfFats * bootsector->Bpb.SectorsPerFat) + 1;
+; 416  : 	_MountInfo.rootOffset     = (bootsector->Bpb.NumberOfFats * bootsector->Bpb.SectorsPerFat) + 1;
 
 	movzx	edx, WORD PTR [ecx+22]
 	movzx	eax, BYTE PTR [ecx+16]
@@ -1456,7 +1553,7 @@ $T3119 = -28						; size = 28
 	inc	eax
 	mov	DWORD PTR ?_MountInfo@@3U_MOUNT_INFO@@A+12, eax
 
-; 392  : 	_MountInfo.rootSize       = ( bootsector->Bpb.NumDirEntries * 32 ) / bootsector->Bpb.BytesPerSector;
+; 417  : 	_MountInfo.rootSize       = ( bootsector->Bpb.NumDirEntries * 32 ) / bootsector->Bpb.BytesPerSector;
 
 	movzx	eax, WORD PTR [ecx+17]
 	movzx	ecx, WORD PTR [ecx+11]
@@ -1468,9 +1565,9 @@ $T3119 = -28						; size = 28
 	pop	esi
 	mov	DWORD PTR ?_MountInfo@@3U_MOUNT_INFO@@A+16, eax
 
-; 393  : }
+; 418  : }
 
-	add	esp, 56					; 00000038H
+	add	esp, 64					; 00000040H
 	ret	0
 ?fsysFatMount@@YAXXZ ENDP				; fsysFatMount
 _TEXT	ENDS
@@ -1484,40 +1581,40 @@ CONST	SEGMENT
 CONST	ENDS
 ;	COMDAT ?fsysFatInitialize@@YAXU__DATA_DEVICE@@@Z
 _TEXT	SEGMENT
-_datadev$ = 8						; size = 28
+_datadev$ = 8						; size = 32
 ?fsysFatInitialize@@YAXU__DATA_DEVICE@@@Z PROC		; fsysFatInitialize, COMDAT
 
-; 399  : 
-; 400  : 	//initialize filesystem struct
-; 401  : 	strcpy (_FSysFat.Name, "FAT12");
+; 424  : 
+; 425  : 	//initialize filesystem struct
+; 426  : 	strcpy (_FSysFat.Name, "FAT12");
 
 	push	OFFSET ??_C@_05HOBJIFPH@FAT12?$AA@
 	push	OFFSET ?_FSysFat@@3U_FILE_SYSTEM@@A	; _FSysFat
 	call	?strcpy@@YAPADPADPBD@Z			; strcpy
 
-; 402  : 	_FSysFat.Directory = fsysFatDirectory;
-; 403  : 	_FSysFat.Mount     = fsysFatMount;
-; 404  : 	_FSysFat.Open      = fsysFatOpen;
-; 405  : 	_FSysFat.Read      = fsysFatRead;
-; 406  : 	_FSysFat.Close     = fsysFatClose;
-; 407  : 
-; 408  : 	//register ourself to volume manager
-; 409  : 	volRegisterFileSystem ( &_FSysFat, datadev.uniqueID );
+; 427  : 	_FSysFat.Directory = fsysFatDirectory;
+; 428  : 	_FSysFat.Mount     = fsysFatMount;
+; 429  : 	_FSysFat.Open      = fsysFatOpen;
+; 430  : 	_FSysFat.Read      = fsysFatRead;
+; 431  : 	_FSysFat.Close     = fsysFatClose;
+; 432  : 
+; 433  : 	//register ourself to volume manager
+; 434  : 	volRegisterFileSystem ( &_FSysFat, datadev.uniqueID );
 
 	mov	eax, DWORD PTR _datadev$[esp+8]
 	push	eax
 	push	OFFSET ?_FSysFat@@3U_FILE_SYSTEM@@A	; _FSysFat
 	mov	DWORD PTR ?_FSysFat@@3U_FILE_SYSTEM@@A+8, OFFSET ?fsysFatDirectory@@YA?AU_FILE@@PBD@Z ; fsysFatDirectory
 	mov	DWORD PTR ?_FSysFat@@3U_FILE_SYSTEM@@A+12, OFFSET ?fsysFatMount@@YAXXZ ; fsysFatMount
-	mov	DWORD PTR ?_FSysFat@@3U_FILE_SYSTEM@@A+24, OFFSET ?fsysFatOpen@@YA?AU_FILE@@PBD@Z ; fsysFatOpen
+	mov	DWORD PTR ?_FSysFat@@3U_FILE_SYSTEM@@A+28, OFFSET ?fsysFatOpen@@YA?AU_FILE@@PBD@Z ; fsysFatOpen
 	mov	DWORD PTR ?_FSysFat@@3U_FILE_SYSTEM@@A+16, OFFSET ?fsysFatRead@@YAXPAU_FILE@@PAEI@Z ; fsysFatRead
-	mov	DWORD PTR ?_FSysFat@@3U_FILE_SYSTEM@@A+20, OFFSET ?fsysFatClose@@YAXPAU_FILE@@@Z ; fsysFatClose
+	mov	DWORD PTR ?_FSysFat@@3U_FILE_SYSTEM@@A+24, OFFSET ?fsysFatClose@@YAXPAU_FILE@@@Z ; fsysFatClose
 	call	?volRegisterFileSystem@@YAXPAU_FILE_SYSTEM@@I@Z ; volRegisterFileSystem
 	add	esp, 16					; 00000010H
 
-; 410  : 
-; 411  : 	//mounr filesystem
-; 412  : 	fsysFatMount ();
+; 435  : 
+; 436  : 	//mounr filesystem
+; 437  : 	fsysFatMount ();
 
 	jmp	?fsysFatMount@@YAXXZ			; fsysFatMount
 ?fsysFatInitialize@@YAXU__DATA_DEVICE@@@Z ENDP		; fsysFatInitialize

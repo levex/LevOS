@@ -11,4 +11,5 @@ extern void DebugScrollUp();
 extern int DebugGetY();
 extern int DebugGetX();
 extern void DebugGotoRXY (unsigned x, unsigned y);
+extern void DebugReset();
 #endif

@@ -1,6 +1,6 @@
 #ifndef __LEV_TEXT_H_
 #define __LEV_TEXT_H_
-
+#define DLLIMPORT extern "C" __declspec(dllimport)
 DLLIMPORT void print(char* str);
 DLLIMPORT void _cdecl printchar(char c);
 DLLIMPORT void _cdecl printNumber(int i);

@@ -101,6 +101,68 @@ $LN1@strcmp:
 	ret	0
 ?strcmp@@YAHPBD0@Z ENDP					; strcmp
 _TEXT	ENDS
+PUBLIC	?strlcmp@@YA_NPAD0H@Z				; strlcmp
+; Function compile flags: /Odtp /ZI
+;	COMDAT ?strlcmp@@YA_NPAD0H@Z
+_TEXT	SEGMENT
+_str1$ = 8						; size = 4
+_str2$ = 12						; size = 4
+_len$ = 16						; size = 4
+?strlcmp@@YA_NPAD0H@Z PROC				; strlcmp, COMDAT
+
+; 62   : {
+
+	push	ebp
+	mov	ebp, esp
+	sub	esp, 64					; 00000040H
+	push	ebx
+	push	esi
+	push	edi
+$LN2@strlcmp:
+
+; 63   : 	while(*str1++ == *str2++)
+
+	mov	eax, DWORD PTR _str2$[ebp]
+	movsx	ecx, BYTE PTR [eax]
+	mov	edx, DWORD PTR _str1$[ebp]
+	movsx	eax, BYTE PTR [edx]
+	mov	edx, DWORD PTR _str2$[ebp]
+	add	edx, 1
+	mov	DWORD PTR _str2$[ebp], edx
+	mov	edx, DWORD PTR _str1$[ebp]
+	add	edx, 1
+	mov	DWORD PTR _str1$[ebp], edx
+	cmp	eax, ecx
+	jne	SHORT $LN1@strlcmp
+
+; 64   : 	{
+; 65   : 		len --;
+
+	mov	eax, DWORD PTR _len$[ebp]
+	sub	eax, 1
+	mov	DWORD PTR _len$[ebp], eax
+
+; 66   : 	}
+
+	jmp	SHORT $LN2@strlcmp
+$LN1@strlcmp:
+
+; 67   : 	return len<=0;
+
+	xor	eax, eax
+	cmp	DWORD PTR _len$[ebp], 0
+	setle	al
+
+; 68   : }
+
+	pop	edi
+	pop	esi
+	pop	ebx
+	mov	esp, ebp
+	pop	ebp
+	ret	0
+?strlcmp@@YA_NPAD0H@Z ENDP				; strlcmp
+_TEXT	ENDS
 PUBLIC	?strsplit@@YAXPADDAAH@Z				; strsplit
 ; Function compile flags: /Odtp /ZI
 ;	COMDAT ?strsplit@@YAXPADDAAH@Z
@@ -112,7 +174,7 @@ _delim$ = 12						; size = 1
 _count$ = 16						; size = 4
 ?strsplit@@YAXPADDAAH@Z PROC				; strsplit, COMDAT
 
-; 63   : {
+; 71   : {
 
 	push	ebp
 	mov	ebp, esp
@@ -121,16 +183,16 @@ _count$ = 16						; size = 4
 	push	esi
 	push	edi
 
-; 64   : 	int i = 0;
+; 72   : 	int i = 0;
 
 	mov	DWORD PTR _i$[ebp], 0
 
-; 65   : 	int j = 0;
+; 73   : 	int j = 0;
 
 	mov	DWORD PTR _j$[ebp], 0
 $LN4@strsplit:
 
-; 66   : 	while(s1[j] != '\0') {
+; 74   : 	while(s1[j] != '\0') {
 
 	mov	eax, DWORD PTR _s1$[ebp]
 	add	eax, DWORD PTR _j$[ebp]
@@ -139,7 +201,7 @@ $LN4@strsplit:
 	je	SHORT $LN5@strsplit
 $LN2@strsplit:
 
-; 67   : 		while(s1[i] != delim) i++;
+; 75   : 		while(s1[i] != delim) i++;
 
 	mov	eax, DWORD PTR _s1$[ebp]
 	add	eax, DWORD PTR _i$[ebp]
@@ -153,13 +215,13 @@ $LN2@strsplit:
 	jmp	SHORT $LN2@strsplit
 $LN1@strsplit:
 
-; 68   : 		s1[i] = '\0';
+; 76   : 		s1[i] = '\0';
 
 	mov	eax, DWORD PTR _s1$[ebp]
 	add	eax, DWORD PTR _i$[ebp]
 	mov	BYTE PTR [eax], 0
 
-; 69   : 		count ++;
+; 77   : 		count ++;
 
 	mov	eax, DWORD PTR _count$[ebp]
 	mov	ecx, DWORD PTR [eax]
@@ -167,12 +229,12 @@ $LN1@strsplit:
 	mov	edx, DWORD PTR _count$[ebp]
 	mov	DWORD PTR [edx], ecx
 
-; 70   : 	}
+; 78   : 	}
 
 	jmp	SHORT $LN4@strsplit
 $LN5@strsplit:
 
-; 71   : }
+; 79   : }
 
 	pop	edi
 	pop	esi
@@ -191,7 +253,7 @@ _s1$ = 8						; size = 4
 _s2$ = 12						; size = 4
 ?strcpy@@YAPADPADPBD@Z PROC				; strcpy, COMDAT
 
-; 75   : {
+; 83   : {
 
 	push	ebp
 	mov	ebp, esp
@@ -200,13 +262,13 @@ _s2$ = 12						; size = 4
 	push	esi
 	push	edi
 
-; 76   :     char *s1_p = s1;
+; 84   :     char *s1_p = s1;
 
 	mov	eax, DWORD PTR _s1$[ebp]
 	mov	DWORD PTR _s1_p$[ebp], eax
 $LN2@strcpy:
 
-; 77   :     while (*s1++ = *s2++);
+; 85   :     while (*s1++ = *s2++);
 
 	mov	eax, DWORD PTR _s1$[ebp]
 	mov	ecx, DWORD PTR _s2$[ebp]
@@ -225,11 +287,11 @@ $LN2@strcpy:
 	jmp	SHORT $LN2@strcpy
 $LN1@strcpy:
 
-; 78   :     return s1_p;
+; 86   :     return s1_p;
 
 	mov	eax, DWORD PTR _s1_p$[ebp]
 
-; 79   : }
+; 87   : }
 
 	pop	edi
 	pop	esi
@@ -247,7 +309,7 @@ _len$ = -4						; size = 4
 _str$ = 8						; size = 4
 ?strlen@@YAIPBD@Z PROC					; strlen, COMDAT
 
-; 82   : size_t strlen ( const char* str ) {
+; 90   : size_t strlen ( const char* str ) {
 
 	push	ebp
 	mov	ebp, esp
@@ -256,13 +318,13 @@ _str$ = 8						; size = 4
 	push	esi
 	push	edi
 
-; 83   : 
-; 84   : 	size_t	len=0;
+; 91   : 
+; 92   : 	size_t	len=0;
 
 	mov	DWORD PTR _len$[ebp], 0
 $LN2@strlen:
 
-; 85   : 	while (str[len++]);
+; 93   : 	while (str[len++]);
 
 	mov	eax, DWORD PTR _str$[ebp]
 	add	eax, DWORD PTR _len$[ebp]
@@ -275,11 +337,11 @@ $LN2@strlen:
 	jmp	SHORT $LN2@strlen
 $LN1@strlen:
 
-; 86   : 	return len;
+; 94   : 	return len;
 
 	mov	eax, DWORD PTR _len$[ebp]
 
-; 87   : }
+; 95   : }
 
 	pop	edi
 	pop	esi
@@ -301,7 +363,7 @@ _src$ = 12						; size = 4
 _len$ = 16						; size = 4
 ?strncpy@@YAHPAD0H@Z PROC				; strncpy, COMDAT
 
-; 90   : {
+; 98   : {
 
 	push	ebp
 	mov	ebp, esp
@@ -310,25 +372,25 @@ _len$ = 16						; size = 4
 	push	esi
 	push	edi
 
-; 91   : 	char *d, *s;
-; 92   : 	int val = 0;
+; 99   : 	char *d, *s;
+; 100  : 	int val = 0;
 
 	mov	DWORD PTR _val$[ebp], 0
 
-; 93   : 
-; 94   : 	d = dest;
+; 101  : 
+; 102  : 	d = dest;
 
 	mov	eax, DWORD PTR _dest$[ebp]
 	mov	DWORD PTR _d$[ebp], eax
 
-; 95   : 	s = src;
+; 103  : 	s = src;
 
 	mov	eax, DWORD PTR _src$[ebp]
 	mov	DWORD PTR _s$[ebp], eax
 $LN2@strncpy:
 
-; 96   : 
-; 97   : 	while ( *s != '\0' && len != 0 )
+; 104  : 
+; 105  : 	while ( *s != '\0' && len != 0 )
 
 	mov	eax, DWORD PTR _s$[ebp]
 	movsx	ecx, BYTE PTR [eax]
@@ -337,8 +399,8 @@ $LN2@strncpy:
 	cmp	DWORD PTR _len$[ebp], 0
 	je	SHORT $LN1@strncpy
 
-; 98   : 	{
-; 99   : 		*d++ = *s++;
+; 106  : 	{
+; 107  : 		*d++ = *s++;
 
 	mov	eax, DWORD PTR _d$[ebp]
 	mov	ecx, DWORD PTR _s$[ebp]
@@ -351,24 +413,24 @@ $LN2@strncpy:
 	add	ecx, 1
 	mov	DWORD PTR _s$[ebp], ecx
 
-; 100  : 		len--;
+; 108  : 		len--;
 
 	mov	eax, DWORD PTR _len$[ebp]
 	sub	eax, 1
 	mov	DWORD PTR _len$[ebp], eax
 
-; 101  : 		val++;
+; 109  : 		val++;
 
 	mov	eax, DWORD PTR _val$[ebp]
 	add	eax, 1
 	mov	DWORD PTR _val$[ebp], eax
 
-; 102  : 	}
+; 110  : 	}
 
 	jmp	SHORT $LN2@strncpy
 $LN1@strncpy:
 
-; 103  : 	*d++ = '\0';
+; 111  : 	*d++ = '\0';
 
 	mov	eax, DWORD PTR _d$[ebp]
 	mov	BYTE PTR [eax], 0
@@ -376,12 +438,12 @@ $LN1@strncpy:
 	add	ecx, 1
 	mov	DWORD PTR _d$[ebp], ecx
 
-; 104  : 	
-; 105  : 	return val;
+; 112  : 	
+; 113  : 	return val;
 
 	mov	eax, DWORD PTR _val$[ebp]
 
-; 106  : }
+; 114  : }
 
 	pop	edi
 	pop	esi
@@ -399,7 +461,7 @@ _str$ = 8						; size = 4
 _character$ = 12					; size = 4
 ?strchr@@YAPADPADH@Z PROC				; strchr, COMDAT
 
-; 127  : char* strchr (char * str, int character ) {
+; 135  : char* strchr (char * str, int character ) {
 
 	push	ebp
 	mov	ebp, esp
@@ -409,23 +471,23 @@ _character$ = 12					; size = 4
 	push	edi
 $LN4@strchr:
 
-; 128  : 
-; 129  : 	do {
-; 130  : 		if ( *str == character )
+; 136  : 
+; 137  : 	do {
+; 138  : 		if ( *str == character )
 
 	mov	eax, DWORD PTR _str$[ebp]
 	movsx	ecx, BYTE PTR [eax]
 	cmp	ecx, DWORD PTR _character$[ebp]
 	jne	SHORT $LN3@strchr
 
-; 131  : 			return (char*)str;
+; 139  : 			return (char*)str;
 
 	mov	eax, DWORD PTR _str$[ebp]
 	jmp	SHORT $LN5@strchr
 $LN3@strchr:
 
-; 132  : 	}
-; 133  : 	while (*str++);
+; 140  : 	}
+; 141  : 	while (*str++);
 
 	mov	eax, DWORD PTR _str$[ebp]
 	movsx	ecx, BYTE PTR [eax]
@@ -435,13 +497,13 @@ $LN3@strchr:
 	test	ecx, ecx
 	jne	SHORT $LN4@strchr
 
-; 134  : 
-; 135  : 	return 0;
+; 142  : 
+; 143  : 	return 0;
 
 	xor	eax, eax
 $LN5@strchr:
 
-; 136  : }
+; 144  : }
 
 	pop	edi
 	pop	esi
@@ -464,7 +526,7 @@ _sep$ = 16						; size = 4
 _which$ = 20						; size = 2
 ?strspr@@YAXPAD0HF@Z PROC				; strspr, COMDAT
 
-; 140  : {
+; 148  : {
 
 	push	ebp
 	mov	ebp, esp
@@ -473,31 +535,31 @@ _which$ = 20						; size = 2
 	push	esi
 	push	edi
 
-; 141  : 	short counter = 0;
+; 149  : 	short counter = 0;
 
 	xor	eax, eax
 	mov	WORD PTR _counter$[ebp], ax
 
-; 142  : 	char* backup = str;
+; 150  : 	char* backup = str;
 
 	mov	eax, DWORD PTR _str$[ebp]
 	mov	DWORD PTR _backup$[ebp], eax
 
-; 143  : 	bool found = false;
+; 151  : 	bool found = false;
 
 	mov	BYTE PTR _found$[ebp], 0
 $LN6@strspr:
 
-; 144  : 	do {
-; 145  : 		if ( *str == sep )
+; 152  : 	do {
+; 153  : 		if ( *str == sep )
 
 	mov	eax, DWORD PTR _str$[ebp]
 	movsx	ecx, BYTE PTR [eax]
 	cmp	ecx, DWORD PTR _sep$[ebp]
 	jne	SHORT $LN3@strspr
 
-; 146  : 		{
-; 147  : 			counter++; continue;
+; 154  : 		{
+; 155  : 			counter++; continue;
 
 	mov	ax, WORD PTR _counter$[ebp]
 	add	ax, 1
@@ -505,21 +567,21 @@ $LN6@strspr:
 	jmp	SHORT $LN5@strspr
 $LN3@strspr:
 
-; 148  : 		}
-; 149  : 		if(counter == which)
+; 156  : 		}
+; 157  : 		if(counter == which)
 
 	movsx	eax, WORD PTR _counter$[ebp]
 	movsx	ecx, WORD PTR _which$[ebp]
 	cmp	eax, ecx
 	jne	SHORT $LN5@strspr
 
-; 150  : 			found=true;
+; 158  : 			found=true;
 
 	mov	BYTE PTR _found$[ebp], 1
 $LN5@strspr:
 
-; 151  : 	}
-; 152  : 	while (*str++);
+; 159  : 	}
+; 160  : 	while (*str++);
 
 	mov	eax, DWORD PTR _str$[ebp]
 	movsx	ecx, BYTE PTR [eax]
@@ -529,8 +591,8 @@ $LN5@strspr:
 	test	ecx, ecx
 	jne	SHORT $LN6@strspr
 
-; 153  : 
-; 154  : 	if(!found) return;
+; 161  : 
+; 162  : 	if(!found) return;
 
 	movzx	eax, BYTE PTR _found$[ebp]
 	test	eax, eax
@@ -538,7 +600,7 @@ $LN5@strspr:
 	jmp	SHORT $LN7@strspr
 $LN1@strspr:
 
-; 155  : 	*backup += counter;
+; 163  : 	*backup += counter;
 
 	movsx	eax, WORD PTR _counter$[ebp]
 	mov	ecx, DWORD PTR _backup$[ebp]
@@ -547,13 +609,13 @@ $LN1@strspr:
 	mov	eax, DWORD PTR _backup$[ebp]
 	mov	BYTE PTR [eax], dl
 
-; 156  : 	buff = backup;
+; 164  : 	buff = backup;
 
 	mov	eax, DWORD PTR _backup$[ebp]
 	mov	DWORD PTR _buff$[ebp], eax
 $LN7@strspr:
 
-; 157  : }
+; 165  : }
 
 	pop	edi
 	pop	esi

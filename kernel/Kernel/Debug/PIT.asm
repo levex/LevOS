@@ -15,56 +15,446 @@ __pit_bIsInit DB 01H DUP (?)
 	ALIGN	4
 
 __eip	DD	01H DUP (?)
+__cs	DD	01H DUP (?)
+__eax	DD	01H DUP (?)
+_currentProcess DD 01H DUP (?)
+_currentPID DD	01H DUP (?)
+_numberOfProcesses DD 01H DUP (?)
+__ism	DB	01H DUP (?)
+	ALIGN	4
+
+_dummy	DD	01H DUP (?)
 _BSS	ENDS
+PUBLIC	?initProcessManager@@YAXXZ			; initProcessManager
+_BSS	SEGMENT
+_processList DD	010H DUP (?)
+; Function compile flags: /Ogtpy
+; File c:\dev\levos\kernel\kernel\pit.cpp
+_BSS	ENDS
+;	COMDAT ?initProcessManager@@YAXXZ
+_TEXT	SEGMENT
+?initProcessManager@@YAXXZ PROC				; initProcessManager, COMDAT
+
+; 39   : 	for(int i = 0; i < 16; i++)
+; 40   : 	{
+; 41   : 		processList[i] = 0;
+
+	xor	eax, eax
+	mov	DWORD PTR _processList, eax
+	mov	DWORD PTR _processList+4, eax
+	mov	DWORD PTR _processList+8, eax
+	mov	DWORD PTR _processList+12, eax
+	mov	DWORD PTR _processList+16, eax
+	mov	DWORD PTR _processList+20, eax
+	mov	DWORD PTR _processList+24, eax
+	mov	DWORD PTR _processList+28, eax
+	mov	DWORD PTR _processList+32, eax
+	mov	DWORD PTR _processList+36, eax
+	mov	DWORD PTR _processList+40, eax
+	mov	DWORD PTR _processList+44, eax
+	mov	DWORD PTR _processList+48, eax
+	mov	DWORD PTR _processList+52, eax
+	mov	DWORD PTR _processList+56, eax
+	mov	DWORD PTR _processList+60, eax
+
+; 42   : 	}
+; 43   : 	currentPID = 0;
+
+	mov	DWORD PTR _currentPID, eax
+
+; 44   : 	numberOfProcesses = 0;
+
+	mov	DWORD PTR _numberOfProcesses, eax
+
+; 45   : 	_ism = false;
+
+	mov	BYTE PTR __ism, al
+
+; 46   : }
+
+	ret	0
+?initProcessManager@@YAXXZ ENDP				; initProcessManager
+_TEXT	ENDS
+PUBLIC	??_C@_0DF@HEGDEJJK@?6Initialized?5PROCESS?5PID?$DN?$CFd?5EIP?$DN@ ; `string'
+PUBLIC	??_C@_0BO@IOOEKMMD@?6Falied?5to?5initialize?5PROCESS?$AA@ ; `string'
+PUBLIC	?addProcess@@YAXPAU__PROCESS@@@Z		; addProcess
+EXTRN	?DebugPrintf@@YAHPBDZZ:PROC			; DebugPrintf
+;	COMDAT ??_C@_0DF@HEGDEJJK@?6Initialized?5PROCESS?5PID?$DN?$CFd?5EIP?$DN@
+CONST	SEGMENT
+??_C@_0DF@HEGDEJJK@?6Initialized?5PROCESS?5PID?$DN?$CFd?5EIP?$DN@ DB 0aH, 'I'
+	DB	'nitialized PROCESS PID=%d EIP=0x%x num=%d ESP=0x%x', 00H ; `string'
+CONST	ENDS
+;	COMDAT ??_C@_0BO@IOOEKMMD@?6Falied?5to?5initialize?5PROCESS?$AA@
+CONST	SEGMENT
+??_C@_0BO@IOOEKMMD@?6Falied?5to?5initialize?5PROCESS?$AA@ DB 0aH, 'Falied'
+	DB	' to initialize PROCESS', 00H		; `string'
+; Function compile flags: /Ogtpy
+CONST	ENDS
+;	COMDAT ?addProcess@@YAXPAU__PROCESS@@@Z
+_TEXT	SEGMENT
+_p$ = 8							; size = 4
+?addProcess@@YAXPAU__PROCESS@@@Z PROC			; addProcess, COMDAT
+
+; 49   : 	//DebugPutc('A');
+; 50   : 	if(!p->valid) return;
+
+	mov	edx, DWORD PTR _p$[esp-4]
+	cmp	BYTE PTR [edx], 0
+	je	SHORT $LN7@addProcess
+
+; 51   : 	//DebugPutc('B');
+; 52   : 	for(int i = 0;i<16; i++)
+
+	xor	eax, eax
+	npad	5
+$LL5@addProcess:
+
+; 53   : 	{
+; 54   : 		//DebugPutc('C');
+; 55   : 		if(processList[i] == 0 || !processList[i]->valid)
+
+	mov	ecx, DWORD PTR _processList[eax*4]
+	test	ecx, ecx
+	je	SHORT $LN10@addProcess
+	cmp	BYTE PTR [ecx], 0
+	je	SHORT $LN10@addProcess
+
+; 51   : 	//DebugPutc('B');
+; 52   : 	for(int i = 0;i<16; i++)
+
+	inc	eax
+	cmp	eax, 16					; 00000010H
+	jl	SHORT $LL5@addProcess
+
+; 62   : 			//DebugPutc('E');
+; 63   : 			return;
+; 64   : 		}
+; 65   : 	}
+; 66   : 	DebugPrintf("\nFalied to initialize PROCESS");
+
+	mov	DWORD PTR _p$[esp-4], OFFSET ??_C@_0BO@IOOEKMMD@?6Falied?5to?5initialize?5PROCESS?$AA@
+	jmp	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
+$LN10@addProcess:
+
+; 56   : 		{
+; 57   : 			p->valid = true;
+; 58   : 			p->pid = i;
+; 59   : 			processList[i] = p;
+; 60   : 			numberOfProcesses++;
+
+	mov	ecx, DWORD PTR _numberOfProcesses
+	push	esi
+	mov	BYTE PTR [edx], 1
+	mov	BYTE PTR [edx+6], al
+	mov	DWORD PTR _processList[eax*4], edx
+
+; 61   : 			DebugPrintf("\nInitialized PROCESS PID=%d EIP=0x%x num=%d ESP=0x%x", i, processList[i]->eip, numberOfProcesses, processList[i]->regs.esp);
+
+	mov	esi, DWORD PTR [edx+35]
+	inc	ecx
+	push	esi
+	push	ecx
+	mov	DWORD PTR _numberOfProcesses, ecx
+	mov	ecx, DWORD PTR [edx+7]
+	push	ecx
+	push	eax
+	push	OFFSET ??_C@_0DF@HEGDEJJK@?6Initialized?5PROCESS?5PID?$DN?$CFd?5EIP?$DN@
+	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
+	add	esp, 20					; 00000014H
+	pop	esi
+$LN7@addProcess:
+
+; 67   : 	return;
+; 68   : }
+
+	ret	0
+?addProcess@@YAXPAU__PROCESS@@@Z ENDP			; addProcess
+_TEXT	ENDS
+PUBLIC	?setCurrentProc@@YAXPAU__PROCESS@@@Z		; setCurrentProc
+; Function compile flags: /Ogtpy
+;	COMDAT ?setCurrentProc@@YAXPAU__PROCESS@@@Z
+_TEXT	SEGMENT
+_p$ = 8							; size = 4
+?setCurrentProc@@YAXPAU__PROCESS@@@Z PROC		; setCurrentProc, COMDAT
+
+; 71   : 	if(p == 0) return;
+
+	mov	eax, DWORD PTR _p$[esp-4]
+	test	eax, eax
+	je	SHORT $LN2@setCurrent
+
+; 72   : 	currentPID = p->pid;
+
+	movzx	eax, BYTE PTR [eax+6]
+	mov	DWORD PTR _currentPID, eax
+
+; 73   : 	currentProcess = processList[currentPID];
+
+	mov	eax, DWORD PTR _processList[eax*4]
+	mov	DWORD PTR _currentProcess, eax
+$LN2@setCurrent:
+
+; 74   : }
+
+	ret	0
+?setCurrentProc@@YAXPAU__PROCESS@@@Z ENDP		; setCurrentProc
+_TEXT	ENDS
+PUBLIC	?startMultitask@@YAXXZ				; startMultitask
+; Function compile flags: /Ogtpy
+;	COMDAT ?startMultitask@@YAXXZ
+_TEXT	SEGMENT
+?startMultitask@@YAXXZ PROC				; startMultitask, COMDAT
+
+; 77   : 	_ism = true;
+
+	mov	BYTE PTR __ism, 1
+
+; 78   : }
+
+	ret	0
+?startMultitask@@YAXXZ ENDP				; startMultitask
+_TEXT	ENDS
 PUBLIC	?i86_pit_irq@@YAXXZ				; i86_pit_irq
 EXTRN	?interruptdone@@YAXI@Z:PROC			; interruptdone
 ; Function compile flags: /Ogtpy
-; File c:\dev\levos\kernel\kernel\pit.cpp
 ;	COMDAT ?i86_pit_irq@@YAXXZ
 _TEXT	SEGMENT
 ?i86_pit_irq@@YAXXZ PROC				; i86_pit_irq, COMDAT
 
-; 34   : void _cdecl i86_pit_irq () {
+; 91   : void _cdecl i86_pit_irq () {
 
 	push	ebx
 	push	esi
 	push	edi
 
-; 35   : 	//_asm pop eax
-; 36   : 	//_asm mov _eip, eax
-; 37   : 	//_asm push eax
-; 38   : 	_asm add esp, 12
+; 92   : 	_asm add esp, 12 // remove C overhead
 
 	add	esp, 12					; 0000000cH
 
-; 39   : 	_asm pushad
+; 93   : 	if(_ism)
 
+	cmp	BYTE PTR __ism, 0
+	je	SHORT $LN9@i86_pit_ir
+
+; 94   : 	{
+; 95   : 		//_asm xchg bx, bx
+; 96   : 		_asm mov _eax, eax // save eax
+
+	mov	DWORD PTR __eax, eax
+
+; 97   : 		_asm pop eax // move EIP in to eax
+
+	pop	eax
+
+; 98   : 		_asm xchg bx, bx
+
+	xchg	bx, bx
+
+; 99   : 		_asm push eax // move it back
+
+	push	eax
+
+; 100  : 		_asm mov _eip, eax // save EIP
+
+	mov	DWORD PTR __eip, eax
+
+; 101  : 		_asm mov eax, _eax // restore EAX
+
+	mov	eax, DWORD PTR __eax
+
+; 102  : 		//_asm add esp, 12 // remove IRQ return
+; 103  : 	}
+; 104  : 	 if(!_ism) _asm pushad // save registers
+
+	cmp	BYTE PTR __ism, 0
+	jne	SHORT $LN8@i86_pit_ir
+$LN9@i86_pit_ir:
 	pushad
 
-; 40   : 
-; 41   : 	// increment tick count
-; 42   : 	_pit_ticks++;
+; 105  : 	// increment tick count
+; 106  : 	//_pit_ticks++;
+; 107  : 	//switchTasks(_eip);
+; 108  : 	// switch tasks here instead
+; 109  : 	if(_ism) {
+
+	cmp	BYTE PTR __ism, 0
+	je	$LN3@i86_pit_ir
+$LN8@i86_pit_ir:
+$multitask$2896:
+
+; 110  : multitask:
+; 111  : 		_asm add esp, 12 // remove IRQ crap from process stack
+
+	add	esp, 12					; 0000000cH
+
+; 112  : 		/*_asm push eax
+; 113  : 		_asm push ebx
+; 114  : 		_asm push ecx
+; 115  : 		_asm push edx
+; 116  : 		_asm push esi
+; 117  : 		_asm push edi
+; 118  : 		_asm push ebp*/ // push his regs
+; 119  : 		//save current
+; 120  : 		processList[currentPID]->eip = _eip;
+
+	mov	eax, DWORD PTR _currentPID
+	mov	ecx, DWORD PTR _processList[eax*4]
+	mov	edx, DWORD PTR __eip
+	mov	DWORD PTR [ecx+7], edx
+
+; 121  : 		processList[currentPID]->ran = true;
+
+	mov	eax, DWORD PTR _currentPID
+	mov	ecx, DWORD PTR _processList[eax*4]
+	mov	BYTE PTR [ecx+1], 1
+
+; 122  : 		_asm mov dummy, esp // save the ESP
+
+	mov	DWORD PTR _dummy, esp
+
+; 123  : 		processList[currentPID]->regs.esp = dummy; // .
+
+	mov	edx, DWORD PTR _currentPID
+	mov	eax, DWORD PTR _processList[edx*4]
+	mov	ecx, DWORD PTR _dummy
+	mov	DWORD PTR [eax+35], ecx
+
+; 124  : 		// select new
+; 125  : 		currentPID++;
+
+	mov	eax, DWORD PTR _currentPID
+
+; 126  : 		if(currentPID > numberOfProcesses - 1) currentPID = 0;
+
+	mov	edx, DWORD PTR _numberOfProcesses
+	inc	eax
+	dec	edx
+	mov	DWORD PTR _currentPID, eax
+	cmp	eax, edx
+	jle	SHORT $LN2@i86_pit_ir
+	xor	eax, eax
+	mov	DWORD PTR _currentPID, eax
+$LN2@i86_pit_ir:
+
+; 127  : 		currentProcess = processList[currentPID];
+
+	mov	eax, DWORD PTR _processList[eax*4]
+	mov	DWORD PTR _currentProcess, eax
+
+; 128  : 		// jump to new
+; 129  : 		//_asm xchg bx, bx
+; 130  : 		//_asm popad
+; 131  : 		// restore new
+; 132  : 		_eip = processList[currentPID]->eip;
+
+	mov	ecx, DWORD PTR [eax+7]
+	mov	DWORD PTR __eip, ecx
+
+; 133  : 		dummy = processList[currentPID]->regs.esp;
+
+	mov	edx, DWORD PTR [eax+35]
+	mov	DWORD PTR _dummy, edx
+
+; 134  : 		if(processList[currentPID]->ran) {
+
+	cmp	BYTE PTR [eax+1], 0
+	je	SHORT $LN1@i86_pit_ir
+
+; 135  : 			_asm mov esp, dummy // get ESP from new
+
+	mov	esp, DWORD PTR _dummy
+
+; 136  : 			_asm pop ebp
+
+	pop	ebp
+
+; 137  : 			_asm pop edi
+
+	pop	edi
+
+; 138  : 			_asm pop esi
+
+	pop	esi
+
+; 139  : 			_asm pop edx
+
+	pop	edx
+
+; 140  : 			_asm pop ecx
+
+	pop	ecx
+
+; 141  : 			_asm pop ebx
+
+	pop	ebx
+
+; 142  : 			_asm pop eax // restore his regs
+
+	pop	eax
+$LN1@i86_pit_ir:
+
+; 143  : 		}
+; 144  : 		_asm sti // enable interrupts so EFLAGS will have IF set
+
+	sti
+
+; 145  : 		_asm pushfd // push EFLAGS
+
+	pushfd
+
+; 146  : 		_asm push 0x8  // push CS (0x8)
+
+	push	8
+
+; 147  : 		_asm push _eip  // push the new's EIP
+
+	push	DWORD PTR __eip
+
+; 148  : 		_asm { // send EOI to primary PIC
+; 149  : 			push eax
+
+	push	eax
+
+; 150  : 			mov al,20h
+
+	mov	al, 32					; 00000020H
+
+; 151  : 			out 20h, al
+
+	out	32, al					; 00000020H
+
+; 152  : 			pop eax
+
+	pop	eax
+
+; 153  : 		}
+; 154  : 		_asm iretd // return to new process
+
+	iretd
+$LN3@i86_pit_ir:
+
+; 155  : 	}
+; 156  : 	_pit_ticks++;
 
 	inc	DWORD PTR __pit_ticks
 
-; 43   : 	//switchTasks(_eip);
-; 44   : 	// tell hal we are done
-; 45   : 	interruptdone(0);
+; 157  : 	// tell hal we are done
+; 158  : 	interruptdone(0);
 
 	push	0
 	call	?interruptdone@@YAXI@Z			; interruptdone
 	add	esp, 4
 
-; 46   : 
-; 47   : 	_asm popad
+; 159  : 
+; 160  : 	_asm popad // restore registers
 
 	popad
 
-; 48   : 	_asm iretd
+; 161  : 	_asm iretd // jump back
 
 	iretd
 
-; 49   : }
+; 162  : }
 
 	pop	edi
 	pop	esi
@@ -79,16 +469,16 @@ _TEXT	SEGMENT
 _i$ = 8							; size = 4
 ?i86_pit_set_tick_count@@YAII@Z PROC			; i86_pit_set_tick_count, COMDAT
 
-; 53   : 
-; 54   : 	uint32_t ret = _pit_ticks;
-; 55   : 	_pit_ticks = i;
+; 166  : 
+; 167  : 	uint32_t ret = _pit_ticks;
+; 168  : 	_pit_ticks = i;
 
 	mov	ecx, DWORD PTR _i$[esp-4]
 	mov	eax, DWORD PTR __pit_ticks
 	mov	DWORD PTR __pit_ticks, ecx
 
-; 56   : 	return ret;
-; 57   : }
+; 169  : 	return ret;
+; 170  : }
 
 	ret	0
 ?i86_pit_set_tick_count@@YAII@Z ENDP			; i86_pit_set_tick_count
@@ -99,12 +489,12 @@ PUBLIC	?i86_pit_get_tick_count@@YAIXZ			; i86_pit_get_tick_count
 _TEXT	SEGMENT
 ?i86_pit_get_tick_count@@YAIXZ PROC			; i86_pit_get_tick_count, COMDAT
 
-; 62   : 
-; 63   : 	return _pit_ticks;
+; 175  : 
+; 176  : 	return _pit_ticks;
 
 	mov	eax, DWORD PTR __pit_ticks
 
-; 64   : }
+; 177  : }
 
 	ret	0
 ?i86_pit_get_tick_count@@YAIXZ ENDP			; i86_pit_get_tick_count
@@ -117,8 +507,8 @@ _TEXT	SEGMENT
 _cmd$ = 8						; size = 1
 ?i86_pit_send_command@@YAXE@Z PROC			; i86_pit_send_command, COMDAT
 
-; 69   : 
-; 70   : 	outport (I86_PIT_REG_COMMAND, cmd);
+; 182  : 
+; 183  : 	outport (I86_PIT_REG_COMMAND, cmd);
 
 	mov	eax, DWORD PTR _cmd$[esp-4]
 	push	eax
@@ -126,7 +516,7 @@ _cmd$ = 8						; size = 1
 	call	?outport@@YAXGE@Z			; outport
 	add	esp, 8
 
-; 71   : }
+; 184  : }
 
 	ret	0
 ?i86_pit_send_command@@YAXE@Z ENDP			; i86_pit_send_command
@@ -139,16 +529,16 @@ _data$ = 8						; size = 2
 _counter$ = 12						; size = 1
 ?i86_pit_send_data@@YAXGE@Z PROC			; i86_pit_send_data, COMDAT
 
-; 76   : 
-; 77   : 	uint8_t	port= (counter==I86_PIT_OCW_COUNTER_0) ? I86_PIT_REG_COUNTER0 :
-; 78   : 		((counter==I86_PIT_OCW_COUNTER_1) ? I86_PIT_REG_COUNTER1 : I86_PIT_REG_COUNTER2);
+; 189  : 
+; 190  : 	uint8_t	port= (counter==I86_PIT_OCW_COUNTER_0) ? I86_PIT_REG_COUNTER0 :
+; 191  : 		((counter==I86_PIT_OCW_COUNTER_1) ? I86_PIT_REG_COUNTER1 : I86_PIT_REG_COUNTER2);
 
 	mov	al, BYTE PTR _counter$[esp-4]
 	test	al, al
 	jne	SHORT $LN3@i86_pit_se
 
-; 79   : 
-; 80   : 	outport (port, (uint8_t)data);
+; 192  : 
+; 193  : 	outport (port, (uint8_t)data);
 
 	mov	ecx, DWORD PTR _data$[esp-4]
 	mov	al, 64					; 00000040H
@@ -175,17 +565,17 @@ _TEXT	SEGMENT
 _counter$ = 8						; size = 2
 ?i86_pit_read_data@@YAEG@Z PROC				; i86_pit_read_data, COMDAT
 
-; 86   : 
-; 87   : 	uint8_t	port= (counter==I86_PIT_OCW_COUNTER_0) ? I86_PIT_REG_COUNTER0 :
-; 88   : 		((counter==I86_PIT_OCW_COUNTER_1) ? I86_PIT_REG_COUNTER1 : I86_PIT_REG_COUNTER2);
+; 199  : 
+; 200  : 	uint8_t	port= (counter==I86_PIT_OCW_COUNTER_0) ? I86_PIT_REG_COUNTER0 :
+; 201  : 		((counter==I86_PIT_OCW_COUNTER_1) ? I86_PIT_REG_COUNTER1 : I86_PIT_REG_COUNTER2);
 
 	mov	ax, WORD PTR _counter$[esp-4]
 	test	ax, ax
 	jne	SHORT $LN3@i86_pit_re
 	mov	al, 64					; 00000040H
 
-; 89   : 
-; 90   : 	return inport (port);
+; 202  : 
+; 203  : 	return inport (port);
 
 	movzx	eax, al
 	mov	ecx, eax
@@ -193,16 +583,16 @@ _counter$ = 8						; size = 2
 	jmp	?inport@@YAEG@Z				; inport
 $LN3@i86_pit_re:
 
-; 86   : 
-; 87   : 	uint8_t	port= (counter==I86_PIT_OCW_COUNTER_0) ? I86_PIT_REG_COUNTER0 :
-; 88   : 		((counter==I86_PIT_OCW_COUNTER_1) ? I86_PIT_REG_COUNTER1 : I86_PIT_REG_COUNTER2);
+; 199  : 
+; 200  : 	uint8_t	port= (counter==I86_PIT_OCW_COUNTER_0) ? I86_PIT_REG_COUNTER0 :
+; 201  : 		((counter==I86_PIT_OCW_COUNTER_1) ? I86_PIT_REG_COUNTER1 : I86_PIT_REG_COUNTER2);
 
 	cmp	ax, 64					; 00000040H
 	setne	al
 	add	al, 65					; 00000041H
 
-; 89   : 
-; 90   : 	return inport (port);
+; 202  : 
+; 203  : 	return inport (port);
 
 	movzx	eax, al
 	mov	ecx, eax
@@ -219,16 +609,16 @@ _counter$ = 12						; size = 1
 _mode$ = 16						; size = 1
 ?i86_pit_start_counter@@YAXIEE@Z PROC			; i86_pit_start_counter, COMDAT
 
-; 96   : 
-; 97   : 	if (freq==0)
+; 209  : 
+; 210  : 	if (freq==0)
 
 	mov	eax, DWORD PTR _freq$[esp-4]
 	test	eax, eax
 	je	SHORT $LN2@i86_pit_st
 
-; 98   : 		return;
-; 99   : 
-; 100  : 	uint16_t divisor = uint16_t(1193181 / (uint16_t)freq);
+; 211  : 		return;
+; 212  : 
+; 213  : 	uint16_t divisor = uint16_t(1193181 / (uint16_t)freq);
 
 	movzx	ecx, ax
 	mov	eax, 1193181				; 001234ddH
@@ -237,34 +627,34 @@ _mode$ = 16						; size = 1
 	mov	dl, BYTE PTR _mode$[esp-4]
 	and	dl, 15					; 0000000fH
 
-; 101  : 
-; 102  : 	// send operational command
-; 103  : 	uint8_t ocw=0;
-; 104  : 	ocw = (ocw & ~I86_PIT_OCW_MASK_MODE) | mode;
-; 105  : 	ocw = (ocw & ~I86_PIT_OCW_MASK_RL) | I86_PIT_OCW_RL_DATA;
-; 106  : 	ocw = (ocw & ~I86_PIT_OCW_MASK_COUNTER) | counter;
+; 214  : 
+; 215  : 	// send operational command
+; 216  : 	uint8_t ocw=0;
+; 217  : 	ocw = (ocw & ~I86_PIT_OCW_MASK_MODE) | mode;
+; 218  : 	ocw = (ocw & ~I86_PIT_OCW_MASK_RL) | I86_PIT_OCW_RL_DATA;
+; 219  : 	ocw = (ocw & ~I86_PIT_OCW_MASK_COUNTER) | counter;
 
 	or	dl, BYTE PTR _counter$[esp-4]
 	push	esi
 	or	dl, 48					; 00000030H
 	movzx	esi, ax
 
-; 107  : 	i86_pit_send_command (ocw);
+; 220  : 	i86_pit_send_command (ocw);
 
 	movzx	eax, dl
 	push	eax
 	push	67					; 00000043H
 	call	?outport@@YAXGE@Z			; outport
 
-; 108  : 
-; 109  : 	// set frequency rate
-; 110  : 	i86_pit_send_data (divisor & 0xff, 0);
+; 221  : 
+; 222  : 	// set frequency rate
+; 223  : 	i86_pit_send_data (divisor & 0xff, 0);
 
 	push	esi
 	push	64					; 00000040H
 	call	?outport@@YAXGE@Z			; outport
 
-; 111  : 	i86_pit_send_data ((divisor >> 8) & 0xff, 0);
+; 224  : 	i86_pit_send_data ((divisor >> 8) & 0xff, 0);
 
 	shr	esi, 8
 	push	esi
@@ -272,15 +662,15 @@ _mode$ = 16						; size = 1
 	call	?outport@@YAXGE@Z			; outport
 	add	esp, 24					; 00000018H
 
-; 112  : 
-; 113  : 	// reset tick count
-; 114  : 	_pit_ticks=0;
+; 225  : 
+; 226  : 	// reset tick count
+; 227  : 	_pit_ticks=0;
 
 	mov	DWORD PTR __pit_ticks, 0
 	pop	esi
 $LN2@i86_pit_st:
 
-; 115  : }
+; 228  : }
 
 	ret	0
 ?i86_pit_start_counter@@YAXIEE@Z ENDP			; i86_pit_start_counter
@@ -292,25 +682,25 @@ EXTRN	?setint@@YAXHP6AXXZ@Z:PROC			; setint
 _TEXT	SEGMENT
 ?i86_pit_initialize@@YA_NXZ PROC			; i86_pit_initialize, COMDAT
 
-; 120  : 
-; 121  : 	// Install our interrupt handler (irq 0 uses interrupt 32)
-; 122  : 	setint(32, i86_pit_irq);
+; 233  : 
+; 234  : 	// Install our interrupt handler (irq 0 uses interrupt 32)
+; 235  : 	setint(32, i86_pit_irq);
 
 	push	OFFSET ?i86_pit_irq@@YAXXZ		; i86_pit_irq
 	push	32					; 00000020H
 	call	?setint@@YAXHP6AXXZ@Z			; setint
 
-; 123  : 
-; 124  : 	// we are initialized
-; 125  : 	_pit_bIsInit = true;
+; 236  : 
+; 237  : 	// we are initialized
+; 238  : 	_pit_bIsInit = true;
 
 	mov	al, 1
 	add	esp, 8
 	mov	BYTE PTR __pit_bIsInit, al
 
-; 126  : 
-; 127  : 	return true;
-; 128  : }
+; 239  : 
+; 240  : 	return true;
+; 241  : }
 
 	ret	0
 ?i86_pit_initialize@@YA_NXZ ENDP			; i86_pit_initialize
@@ -321,12 +711,12 @@ PUBLIC	?i86_pit_is_initialized@@YA_NXZ			; i86_pit_is_initialized
 _TEXT	SEGMENT
 ?i86_pit_is_initialized@@YA_NXZ PROC			; i86_pit_is_initialized, COMDAT
 
-; 133  : 
-; 134  : 	return _pit_bIsInit;
+; 246  : 
+; 247  : 	return _pit_bIsInit;
 
 	mov	al, BYTE PTR __pit_bIsInit
 
-; 135  : }
+; 248  : }
 
 	ret	0
 ?i86_pit_is_initialized@@YA_NXZ ENDP			; i86_pit_is_initialized
