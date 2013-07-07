@@ -13,6 +13,7 @@
 char buf[32];
 char num = 0;
 char c = 0;
+bool didCls = false;
 
 COMMAND cmdlist[32] = {}; 
 char currentCmd = 0;
@@ -102,7 +103,10 @@ void main(int baseaddr)
 			handle_cmd("cls", cmd_cls);
 			handle_cmd("echo", cmd_echo);*/
 			num = 0;
-			print("\n[LevOS]~ ");
+			if(didCls) { print("[LevOS]~"); didCls = false; }
+			else {
+				print("\n[LevOS]~ ");
+			}
 			continue;
 		}
 		if(c == 0x08)
@@ -271,6 +275,7 @@ void cmd_dump(char* buf)
 }
 void cmd_cls(char* buf)
 {
+	didCls = true;
 	clearScreen();
 	return;
 }
