@@ -75,7 +75,7 @@ char* _cdecl omgRelocPl0x()
 	return "Relocation is working.";
 }
 
-bool _cdecl loadFileToLoc(char* filename, char* address)
+char _cdecl loadFileToLoc(char* filename, char* address)
 {
 	_asm {
 		mov ebx, address
@@ -83,9 +83,9 @@ bool _cdecl loadFileToLoc(char* filename, char* address)
 		mov eax, 0x05
 		int 0x2F
 	}
-	int _c = 0;
-	_asm mov _c, edx
-	return (_c==1);
+	char _c = 0;
+	_asm mov _c, dl
+	return _c;
 }
 void _cdecl moveCursorRelative(char rx, char ry)
 {
@@ -97,7 +97,7 @@ void _cdecl moveCursorRelative(char rx, char ry)
 		int 0x2F
 	}
 }
-bool _cdecl executePE32(char* filename)
+char _cdecl executePE32(char* filename)
 {
 	_asm {
 		mov edx, filename
@@ -105,9 +105,9 @@ bool _cdecl executePE32(char* filename)
 		mov eax, 0x07
 		int 0x2F
 	}
-	int _c = 0;
-	_asm mov _c, edx
-	return (_c==1);
+	char _c = 0;
+	_asm mov _c, dl
+	return _c;
 }
 bool _cdecl dumpPE32(char* filename)
 {

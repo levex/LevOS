@@ -1,11 +1,11 @@
  LEVAPI
 
- Timestamp is 51d7c344 (Sat Jul 06 09:12:04 2013)
+ Timestamp is 51d9256d (Sun Jul 07 10:23:09 2013)
 
  Preferred load address is 00800000
 
  Start         Length     Name                   Class
- 0001:00000000 000004daH .text                   CODE
+ 0001:00000000 000004caH .text                   CODE
  0002:00000000 00000017H .rdata                  DATA
  0003:00000000 000002bbH .edata                  DATA
 
@@ -24,24 +24,24 @@
  0001:00000110       _loadFileToLoc             00801110 f   main.obj
  0001:00000140       _moveCursorRelative        00801140 f   main.obj
  0001:00000170       _executePE32               00801170 f   main.obj
- 0001:000001b0       _dumpPE32                  008011b0 f   main.obj
- 0001:000001f0       _clearScreen               008011f0 f   main.obj
- 0001:00000210       _fillRTC                   00801210 f   main.obj
- 0001:00000230       _getNumberOfFilesInRoot    00801230 f   main.obj
- 0001:00000260       _getFilesInRoot            00801260 f   main.obj
- 0001:00000280       _VGA_init                  00801280 f   main.obj
- 0001:000002a0       _VGA_clear                 008012a0 f   main.obj
- 0001:000002c0       _VGA_putpixel              008012c0 f   main.obj
- 0001:000002f0       _VGA_putimage              008012f0 f   main.obj
- 0001:00000320       _VGA_deinit                00801320 f   main.obj
- 0001:00000340       _VGA_putstring             00801340 f   main.obj
- 0001:00000370       _VGA_putchar               00801370 f   main.obj
- 0001:000003a0       _VGA_putline               008013a0 f   main.obj
- 0001:000003d0       _VGA_putrect               008013d0 f   main.obj
- 0001:00000400       _VGA_setcolor              00801400 f   main.obj
- 0001:00000420       _VGA_getcolor              00801420 f   main.obj
- 0001:00000450       _VGA_clearrect             00801450 f   main.obj
- 0001:000004c0       _fillMouseState            008014c0 f   main.obj
+ 0001:000001a0       _dumpPE32                  008011a0 f   main.obj
+ 0001:000001e0       _clearScreen               008011e0 f   main.obj
+ 0001:00000200       _fillRTC                   00801200 f   main.obj
+ 0001:00000220       _getNumberOfFilesInRoot    00801220 f   main.obj
+ 0001:00000250       _getFilesInRoot            00801250 f   main.obj
+ 0001:00000270       _VGA_init                  00801270 f   main.obj
+ 0001:00000290       _VGA_clear                 00801290 f   main.obj
+ 0001:000002b0       _VGA_putpixel              008012b0 f   main.obj
+ 0001:000002e0       _VGA_putimage              008012e0 f   main.obj
+ 0001:00000310       _VGA_deinit                00801310 f   main.obj
+ 0001:00000330       _VGA_putstring             00801330 f   main.obj
+ 0001:00000360       _VGA_putchar               00801360 f   main.obj
+ 0001:00000390       _VGA_putline               00801390 f   main.obj
+ 0001:000003c0       _VGA_putrect               008013c0 f   main.obj
+ 0001:000003f0       _VGA_setcolor              008013f0 f   main.obj
+ 0001:00000410       _VGA_getcolor              00801410 f   main.obj
+ 0001:00000440       _VGA_clearrect             00801440 f   main.obj
+ 0001:000004b0       _fillMouseState            008014b0 f   main.obj
  0002:00000000       ??_C@_0BH@KLDECJHP@Relocation?5is?5working?4?$AA@ 00802000     main.obj
 
  entry point at        0000:00000000

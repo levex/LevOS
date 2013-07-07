@@ -1,47 +1,48 @@
  gui
 
- Timestamp is 51d7c344 (Sat Jul 06 09:12:04 2013)
+ Timestamp is 51d9256f (Sun Jul 07 10:23:11 2013)
 
  Preferred load address is 01000000
 
  Start         Length     Name                   Class
- 0001:00000000 0000058aH .text                   CODE
- 0002:00000000 0000002cH .idata$5                DATA
- 0002:0000002c 00000041H .rdata                  DATA
+ 0001:00000000 0000057aH .text                   CODE
+ 0002:00000000 00000030H .idata$5                DATA
+ 0002:00000030 00000041H .rdata                  DATA
  0003:00000000 00000040H .bss                    DATA
  0004:00000000 00000014H .idata$2                CODE
  0004:00000014 00000014H .idata$3                CODE
- 0004:00000028 0000002cH .idata$4                CODE
- 0004:00000054 00000098H .idata$6                CODE
+ 0004:00000028 00000030H .idata$4                CODE
+ 0004:00000058 000000aaH .idata$6                CODE
 
   Address         Publics by Value              Rva+Base       Lib:Object
 
- 0000:00000000       ___safe_se_handler_table   00000000     <absolute>
  0000:00000000       ___safe_se_handler_count   00000000     <absolute>
+ 0000:00000000       ___safe_se_handler_table   00000000     <absolute>
  0001:00000000       _main                      01001000 f   main.obj
- 0001:00000170       ?strlen@@YAIPBD@Z          01001170 f   string.obj
- 0001:000001b0       ?W_TEXTPOPUP_paint@@YAXPAUWINDOW@@@Z 010011b0 f   TextPopup.obj
- 0001:00000290       ?W_TEXTPOPUP_move@@YAXPAUWINDOW@@HH@Z 01001290 f   TextPopup.obj
- 0001:000003b0       ?W_TEXTPOPUP_init@@YAXPAUW_TEXTPOPUP@@PAUWINDOW@@PAD2@Z 010013b0 f   TextPopup.obj
- 0001:00000440       ?initWindowManager@@YAXXZ  01001440 f   WindowManager.obj
- 0001:00000480       ?findFirstFreeSlot@@YAHXZ  01001480 f   WindowManager.obj
- 0001:000004d0       ?addWindow@@YAHPAUWINDOW@@@Z 010014d0 f   WindowManager.obj
- 0001:00000530       ?repaintScreen@@YAXXZ      01001530 f   WindowManager.obj
+ 0001:00000160       ?strlen@@YAIPBD@Z          01001160 f   string.obj
+ 0001:000001a0       ?W_TEXTPOPUP_paint@@YAXPAUWINDOW@@@Z 010011a0 f   TextPopup.obj
+ 0001:00000280       ?W_TEXTPOPUP_move@@YAXPAUWINDOW@@HH@Z 01001280 f   TextPopup.obj
+ 0001:000003a0       ?W_TEXTPOPUP_init@@YAXPAUW_TEXTPOPUP@@PAUWINDOW@@PAD2@Z 010013a0 f   TextPopup.obj
+ 0001:00000430       ?initWindowManager@@YAXXZ  01001430 f   WindowManager.obj
+ 0001:00000470       ?findFirstFreeSlot@@YAHXZ  01001470 f   WindowManager.obj
+ 0001:000004c0       ?addWindow@@YAHPAUWINDOW@@@Z 010014c0 f   WindowManager.obj
+ 0001:00000520       ?repaintScreen@@YAXXZ      01001520 f   WindowManager.obj
  0002:00000000       __imp__VGA_deinit          01002000     LevAPI DLL:LEVAPI.DLL
- 0002:00000004       __imp__VGA_clear           01002004     LevAPI DLL:LEVAPI.DLL
- 0002:00000008       __imp__VGA_putimage        01002008     LevAPI DLL:LEVAPI.DLL
- 0002:0000000c       __imp__VGA_init            0100200c     LevAPI DLL:LEVAPI.DLL
- 0002:00000010       __imp__getInputChar        01002010     LevAPI DLL:LEVAPI.DLL
- 0002:00000014       __imp__print               01002014     LevAPI DLL:LEVAPI.DLL
- 0002:00000018       __imp__VGA_putstring       01002018     LevAPI DLL:LEVAPI.DLL
- 0002:0000001c       __imp__VGA_putrect         0100201c     LevAPI DLL:LEVAPI.DLL
- 0002:00000020       __imp__VGA_setcolor        01002020     LevAPI DLL:LEVAPI.DLL
- 0002:00000024       __imp__VGA_getcolor        01002024     LevAPI DLL:LEVAPI.DLL
- 0002:00000028       \177LEVAPI_NULL_THUNK_DATA 01002028     LevAPI DLL:LEVAPI.DLL
- 0002:0000002c       ??_C@_09KKBHBBKF@LevOS?52?40?$AA@ 0100202c     main.obj
- 0002:00000038       ??_C@_0BM@KGEMJOIP@Levex?5is?5an?5epic?5developer?$CB?$AA@ 01002038     main.obj
- 0002:00000054       ??_C@_08OBGPNNFO@test?4bmp?$AA@ 01002054     main.obj
- 0002:00000060       ??_C@_0N@BPJMLEOO@?6Gfx?5init?4?4?4?$AA@ 01002060     main.obj
+ 0002:00000004       __imp__getInputChar        01002004     LevAPI DLL:LEVAPI.DLL
+ 0002:00000008       __imp__VGA_clear           01002008     LevAPI DLL:LEVAPI.DLL
+ 0002:0000000c       __imp__VGA_putimage        0100200c     LevAPI DLL:LEVAPI.DLL
+ 0002:00000010       __imp__VGA_init            01002010     LevAPI DLL:LEVAPI.DLL
+ 0002:00000014       __imp__waitForKeyPress     01002014     LevAPI DLL:LEVAPI.DLL
+ 0002:00000018       __imp__print               01002018     LevAPI DLL:LEVAPI.DLL
+ 0002:0000001c       __imp__VGA_putstring       0100201c     LevAPI DLL:LEVAPI.DLL
+ 0002:00000020       __imp__VGA_putrect         01002020     LevAPI DLL:LEVAPI.DLL
+ 0002:00000024       __imp__VGA_setcolor        01002024     LevAPI DLL:LEVAPI.DLL
+ 0002:00000028       __imp__VGA_getcolor        01002028     LevAPI DLL:LEVAPI.DLL
+ 0002:0000002c       \177LEVAPI_NULL_THUNK_DATA 0100202c     LevAPI DLL:LEVAPI.DLL
+ 0002:00000030       ??_C@_09KKBHBBKF@LevOS?52?40?$AA@ 01002030     main.obj
+ 0002:0000003c       ??_C@_0BM@KGEMJOIP@Levex?5is?5an?5epic?5developer?$CB?$AA@ 0100203c     main.obj
+ 0002:00000058       ??_C@_08OBGPNNFO@test?4bmp?$AA@ 01002058     main.obj
+ 0002:00000064       ??_C@_0N@BPJMLEOO@?6Gfx?5init?4?4?4?$AA@ 01002064     main.obj
  0004:00000000       __IMPORT_DESCRIPTOR_LEVAPI 01004000     LevAPI DLL:LEVAPI.DLL
  0004:00000014       __NULL_IMPORT_DESCRIPTOR   01004014     LevAPI DLL:LEVAPI.DLL
 

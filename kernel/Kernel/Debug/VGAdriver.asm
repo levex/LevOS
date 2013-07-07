@@ -2932,7 +2932,7 @@ $LN10@VGA_put_ch:
 ?VGA_put_char@@YAXHHDD@Z ENDP				; VGA_put_char
 _TEXT	ENDS
 PUBLIC	?VGA_put_image@@YAXHHPAD@Z			; VGA_put_image
-EXTRN	?loadFileToLoc@@YA_NPADPAX@Z:PROC		; loadFileToLoc
+EXTRN	?loadFileToLoc@@YADPADPAX@Z:PROC		; loadFileToLoc
 EXTRN	?malloc@@YAPAXH@Z:PROC				; malloc
 ; Function compile flags: /Ogtpy
 ;	COMDAT ?VGA_put_image@@YAXHHPAD@Z
@@ -2963,7 +2963,7 @@ _filename$ = 16						; size = 4
 	mov	eax, DWORD PTR _filename$[esp+24]
 	push	esi
 	push	eax
-	call	?loadFileToLoc@@YA_NPADPAX@Z		; loadFileToLoc
+	call	?loadFileToLoc@@YADPADPAX@Z		; loadFileToLoc
 
 ; 769  : 	bmpHeader* bmph = (bmpHeader*)buf;
 ; 770  : 	bmpInfoHeader* bmpinfo = (bmpInfoHeader*)(buf + sizeof(bmpHeader));

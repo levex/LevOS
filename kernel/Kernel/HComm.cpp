@@ -6,6 +6,7 @@
 #include "FileSystem.h"
 #include "pMemory.h"
 #include "DebugDisplay.h"
+#include "error.h"
 void _cdecl outport(unsigned short portid, unsigned char value)
 {
 	_asm {
@@ -81,10 +82,10 @@ int getFileSize(char* file)
 	return f.fileLength;
 }
 
-bool loadFileToLoc(char* file, void* loc)
+char loadFileToLoc(char* file, void* loc)
 {
 	FILE f = volOpenFile(file);
-	if(f.flags == FS_INVALID) {return false;};
+	if(f.flags == FS_INVALID) {return ERR_FILE_NOT_FOUND;};
 	unsigned char* buf = (unsigned char*)loc;
 	int i = 0;
 #ifdef DEBUG
@@ -99,5 +100,5 @@ bool loadFileToLoc(char* file, void* loc)
 	DebugPrintf("\ni=%d=>size=%d", i+1, (i+1)*512);
 #endif
 	volCloseFile(&f);
-	return true;
+	return ERR_SUCCESS;
 }

@@ -129,12 +129,12 @@ _TEXT	SEGMENT
 _c$3597 = -4						; size = 1
 ?loop@@YAXXZ PROC					; loop, COMDAT
 
-; 384  : {
+; 386  : {
 
 	push	ecx
 	push	esi
 
-; 385  : 	DebugPrintf("\n[LevOS-KRNL]~#");
+; 387  : 	DebugPrintf("\n[LevOS-KRNL]~#");
 
 	push	OFFSET ??_C@_0BA@NBBNMPGM@?6?$FLLevOS?9KRNL?$FN?$HO?$CD?$AA@
 	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
@@ -142,11 +142,11 @@ $LN13@loop:
 	add	esp, 4
 	npad	1
 
-; 386  : 	KEYCODE key;
-; 387  : 	//geninterrupt(0x21);
-; 388  : 	while(true)
-; 389  : 	{
-; 390  : 		key = getch();
+; 388  : 	KEYCODE key;
+; 389  : 	//geninterrupt(0x21);
+; 390  : 	while(true)
+; 391  : 	{
+; 392  : 		key = getch();
 
 $LL7@loop:
 	call	?kkybrd_get_last_key@@YA?AW4KEYCODE@@XZ	; kkybrd_get_last_key
@@ -155,14 +155,14 @@ $LL7@loop:
 	je	SHORT $LL7@loop
 	call	?kkybrd_discard_last_key@@YAXXZ		; kkybrd_discard_last_key
 
-; 391  : 		char c = kkybrd_key_to_ascii(key);
+; 393  : 		char c = kkybrd_key_to_ascii(key);
 
 	push	esi
 	call	?kkybrd_key_to_ascii@@YADW4KEYCODE@@@Z	; kkybrd_key_to_ascii
 	add	esp, 4
 	mov	BYTE PTR _c$3597[esp+8], al
 
-; 392  : 		if(c!=0)DebugPutc(c);
+; 394  : 		if(c!=0)DebugPutc(c);
 
 	test	al, al
 	je	SHORT $LL7@loop
@@ -170,7 +170,7 @@ $LL7@loop:
 	push	eax
 	call	?DebugPutc@@YAXE@Z			; DebugPutc
 
-; 393  : 	}
+; 395  : 	}
 
 	jmp	SHORT $LN13@loop
 ?loop@@YAXXZ ENDP					; loop
@@ -201,7 +201,7 @@ PUBLIC	??_C@_0L@DNGAJNGH@0xC0000000?$AA@		; `string'
 PUBLIC	??_C@_0CD@CHEEAOJK@LevOS2?5loading?5Kernel?5Version?3?5?$CF@ ; `string'
 PUBLIC	??_C@_06FMMPDGK@060713?$AA@			; `string'
 PUBLIC	_main
-EXTRN	?PE_mapApp@@YA_NPADH@Z:PROC			; PE_mapApp
+EXTRN	?PE_mapApp@@YADPADH@Z:PROC			; PE_mapApp
 EXTRN	?setCurrentProc@@YAXPAU__PROCESS@@@Z:PROC	; setCurrentProc
 EXTRN	?taskthree@@YAXXZ:PROC				; taskthree
 EXTRN	?tasktwo@@YAXXZ:PROC				; tasktwo
@@ -378,7 +378,6 @@ CONST	ENDS
 _TEXT	SEGMENT
 _p3$ = -84						; size = 43
 $T3683 = -40						; size = 32
-_a$ = -8						; size = 4
 __font$ = -8						; size = 4
 __ts$ = -4						; size = 4
 _main	PROC						; COMDAT
@@ -435,7 +434,7 @@ $LN22@main:
 
 ; 132  : 	DebugPrintf ("Loading Physical Memory Manager: %s\n", (pm_setup((char*)(KERNEL_BASE+KERNEL_SIZE+4096)) ? "OK":"ERROR"));
 
-	push	OFFSET ??_C@_0L@DNGAJNGH@0xC0000000?$AA@+86016
+	push	OFFSET ??_C@_0L@DNGAJNGH@0xC0000000?$AA@+24576
 	call	?pm_setup@@YA_NPAD@Z			; pm_setup
 	add	esp, 12					; 0000000cH
 	test	al, al
@@ -1141,28 +1140,14 @@ $LL48@main:
 
 	push	OFFSET _p
 	call	?setCurrentProc@@YAXPAU__PROCESS@@@Z	; setCurrentProc
+	add	esp, 16					; 00000010H
 
 ; 313  : 
 ; 314  : 	//startMultitask();
-; 315  : 	int a = p.regs.esp;
-
-	mov	eax, DWORD PTR _p+35
-	add	esp, 16					; 00000010H
-	mov	DWORD PTR _a$[ebp], eax
-
+; 315  : 	/*int a = p.regs.esp;
 ; 316  : 	_asm mov esp, a
-
-	mov	esp, DWORD PTR _a$[ebp]
-
 ; 317  : 	a = p.regs.ebp;
-
-	mov	ecx, DWORD PTR _p+39
-	mov	DWORD PTR _a$[ebp], ecx
-
-; 318  : 	_asm mov ebp, a
-
-	mov	ebp, DWORD PTR _a$[ebp]
-
+; 318  : 	_asm mov ebp, a*/
 ; 319  : 	//taskone();
 ; 320  : 	/*int a = 0;
 ; 321  : 	a = p.regs->eip;
@@ -1193,50 +1178,15 @@ $LN3@main:
 ; 338  : 	getch();*/
 ; 339  : 	//memcpy((char*)0x100000,(char*)0xB8000, 32768); //fixme
 ; 340  : 	//loadFileToLoc("cmd.exe", (void*)IMAGE_BASE);
-; 341  : 	PE_mapApp("cmd.exe", IMAGE_BASE);
+; 341  : 	char err = PE_mapApp("cmd.exe", IMAGE_BASE);
 
 	push	12582912				; 00c00000H
 	push	OFFSET ??_C@_07INNMNHPJ@cmd?4exe?$AA@
-	call	?PE_mapApp@@YA_NPADH@Z			; PE_mapApp
+	call	?PE_mapApp@@YADPADH@Z			; PE_mapApp
 	add	esp, 8
-	npad	5
 $LL2@main:
 
-; 342  : 	/*char* test = (char*)0x800000;
-; 343  : 	DebugPrintf(test);*/
-; 344  : 	/*int* AddressOfEntryPoint = (int*)IMAGE_BASE+ 0xC0 + 0x18 + 0x12;
-; 345  : 	int* SizeOfCode = (int*)0xC000d4;
-; 346  : 	int* BaseOfCode = (int*)0xC000e4;
-; 347  : 	int* BaseOfData = (int*)0xC000e8;
-; 348  : 	int* textVirtualAddress = (int*)0xC001c4;
-; 349  : 	int* textPointerToRawData = (int*)0xC001c8;
-; 350  : 	//	int* SizeOfCode = (int*)0xC000d4;
-; 351  : 	int* SizeOfInitializedData = (int*)0xC000d8;
-; 352  : 	DebugPrintf("Address=0x%x, size=0x%x, base=0x%x, base-size=0x%x => fileaddr=0x%x\n", *AddressOfEntryPoint, *BaseOfCode, *SizeOfCode, *BaseOfCode - *SizeOfCode, *AddressOfEntryPoint - *BaseOfCode + *SizeOfCode );*/
-; 353  : 	//char* entryPoint = (char*)(0x1070 + 0x400 + 0xC00000 - 0x1000);
-; 354  : 	unsigned int ientryPoint = 0;
-; 355  : 	ientryPoint = getEntryPoint(IMAGE_BASE);
-; 356  : 	/*DebugPrintf("Entrypoint = 0x%x\n", ientryPoint);
-; 357  : 	PROCESS p;
-; 358  : 		//fillProcess(p, IMAGE_BASE);
-; 359  : 		p.pid = 1;
-; 360  : 		int PE_HEADER_LOCATION = *(int*)(IMAGE_BASE + 0x3C);
-; 361  : 		PE_HEADER_LOCATION += IMAGE_BASE;
-; 362  : 		int OPTIONAL_HEADER_LOCATION = PE_HEADER_LOCATION + 24;
-; 363  : 		p.BaseOfCode = *(unsigned int*)(OPTIONAL_HEADER_LOCATION + 20);
-; 364  : 		p.BaseOfData = *(unsigned int*)(OPTIONAL_HEADER_LOCATION + 24);
-; 365  : 		//DebugPrintf("BaseOfData=0x%X", p.BaseOfData);
-; 366  : 		p.SizeOfCode = *(unsigned int*)(OPTIONAL_HEADER_LOCATION + 4);
-; 367  : 		p.SizeOfInitializedData = *(unsigned int*)(OPTIONAL_HEADER_LOCATION + 8);
-; 368  : 	setCurrentProc(p);*/
-; 369  : 	/*_asm {
-; 370  : 		mov ax, 0x08
-; 371  : 		mov     ds, ax
-; 372  :         mov     es, ax
-; 373  :         mov     fs, ax
-; 374  :         mov     gs, ax
-; 375  : 	}*/
-; 376  : 	for(;;);
+; 342  : 	for(;;);
 
 	jmp	SHORT $LL2@main
 _main	ENDP

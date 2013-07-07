@@ -7,6 +7,8 @@
 #include "Command.h"
 #include "string.h"
 
+#include "..\Kernel\error.h"
+
 
 char buf[32];
 char num = 0;
@@ -204,8 +206,8 @@ void cmd_test(char* buf)
 	char* arg = strchr(buf, ' ');
 	arg++;
 	if(*arg == '\0') {print("\nPlease give a filename!");return;}
-	bool c = loadFileToLoc(arg, (char*)0xC10000);
-	if(!c){print("\nERROR: File not found!");return;}
+	int c = loadFileToLoc(arg, (char*)0xC10000);
+	if(c == ERR_FILE_NOT_FOUND){print("\nERROR: File not found!");return;}
 	printchar('\n');
 	print((char*)0xC10000);
 	return;
@@ -246,10 +248,15 @@ void cmd_start(char* buf)
 {
 	char* arg = strchr(buf, ' ');
 	arg++;
+	char err = 0;
 	if(*arg == '\0') {print("\nPlease give a software name!");return;}
 	if(strcmp(arg, "KRNL32.exe") == 0){print("\nKernel can't be loaded! :)");return;}
 	if(strcmp(arg, "cmd.exe") == 0){print("\nNo extra terminals yet! :(");return;}
-	if(!executePE32(arg)) print("\nERROR: File not found!");
+	err=executePE32(arg);
+	if(err == ERR_FILE_NOT_FOUND) print("\nERROR: File not found!");
+	if(err == ERR_PE_NOT_EXEC) print("\nERROR: File is not executable!");
+	if(err == ERR_PE_NOT_LEVOS) print("\nERROR: File is not a valid LevOS application!");
+	if(err == ERR_PE_NOT_VALID) print("\nERROR: File is not a PE file!");
 	return;
 }
 void cmd_dump(char* buf)

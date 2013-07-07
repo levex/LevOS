@@ -7,16 +7,19 @@
 #include "ProcessManager.h"
 #include "string.h"
 
+#include "error.h"
+
 bool PE_checkImport(PeDataDirectory* begin);
 PE_EXPORT_LIST* PE_loadDLL(char* filename, int base);
 static PE_EXPORT_LIST pel[256];
 
-bool PE_mapApp(char* filename, int base)
+char PE_mapApp(char* filename, int base)
 {
-	if(getFileSize(filename) == 0) return false;
+	if(getFileSize(filename) == 0) return ERR_FILE_NOT_FOUND;
 	// first step, load the application to the specified address
 	base = base + 4*1024*1024 - getFileSize(filename) - 0x1000;
-	if(!loadFileToLoc(filename, (void*)base)) {return false;}
+	char err = loadFileToLoc(filename, (void*)base);
+	if(err == ERR_FILE_NOT_FOUND) {return ERR_FILE_NOT_FOUND;}
 	// second step, extract PE headers from it.
 	int PE_HEADER_LOCATION = *(int*)(base + 0x3C);
 	PE_HEADER_LOCATION += base;
@@ -24,17 +27,17 @@ bool PE_mapApp(char* filename, int base)
 	PeOptionalHeader* optionalheader = (PeOptionalHeader*)(PE_HEADER_LOCATION+24);
 	if(!PE_verify(base)) 
 	{
-		DebugPrintf("\nERROR: Not a valid PE file!");
-		return false;
+		//DebugPrintf("\nERROR: Not a valid PE file!");
+		return ERR_PE_NOT_VALID;
 	}
 	if(optionalheader->mAddressOfEntryPoint == 0) {
-		DebugPrintf("\nERROR: File is not for starting!");
-		return false;
+		//DebugPrintf("\nERROR: File is not for starting!");
+		return ERR_PE_NOT_EXEC;
 	}
 	if(optionalheader->mMajorSubsystemVersion != 0x1337)
 	{
-		DebugPrintf("\nERROR: Not a valid LevOS executable!");
-		return false;
+		//DebugPrintf("\nERROR: Not a valid LevOS executable!");
+		return ERR_PE_NOT_LEVOS;
 	}
 	// third step, map the sections
 	int loadBase = base+0x1000+getFileSize(filename) - 4*1024*1024;
@@ -76,6 +79,7 @@ bool PE_mapApp(char* filename, int base)
 		PeImportDirectory* pid = (PeImportDirectory*)(optionalheader->mImageBase + pdd->dVirtualAddress);
 		char* filename = (char*)(optionalheader->mImageBase + pid->iName);
 		//DebugPrintf("\nLoading %s to 0x800000", filename);
+		//if(!PE_loadDLL(filename, 0x800000)) { return ERR_UNKNOWN; }
 		PE_loadDLL(filename, 0x800000);
 		int numberOfExports = pel->numberOfExports;
 		//DebugPrintf("\nDLL num = 0x%x", numberOfExports);
@@ -140,7 +144,7 @@ bool PE_mapApp(char* filename, int base)
 	_asm push loadBase;
 	_asm call entry;
 	//restoreKernelStack();
-	return true;
+	return ERR_SUCCESS;
 }
 PE_EXPORT_LIST* PE_loadDLL(char* filename, int base)
 {

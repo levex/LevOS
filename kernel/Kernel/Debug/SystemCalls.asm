@@ -21,6 +21,7 @@ PUBLIC	?_ebx@@3HA					; _ebx
 PUBLIC	?vgacol@@3DA					; vgacol
 PUBLIC	?f@@3DA						; f
 PUBLIC	?_b@@3_NA					; _b
+PUBLIC	?err@@3DA					; err
 PUBLIC	?data@@3PAU___RTC__STRUCT@@A			; data
 _BSS	SEGMENT
 ?regs@@3Uregs_t@@A DW 01H DUP (?)			; regs
@@ -43,6 +44,9 @@ _BSS	SEGMENT
 	ALIGN	4
 
 ?_b@@3_NA DB	01H DUP (?)				; _b
+	ALIGN	4
+
+?err@@3DA DB	01H DUP (?)				; err
 	ALIGN	4
 
 ?data@@3PAU___RTC__STRUCT@@A DD 01H DUP (?)		; data
@@ -70,11 +74,11 @@ EXTRN	?rtc_getMonth@@YAHXZ:PROC			; rtc_getMonth
 EXTRN	?rtc_getMinute@@YAHXZ:PROC			; rtc_getMinute
 EXTRN	?rtc_getHour@@YAHXZ:PROC			; rtc_getHour
 EXTRN	?rtc_getDayOfMonth@@YAHXZ:PROC			; rtc_getDayOfMonth
-EXTRN	?PE_mapApp@@YA_NPADH@Z:PROC			; PE_mapApp
+EXTRN	?PE_mapApp@@YADPADH@Z:PROC			; PE_mapApp
 EXTRN	?PE_dumpApp@@YA_NPADH@Z:PROC			; PE_dumpApp
 EXTRN	?DebugGotoRXY@@YAXII@Z:PROC			; DebugGotoRXY
 EXTRN	?DebugClrScr@@YAXG@Z:PROC			; DebugClrScr
-EXTRN	?loadFileToLoc@@YA_NPADPAX@Z:PROC		; loadFileToLoc
+EXTRN	?loadFileToLoc@@YADPADPAX@Z:PROC		; loadFileToLoc
 EXTRN	?kkybrd_key_to_ascii@@YADW4KEYCODE@@@Z:PROC	; kkybrd_key_to_ascii
 EXTRN	?kkybrd_discard_last_key@@YAXXZ:PROC		; kkybrd_discard_last_key
 EXTRN	?kkybrd_get_last_key@@YA?AW4KEYCODE@@XZ:PROC	; kkybrd_get_last_key
@@ -99,66 +103,66 @@ CONST	SEGMENT
 CONST	ENDS
 ;	COMDAT ?handleSysCall@@YAXXZ
 _TEXT	SEGMENT
-_dey$3367 = -18						; size = 1
-_dex$3366 = -17						; size = 1
-_filename$3357 = -16					; size = 4
-_i$3379 = -12						; size = 4
-__i$3382 = -8						; size = 4
-_address$3358 = -4					; size = 4
+_dey$3369 = -18						; size = 1
+_dex$3368 = -17						; size = 1
+_filename$3359 = -16					; size = 4
+_i$3380 = -12						; size = 4
+__i$3383 = -8						; size = 4
+_address$3360 = -4					; size = 4
 ?handleSysCall@@YAXXZ PROC				; handleSysCall, COMDAT
 
-; 26   : {
+; 29   : {
 
 	sub	esp, 20					; 00000014H
 
-; 27   : 	_asm sti
+; 30   : 	_asm sti
 
 	sti
 
-; 28   : 	_asm {
-; 29   : 		mov id, eax
+; 31   : 	_asm {
+; 32   : 		mov id, eax
 
 	mov	DWORD PTR ?id@@3HA, eax			; id
 
-; 30   : 	}
-; 31   : 	KEYCODE key = KEY_UNKNOWN;
-; 32   : 	switch(id)
+; 33   : 	}
+; 34   : 	KEYCODE key = KEY_UNKNOWN;
+; 35   : 	switch(id)
 
 	mov	eax, DWORD PTR ?id@@3HA			; id
 	dec	eax
 	cmp	eax, 12					; 0000000cH
-	ja	$LN51@handleSysC
+	ja	$LN50@handleSysC
 	push	esi
-	jmp	DWORD PTR $LN62@handleSysC[eax*4]
-$LN50@handleSysC:
+	jmp	DWORD PTR $LN61@handleSysC[eax*4]
+$LN49@handleSysC:
 
-; 33   : 	{
-; 34   : 		case 0x01: // test
-; 35   : 			_asm mov _ebx, ebx
+; 36   : 	{
+; 37   : 		case 0x01: // test
+; 38   : 			_asm mov _ebx, ebx
 
 	mov	DWORD PTR ?_ebx@@3HA, ebx		; _ebx
 
-; 36   : 			switch(_ebx)
+; 39   : 			switch(_ebx)
 
 	mov	eax, DWORD PTR ?_ebx@@3HA		; _ebx
 	cmp	eax, 3
-	ja	$LN58@handleSysC
-	jmp	DWORD PTR $LN63@handleSysC[eax*4]
+	ja	$LN57@handleSysC
+	jmp	DWORD PTR $LN62@handleSysC[eax*4]
 	npad	5
-$LL46@handleSysC:
+$LL45@handleSysC:
 
-; 37   : 			{
-; 38   : 				case 0:
-; 39   : 					for(;;);
+; 40   : 			{
+; 41   : 				case 0:
+; 42   : 					for(;;);
 
-	jmp	SHORT $LL46@handleSysC
-$LN44@handleSysC:
+	jmp	SHORT $LL45@handleSysC
+$LN43@handleSysC:
 
-; 40   : 					break;
-; 41   : 				case 1:
-; 42   : 					regs.ah = 0x00;
-; 43   : 					regs.al = 0x00;
-; 44   : 					doRealModeInterrupt(0x16, 0,0);
+; 43   : 					break;
+; 44   : 				case 1:
+; 45   : 					regs.ah = 0x00;
+; 46   : 					regs.al = 0x00;
+; 47   : 					doRealModeInterrupt(0x16, 0,0);
 
 	push	0
 	push	0
@@ -168,58 +172,58 @@ $LN44@handleSysC:
 	add	esp, 12					; 0000000cH
 	pop	esi
 
-; 366  : 			break;
-; 367  : 	}
-; 368  : }
+; 365  : 			break;
+; 366  : 	}
+; 367  : }
 
 	add	esp, 20					; 00000014H
 	ret	0
-$LN43@handleSysC:
-	pop	esi
-	add	esp, 20					; 00000014H
-
-; 45   : 					break;
-; 46   : 				case 2:
-; 47   : 					PCI_test();
-
-	jmp	?PCI_test@@YAXXZ			; PCI_test
 $LN42@handleSysC:
 	pop	esi
-
-; 366  : 			break;
-; 367  : 	}
-; 368  : }
-
 	add	esp, 20					; 00000014H
 
 ; 48   : 					break;
-; 49   : 				case 3:
-; 50   : 					//outportW( 0xB004, 0x0 | 0x2000 );
-; 51   : 					ACPI_test();
+; 49   : 				case 2:
+; 50   : 					PCI_test();
+
+	jmp	?PCI_test@@YAXXZ			; PCI_test
+$LN41@handleSysC:
+	pop	esi
+
+; 365  : 			break;
+; 366  : 	}
+; 367  : }
+
+	add	esp, 20					; 00000014H
+
+; 51   : 					break;
+; 52   : 				case 3:
+; 53   : 					//outportW( 0xB004, 0x0 | 0x2000 );
+; 54   : 					ACPI_test();
 
 	jmp	?ACPI_test@@YAXXZ			; ACPI_test
-$LN41@handleSysC:
+$LN40@handleSysC:
 
-; 52   : 					break;
-; 53   : 			}
-; 54   : 			break;
-; 55   : 		case 0x02: // PrintString
-; 56   : 			/*
-; 57   : 				Prints a string
-; 58   : 				EDX = address of string (char*)
-; 59   : 			*/
-; 60   : 			string = (char*)0;
+; 55   : 					break;
+; 56   : 			}
+; 57   : 			break;
+; 58   : 		case 0x02: // PrintString
+; 59   : 			/*
+; 60   : 				Prints a string
+; 61   : 				EDX = address of string (char*)
+; 62   : 			*/
+; 63   : 			string = (char*)0;
 
 	mov	DWORD PTR ?string@@3PADA, 0		; string
 
-; 61   : 			_asm
-; 62   : 			{
-; 63   : 				mov string, edx;
+; 64   : 			_asm
+; 65   : 			{
+; 66   : 				mov string, edx;
 
 	mov	DWORD PTR ?string@@3PADA, edx		; string
 
-; 64   : 			}
-; 65   : 			DebugPrintf("%s", string, string);
+; 67   : 			}
+; 68   : 			DebugPrintf("%s", string, string);
 
 	mov	eax, DWORD PTR ?string@@3PADA		; string
 	push	eax
@@ -229,251 +233,249 @@ $LN41@handleSysC:
 	add	esp, 12					; 0000000cH
 	pop	esi
 
-; 366  : 			break;
-; 367  : 	}
-; 368  : }
-
-	add	esp, 20					; 00000014H
-	ret	0
-$LN40@handleSysC:
-
-; 66   : 			break;
-; 67   : 		case 0x03: // PrintChar
-; 68   : 			/*
-; 69   : 				Prints a character
-; 70   : 				BL = character to print
-; 71   : 			*/
-; 72   : 			_asm
-; 73   : 			{
-; 74   : 				mov c, bl
-
-	mov	BYTE PTR ?c@@3DA, bl			; c
-
-; 75   : 			}
-; 76   : 			DebugPutc(c);
-
-	movzx	eax, BYTE PTR ?c@@3DA			; c
-	push	eax
-	call	?DebugPutc@@YAXE@Z			; DebugPutc
-
-; 364  : 			//MOUSE_STATE* m = (MOUSE_STATE*)a;
-; 365  : 			fillMouseState((MOUSE_STATE*)a);
-
-	add	esp, 4
-	pop	esi
-
-; 366  : 			break;
-; 367  : 	}
-; 368  : }
+; 365  : 			break;
+; 366  : 	}
+; 367  : }
 
 	add	esp, 20					; 00000014H
 	ret	0
 $LN39@handleSysC:
 
-; 77   : 			break;
-; 78   : 		case 0x04: // Wait for keypress
-; 79   : 			/*
-; 80   : 				Waits for a keypress and returns it in DH
-; 81   : 				RET -> DH (character retrieved)
-; 82   : 			*/
-; 83   : 			_asm xor dh, dh
+; 69   : 			break;
+; 70   : 		case 0x03: // PrintChar
+; 71   : 			/*
+; 72   : 				Prints a character
+; 73   : 				BL = character to print
+; 74   : 			*/
+; 75   : 			_asm
+; 76   : 			{
+; 77   : 				mov c, bl
+
+	mov	BYTE PTR ?c@@3DA, bl			; c
+
+; 78   : 			}
+; 79   : 			DebugPutc(c);
+
+	movzx	eax, BYTE PTR ?c@@3DA			; c
+	push	eax
+	call	?DebugPutc@@YAXE@Z			; DebugPutc
+
+; 363  : 			//MOUSE_STATE* m = (MOUSE_STATE*)a;
+; 364  : 			fillMouseState((MOUSE_STATE*)a);
+
+	add	esp, 4
+	pop	esi
+
+; 365  : 			break;
+; 366  : 	}
+; 367  : }
+
+	add	esp, 20					; 00000014H
+	ret	0
+$LN38@handleSysC:
+
+; 80   : 			break;
+; 81   : 		case 0x04: // Wait for keypress
+; 82   : 			/*
+; 83   : 				Waits for a keypress and returns it in DH
+; 84   : 				RET -> DH (character retrieved)
+; 85   : 			*/
+; 86   : 			_asm xor dh, dh
 
 	xor	dh, dh
 
-; 84   : 			c = 0;
+; 87   : 			c = 0;
 
 	mov	BYTE PTR ?c@@3DA, 0			; c
 
-; 85   : 			key = KEY_UNKNOWN;
-; 86   : 			/*while(key == KEY_UNKNOWN)*/ key = kkybrd_get_last_key();
+; 88   : 			key = KEY_UNKNOWN;
+; 89   : 			/*while(key == KEY_UNKNOWN)*/ key = kkybrd_get_last_key();
 
 	call	?kkybrd_get_last_key@@YA?AW4KEYCODE@@XZ	; kkybrd_get_last_key
 	mov	esi, eax
 
-; 87   : 			kkybrd_discard_last_key();
+; 90   : 			kkybrd_discard_last_key();
 
 	call	?kkybrd_discard_last_key@@YAXXZ		; kkybrd_discard_last_key
 
-; 88   : 			c = kkybrd_key_to_ascii(key);
+; 91   : 			c = kkybrd_key_to_ascii(key);
 
 	push	esi
 	call	?kkybrd_key_to_ascii@@YADW4KEYCODE@@@Z	; kkybrd_key_to_ascii
 	add	esp, 4
 	mov	BYTE PTR ?c@@3DA, al			; c
 
-; 89   : 			//if(key == KEY_UNKNOWN) c=0;
-; 90   : 			if(c==0x2) c = 0;
+; 92   : 			//if(key == KEY_UNKNOWN) c=0;
+; 93   : 			if(c==0x2) c = 0;
 
 	cmp	al, 2
-	jne	SHORT $LN38@handleSysC
+	jne	SHORT $LN37@handleSysC
 	mov	BYTE PTR ?c@@3DA, 0			; c
-$LN38@handleSysC:
+$LN37@handleSysC:
 
-; 91   : 			_asm mov dh, c
+; 94   : 			_asm mov dh, c
 
 	mov	dh, BYTE PTR ?c@@3DA			; c
 	pop	esi
 
-; 366  : 			break;
-; 367  : 	}
-; 368  : }
-
-	add	esp, 20					; 00000014H
-	ret	0
-$LN37@handleSysC:
-
-; 92   : 			break;
-; 93   : 		case 0x05: // load file to specified address
-; 94   : 			/*
-; 95   : 				Load file to specified address
-; 96   : 				EBX = address
-; 97   : 				EDX = filename (char*)
-; 98   : 
-; 99   : 				RET -> EDX (1=success,0=failure)
-; 100  : 			*/
-; 101  : 			char* filename;
-; 102  : 			char* address;
-; 103  : 			_asm {
-; 104  : 				mov filename, edx
-
-	mov	DWORD PTR _filename$3357[esp+24], edx
-
-; 105  : 				mov address, ebx
-
-	mov	DWORD PTR _address$3358[esp+24], ebx
-
-; 106  : 			}
-; 107  : 			if(!loadFileToLoc(filename, address)) {_asm {xor edx, edx}break;}
-
-	mov	ecx, DWORD PTR _address$3358[esp+24]
-	mov	edx, DWORD PTR _filename$3357[esp+24]
-	push	ecx
-	push	edx
-	call	?loadFileToLoc@@YA_NPADPAX@Z		; loadFileToLoc
-	add	esp, 8
-	test	al, al
-	jne	SHORT $LN36@handleSysC
-	xor	edx, edx
-	pop	esi
-
-; 366  : 			break;
-; 367  : 	}
-; 368  : }
+; 365  : 			break;
+; 366  : 	}
+; 367  : }
 
 	add	esp, 20					; 00000014H
 	ret	0
 $LN36@handleSysC:
 
-; 108  : 			_asm {
-; 109  : 				mov edx, 0x01
+; 95   : 			break;
+; 96   : 		case 0x05: // load file to specified address
+; 97   : 			/*
+; 98   : 				Load file to specified address
+; 99   : 				EBX = address
+; 100  : 				EDX = filename (char*)
+; 101  : 
+; 102  : 				RET -> DL (error code or 0 if success)
+; 103  : 			*/
+; 104  : 			char* filename;
+; 105  : 			char* address;
+; 106  : 			_asm {
+; 107  : 				mov filename, edx
 
-	mov	edx, 1
+	mov	DWORD PTR _filename$3359[esp+24], edx
+
+; 108  : 				mov address, ebx
+
+	mov	DWORD PTR _address$3360[esp+24], ebx
+
+; 109  : 			}
+; 110  : 			if((err = loadFileToLoc(filename, address)) != ERR_SUCCESS) {_asm {mov dl, err}break;}
+
+	mov	ecx, DWORD PTR _address$3360[esp+24]
+	mov	edx, DWORD PTR _filename$3359[esp+24]
+	push	ecx
+	push	edx
+	call	?loadFileToLoc@@YADPADPAX@Z		; loadFileToLoc
+	add	esp, 8
+	mov	BYTE PTR ?err@@3DA, al			; err
+	cmp	al, 1
+	je	SHORT $LN35@handleSysC
+	mov	dl, BYTE PTR ?err@@3DA			; err
 	pop	esi
 
-; 366  : 			break;
-; 367  : 	}
-; 368  : }
+; 365  : 			break;
+; 366  : 	}
+; 367  : }
 
 	add	esp, 20					; 00000014H
 	ret	0
 $LN35@handleSysC:
 
-; 110  : 			}
-; 111  : 			break;
-; 112  : 		case 0x06: // display utilites
-; 113  : 			/*
-; 114  : 				Display utilities
-; 115  : 				EBX = Function
-; 116  : 					EBX == 0x01
-; 117  : 						Move cursor
-; 118  : 						DL = Y coordinate change
-; 119  : 						DH = X coordinate change
-; 120  : 					EBX == 0x02
-; 121  : 						Clear screen
-; 122  : 			*/
-; 123  : 			_ebx = 0;
+; 111  : 			_asm {
+; 112  : 				mov dl, ERR_SUCCESS
+
+	mov	dl, 1
+	pop	esi
+
+; 365  : 			break;
+; 366  : 	}
+; 367  : }
+
+	add	esp, 20					; 00000014H
+	ret	0
+$LN34@handleSysC:
+
+; 113  : 			}
+; 114  : 			break;
+; 115  : 		case 0x06: // display utilites
+; 116  : 			/*
+; 117  : 				Display utilities
+; 118  : 				EBX = Function
+; 119  : 					EBX == 0x01
+; 120  : 						Move cursor
+; 121  : 						DL = Y coordinate change
+; 122  : 						DH = X coordinate change
+; 123  : 					EBX == 0x02
+; 124  : 						Clear screen
+; 125  : 			*/
+; 126  : 			_ebx = 0;
 
 	mov	DWORD PTR ?_ebx@@3HA, 0			; _ebx
 
-; 124  : 			_asm mov _ebx, ebx
+; 127  : 			_asm mov _ebx, ebx
 
 	mov	DWORD PTR ?_ebx@@3HA, ebx		; _ebx
 
-; 125  : 			switch(_ebx)
+; 128  : 			switch(_ebx)
 
 	mov	eax, DWORD PTR ?_ebx@@3HA		; _ebx
 	dec	eax
-	je	SHORT $LN32@handleSysC
+	je	SHORT $LN31@handleSysC
 	dec	eax
-	jne	$LN58@handleSysC
+	jne	$LN57@handleSysC
 
-; 136  : 					break;
-; 137  : 				case 0x02:
-; 138  : 					DebugClrScr(0x17);
+; 139  : 					break;
+; 140  : 				case 0x02:
+; 141  : 					DebugClrScr(0x17);
 
 	push	23					; 00000017H
 	call	?DebugClrScr@@YAXG@Z			; DebugClrScr
 
-; 364  : 			//MOUSE_STATE* m = (MOUSE_STATE*)a;
-; 365  : 			fillMouseState((MOUSE_STATE*)a);
+; 363  : 			//MOUSE_STATE* m = (MOUSE_STATE*)a;
+; 364  : 			fillMouseState((MOUSE_STATE*)a);
 
 	add	esp, 4
 	pop	esi
 
-; 366  : 			break;
-; 367  : 	}
-; 368  : }
+; 365  : 			break;
+; 366  : 	}
+; 367  : }
 
 	add	esp, 20					; 00000014H
 	ret	0
-$LN32@handleSysC:
+$LN31@handleSysC:
 
-; 126  : 			{
-; 127  : 				case 0x01:
-; 128  : 					signed char dex;
-; 129  : 					signed char dey;
-; 130  : 					_asm
-; 131  : 					{
-; 132  : 						mov dex, dh
+; 129  : 			{
+; 130  : 				case 0x01:
+; 131  : 					signed char dex;
+; 132  : 					signed char dey;
+; 133  : 					_asm
+; 134  : 					{
+; 135  : 						mov dex, dh
 
-	mov	BYTE PTR _dex$3366[esp+24], dh
+	mov	BYTE PTR _dex$3368[esp+24], dh
 
-; 133  : 						mov dey, dl
+; 136  : 						mov dey, dl
 
-	mov	BYTE PTR _dey$3367[esp+24], dl
+	mov	BYTE PTR _dey$3369[esp+24], dl
 
-; 134  : 					}
-; 135  : 					DebugGotoRXY(dex, dey);
+; 137  : 					}
+; 138  : 					DebugGotoRXY(dex, dey);
 
-	movsx	eax, BYTE PTR _dey$3367[esp+24]
-	movsx	ecx, BYTE PTR _dex$3366[esp+24]
+	movsx	eax, BYTE PTR _dey$3369[esp+24]
+	movsx	ecx, BYTE PTR _dex$3368[esp+24]
 	push	eax
 	push	ecx
 	call	?DebugGotoRXY@@YAXII@Z			; DebugGotoRXY
 	add	esp, 8
 	pop	esi
 
-; 366  : 			break;
-; 367  : 	}
-; 368  : }
+; 365  : 			break;
+; 366  : 	}
+; 367  : }
 
 	add	esp, 20					; 00000014H
 	ret	0
-$LN30@handleSysC:
+$LN29@handleSysC:
 
-; 139  : 					break;
-; 140  : 			}
-; 141  : 			break;
-; 142  : 		case 0x07: //execute application
-; 143  : 			/*
-; 144  : 				EBX == 0x01
-; 145  : 					Executes the PE executable at the given address
-; 146  : 					EDX = address of filename
-; 147  : 						Returns:
-; 148  : 							EDX
-; 149  : 								1 = SUCCESS
-; 150  : 								0 = FILE NOT FOUND
-; 151  : 								2 = OTHER FAILURE
+; 142  : 					break;
+; 143  : 			}
+; 144  : 			break;
+; 145  : 		case 0x07: //execute application
+; 146  : 			/*
+; 147  : 				EBX == 0x01
+; 148  : 					Executes the PE executable at the given address
+; 149  : 					EDX = address of filename
+; 150  : 						Returns:
+; 151  : 							DL (error code)
 ; 152  : 				EBX == 0x02
 ; 153  : 					Dumps the PE executable at the given address
 ; 154  : 					EDX = adress of filename
@@ -491,205 +493,190 @@ $LN30@handleSysC:
 
 	mov	eax, DWORD PTR ?_ebx@@3HA		; _ebx
 	dec	eax
-	je	SHORT $LN27@handleSysC
+	je	SHORT $LN26@handleSysC
 	dec	eax
-	jne	$LN58@handleSysC
+	jne	$LN57@handleSysC
 
-; 169  : 					break;
-; 170  : 				case 0x02:
-; 171  : 					_asm mov filename, edx
+; 168  : 					break;
+; 169  : 				case 0x02:
+; 170  : 					_asm mov filename, edx
 
-	mov	DWORD PTR _filename$3357[esp+24], edx
+	mov	DWORD PTR _filename$3359[esp+24], edx
 
-; 172  : 					_b = PE_dumpApp(filename,0x1000000);
+; 171  : 					_b = PE_dumpApp(filename,0x1000000);
 
-	mov	edx, DWORD PTR _filename$3357[esp+24]
+	mov	edx, DWORD PTR _filename$3359[esp+24]
 	push	16777216				; 01000000H
 	push	edx
 	call	?PE_dumpApp@@YA_NPADH@Z			; PE_dumpApp
 	add	esp, 8
 	mov	BYTE PTR ?_b@@3_NA, al			; _b
 
-; 173  : 					if(_b){ _asm { mov edx, 1} break;}
+; 172  : 					if(_b){ _asm { mov edx, 1} break;}
 
 	test	al, al
 	je	SHORT $LN24@handleSysC
 	mov	edx, 1
 	pop	esi
 
-; 366  : 			break;
-; 367  : 	}
-; 368  : }
+; 365  : 			break;
+; 366  : 	}
+; 367  : }
 
 	add	esp, 20					; 00000014H
 	ret	0
 $LN24@handleSysC:
 
-; 174  : 					_asm xor edx, edx
+; 173  : 					_asm xor edx, edx
 
 	xor	edx, edx
 	pop	esi
 
-; 366  : 			break;
-; 367  : 	}
-; 368  : }
-
-	add	esp, 20					; 00000014H
-	ret	0
-$LN27@handleSysC:
-
-; 163  : 			{
-; 164  : 				case 0x01:
-; 165  : 					_asm mov filename, edx
-
-	mov	DWORD PTR _filename$3357[esp+24], edx
-
-; 166  : 					_b = PE_mapApp(filename, 0x1000000);
-
-	mov	eax, DWORD PTR _filename$3357[esp+24]
-	push	16777216				; 01000000H
-	push	eax
-	call	?PE_mapApp@@YA_NPADH@Z			; PE_mapApp
-	add	esp, 8
-	mov	BYTE PTR ?_b@@3_NA, al			; _b
-
-; 167  : 					if(_b){ _asm { mov edx, 1} break;}
-
-	test	al, al
-	je	SHORT $LN26@handleSysC
-	mov	edx, 1
-	pop	esi
-
-; 366  : 			break;
-; 367  : 	}
-; 368  : }
+; 365  : 			break;
+; 366  : 	}
+; 367  : }
 
 	add	esp, 20					; 00000014H
 	ret	0
 $LN26@handleSysC:
 
-; 168  : 					_asm xor edx, edx
+; 163  : 			{
+; 164  : 				case 0x01:
+; 165  : 					_asm mov filename, edx
 
-	xor	edx, edx
+	mov	DWORD PTR _filename$3359[esp+24], edx
+
+; 166  : 					err = PE_mapApp(filename, 0x1000000);
+
+	mov	eax, DWORD PTR _filename$3359[esp+24]
+	push	16777216				; 01000000H
+	push	eax
+	call	?PE_mapApp@@YADPADH@Z			; PE_mapApp
+	add	esp, 8
+	mov	BYTE PTR ?err@@3DA, al			; err
+
+; 167  : 					_asm mov dl, err
+
+	mov	dl, BYTE PTR ?err@@3DA			; err
 	pop	esi
 
-; 366  : 			break;
-; 367  : 	}
-; 368  : }
+; 365  : 			break;
+; 366  : 	}
+; 367  : }
 
 	add	esp, 20					; 00000014H
 	ret	0
 $LN23@handleSysC:
 
-; 175  : 					break;
-; 176  : 			}
-; 177  : 			break;
-; 178  : 		case 0x08: // printNumber
-; 179  : 			/*
-; 180  : 				Prints a number
-; 181  : 				EDX = number to print
-; 182  : 			*/
-; 183  : 			int i;
-; 184  : 			_asm mov i, edx
+; 174  : 					break;
+; 175  : 			}
+; 176  : 			break;
+; 177  : 		case 0x08: // printNumber
+; 178  : 			/*
+; 179  : 				Prints a number
+; 180  : 				EDX = number to print
+; 181  : 			*/
+; 182  : 			int i;
+; 183  : 			_asm mov i, edx
 
-	mov	DWORD PTR _i$3379[esp+24], edx
+	mov	DWORD PTR _i$3380[esp+24], edx
 
-; 185  : 			DebugPrintf("%i", i);
+; 184  : 			DebugPrintf("%i", i);
 
-	mov	ecx, DWORD PTR _i$3379[esp+24]
+	mov	ecx, DWORD PTR _i$3380[esp+24]
 	push	ecx
 	push	OFFSET ??_C@_02IKAHHCAI@?$CFi?$AA@
 	call	?DebugPrintf@@YAHPBDZZ			; DebugPrintf
 	add	esp, 8
 	pop	esi
 
-; 366  : 			break;
-; 367  : 	}
-; 368  : }
+; 365  : 			break;
+; 366  : 	}
+; 367  : }
 
 	add	esp, 20					; 00000014H
 	ret	0
 $LN22@handleSysC:
 
-; 186  : 			break;
-; 187  : 		case 0x09: // get RTC struct
-; 188  : 			/*
-; 189  : 				Queries an RTC struct at a give address
-; 190  : 				EDX = address to write RTC_STRUCT to. (Refer to RTC.h)
-; 191  : 			*/
-; 192  : 			int _i;
-; 193  : 			_asm mov _i, edx
+; 185  : 			break;
+; 186  : 		case 0x09: // get RTC struct
+; 187  : 			/*
+; 188  : 				Queries an RTC struct at a give address
+; 189  : 				EDX = address to write RTC_STRUCT to. (Refer to RTC.h)
+; 190  : 			*/
+; 191  : 			int _i;
+; 192  : 			_asm mov _i, edx
 
-	mov	DWORD PTR __i$3382[esp+24], edx
+	mov	DWORD PTR __i$3383[esp+24], edx
 
-; 194  : 			data = (RTC_DATA*) _i;
+; 193  : 			data = (RTC_DATA*) _i;
 
-	mov	edx, DWORD PTR __i$3382[esp+24]
+	mov	edx, DWORD PTR __i$3383[esp+24]
 	mov	DWORD PTR ?data@@3PAU___RTC__STRUCT@@A, edx ; data
 
-; 195  : 			//DebugPrintf("---->0x%X<----", data);
-; 196  : 			data->DayOfMonth = rtc_getDayOfMonth();
+; 194  : 			//DebugPrintf("---->0x%X<----", data);
+; 195  : 			data->DayOfMonth = rtc_getDayOfMonth();
 
 	call	?rtc_getDayOfMonth@@YAHXZ		; rtc_getDayOfMonth
 	mov	ecx, DWORD PTR ?data@@3PAU___RTC__STRUCT@@A ; data
 	mov	DWORD PTR [ecx+8], eax
 
-; 197  : 			data->Hour = rtc_getHour();
+; 196  : 			data->Hour = rtc_getHour();
 
 	call	?rtc_getHour@@YAHXZ			; rtc_getHour
 	mov	edx, DWORD PTR ?data@@3PAU___RTC__STRUCT@@A ; data
 	mov	DWORD PTR [edx+16], eax
 
-; 198  : 			data->Minute = rtc_getMinute();
+; 197  : 			data->Minute = rtc_getMinute();
 
 	call	?rtc_getMinute@@YAHXZ			; rtc_getMinute
 	mov	ecx, DWORD PTR ?data@@3PAU___RTC__STRUCT@@A ; data
 	mov	DWORD PTR [ecx+20], eax
 
-; 199  : 			data->Month = rtc_getMonth();
+; 198  : 			data->Month = rtc_getMonth();
 
 	call	?rtc_getMonth@@YAHXZ			; rtc_getMonth
 	mov	edx, DWORD PTR ?data@@3PAU___RTC__STRUCT@@A ; data
 	mov	DWORD PTR [edx+4], eax
 
-; 200  : 			data->Second = rtc_getSecond();
+; 199  : 			data->Second = rtc_getSecond();
 
 	call	?rtc_getSecond@@YAHXZ			; rtc_getSecond
 	mov	ecx, DWORD PTR ?data@@3PAU___RTC__STRUCT@@A ; data
 	mov	DWORD PTR [ecx+24], eax
 
-; 201  : 			data->WeekDay = rtc_getWeekday();
+; 200  : 			data->WeekDay = rtc_getWeekday();
 
 	call	?rtc_getWeekday@@YAHXZ			; rtc_getWeekday
 	mov	edx, DWORD PTR ?data@@3PAU___RTC__STRUCT@@A ; data
 	mov	DWORD PTR [edx+12], eax
 
-; 202  : 			data->Year = rtc_getYear();
+; 201  : 			data->Year = rtc_getYear();
 
 	call	?rtc_getYear@@YAHXZ			; rtc_getYear
 	mov	ecx, DWORD PTR ?data@@3PAU___RTC__STRUCT@@A ; data
 	mov	DWORD PTR [ecx], eax
 	pop	esi
 
-; 366  : 			break;
-; 367  : 	}
-; 368  : }
+; 365  : 			break;
+; 366  : 	}
+; 367  : }
 
 	add	esp, 20					; 00000014H
 	ret	0
 $LN21@handleSysC:
 
-; 203  : 			break;
-; 204  : 		case 0x0A: // print hexadecimal
-; 205  : 			/*
-; 206  : 				Prints a number in base 16
-; 207  : 				EDX = number to print
-; 208  : 			*/
-; 209  : 			_asm mov _ebx, edx
+; 202  : 			break;
+; 203  : 		case 0x0A: // print hexadecimal
+; 204  : 			/*
+; 205  : 				Prints a number in base 16
+; 206  : 				EDX = number to print
+; 207  : 			*/
+; 208  : 			_asm mov _ebx, edx
 
 	mov	DWORD PTR ?_ebx@@3HA, edx		; _ebx
 
-; 210  : 			DebugPrintf("%x", _ebx);
+; 209  : 			DebugPrintf("%x", _ebx);
 
 	mov	edx, DWORD PTR ?_ebx@@3HA		; _ebx
 	push	edx
@@ -698,31 +685,31 @@ $LN21@handleSysC:
 	add	esp, 8
 	pop	esi
 
-; 366  : 			break;
-; 367  : 	}
-; 368  : }
+; 365  : 			break;
+; 366  : 	}
+; 367  : }
 
 	add	esp, 20					; 00000014H
 	ret	0
 $LN20@handleSysC:
 
-; 211  : 			break;
-; 212  : 		case 0x0B: // fsys utils
-; 213  : 			/*
-; 214  : 				Provides an interface to the FAT12 filesystem!
-; 215  : 				EBX = function
-; 216  : 					EBX = 0x01
-; 217  : 						Returns filenames in ROOT directory
-; 218  : 						EDX = pointer to filenames (terminates with \0)
-; 219  : 					EBX = 0x02
-; 220  : 						Returns the number of files in ROOT directory
-; 221  : 						EDX = number of files
-; 222  : 			*/
-; 223  : 			_asm mov _ebx, ebx
+; 210  : 			break;
+; 211  : 		case 0x0B: // fsys utils
+; 212  : 			/*
+; 213  : 				Provides an interface to the FAT12 filesystem!
+; 214  : 				EBX = function
+; 215  : 					EBX = 0x01
+; 216  : 						Returns filenames in ROOT directory
+; 217  : 						EDX = pointer to filenames (terminates with \0)
+; 218  : 					EBX = 0x02
+; 219  : 						Returns the number of files in ROOT directory
+; 220  : 						EDX = number of files
+; 221  : 			*/
+; 222  : 			_asm mov _ebx, ebx
 
 	mov	DWORD PTR ?_ebx@@3HA, ebx		; _ebx
 
-; 224  : 			switch(_ebx)
+; 223  : 			switch(_ebx)
 
 	mov	eax, DWORD PTR ?_ebx@@3HA		; _ebx
 	dec	eax
@@ -730,108 +717,108 @@ $LN20@handleSysC:
 	dec	eax
 	jne	SHORT $LN18@handleSysC
 
-; 229  : 					return;
-; 230  : 				case 0x02: // get # of files
-; 231  : 					id = fsysFatGetNumberOfFilesInRoot();
+; 228  : 					return;
+; 229  : 				case 0x02: // get # of files
+; 230  : 					id = fsysFatGetNumberOfFilesInRoot();
 
 	call	?fsysFatGetNumberOfFilesInRoot@@YADXZ	; fsysFatGetNumberOfFilesInRoot
 	movsx	eax, al
 	mov	DWORD PTR ?id@@3HA, eax			; id
 
-; 232  : 					_asm mov edx, id
+; 231  : 					_asm mov edx, id
 
 	mov	edx, DWORD PTR ?id@@3HA			; id
 $LN18@handleSysC:
 
-; 233  : 			}
-; 234  : 		case 0x0C: //vga utils
-; 235  : 			/*
-; 236  : 				VGA utilities
-; 237  : 				EBX = function
-; 238  : 					EBX = 0x01
-; 239  : 						Switches on VGA(320x200x1Byte)
-; 240  : 					EBX = 0x02
-; 241  : 						ECX = X coordinate
-; 242  : 						ESI = Y coordinate
-; 243  : 						DL = color
-; 244  : 							Puts a pixel at (ECX, ESI) = DL
-; 245  : 					EBX = 0x03
-; 246  : 						Clears the screen
-; 247  : 					EBX = 0x04
-; 248  : 						EDX = pointer to filename
-; 249  : 						ESI = X coordinate
-; 250  : 						EDI = Y coordinate
-; 251  : 						Loads a .BMP file and displays at given coordinates ( ESI, EDI )
-; 252  : 					EBX = 0x05
-; 253  : 						Deinitializes VGA and returns to text mode
-; 254  : 					EBX = 0x06
-; 255  : 						ESI = char* to string
-; 256  : 						ECX = X coordinate
-; 257  : 						EDX = Y coordinate
-; 258  : 						Prints a string at (ECX, EDX)
-; 259  : 					EBX = 0x07
-; 260  : 						ESI = X coordinate
-; 261  : 						EDI = Y coordinate
-; 262  : 						CL = character
-; 263  : 						CH = color
-; 264  : 						Print a character at (ESI, EDI)=CL (CH)
-; 265  : 					EBX = 0x08
-; 266  : 						ESI = X0 coordinate
-; 267  : 						EDI = Y0 coordinate
-; 268  : 						ECX = X1 coordinate
-; 269  : 						EDX = Y1 coordinate
-; 270  : 						Draws a line from (ESI, EDI) to (ECX, EDX)
-; 271  : 					EBX = 0x09
-; 272  : 						ESI = X0 coordinate
-; 273  : 						EDI = Y0 coordinate
-; 274  : 						ECX = X1 coordinate
-; 275  : 						EDX = Y1 coordinate
-; 276  : 						Draws a rectangle from (ESI, EDI) to (ECX, EDX)
-; 277  : 					EBX = 0x0A
-; 278  : 						CL = color
-; 279  : 						Sets the draw color to CL
-; 280  : 					EBX = 0x0B
-; 281  : 						Returns the color in CL
-; 282  : 						
-; 283  : 			*/
-; 284  : 			_asm mov _ebx, ebx
+; 232  : 			}
+; 233  : 		case 0x0C: //vga utils
+; 234  : 			/*
+; 235  : 				VGA utilities
+; 236  : 				EBX = function
+; 237  : 					EBX = 0x01
+; 238  : 						Switches on VGA(320x200x1Byte)
+; 239  : 					EBX = 0x02
+; 240  : 						ECX = X coordinate
+; 241  : 						ESI = Y coordinate
+; 242  : 						DL = color
+; 243  : 							Puts a pixel at (ECX, ESI) = DL
+; 244  : 					EBX = 0x03
+; 245  : 						Clears the screen
+; 246  : 					EBX = 0x04
+; 247  : 						EDX = pointer to filename
+; 248  : 						ESI = X coordinate
+; 249  : 						EDI = Y coordinate
+; 250  : 						Loads a .BMP file and displays at given coordinates ( ESI, EDI )
+; 251  : 					EBX = 0x05
+; 252  : 						Deinitializes VGA and returns to text mode
+; 253  : 					EBX = 0x06
+; 254  : 						ESI = char* to string
+; 255  : 						ECX = X coordinate
+; 256  : 						EDX = Y coordinate
+; 257  : 						Prints a string at (ECX, EDX)
+; 258  : 					EBX = 0x07
+; 259  : 						ESI = X coordinate
+; 260  : 						EDI = Y coordinate
+; 261  : 						CL = character
+; 262  : 						CH = color
+; 263  : 						Print a character at (ESI, EDI)=CL (CH)
+; 264  : 					EBX = 0x08
+; 265  : 						ESI = X0 coordinate
+; 266  : 						EDI = Y0 coordinate
+; 267  : 						ECX = X1 coordinate
+; 268  : 						EDX = Y1 coordinate
+; 269  : 						Draws a line from (ESI, EDI) to (ECX, EDX)
+; 270  : 					EBX = 0x09
+; 271  : 						ESI = X0 coordinate
+; 272  : 						EDI = Y0 coordinate
+; 273  : 						ECX = X1 coordinate
+; 274  : 						EDX = Y1 coordinate
+; 275  : 						Draws a rectangle from (ESI, EDI) to (ECX, EDX)
+; 276  : 					EBX = 0x0A
+; 277  : 						CL = color
+; 278  : 						Sets the draw color to CL
+; 279  : 					EBX = 0x0B
+; 280  : 						Returns the color in CL
+; 281  : 						
+; 282  : 			*/
+; 283  : 			_asm mov _ebx, ebx
 
 	mov	DWORD PTR ?_ebx@@3HA, ebx		; _ebx
 
-; 285  : 			switch(_ebx)
+; 284  : 			switch(_ebx)
 
 	mov	eax, DWORD PTR ?_ebx@@3HA		; _ebx
 	dec	eax
 	cmp	eax, 10					; 0000000aH
 	ja	$LN13@handleSysC
-	jmp	DWORD PTR $LN64@handleSysC[eax*4]
+	jmp	DWORD PTR $LN63@handleSysC[eax*4]
 $LN17@handleSysC:
 
-; 225  : 			{
-; 226  : 				case 0x01: // get filenames
-; 227  : 					fsysFatGetFilesInRoot(string);
+; 224  : 			{
+; 225  : 				case 0x01: // get filenames
+; 226  : 					fsysFatGetFilesInRoot(string);
 
 	mov	ecx, DWORD PTR ?string@@3PADA		; string
 	push	ecx
 	call	?fsysFatGetFilesInRoot@@YAXPAD@Z	; fsysFatGetFilesInRoot
 	add	esp, 4
 
-; 228  : 					_asm mov edx, string
+; 227  : 					_asm mov edx, string
 
 	mov	edx, DWORD PTR ?string@@3PADA		; string
 	pop	esi
 
-; 366  : 			break;
-; 367  : 	}
-; 368  : }
+; 365  : 			break;
+; 366  : 	}
+; 367  : }
 
 	add	esp, 20					; 00000014H
 	ret	0
 $LN12@handleSysC:
 
-; 286  : 			{	
-; 287  : 				case 0x01: // switch on VGA
-; 288  : 					VGA_init(320, 200, 256);
+; 285  : 			{	
+; 286  : 				case 0x01: // switch on VGA
+; 287  : 					VGA_init(320, 200, 256);
 
 	push	256					; 00000100H
 	push	200					; 000000c8H
@@ -839,27 +826,27 @@ $LN12@handleSysC:
 	call	?VGA_init@@YAXHHH@Z			; VGA_init
 	add	esp, 12					; 0000000cH
 
-; 289  : 					break;
+; 288  : 					break;
 
 	jmp	$LN13@handleSysC
 $LN11@handleSysC:
 
-; 290  : 				case 0x02: // put pixel (cx,dx)
-; 291  : 					_asm {
-; 292  : 						mov a, ecx
+; 289  : 				case 0x02: // put pixel (cx,dx)
+; 290  : 					_asm {
+; 291  : 						mov a, ecx
 
 	mov	DWORD PTR ?a@@3HA, ecx			; a
 
-; 293  : 						mov b, esi
+; 292  : 						mov b, esi
 
 	mov	DWORD PTR ?b@@3HA, esi			; b
 
-; 294  : 						mov c, dl
+; 293  : 						mov c, dl
 
 	mov	BYTE PTR ?c@@3DA, dl			; c
 
-; 295  : 					}
-; 296  : 					VGA_put_pixel(a, b, c);
+; 294  : 					}
+; 295  : 					VGA_put_pixel(a, b, c);
 
 	movzx	edx, BYTE PTR ?c@@3DA			; c
 	mov	eax, DWORD PTR ?b@@3HA			; b
@@ -870,39 +857,39 @@ $LN11@handleSysC:
 	call	?VGA_put_pixel@@YAXHHD@Z		; VGA_put_pixel
 	add	esp, 12					; 0000000cH
 
-; 297  : 					break;
+; 296  : 					break;
 
 	jmp	$LN13@handleSysC
 $LN10@handleSysC:
 
-; 298  : 				case 0x03: // clear screen
-; 299  : 					VGA_clear_screen();
+; 297  : 				case 0x03: // clear screen
+; 298  : 					VGA_clear_screen();
 
 	call	?VGA_clear_screen@@YAXXZ		; VGA_clear_screen
 
-; 300  : 					break;
+; 299  : 					break;
 
 	jmp	$LN13@handleSysC
 $LN9@handleSysC:
 
-; 301  : 				case 0x04: // load bmp file
-; 302  : 					_asm {
-; 303  : 						mov filename, edx
+; 300  : 				case 0x04: // load bmp file
+; 301  : 					_asm {
+; 302  : 						mov filename, edx
 
-	mov	DWORD PTR _filename$3357[esp+24], edx
+	mov	DWORD PTR _filename$3359[esp+24], edx
 
-; 304  : 						mov a, esi
+; 303  : 						mov a, esi
 
 	mov	DWORD PTR ?a@@3HA, esi			; a
 
-; 305  : 						mov b, edi
+; 304  : 						mov b, edi
 
 	mov	DWORD PTR ?b@@3HA, edi			; b
 
-; 306  : 					}
-; 307  : 					VGA_put_image(a, b, filename);
+; 305  : 					}
+; 306  : 					VGA_put_image(a, b, filename);
 
-	mov	edx, DWORD PTR _filename$3357[esp+24]
+	mov	edx, DWORD PTR _filename$3359[esp+24]
 	mov	eax, DWORD PTR ?b@@3HA			; b
 	mov	ecx, DWORD PTR ?a@@3HA			; a
 	push	edx
@@ -911,40 +898,40 @@ $LN9@handleSysC:
 	call	?VGA_put_image@@YAXHHPAD@Z		; VGA_put_image
 	add	esp, 12					; 0000000cH
 
-; 308  : 					break;
+; 307  : 					break;
 
 	jmp	$LN13@handleSysC
 $LN8@handleSysC:
 
-; 309  : 				case 0x05: //vga deinit
-; 310  : 					VGA_deinit();
+; 308  : 				case 0x05: //vga deinit
+; 309  : 					VGA_deinit();
 
 	call	?VGA_deinit@@YAXXZ			; VGA_deinit
 
-; 311  : 					break;
+; 310  : 					break;
 
 	jmp	$LN13@handleSysC
 $LN7@handleSysC:
 
-; 312  : 				case 0x06: // vga putStr
-; 313  : 					_asm {
-; 314  : 						mov filename, esi
+; 311  : 				case 0x06: // vga putStr
+; 312  : 					_asm {
+; 313  : 						mov filename, esi
 
-	mov	DWORD PTR _filename$3357[esp+24], esi
+	mov	DWORD PTR _filename$3359[esp+24], esi
 
-; 315  : 						mov a, ecx
+; 314  : 						mov a, ecx
 
 	mov	DWORD PTR ?a@@3HA, ecx			; a
 
-; 316  : 						mov b, edx
+; 315  : 						mov b, edx
 
 	mov	DWORD PTR ?b@@3HA, edx			; b
 
-; 317  : 					}
-; 318  : 					VGA_put_string(a,b,filename, vgacol);
+; 316  : 					}
+; 317  : 					VGA_put_string(a,b,filename, vgacol);
 
 	movzx	edx, BYTE PTR ?vgacol@@3DA		; vgacol
-	mov	eax, DWORD PTR _filename$3357[esp+24]
+	mov	eax, DWORD PTR _filename$3359[esp+24]
 	mov	ecx, DWORD PTR ?b@@3HA			; b
 	push	edx
 	mov	edx, DWORD PTR ?a@@3HA			; a
@@ -954,31 +941,31 @@ $LN7@handleSysC:
 	call	?VGA_put_string@@YAXHHPADD@Z		; VGA_put_string
 	add	esp, 16					; 00000010H
 
-; 319  : 					break;
+; 318  : 					break;
 
 	jmp	$LN13@handleSysC
 $LN6@handleSysC:
 
-; 320  : 				case 0x07: // vga putchar
-; 321  : 					_asm {
-; 322  : 						mov a, esi
+; 319  : 				case 0x07: // vga putchar
+; 320  : 					_asm {
+; 321  : 						mov a, esi
 
 	mov	DWORD PTR ?a@@3HA, esi			; a
 
-; 323  : 						mov b, edi
+; 322  : 						mov b, edi
 
 	mov	DWORD PTR ?b@@3HA, edi			; b
 
-; 324  : 						mov c, cl
+; 323  : 						mov c, cl
 
 	mov	BYTE PTR ?c@@3DA, cl			; c
 
-; 325  : 						mov f, ch
+; 324  : 						mov f, ch
 
 	mov	BYTE PTR ?f@@3DA, ch			; f
 
-; 326  : 					}
-; 327  : 					VGA_put_char(a, b, c, f);
+; 325  : 					}
+; 326  : 					VGA_put_char(a, b, c, f);
 
 	movzx	eax, BYTE PTR ?f@@3DA			; f
 	movzx	ecx, BYTE PTR ?c@@3DA			; c
@@ -991,31 +978,31 @@ $LN6@handleSysC:
 	call	?VGA_put_char@@YAXHHDD@Z		; VGA_put_char
 	add	esp, 16					; 00000010H
 
-; 328  : 					break;
+; 327  : 					break;
 
 	jmp	$LN13@handleSysC
 $LN5@handleSysC:
 
-; 329  : 				case 0x08: //vga putline
-; 330  : 					_asm {
-; 331  : 						mov a, esi
+; 328  : 				case 0x08: //vga putline
+; 329  : 					_asm {
+; 330  : 						mov a, esi
 
 	mov	DWORD PTR ?a@@3HA, esi			; a
 
-; 332  : 						mov b, edi
+; 331  : 						mov b, edi
 
 	mov	DWORD PTR ?b@@3HA, edi			; b
 
-; 333  : 						mov d, ecx
+; 332  : 						mov d, ecx
 
 	mov	DWORD PTR ?d@@3HA, ecx			; d
 
-; 334  : 						mov e, edx
+; 333  : 						mov e, edx
 
 	mov	DWORD PTR ?e@@3HA, edx			; e
 
-; 335  : 					}
-; 336  : 					VGA_put_line(a, b, d, e, vgacol);
+; 334  : 					}
+; 335  : 					VGA_put_line(a, b, d, e, vgacol);
 
 	movzx	ecx, BYTE PTR ?vgacol@@3DA		; vgacol
 	mov	edx, DWORD PTR ?e@@3HA			; e
@@ -1030,31 +1017,31 @@ $LN5@handleSysC:
 	call	?VGA_put_line@@YAXHHHHD@Z		; VGA_put_line
 	add	esp, 20					; 00000014H
 
-; 337  : 					break;
+; 336  : 					break;
 
 	jmp	SHORT $LN13@handleSysC
 $LN4@handleSysC:
 
-; 338  : 				case 0x09: //vga putrect
-; 339  : 					_asm {
-; 340  : 						mov a, esi
+; 337  : 				case 0x09: //vga putrect
+; 338  : 					_asm {
+; 339  : 						mov a, esi
 
 	mov	DWORD PTR ?a@@3HA, esi			; a
 
-; 341  : 						mov b, edi
+; 340  : 						mov b, edi
 
 	mov	DWORD PTR ?b@@3HA, edi			; b
 
-; 342  : 						mov d, ecx
+; 341  : 						mov d, ecx
 
 	mov	DWORD PTR ?d@@3HA, ecx			; d
 
-; 343  : 						mov e, edx
+; 342  : 						mov e, edx
 
 	mov	DWORD PTR ?e@@3HA, edx			; e
 
-; 344  : 					}
-; 345  : 					VGA_put_rectangle(a, b, d, e, vgacol);
+; 343  : 					}
+; 344  : 					VGA_put_rectangle(a, b, d, e, vgacol);
 
 	movzx	eax, BYTE PTR ?vgacol@@3DA		; vgacol
 	mov	ecx, DWORD PTR ?e@@3HA			; e
@@ -1069,80 +1056,80 @@ $LN4@handleSysC:
 	call	?VGA_put_rectangle@@YAXHHHHD@Z		; VGA_put_rectangle
 	add	esp, 20					; 00000014H
 
-; 346  : 					break;
+; 345  : 					break;
 
 	jmp	SHORT $LN13@handleSysC
 $LN3@handleSysC:
 
-; 347  : 				case 0x0A: // vga setcolor
-; 348  : 					_asm {
-; 349  : 						mov vgacol, cl
+; 346  : 				case 0x0A: // vga setcolor
+; 347  : 					_asm {
+; 348  : 						mov vgacol, cl
 
 	mov	BYTE PTR ?vgacol@@3DA, cl		; vgacol
 
-; 350  : 					}
-; 351  : 					break;
+; 349  : 					}
+; 350  : 					break;
 
 	jmp	SHORT $LN13@handleSysC
 $LN2@handleSysC:
 
-; 352  : 				case 0x0B:
-; 353  : 					_asm {
-; 354  : 						mov cl, vgacol
+; 351  : 				case 0x0B:
+; 352  : 					_asm {
+; 353  : 						mov cl, vgacol
 
 	mov	cl, BYTE PTR ?vgacol@@3DA		; vgacol
 $LN13@handleSysC:
 
-; 355  : 					}
-; 356  : 					break;
-; 357  : 			}
-; 358  : 		case 0x0D: // fill mouse info
-; 359  : 			/*
-; 360  : 			EDX = pointer to MOUSE_STATE structure
-; 361  : 			Fill the (EDX) with mouse data
-; 362  : 			*/
-; 363  : 			_asm mov a, edx
+; 354  : 					}
+; 355  : 					break;
+; 356  : 			}
+; 357  : 		case 0x0D: // fill mouse info
+; 358  : 			/*
+; 359  : 			EDX = pointer to MOUSE_STATE structure
+; 360  : 			Fill the (EDX) with mouse data
+; 361  : 			*/
+; 362  : 			_asm mov a, edx
 
 	mov	DWORD PTR ?a@@3HA, edx			; a
 
-; 364  : 			//MOUSE_STATE* m = (MOUSE_STATE*)a;
-; 365  : 			fillMouseState((MOUSE_STATE*)a);
+; 363  : 			//MOUSE_STATE* m = (MOUSE_STATE*)a;
+; 364  : 			fillMouseState((MOUSE_STATE*)a);
 
 	mov	edx, DWORD PTR ?a@@3HA			; a
 	push	edx
 	call	?fillMouseState@@YAXPAUMOUSE_STATE@@@Z	; fillMouseState
 	add	esp, 4
-$LN58@handleSysC:
+$LN57@handleSysC:
 	pop	esi
-$LN51@handleSysC:
+$LN50@handleSysC:
 
-; 366  : 			break;
-; 367  : 	}
-; 368  : }
+; 365  : 			break;
+; 366  : 	}
+; 367  : }
 
 	add	esp, 20					; 00000014H
 	ret	0
 	npad	1
-$LN62@handleSysC:
-	DD	$LN50@handleSysC
-	DD	$LN41@handleSysC
+$LN61@handleSysC:
+	DD	$LN49@handleSysC
 	DD	$LN40@handleSysC
 	DD	$LN39@handleSysC
-	DD	$LN37@handleSysC
-	DD	$LN35@handleSysC
-	DD	$LN30@handleSysC
+	DD	$LN38@handleSysC
+	DD	$LN36@handleSysC
+	DD	$LN34@handleSysC
+	DD	$LN29@handleSysC
 	DD	$LN23@handleSysC
 	DD	$LN22@handleSysC
 	DD	$LN21@handleSysC
 	DD	$LN20@handleSysC
 	DD	$LN18@handleSysC
 	DD	$LN13@handleSysC
-$LN63@handleSysC:
-	DD	$LL46@handleSysC
-	DD	$LN44@handleSysC
+$LN62@handleSysC:
+	DD	$LL45@handleSysC
 	DD	$LN43@handleSysC
 	DD	$LN42@handleSysC
-$LN64@handleSysC:
+	DD	$LN41@handleSysC
+$LN63@handleSysC:
 	DD	$LN12@handleSysC
 	DD	$LN11@handleSysC
 	DD	$LN10@handleSysC

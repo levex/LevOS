@@ -54,6 +54,7 @@ PUBLIC	??_C@_08OBGPNNFO@test?4bmp?$AA@			; `string'
 PUBLIC	??_C@_0N@BPJMLEOO@?6Gfx?5init?4?4?4?$AA@	; `string'
 PUBLIC	_main
 EXTRN	__imp__VGA_deinit:PROC
+EXTRN	__imp__getInputChar:PROC
 EXTRN	?repaintScreen@@YAXXZ:PROC			; repaintScreen
 EXTRN	?addWindow@@YAHPAUWINDOW@@@Z:PROC		; addWindow
 EXTRN	?W_TEXTPOPUP_init@@YAXPAUW_TEXTPOPUP@@PAUWINDOW@@PAD2@Z:PROC ; W_TEXTPOPUP_init
@@ -61,7 +62,7 @@ EXTRN	?initWindowManager@@YAXXZ:PROC			; initWindowManager
 EXTRN	__imp__VGA_clear:PROC
 EXTRN	__imp__VGA_putimage:PROC
 EXTRN	__imp__VGA_init:PROC
-EXTRN	__imp__getInputChar:PROC
+EXTRN	__imp__waitForKeyPress:PROC
 EXTRN	__imp__print:PROC
 ;	COMDAT ??_C@_09KKBHBBKF@LevOS?52?40?$AA@
 CONST	SEGMENT
@@ -97,7 +98,7 @@ _main	PROC						; COMDAT
 
 	push	ebp
 	mov	ebp, esp
-	sub	esp, 148				; 00000094H
+	sub	esp, 140				; 0000008cH
 	push	ebx
 	push	esi
 	push	edi
@@ -107,16 +108,10 @@ _main	PROC						; COMDAT
 	push	OFFSET ??_C@_0N@BPJMLEOO@?6Gfx?5init?4?4?4?$AA@
 	call	DWORD PTR __imp__print
 	add	esp, 4
-$LN11@main:
 
-; 21   : 	while(getInputChar() == 0);
+; 21   : 	waitForKeyPress();
 
-	call	DWORD PTR __imp__getInputChar
-	movsx	eax, al
-	test	eax, eax
-	jne	SHORT $LN10@main
-	jmp	SHORT $LN11@main
-$LN10@main:
+	call	DWORD PTR __imp__waitForKeyPress
 
 ; 22   : 	VGA_init();
 
@@ -129,16 +124,10 @@ $LN10@main:
 	push	16					; 00000010H
 	call	DWORD PTR __imp__VGA_putimage
 	add	esp, 12					; 0000000cH
-$LN9@main:
 
-; 24   : 	while(getInputChar() == 0);
+; 24   : 	waitForKeyPress();
 
-	call	DWORD PTR __imp__getInputChar
-	movsx	eax, al
-	test	eax, eax
-	jne	SHORT $LN8@main
-	jmp	SHORT $LN9@main
-$LN8@main:
+	call	DWORD PTR __imp__waitForKeyPress
 
 ; 25   : 	VGA_clear();
 
@@ -182,7 +171,7 @@ $LN8@main:
 	call	?W_TEXTPOPUP_init@@YAXPAUW_TEXTPOPUP@@PAUWINDOW@@PAD2@Z ; W_TEXTPOPUP_init
 	add	esp, 16					; 00000010H
 
-; 37   : 	W_TEXTPOPUP tp2;
+; 37   : 	//W_TEXTPOPUP tp2;
 ; 38   : 
 ; 39   : 	addWindow(&w);
 

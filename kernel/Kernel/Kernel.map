@@ -1,12 +1,12 @@
  KRNL32
 
- Timestamp is 51d857ae (Sat Jul 06 19:45:18 2013)
+ Timestamp is 51d92724 (Sun Jul 07 10:30:28 2013)
 
  Preferred load address is c0000000
 
  Start         Length     Name                   Class
- 0001:00000000 00004a88H .text                   CODE
- 0002:00000000 00000a51H .rdata                  DATA
+ 0001:00000000 00004a48H .text                   CODE
+ 0002:00000000 00000a09H .rdata                  DATA
  0003:00000000 00000004H .CRT$XCA                DATA
  0003:00000004 00000004H .CRT$XCZ                DATA
  0003:00000008 00000a38H .data                   DATA
@@ -97,7 +97,7 @@
  0001:00001de0       ?setint@@YAXHP6AXXZ@Z      c00021e0 f   HComm.obj
  0001:00001e00       ?sleep@@YAXH@Z             c0002200 f   HComm.obj
  0001:00001e30       ?getFileSize@@YAHPAD@Z     c0002230 f   HComm.obj
- 0001:00001e70       ?loadFileToLoc@@YA_NPADPAX@Z c0002270 f   HComm.obj
+ 0001:00001e70       ?loadFileToLoc@@YADPADPAX@Z c0002270 f   HComm.obj
  0001:00001ef0       ?kkybrd_set_leds@@YAX_N00@Z c00022f0 f   hw_keyboard.obj
  0001:00001f50       ?kkybrd_discard_last_key@@YAXXZ c0002350 f   hw_keyboard.obj
  0001:00001f60       ?kkybrd_key_to_ascii@@YADW4KEYCODE@@@Z c0002360 f   hw_keyboard.obj
@@ -112,63 +112,63 @@
  0001:00002440       ?i86_idt_initialize@@YAHG@Z c0002840 f   IDT.obj
  0001:000024c0       ?i86_setup@@YA_NH@Z        c00028c0 f   IDT.obj
  0001:000024f0       _main                      c00028f0 f   main.obj
- 0001:00002a30       ?math_abs@@YAIH@Z          c0002e30 f   Math.obj
- 0001:00002a40       ?getStringOfClass@@YAPADE@Z c0002e40 f   PCI.obj
- 0001:00002c20       ?PCI_test@@YAXXZ           c0003020 f   PCI.obj
- 0001:00002db0       ?PE_loadDLL@@YAPAUPE_EXPORT_LIST@@PADH@Z c00031b0 f   PELoader.obj
- 0001:00002fd0       ?PE_checkImport@@YA_NPAUPeDataDirectory@@@Z c00033d0 f   PELoader.obj
- 0001:00003000       ?PE_mapApp@@YA_NPADH@Z     c0003400 f   PELoader.obj
- 0001:00003220       ?PE_dumpApp@@YA_NPADH@Z    c0003620 f   PELoader.obj
- 0001:000034e0       ?pic_send_command@@YAXEE@Z c00038e0 f i PIC.obj
- 0001:00003510       ?pic_initialize@@YA_NEE@Z  c0003910 f   PIC.obj
- 0001:00003580       ?initProcessManager@@YAXXZ c0003980 f   PIT.obj
- 0001:000035f0       ?setCurrentProc@@YAXPAU__PROCESS@@@Z c00039f0 f   PIT.obj
- 0001:00003610       ?i86_pit_irq@@YAXXZ        c0003a10 f   PIT.obj
- 0001:00003710       ?i86_pit_get_tick_count@@YAIXZ c0003b10 f   PIT.obj
- 0001:00003720       ?i86_pit_start_counter@@YAXIEE@Z c0003b20 f   PIT.obj
- 0001:00003780       ?i86_pit_initialize@@YA_NXZ c0003b80 f   PIT.obj
- 0001:000037a0       ?memcpy@@YAXPAD0H@Z        c0003ba0 f   pMemory.obj
- 0001:000037c0       ?memcpyTF@@YAXPAD0H@Z      c0003bc0 f   pMemory.obj
- 0001:000037e0       ?memset@@YAPAXPAXDI@Z      c0003be0 f   pMemory.obj
- 0001:00003800       ?pm_setup@@YA_NPAD@Z       c0003c00 f   pMemory.obj
- 0001:00003810       ?malloc@@YAPAXH@Z          c0003c10 f   pMemory.obj
- 0001:00003830       ?malloc_ps@@YAPAXPADH@Z    c0003c30 f   pMemory.obj
- 0001:00003840       ?allocStack@@YAPAEPAU__PROCESS@@@Z c0003c40 f   ProcessManager.obj
- 0001:00003870       ?doRealModeInterrupt@@YAXDDD@Z c0003c70 f   realmodewrapper.obj
- 0001:000038b0       ?rtc_getYear@@YAHXZ        c0003cb0 f   RTC.obj
- 0001:000038d0       ?rtc_getMonth@@YAHXZ       c0003cd0 f   RTC.obj
- 0001:000038f0       ?rtc_getDayOfMonth@@YAHXZ  c0003cf0 f   RTC.obj
- 0001:00003910       ?rtc_getWeekday@@YAHXZ     c0003d10 f   RTC.obj
- 0001:00003930       ?rtc_getHour@@YAHXZ        c0003d30 f   RTC.obj
- 0001:00003950       ?rtc_getMinute@@YAHXZ      c0003d50 f   RTC.obj
- 0001:00003970       ?rtc_getSecond@@YAHXZ      c0003d70 f   RTC.obj
- 0001:00003990       ?handleSysCall@@YAXXZ      c0003d90 f   SystemCalls.obj
- 0001:00003eb0       ?isVGA@@YA_NXZ             c00042b0 f   VGAdriver.obj
- 0001:00003ec0       ?savePalette@@YAXPAUpalette_entry@@@Z c00042c0 f   VGAdriver.obj
- 0001:00003f20       ?VGA_setfont@@YAXPAD@Z     c0004320 f   VGAdriver.obj
- 0001:00003f30       ?VGA_clear_screen@@YAXXZ   c0004330 f   VGAdriver.obj
- 0001:00003f90       ?VGA_put_char@@YAXHHDD@Z   c0004390 f   VGAdriver.obj
- 0001:00004040       ?VGA_put_image@@YAXHHPAD@Z c0004440 f   VGAdriver.obj
- 0001:00004120       ?VGA_put_pixel@@YAXHHD@Z   c0004520 f   VGAdriver.obj
- 0001:000041e0       ?VGA_put_line@@YAXHHHHD@Z  c00045e0 f   VGAdriver.obj
- 0001:000042b0       ?VGA_put_rectangle@@YAXHHHHD@Z c00046b0 f   VGAdriver.obj
- 0001:00004300       ?write_registers@@YAXPAE@Z c0004700 f   VGAdriver.obj
- 0001:00004480       ?restorePalette@@YAXPAUpalette_entry@@@Z c0004880 f   VGAdriver.obj
- 0001:00004500       ?VGA_init@@YAXHHH@Z        c0004900 f   VGAdriver.obj
- 0001:00004630       ?VGA_deinit@@YAXXZ         c0004a30 f   VGAdriver.obj
- 0001:00004680       ?VGA_put_string@@YAXHHPADD@Z c0004a80 f   VGAdriver.obj
- 0001:00004760       ?vd_getCurrentDataDevice@@YA?AU__DATA_DEVICE@@XZ c0004b60 f   VirtualDevice.obj
- 0001:00004780       ?vd_populate@@YA_NXZ       c0004b80 f   VirtualDevice.obj
- 0001:00004870       ?vm_setup@@YA_NPAX@Z       c0004c70 f   vMemory.obj
- 0001:000048a0       ?vm_map_virt_to_phys@@YAXHH@Z c0004ca0 f   vMemory.obj
- 0001:00004900       ?vm_enable_paging@@YA_NXZ  c0004d00 f   vMemory.obj
- 0001:00004920       ?strcmp@@YAHPBD0@Z         c0004d20 f   Lib:string.obj
- 0001:00004970       ?strlcmp@@YA_NPAD0H@Z      c0004d70 f   Lib:string.obj
- 0001:000049a0       ?strcpy@@YAPADPADPBD@Z     c0004da0 f   Lib:string.obj
- 0001:000049c0       ?strlen@@YAIPBD@Z          c0004dc0 f   Lib:string.obj
- 0001:000049e0       ?strchr@@YAPADPADH@Z       c0004de0 f   Lib:string.obj
- 0001:00004a10       ?Exit@@YAXXZ               c0004e10 f   Lib:cstd.obj
- 0001:00004a50       ?InitializeConstructors@@YAXXZ c0004e50 f   Lib:cstd.obj
+ 0001:00002a10       ?math_abs@@YAIH@Z          c0002e10 f   Math.obj
+ 0001:00002a20       ?getStringOfClass@@YAPADE@Z c0002e20 f   PCI.obj
+ 0001:00002c00       ?PCI_test@@YAXXZ           c0003000 f   PCI.obj
+ 0001:00002d90       ?PE_loadDLL@@YAPAUPE_EXPORT_LIST@@PADH@Z c0003190 f   PELoader.obj
+ 0001:00002fb0       ?PE_checkImport@@YA_NPAUPeDataDirectory@@@Z c00033b0 f   PELoader.obj
+ 0001:00002fe0       ?PE_mapApp@@YADPADH@Z      c00033e0 f   PELoader.obj
+ 0001:000031e0       ?PE_dumpApp@@YA_NPADH@Z    c00035e0 f   PELoader.obj
+ 0001:000034a0       ?pic_send_command@@YAXEE@Z c00038a0 f i PIC.obj
+ 0001:000034d0       ?pic_initialize@@YA_NEE@Z  c00038d0 f   PIC.obj
+ 0001:00003540       ?initProcessManager@@YAXXZ c0003940 f   PIT.obj
+ 0001:000035b0       ?setCurrentProc@@YAXPAU__PROCESS@@@Z c00039b0 f   PIT.obj
+ 0001:000035d0       ?i86_pit_irq@@YAXXZ        c00039d0 f   PIT.obj
+ 0001:000036d0       ?i86_pit_get_tick_count@@YAIXZ c0003ad0 f   PIT.obj
+ 0001:000036e0       ?i86_pit_start_counter@@YAXIEE@Z c0003ae0 f   PIT.obj
+ 0001:00003740       ?i86_pit_initialize@@YA_NXZ c0003b40 f   PIT.obj
+ 0001:00003760       ?memcpy@@YAXPAD0H@Z        c0003b60 f   pMemory.obj
+ 0001:00003780       ?memcpyTF@@YAXPAD0H@Z      c0003b80 f   pMemory.obj
+ 0001:000037a0       ?memset@@YAPAXPAXDI@Z      c0003ba0 f   pMemory.obj
+ 0001:000037c0       ?pm_setup@@YA_NPAD@Z       c0003bc0 f   pMemory.obj
+ 0001:000037d0       ?malloc@@YAPAXH@Z          c0003bd0 f   pMemory.obj
+ 0001:000037f0       ?malloc_ps@@YAPAXPADH@Z    c0003bf0 f   pMemory.obj
+ 0001:00003800       ?allocStack@@YAPAEPAU__PROCESS@@@Z c0003c00 f   ProcessManager.obj
+ 0001:00003830       ?doRealModeInterrupt@@YAXDDD@Z c0003c30 f   realmodewrapper.obj
+ 0001:00003870       ?rtc_getYear@@YAHXZ        c0003c70 f   RTC.obj
+ 0001:00003890       ?rtc_getMonth@@YAHXZ       c0003c90 f   RTC.obj
+ 0001:000038b0       ?rtc_getDayOfMonth@@YAHXZ  c0003cb0 f   RTC.obj
+ 0001:000038d0       ?rtc_getWeekday@@YAHXZ     c0003cd0 f   RTC.obj
+ 0001:000038f0       ?rtc_getHour@@YAHXZ        c0003cf0 f   RTC.obj
+ 0001:00003910       ?rtc_getMinute@@YAHXZ      c0003d10 f   RTC.obj
+ 0001:00003930       ?rtc_getSecond@@YAHXZ      c0003d30 f   RTC.obj
+ 0001:00003950       ?handleSysCall@@YAXXZ      c0003d50 f   SystemCalls.obj
+ 0001:00003e70       ?isVGA@@YA_NXZ             c0004270 f   VGAdriver.obj
+ 0001:00003e80       ?savePalette@@YAXPAUpalette_entry@@@Z c0004280 f   VGAdriver.obj
+ 0001:00003ee0       ?VGA_setfont@@YAXPAD@Z     c00042e0 f   VGAdriver.obj
+ 0001:00003ef0       ?VGA_clear_screen@@YAXXZ   c00042f0 f   VGAdriver.obj
+ 0001:00003f50       ?VGA_put_char@@YAXHHDD@Z   c0004350 f   VGAdriver.obj
+ 0001:00004000       ?VGA_put_image@@YAXHHPAD@Z c0004400 f   VGAdriver.obj
+ 0001:000040e0       ?VGA_put_pixel@@YAXHHD@Z   c00044e0 f   VGAdriver.obj
+ 0001:000041a0       ?VGA_put_line@@YAXHHHHD@Z  c00045a0 f   VGAdriver.obj
+ 0001:00004270       ?VGA_put_rectangle@@YAXHHHHD@Z c0004670 f   VGAdriver.obj
+ 0001:000042c0       ?write_registers@@YAXPAE@Z c00046c0 f   VGAdriver.obj
+ 0001:00004440       ?restorePalette@@YAXPAUpalette_entry@@@Z c0004840 f   VGAdriver.obj
+ 0001:000044c0       ?VGA_init@@YAXHHH@Z        c00048c0 f   VGAdriver.obj
+ 0001:000045f0       ?VGA_deinit@@YAXXZ         c00049f0 f   VGAdriver.obj
+ 0001:00004640       ?VGA_put_string@@YAXHHPADD@Z c0004a40 f   VGAdriver.obj
+ 0001:00004720       ?vd_getCurrentDataDevice@@YA?AU__DATA_DEVICE@@XZ c0004b20 f   VirtualDevice.obj
+ 0001:00004740       ?vd_populate@@YA_NXZ       c0004b40 f   VirtualDevice.obj
+ 0001:00004830       ?vm_setup@@YA_NPAX@Z       c0004c30 f   vMemory.obj
+ 0001:00004860       ?vm_map_virt_to_phys@@YAXHH@Z c0004c60 f   vMemory.obj
+ 0001:000048c0       ?vm_enable_paging@@YA_NXZ  c0004cc0 f   vMemory.obj
+ 0001:000048e0       ?strcmp@@YAHPBD0@Z         c0004ce0 f   Lib:string.obj
+ 0001:00004930       ?strlcmp@@YA_NPAD0H@Z      c0004d30 f   Lib:string.obj
+ 0001:00004960       ?strcpy@@YAPADPADPBD@Z     c0004d60 f   Lib:string.obj
+ 0001:00004980       ?strlen@@YAIPBD@Z          c0004d80 f   Lib:string.obj
+ 0001:000049a0       ?strchr@@YAPADPADH@Z       c0004da0 f   Lib:string.obj
+ 0001:000049d0       ?Exit@@YAXXZ               c0004dd0 f   Lib:cstd.obj
+ 0001:00004a10       ?InitializeConstructors@@YAXXZ c0004e10 f   Lib:cstd.obj
  0002:00000000       ??_C@_08KPNDKLJK@RSD?5PTR?5?$AA@ c0005000     ACPI.obj
  0002:0000000c       ??_C@_0N@CPDMECFE@?6RSDT?5?$EA?50x?$CFx?$AA@ c000500c     ACPI.obj
  0002:0000001c       ??_C@_0BE@MCMPDEHP@?6ACPI?5version?3?5?$CFd?40?$AA@ c000501c     ACPI.obj
@@ -247,30 +247,28 @@
  0002:00000650       ??_C@_0ED@BAHLBCOH@?6PCI?3?5Bus?3?50x?$CFX?5Slot?3?50x?$CFx?5Funct@ c0005650     PCI.obj
  0002:00000694       ??_C@_0P@GELAMMA@?6PCI?5testing?4?4?$AA@ c0005694     PCI.obj
  0002:000006a8       ??_C@_0EE@DECBGOPC@?6DLL?5needs?5relocation?$CB?5ImageBase@ c00056a8     PELoader.obj
- 0002:000006ec       ??_C@_0CG@HKKCFNDF@?6ERROR?3?5Not?5a?5valid?5LevOS?5execut@ c00056ec     PELoader.obj
- 0002:00000714       ??_C@_0CC@CHBMNKGO@?6ERROR?3?5File?5is?5not?5for?5starting@ c0005714     PELoader.obj
- 0002:00000738       ??_C@_0BN@NGGEOPCA@?6ERROR?3?5Not?5a?5valid?5PE?5file?$CB?$AA@ c0005738     PELoader.obj
- 0002:00000758       ??_C@_0CA@EHGLJJPJ@?6?9?9?9?$DO?$CFs?$CI?$CJ?5at?50x?$CFx?0?5ordinal?50x?$CFx?$AA@ c0005758     PELoader.obj
- 0002:00000778       ??_C@_0EL@KHKFHGDG@?6?9?$DOThis?5is?5an?5export?5directory?0?5@ c0005778     PELoader.obj
- 0002:000007c4       ??_C@_0BI@NEHPEHBO@?6?9?9?$DOHint?$DN?50x?$CFX?0?5name?$DN?$CFs?$AA@ c00057c4     PELoader.obj
- 0002:000007dc       ??_C@_0BP@PEEAFDLG@?6?9?9?$DOFirst?5thunk?5points?5to?50x?$CFx?$AA@ c00057dc     PELoader.obj
- 0002:000007fc       ??_C@_0CE@KEIAOLOP@?6?9?9?$DOFound?5DLL?5import?5from?5module@ c00057fc     PELoader.obj
- 0002:00000820       ??_C@_0CA@FFOAOACM@?6?9?$DOThis?5is?5an?5import?5directory?$CB?$AA@ c0005820     PELoader.obj
- 0002:00000840       ??_C@_0CE@LDBOEGHI@?6?9?9?9?$DOReloc?3?5Offset?3?50x?$CFx?5Type?3?50@ c0005840     PELoader.obj
- 0002:00000864       ??_C@_0DD@LAMGDPIJ@?6?9?9?$DOPage?50x?$CFx?5found?5?$CFd?5relocatio@ c0005864     PELoader.obj
- 0002:00000898       ??_C@_0BP@NFHKIMHM@?6?9?$DOThis?5is?5a?5relocation?5table?$CB?$AA@ c0005898     PELoader.obj
- 0002:000008b8       ??_C@_0DC@BPNEFLBD@?6Found?5datadirectory?3?5id?$DN0x?$CFx?0?5V@ c00058b8     PELoader.obj
- 0002:000008ec       ??_C@_0DD@LEJFHGOK@?6Copying?5?$CFs?5section?5to?50x?$CFX?5from@ c00058ec     PELoader.obj
- 0002:00000920       ??_C@_0GM@FIPENAL@?6Magic?$DN0x?$CFx?6SizeOfCode?$DN0x?$CFx?6Size@ c0005920     PELoader.obj
- 0002:0000098c       ??_C@_0BN@ODBFINGP@?6Dumping?5PeOptionalHeader?4?4?4?$AA@ c000598c     PELoader.obj
- 0002:000009ac       ??_C@_0DA@FMDFCJBC@?6?5?5?5Stack?5allocated?5at?3?50x?$CFx?5gro@ c00059ac     ProcessManager.obj
- 0002:000009dc       ??_C@_09MEJHBFNJ@RMODE?4SYS?$AA@ c00059dc     realmodewrapper.obj
- 0002:000009e8       ??_C@_0DL@NJJOPAOO@?6Goin?8?5to?5Real?5Mode?$CB?5Bye?5good?5li@ c00059e8     realmodewrapper.obj
- 0002:00000a24       ??_C@_02NJNOFBBI@?$CFx?$AA@ c0005a24     SystemCalls.obj
- 0002:00000a28       ??_C@_02IKAHHCAI@?$CFi?$AA@ c0005a28     SystemCalls.obj
- 0002:00000a2c       ??_C@_02DKCKIIND@?$CFs?$AA@ c0005a2c     SystemCalls.obj
- 0002:00000a30       ??_C@_0P@CEBGFEPC@HARDDISKDRIVER?$AA@ c0005a30     VirtualDevice.obj
- 0002:00000a40       ??_C@_0BB@NLFDNKDP@FLOPPYDISKDRIVER?$AA@ c0005a40     VirtualDevice.obj
+ 0002:000006ec       ??_C@_0CA@EHGLJJPJ@?6?9?9?9?$DO?$CFs?$CI?$CJ?5at?50x?$CFx?0?5ordinal?50x?$CFx?$AA@ c00056ec     PELoader.obj
+ 0002:00000710       ??_C@_0EL@KHKFHGDG@?6?9?$DOThis?5is?5an?5export?5directory?0?5@ c0005710     PELoader.obj
+ 0002:0000075c       ??_C@_0BI@NEHPEHBO@?6?9?9?$DOHint?$DN?50x?$CFX?0?5name?$DN?$CFs?$AA@ c000575c     PELoader.obj
+ 0002:00000774       ??_C@_0BP@PEEAFDLG@?6?9?9?$DOFirst?5thunk?5points?5to?50x?$CFx?$AA@ c0005774     PELoader.obj
+ 0002:00000794       ??_C@_0CE@KEIAOLOP@?6?9?9?$DOFound?5DLL?5import?5from?5module@ c0005794     PELoader.obj
+ 0002:000007b8       ??_C@_0CA@FFOAOACM@?6?9?$DOThis?5is?5an?5import?5directory?$CB?$AA@ c00057b8     PELoader.obj
+ 0002:000007d8       ??_C@_0CE@LDBOEGHI@?6?9?9?9?$DOReloc?3?5Offset?3?50x?$CFx?5Type?3?50@ c00057d8     PELoader.obj
+ 0002:000007fc       ??_C@_0DD@LAMGDPIJ@?6?9?9?$DOPage?50x?$CFx?5found?5?$CFd?5relocatio@ c00057fc     PELoader.obj
+ 0002:00000830       ??_C@_0BP@NFHKIMHM@?6?9?$DOThis?5is?5a?5relocation?5table?$CB?$AA@ c0005830     PELoader.obj
+ 0002:00000850       ??_C@_0DC@BPNEFLBD@?6Found?5datadirectory?3?5id?$DN0x?$CFx?0?5V@ c0005850     PELoader.obj
+ 0002:00000884       ??_C@_0DD@LEJFHGOK@?6Copying?5?$CFs?5section?5to?50x?$CFX?5from@ c0005884     PELoader.obj
+ 0002:000008b8       ??_C@_0GM@FIPENAL@?6Magic?$DN0x?$CFx?6SizeOfCode?$DN0x?$CFx?6Size@ c00058b8     PELoader.obj
+ 0002:00000924       ??_C@_0BN@ODBFINGP@?6Dumping?5PeOptionalHeader?4?4?4?$AA@ c0005924     PELoader.obj
+ 0002:00000944       ??_C@_0BN@NGGEOPCA@?6ERROR?3?5Not?5a?5valid?5PE?5file?$CB?$AA@ c0005944     PELoader.obj
+ 0002:00000964       ??_C@_0DA@FMDFCJBC@?6?5?5?5Stack?5allocated?5at?3?50x?$CFx?5gro@ c0005964     ProcessManager.obj
+ 0002:00000994       ??_C@_09MEJHBFNJ@RMODE?4SYS?$AA@ c0005994     realmodewrapper.obj
+ 0002:000009a0       ??_C@_0DL@NJJOPAOO@?6Goin?8?5to?5Real?5Mode?$CB?5Bye?5good?5li@ c00059a0     realmodewrapper.obj
+ 0002:000009dc       ??_C@_02NJNOFBBI@?$CFx?$AA@ c00059dc     SystemCalls.obj
+ 0002:000009e0       ??_C@_02IKAHHCAI@?$CFi?$AA@ c00059e0     SystemCalls.obj
+ 0002:000009e4       ??_C@_02DKCKIIND@?$CFs?$AA@ c00059e4     SystemCalls.obj
+ 0002:000009e8       ??_C@_0P@CEBGFEPC@HARDDISKDRIVER?$AA@ c00059e8     VirtualDevice.obj
+ 0002:000009f8       ??_C@_0BB@NLFDNKDP@FLOPPYDISKDRIVER?$AA@ c00059f8     VirtualDevice.obj
  0003:00000000       ?__xc_a@@3PAP6AXXZA        c0005c00     Lib:cstd.obj
  0003:00000004       ?__xc_z@@3PAP6AXXZA        c0005c04     Lib:cstd.obj
  0003:00000008       ?bchars@@3PADA             c0005c08     DebugDisplay.obj
@@ -296,6 +294,7 @@
  0003:00001f2c       ?_ebx@@3HA                 c0007b2c     SystemCalls.obj
  0003:00001f30       ?f@@3DA                    c0007b30     SystemCalls.obj
  0003:00001f31       ?_b@@3_NA                  c0007b31     SystemCalls.obj
+ 0003:00001f32       ?err@@3DA                  c0007b32     SystemCalls.obj
  0003:00001f34       ?data@@3PAU___RTC__STRUCT@@A c0007b34     SystemCalls.obj
  0003:00001f38       ?vidmem@@3PADA             c0007b38     VGAdriver.obj
  0003:00001f3c       ?VGA_bpp@@3IA              c0007b3c     VGAdriver.obj
@@ -315,4 +314,4 @@
  Static symbols
 
  0001:000023d0       ?i86_default_handler@@YAXXZ c00027d0 f   IDT.obj
- 0001:00004140       ?write_pixel4p@@YAXIII@Z   c0004540 f   VGAdriver.obj
+ 0001:00004100       ?write_pixel4p@@YAXIII@Z   c0004500 f   VGAdriver.obj

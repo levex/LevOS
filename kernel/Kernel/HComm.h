@@ -16,6 +16,6 @@ extern inline void _cdecl	interruptdone (unsigned int intno);
 extern void sleep(int i);
 
 extern int getFileSize(char* file);
-extern bool loadFileToLoc(char* file, void* loc);
+extern char loadFileToLoc(char* file, void* loc);
 
 #endif

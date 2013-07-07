@@ -18,21 +18,21 @@ _portid$ = 8						; size = 2
 _value$ = 12						; size = 1
 ?outport@@YAXGE@Z PROC					; outport, COMDAT
 
-; 11   : 	_asm {
-; 12   : 		mov		al, byte ptr [value]
+; 12   : 	_asm {
+; 13   : 		mov		al, byte ptr [value]
 
 	mov	al, BYTE PTR _value$[esp-4]
 
-; 13   : 		mov		dx, word ptr [portid]
+; 14   : 		mov		dx, word ptr [portid]
 
 	mov	dx, WORD PTR _portid$[esp-4]
 
-; 14   : 		out		dx, al
+; 15   : 		out		dx, al
 
 	out	dx, al
 
-; 15   : 	}
-; 16   : }
+; 16   : 	}
+; 17   : }
 
 	ret	0
 ?outport@@YAXGE@Z ENDP					; outport
@@ -44,26 +44,26 @@ _TEXT	SEGMENT
 _portid$ = 8						; size = 2
 ?inport@@YAEG@Z PROC					; inport, COMDAT
 
-; 19   : 	_asm {
-; 20   : 		mov		dx, word ptr [portid]
+; 20   : 	_asm {
+; 21   : 		mov		dx, word ptr [portid]
 
 	mov	dx, WORD PTR _portid$[esp-4]
 
-; 21   : 		in		al, dx
+; 22   : 		in		al, dx
 
 	in	al, dx
 
-; 22   : 		mov		byte ptr [portid], al
+; 23   : 		mov		byte ptr [portid], al
 
 	mov	BYTE PTR _portid$[esp-4], al
 
-; 23   : 	}
-; 24   : 	return (unsigned char)portid;
+; 24   : 	}
+; 25   : 	return (unsigned char)portid;
 
 	mov	al, BYTE PTR _portid$[esp-4]
 
-; 25   : 
-; 26   : }
+; 26   : 
+; 27   : }
 
 	ret	0
 ?inport@@YAEG@Z ENDP					; inport
@@ -76,29 +76,29 @@ _portid$ = 8						; size = 2
 _value$ = 12						; size = 4
 ?outportW@@YAXGI@Z PROC					; outportW, COMDAT
 
-; 30   : 	_asm {
-; 31   : 		push eax
+; 31   : 	_asm {
+; 32   : 		push eax
 
 	push	eax
 
-; 32   : 		mov		eax, value
+; 33   : 		mov		eax, value
 
 	mov	eax, DWORD PTR _value$[esp]
 
-; 33   : 		mov		dx, word ptr [portid]
+; 34   : 		mov		dx, word ptr [portid]
 
 	mov	dx, WORD PTR _portid$[esp]
 
-; 34   : 		out	dx, eax
+; 35   : 		out	dx, eax
 
 	out	dx, eax
 
-; 35   : 		pop eax
+; 36   : 		pop eax
 
 	pop	eax
 
-; 36   : 	}
-; 37   : }
+; 37   : 	}
+; 38   : }
 
 	ret	0
 ?outportW@@YAXGI@Z ENDP					; outportW
@@ -111,34 +111,34 @@ _ret$ = -4						; size = 4
 _portid$ = 8						; size = 2
 ?inportW@@YAIG@Z PROC					; inportW, COMDAT
 
-; 39   : {
+; 40   : {
 
 	push	ecx
 
-; 40   : 	unsigned int ret = 0;
+; 41   : 	unsigned int ret = 0;
 
 	mov	DWORD PTR _ret$[esp+4], 0
 
-; 41   : 	_asm {
-; 42   : 		mov		dx, word ptr [portid]
+; 42   : 	_asm {
+; 43   : 		mov		dx, word ptr [portid]
 
 	mov	dx, WORD PTR _portid$[esp]
 
-; 43   : 		in		eax, dx
+; 44   : 		in		eax, dx
 
 	in	eax, dx
 
-; 44   : 		mov		ret, eax
+; 45   : 		mov		ret, eax
 
 	mov	DWORD PTR _ret$[esp+4], eax
 
-; 45   : 	}
-; 46   : 	return ret;
+; 46   : 	}
+; 47   : 	return ret;
 
 	mov	eax, DWORD PTR _ret$[esp+4]
 
-; 47   : 
-; 48   : }
+; 48   : 
+; 49   : }
 
 	pop	ecx
 	ret	0
@@ -152,23 +152,23 @@ _TEXT	SEGMENT
 _intno$ = 8						; size = 4
 ?interruptdone@@YAXI@Z PROC				; interruptdone, COMDAT
 
-; 51   : 
-; 52   : 	// insure its a valid hardware irq
-; 53   : 	if (intno > 16)
+; 52   : 
+; 53   : 	// insure its a valid hardware irq
+; 54   : 	if (intno > 16)
 
 	mov	eax, DWORD PTR _intno$[esp-4]
 	cmp	eax, 16					; 00000010H
 	ja	SHORT $LN3@interruptd
 
-; 54   : 		return;
-; 55   : 
-; 56   : 	// test if we need to send end-of-interrupt to second pic
-; 57   : 	if (intno >= 8)
+; 55   : 		return;
+; 56   : 
+; 57   : 	// test if we need to send end-of-interrupt to second pic
+; 58   : 	if (intno >= 8)
 
 	cmp	eax, 8
 	jb	SHORT $LN1@interruptd
 
-; 58   : 		pic_send_command (I86_PIC_OCW2_MASK_EOI, 1);
+; 59   : 		pic_send_command (I86_PIC_OCW2_MASK_EOI, 1);
 
 	push	1
 	push	32					; 00000020H
@@ -176,9 +176,9 @@ _intno$ = 8						; size = 4
 	add	esp, 8
 $LN1@interruptd:
 
-; 59   : 
-; 60   : 	// always send end-of-interrupt to primary pic
-; 61   : 	pic_send_command (I86_PIC_OCW2_MASK_EOI, 0);
+; 60   : 
+; 61   : 	// always send end-of-interrupt to primary pic
+; 62   : 	pic_send_command (I86_PIC_OCW2_MASK_EOI, 0);
 
 	push	0
 	push	32					; 00000020H
@@ -186,7 +186,7 @@ $LN1@interruptd:
 	add	esp, 8
 $LN3@interruptd:
 
-; 62   : }
+; 63   : }
 
 	ret	0
 ?interruptdone@@YAXI@Z ENDP				; interruptdone
@@ -200,7 +200,7 @@ _i$ = 8							; size = 4
 _h$ = 12						; size = 4
 ?setint@@YAXHP6AXXZ@Z PROC				; setint, COMDAT
 
-; 66   : 	i86_install_ir (i, I86_IDT_DESC_PRESENT | I86_IDT_DESC_BIT32, 0x8, h);
+; 67   : 	i86_install_ir (i, I86_IDT_DESC_PRESENT | I86_IDT_DESC_BIT32, 0x8, h);
 
 	mov	eax, DWORD PTR _h$[esp-4]
 	mov	ecx, DWORD PTR _i$[esp-4]
@@ -211,7 +211,7 @@ _h$ = 12						; size = 4
 	call	?i86_install_ir@@YAHIGGP6AXXZ@Z		; i86_install_ir
 	add	esp, 16					; 00000010H
 
-; 67   : }
+; 68   : }
 
 	ret	0
 ?setint@@YAXHP6AXXZ@Z ENDP				; setint
@@ -232,7 +232,7 @@ _TEXT	SEGMENT
 _i$ = 8							; size = 4
 ?sleep@@YAXH@Z PROC					; sleep, COMDAT
 
-; 71   : 	static int ticks = i + i86_pit_get_tick_count ();
+; 72   : 	static int ticks = i + i86_pit_get_tick_count ();
 
 	mov	eax, 1
 	test	BYTE PTR ?$S1@?1??sleep@@YAXH@Z@4IA, al
@@ -243,15 +243,15 @@ _i$ = 8							; size = 4
 	mov	DWORD PTR ?ticks@?1??sleep@@YAXH@Z@4HA, eax
 $LL2@sleep:
 
-; 72   : 	while (ticks > i86_pit_get_tick_count ())
+; 73   : 	while (ticks > i86_pit_get_tick_count ())
 
 	call	?i86_pit_get_tick_count@@YAIXZ		; i86_pit_get_tick_count
 	cmp	DWORD PTR ?ticks@?1??sleep@@YAXH@Z@4HA, eax
 	ja	SHORT $LL2@sleep
 
-; 73   : 		;
-; 74   : 
-; 75   : }
+; 74   : 		;
+; 75   : 
+; 76   : }
 
 	ret	0
 ?sleep@@YAXH@Z ENDP					; sleep
@@ -262,21 +262,21 @@ EXTRN	?volOpenFile@@YA?AU_FILE@@PBD@Z:PROC		; volOpenFile
 ;	COMDAT ?getFileSize@@YAHPAD@Z
 _TEXT	SEGMENT
 _f$ = -120						; size = 60
-$T3074 = -60						; size = 60
+$T3075 = -60						; size = 60
 _file$ = 8						; size = 4
 ?getFileSize@@YAHPAD@Z PROC				; getFileSize, COMDAT
 
-; 78   : {
+; 79   : {
 
 	sub	esp, 120				; 00000078H
 
-; 79   : 	FILE f = volOpenFile(file);
+; 80   : 	FILE f = volOpenFile(file);
 
 	mov	eax, DWORD PTR _file$[esp+116]
 	push	esi
 	push	edi
 	push	eax
-	lea	ecx, DWORD PTR $T3074[esp+132]
+	lea	ecx, DWORD PTR $T3075[esp+132]
 	push	ecx
 	call	?volOpenFile@@YA?AU_FILE@@PBD@Z		; volOpenFile
 	mov	esi, eax
@@ -284,7 +284,7 @@ _file$ = 8						; size = 4
 	lea	edi, DWORD PTR _f$[esp+136]
 	rep movsd
 
-; 80   : 	if(f.flags&FS_INVALID == FS_INVALID) {return 0;};
+; 81   : 	if(f.flags&FS_INVALID == FS_INVALID) {return 0;};
 
 	mov	dl, BYTE PTR _f$[esp+168]
 	and	dl, 1
@@ -297,36 +297,36 @@ _file$ = 8						; size = 4
 	pop	edi
 	pop	esi
 
-; 81   : 	return f.fileLength;
-; 82   : }
+; 82   : 	return f.fileLength;
+; 83   : }
 
 	add	esp, 120				; 00000078H
 	ret	0
 ?getFileSize@@YAHPAD@Z ENDP				; getFileSize
 _TEXT	ENDS
-PUBLIC	?loadFileToLoc@@YA_NPADPAX@Z			; loadFileToLoc
+PUBLIC	?loadFileToLoc@@YADPADPAX@Z			; loadFileToLoc
 EXTRN	?volCloseFile@@YAXPAU_FILE@@@Z:PROC		; volCloseFile
 EXTRN	?volReadFile@@YAXPAU_FILE@@PAEI@Z:PROC		; volReadFile
 ; Function compile flags: /Ogtpy
-;	COMDAT ?loadFileToLoc@@YA_NPADPAX@Z
+;	COMDAT ?loadFileToLoc@@YADPADPAX@Z
 _TEXT	SEGMENT
 _f$ = -120						; size = 60
-$T3079 = -60						; size = 60
+$T3080 = -60						; size = 60
 _file$ = 8						; size = 4
 _loc$ = 12						; size = 4
-?loadFileToLoc@@YA_NPADPAX@Z PROC			; loadFileToLoc, COMDAT
+?loadFileToLoc@@YADPADPAX@Z PROC			; loadFileToLoc, COMDAT
 
-; 85   : {
+; 86   : {
 
 	sub	esp, 120				; 00000078H
 
-; 86   : 	FILE f = volOpenFile(file);
+; 87   : 	FILE f = volOpenFile(file);
 
 	mov	eax, DWORD PTR _file$[esp+116]
 	push	esi
 	push	edi
 	push	eax
-	lea	ecx, DWORD PTR $T3079[esp+132]
+	lea	ecx, DWORD PTR $T3080[esp+132]
 	push	ecx
 	call	?volOpenFile@@YA?AU_FILE@@PBD@Z		; volOpenFile
 	mov	ecx, 15					; 0000000fH
@@ -335,7 +335,7 @@ _loc$ = 12						; size = 4
 	add	esp, 8
 	rep movsd
 
-; 87   : 	if(f.flags == FS_INVALID) {return false;};
+; 88   : 	if(f.flags == FS_INVALID) {return ERR_FILE_NOT_FOUND;};
 
 	cmp	DWORD PTR _f$[esp+160], 2
 	jne	SHORT $LN3@loadFileTo
@@ -343,28 +343,28 @@ _loc$ = 12						; size = 4
 	xor	al, al
 	pop	esi
 
-; 103  : }
+; 104  : }
 
 	add	esp, 120				; 00000078H
 	ret	0
 $LN3@loadFileTo:
 
-; 90   : #ifdef DEBUG
-; 91   : 	DebugPrintf("Filesize=%d", f.fileLength);
-; 92   : #endif
-; 93   : 	while(f.eof != 1)
+; 91   : #ifdef DEBUG
+; 92   : 	DebugPrintf("Filesize=%d", f.fileLength);
+; 93   : #endif
+; 94   : 	while(f.eof != 1)
 
 	cmp	DWORD PTR _f$[esp+172], 1
 	je	SHORT $LN1@loadFileTo
 
-; 88   : 	unsigned char* buf = (unsigned char*)loc;
-; 89   : 	int i = 0;
+; 89   : 	unsigned char* buf = (unsigned char*)loc;
+; 90   : 	int i = 0;
 
 	mov	esi, DWORD PTR _loc$[esp+124]
 $LL2@loadFileTo:
 
-; 94   : 	{
-; 95   : 		volReadFile(&f, buf + i*512, 512);
+; 95   : 	{
+; 96   : 		volReadFile(&f, buf + i*512, 512);
 
 	push	512					; 00000200H
 	lea	edx, DWORD PTR _f$[esp+132]
@@ -373,18 +373,18 @@ $LL2@loadFileTo:
 	call	?volReadFile@@YAXPAU_FILE@@PAEI@Z	; volReadFile
 	add	esp, 12					; 0000000cH
 
-; 96   : 		i++;
+; 97   : 		i++;
 
 	add	esi, 512				; 00000200H
 	cmp	DWORD PTR _f$[esp+172], 1
 	jne	SHORT $LL2@loadFileTo
 $LN1@loadFileTo:
 
-; 97   : 	}
-; 98   : #ifdef DEBUG
-; 99   : 	DebugPrintf("\ni=%d=>size=%d", i+1, (i+1)*512);
-; 100  : #endif
-; 101  : 	volCloseFile(&f);
+; 98   : 	}
+; 99   : #ifdef DEBUG
+; 100  : 	DebugPrintf("\ni=%d=>size=%d", i+1, (i+1)*512);
+; 101  : #endif
+; 102  : 	volCloseFile(&f);
 
 	lea	eax, DWORD PTR _f$[esp+128]
 	push	eax
@@ -392,15 +392,15 @@ $LN1@loadFileTo:
 	add	esp, 4
 	pop	edi
 
-; 102  : 	return true;
+; 103  : 	return ERR_SUCCESS;
 
 	mov	al, 1
 	pop	esi
 
-; 103  : }
+; 104  : }
 
 	add	esp, 120				; 00000078H
 	ret	0
-?loadFileToLoc@@YA_NPADPAX@Z ENDP			; loadFileToLoc
+?loadFileToLoc@@YADPADPAX@Z ENDP			; loadFileToLoc
 _TEXT	ENDS
 END

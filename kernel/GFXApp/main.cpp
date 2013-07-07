@@ -18,10 +18,10 @@ void OUT(char a)
 void main()
 {
 	print("\nGfx init...");
-	while(getInputChar() == 0);
+	waitForKeyPress();
 	VGA_init();
 	VGA_putimage(16, 16, "test.bmp");
-	while(getInputChar() == 0);
+	waitForKeyPress();
 	VGA_clear();
 	//VGA_putstring(16, 160, "string printing WORKING");
 	char c = 0;
@@ -34,7 +34,7 @@ void main()
 	W_TEXTPOPUP tp;
 	WINDOW w;
 	W_TEXTPOPUP_init(&tp, &w, "LevOS 2.0" ,"Levex is an epic developer!");
-	W_TEXTPOPUP tp2;
+	//W_TEXTPOPUP tp2;
 
 	addWindow(&w);
 	/* paint is still good */

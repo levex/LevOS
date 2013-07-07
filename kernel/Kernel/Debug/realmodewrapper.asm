@@ -13,7 +13,7 @@ PUBLIC	??_C@_09MEJHBFNJ@RMODE?4SYS?$AA@		; `string'
 PUBLIC	??_C@_0DL@NJJOPAOO@?6Goin?8?5to?5Real?5Mode?$CB?5Bye?5good?5li@ ; `string'
 PUBLIC	?doRealModeInterrupt@@YAXDDD@Z			; doRealModeInterrupt
 EXTRN	?pic_initialize@@YA_NEE@Z:PROC			; pic_initialize
-EXTRN	?loadFileToLoc@@YA_NPADPAX@Z:PROC		; loadFileToLoc
+EXTRN	?loadFileToLoc@@YADPADPAX@Z:PROC		; loadFileToLoc
 EXTRN	?DebugPrintf@@YAHPBDZZ:PROC			; DebugPrintf
 ;	COMDAT ??_C@_09MEJHBFNJ@RMODE?4SYS?$AA@
 ; File c:\dev\levos\kernel\kernel\realmodewrapper.cpp
@@ -49,7 +49,7 @@ __al$ = 16						; size = 1
 
 	push	31744					; 00007c00H
 	push	OFFSET ??_C@_09MEJHBFNJ@RMODE?4SYS?$AA@
-	call	?loadFileToLoc@@YA_NPADPAX@Z		; loadFileToLoc
+	call	?loadFileToLoc@@YADPADPAX@Z		; loadFileToLoc
 	add	esp, 8
 
 ; 11   : 	pic_initialize(0x08, 0x70);

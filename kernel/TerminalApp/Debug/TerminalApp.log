@@ -1,5 +1,5 @@
-﻿Build started 7/6/2013 9:12:21 AM.
-     1>Project "C:\Dev\LevOS\kernel\TerminalApp\TerminalApp.vcxproj" on node 5 (build target(s)).
+﻿Build started 7/7/2013 10:29:59 AM.
+     1>Project "C:\Dev\LevOS\kernel\TerminalApp\TerminalApp.vcxproj" on node 3 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\TerminalApp.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
@@ -16,4 +16,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:00.05
+Time Elapsed 00:00:00.07

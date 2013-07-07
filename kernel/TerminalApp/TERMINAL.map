@@ -1,13 +1,13 @@
  cmd
 
- Timestamp is 51d7c345 (Sat Jul 06 09:12:05 2013)
+ Timestamp is 51d926aa (Sun Jul 07 10:28:26 2013)
 
  Preferred load address is 00c00000
 
  Start         Length     Name                   Class
- 0001:00000000 000009b5H .text                   CODE
+ 0001:00000000 00000a15H .text                   CODE
  0002:00000000 00000034H .idata$5                DATA
- 0002:00000038 0000046bH .rdata                  DATA
+ 0002:00000038 000004dbH .rdata                  DATA
  0003:00000000 000001c0H .bss                    DATA
  0004:00000000 00000014H .idata$2                CODE
  0004:00000014 00000014H .idata$3                CODE
@@ -16,8 +16,8 @@
 
   Address         Publics by Value              Rva+Base       Lib:Object
 
- 0000:00000000       ___safe_se_handler_table   00000000     <absolute>
  0000:00000000       ___safe_se_handler_count   00000000     <absolute>
+ 0000:00000000       ___safe_se_handler_table   00000000     <absolute>
  0001:00000000       ?createCommand@@YAXPAD0P6AX0@Z@Z 00c01000 f   main.obj
  0001:00000060       _main                      00c01060 f   main.obj
  0001:00000380       ?cmd_help@@YAXPAD@Z        00c01380 f   main.obj
@@ -28,14 +28,14 @@
  0001:00000570       ?cmd_pci@@YAXPAD@Z         00c01570 f   main.obj
  0001:00000590       ?cmd_acpi@@YAXPAD@Z        00c01590 f   main.obj
  0001:000005b0       ?cmd_start@@YAXPAD@Z       00c015b0 f   main.obj
- 0001:00000660       ?cmd_dump@@YAXPAD@Z        00c01660 f   main.obj
- 0001:000006d0       ?cmd_cls@@YAXPAD@Z         00c016d0 f   main.obj
- 0001:000006f0       ?cmd_dir@@YAXPAD@Z         00c016f0 f   main.obj
- 0001:000007a0       ?cmd_time@@YAXPAD@Z        00c017a0 f   main.obj
- 0001:00000880       ?cmd_echo@@YAXPAD@Z        00c01880 f   main.obj
- 0001:000008d0       ?strcmp@@YAHPBD0@Z         00c018d0 f   string.obj
- 0001:00000940       ?strlen@@YAIPBD@Z          00c01940 f   string.obj
- 0001:00000980       ?strchr@@YAPADPADH@Z       00c01980 f   string.obj
+ 0001:000006c0       ?cmd_dump@@YAXPAD@Z        00c016c0 f   main.obj
+ 0001:00000730       ?cmd_cls@@YAXPAD@Z         00c01730 f   main.obj
+ 0001:00000750       ?cmd_dir@@YAXPAD@Z         00c01750 f   main.obj
+ 0001:00000800       ?cmd_time@@YAXPAD@Z        00c01800 f   main.obj
+ 0001:000008e0       ?cmd_echo@@YAXPAD@Z        00c018e0 f   main.obj
+ 0001:00000930       ?strcmp@@YAHPBD0@Z         00c01930 f   string.obj
+ 0001:000009a0       ?strlen@@YAIPBD@Z          00c019a0 f   string.obj
+ 0001:000009e0       ?strchr@@YAPADPADH@Z       00c019e0 f   string.obj
  0002:00000000       __imp__printchar           00c02000     LevAPI DLL:LEVAPI.DLL
  0002:00000004       __imp__moveCursorRelative  00c02004     LevAPI DLL:LEVAPI.DLL
  0002:00000008       __imp__getInputChar        00c02008     LevAPI DLL:LEVAPI.DLL
@@ -85,14 +85,17 @@
  0002:00000384       ??_C@_0BI@FJMAFFGJ@?6ERROR?3?5File?5not?5found?$CB?$AA@ 00c02384     main.obj
  0002:0000039c       ??_C@_0BJ@JLLABHCE@?6Please?5give?5a?5filename?$CB?$AA@ 00c0239c     main.obj
  0002:000003b8       ??_C@_0GO@GBIKKDFG@?6LevOS2?40?5is?5a?5rewrite?5of?5the?5no@ 00c023b8     main.obj
- 0002:00000428       ??_C@_0BM@CLBJFCLJ@?6No?5extra?5terminals?5yet?$CB?5?3?$CI?$AA@ 00c02428     main.obj
- 0002:00000444       ??_C@_07INNMNHPJ@cmd?4exe?$AA@ 00c02444     main.obj
- 0002:0000044c       ??_C@_0BM@MGEKPPCA@?6Kernel?5can?8t?5be?5loaded?$CB?5?3?$CJ?$AA@ 00c0244c     main.obj
- 0002:00000468       ??_C@_0L@FEMKKAMN@KRNL32?4exe?$AA@ 00c02468     main.obj
- 0002:00000474       ??_C@_0BO@BBHHJJJP@?6Please?5give?5a?5software?5name?$CB?$AA@ 00c02474     main.obj
- 0002:00000494       ??_C@_06LJBKCCFA@Fails?$CB?$AA@ 00c02494     main.obj
- 0002:0000049c       ??_C@_02KHOJGJKF@?4?5?$AA@ 00c0249c     main.obj
- 0002:000004a0       ??_C@_02PIBHCBOA@20?$AA@   00c024a0     main.obj
+ 0002:00000428       ??_C@_0BP@KIPHDDHA@?6ERROR?3?5File?5is?5not?5a?5PE?5file?$CB?$AA@ 00c02428     main.obj
+ 0002:00000448       ??_C@_0CP@MDCHOEJ@?6ERROR?3?5File?5is?5not?5a?5valid?5LevO@ 00c02448     main.obj
+ 0002:00000478       ??_C@_0CA@NGAHAAHI@?6ERROR?3?5File?5is?5not?5executable?$CB?$AA@ 00c02478     main.obj
+ 0002:00000498       ??_C@_0BM@CLBJFCLJ@?6No?5extra?5terminals?5yet?$CB?5?3?$CI?$AA@ 00c02498     main.obj
+ 0002:000004b4       ??_C@_07INNMNHPJ@cmd?4exe?$AA@ 00c024b4     main.obj
+ 0002:000004bc       ??_C@_0BM@MGEKPPCA@?6Kernel?5can?8t?5be?5loaded?$CB?5?3?$CJ?$AA@ 00c024bc     main.obj
+ 0002:000004d8       ??_C@_0L@FEMKKAMN@KRNL32?4exe?$AA@ 00c024d8     main.obj
+ 0002:000004e4       ??_C@_0BO@BBHHJJJP@?6Please?5give?5a?5software?5name?$CB?$AA@ 00c024e4     main.obj
+ 0002:00000504       ??_C@_06LJBKCCFA@Fails?$CB?$AA@ 00c02504     main.obj
+ 0002:0000050c       ??_C@_02KHOJGJKF@?4?5?$AA@ 00c0250c     main.obj
+ 0002:00000510       ??_C@_02PIBHCBOA@20?$AA@   00c02510     main.obj
  0003:00000000       ?buf@@3PADA                00c03000     main.obj
  0003:0000003c       ?num@@3DA                  00c0303c     main.obj
  0003:0000003d       ?c@@3DA                    00c0303d     main.obj

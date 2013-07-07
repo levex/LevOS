@@ -1,4 +1,4 @@
-﻿Build started 7/6/2013 7:46:01 PM.
+﻿Build started 7/7/2013 10:30:28 AM.
      1>Project "C:\Dev\LevOS\kernel\Kernel\Kernel.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\Kernel.unsuccessfulbuild" because "AlwaysCreate" was specified.
@@ -7,13 +7,56 @@
          nasm "C:\Users\Levex\Desktop\newLevOS\Kernel\_asm\inc.asm" -o inc.obj
          :VCEnd
        ClCompile:
-         All outputs are up-to-date.
+         d:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I..\Include\ /Zi /nologo /W4 /WX- /O2 /Oy- /D ARCH_X86 /X /Gm- /MD /Zp1 /GS- /fp:precise /Zc:wchar_t /Zc:forScope /GR- /FAs /Fa"Debug\\" /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt PELoader.cpp /Oy 
+     1>cl : Command line warning D9025: overriding '/Oy-' with '/Oy'
+         PELoader.cpp
+     1>C:\Dev\LevOS\kernel\Include\string.h(24): warning C4005: 'isascii' : macro redefinition
+                 C:\Dev\LevOS\kernel\Include\string.h(13) : see previous definition of 'isascii'
+     1>PELoader.cpp(123): warning C4102: 'redo' : unreferenced label
+     1>PELoader.cpp(257): warning C4244: '=' : conversion from 'int' to 'short', possible loss of data
+     1>PELoader.cpp(199): warning C4189: 'imp' : local variable is initialized but not referenced
+     1>PELoader.cpp(288): warning C4189: 'loadBase' : local variable is initialized but not referenced
+     1>PELoader.cpp(317): warning C4189: 'entry' : local variable is initialized but not referenced
        ResourceCompile:
          All outputs are up-to-date.
      1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(990,5): warning MSB8012: TargetPath(C:\Dev\LevOS\kernel\Debug\Kernel.exe) does not match the Linker's OutputFile property value (A:\KRNL32.EXE). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
      1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(992,5): warning MSB8012: TargetName(Kernel) does not match the Linker's OutputFile property value (KRNL32). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
        Link:
-         All outputs are up-to-date.
+         d:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"A:\KRNL32.EXE" /INCREMENTAL:NO /NOLOGO /LIBPATH:..\Lib\ /NODEFAULTLIB /MANIFEST:NO /PDB:"C:\Dev\LevOS\kernel\Debug\Kernel.pdb" /MAP:"Kernel.map" /SUBSYSTEM:NATIVE /Driver /OPT:REF /OPT:ICF /TLBID:1 /ENTRY:"kernel_entry" /BASE:"0xC0000000" /FIXED:NO /IMPLIB:"C:\Dev\LevOS\kernel\Debug\Kernel.lib" /MACHINE:X86 Debug\Resource.res
+         Debug\ACPI.obj
+         Debug\buf_fifo.obj
+         Debug\currentTest.obj
+         Debug\DebugDisplay.obj
+         Debug\DMA.obj
+         Debug\entry.obj
+         Debug\Exception.obj
+         Debug\FAT12.obj
+         Debug\FileSystem.obj
+         Debug\FloppyDrive.obj
+         Debug\GDT.obj
+         Debug\GUFL.obj
+         Debug\HardDrive.obj
+         Debug\HComm.obj
+         Debug\hw_keyboard.obj
+         Debug\hw_mouse.obj
+         Debug\IDT.obj
+         Debug\main.obj
+         Debug\Math.obj
+         Debug\PCI.obj
+         Debug\PELoader.obj
+         Debug\PIC.obj
+         Debug\PIT.obj
+         Debug\pMemory.obj
+         Debug\ProcessManager.obj
+         Debug\realmodewrapper.obj
+         Debug\RTC.obj
+         Debug\SystemCalls.obj
+         Debug\V8086.obj
+         Debug\VGAdriver.obj
+         Debug\VirtualDevice.obj
+         Debug\vMemory.obj
+         C:\Dev\LevOS\kernel\Debug\Lib.lib /ALIGN:512 
+     1>Lib.lib(cstd.obj) : warning LNK4254: section '.CRT' (40000040) merged into '.data' (C0000040) with different attributes
          Kernel.vcxproj -> C:\Dev\LevOS\kernel\Debug\Kernel.exe
        FinalizeBuildStatus:
          Deleting file "Debug\Kernel.unsuccessfulbuild".
@@ -22,4 +65,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:00.13
+Time Elapsed 00:00:00.39

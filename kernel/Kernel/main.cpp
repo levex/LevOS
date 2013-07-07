@@ -27,7 +27,7 @@
 
 #define KERNEL_VERSION "060713"
 #define KERNEL_BASE "0xC0000000"
-#define KERNEL_SIZE 4096*20
+#define KERNEL_SIZE 4096*5
 
 #define IMAGE_BASE 0xC00000
 
@@ -312,10 +312,10 @@ lol:	movsd
 	setCurrentProc(&p);
 
 	//startMultitask();
-	int a = p.regs.esp;
+	/*int a = p.regs.esp;
 	_asm mov esp, a
 	a = p.regs.ebp;
-	_asm mov ebp, a
+	_asm mov ebp, a*/
 	//taskone();
 	/*int a = 0;
 	a = p.regs->eip;
@@ -338,7 +338,9 @@ lol:	movsd
 	getch();*/
 	//memcpy((char*)0x100000,(char*)0xB8000, 32768); //fixme
 	//loadFileToLoc("cmd.exe", (void*)IMAGE_BASE);
-	PE_mapApp("cmd.exe", IMAGE_BASE);
+	char err = PE_mapApp("cmd.exe", IMAGE_BASE);
+	for(;;);
+	//DebugPrintf("\nError code: 0x%x");
 	/*char* test = (char*)0x800000;
 	DebugPrintf(test);*/
 	/*int* AddressOfEntryPoint = (int*)IMAGE_BASE+ 0xC0 + 0x18 + 0x12;
@@ -373,7 +375,7 @@ lol:	movsd
         mov     fs, ax
         mov     gs, ax
 	}*/
-	for(;;);
+	//for(;;);
 	//_asm jmp ientryPoint
 	//for(;;);
 	loop();

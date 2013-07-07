@@ -3,7 +3,7 @@
 
 #include "PE.h"
 
-extern bool PE_mapApp(char* filename, int base);
+extern char PE_mapApp(char* filename, int base);
 extern bool PE_dumpApp(char* filename, int base);
 extern bool PE_verify(int base);
 

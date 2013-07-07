@@ -12,6 +12,8 @@
 #include "PCI.h"
 #include "ACPI.h"
 
+#include "error.h"
+
 char* string = (char*)0;
 char c = 0;
 int id = 0;
@@ -20,6 +22,7 @@ int _ebx = 0;
 char vgacol = 0;
 char f = 0;
 bool _b = 0;
+char err = 0;
 RTC_DATA* data = (RTC_DATA*)0;
 regs_t regs;
 void handleSysCall()
@@ -96,7 +99,7 @@ void handleSysCall()
 				EBX = address
 				EDX = filename (char*)
 
-				RET -> EDX (1=success,0=failure)
+				RET -> DL (error code or 0 if success)
 			*/
 			char* filename;
 			char* address;
@@ -104,9 +107,9 @@ void handleSysCall()
 				mov filename, edx
 				mov address, ebx
 			}
-			if(!loadFileToLoc(filename, address)) {_asm {xor edx, edx}break;}
+			if((err = loadFileToLoc(filename, address)) != ERR_SUCCESS) {_asm {mov dl, err}break;}
 			_asm {
-				mov edx, 0x01
+				mov dl, ERR_SUCCESS
 			}
 			break;
 		case 0x06: // display utilites
@@ -145,10 +148,7 @@ void handleSysCall()
 					Executes the PE executable at the given address
 					EDX = address of filename
 						Returns:
-							EDX
-								1 = SUCCESS
-								0 = FILE NOT FOUND
-								2 = OTHER FAILURE
+							DL (error code)
 				EBX == 0x02
 					Dumps the PE executable at the given address
 					EDX = adress of filename
@@ -163,9 +163,8 @@ void handleSysCall()
 			{
 				case 0x01:
 					_asm mov filename, edx
-					_b = PE_mapApp(filename, 0x1000000);
-					if(_b){ _asm { mov edx, 1} break;}
-					_asm xor edx, edx
+					err = PE_mapApp(filename, 0x1000000);
+					_asm mov dl, err
 					break;
 				case 0x02:
 					_asm mov filename, edx
